@@ -4,10 +4,6 @@ Repository containing materials and the website for POLS 501: Advanced Political
 
 Course website is at https://UW-POLS501.github.io/pols_501_wi16/
 
-# POLS/CS&SS 503: Advanced Quantitative Political Methodology
-
-Course materials for POLS/CS&SS 503, University of Washington, Spring 2015.
-
 ## How to Create the Website
 
 The files for the site are in the directory `web`.
