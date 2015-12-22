@@ -16,6 +16,10 @@ University of Washington, Winter 2016
 Assistant Professor, Political Science and CSSS<br>
 <a href="mailto:jrnold@uw.ed">jrnold@uw.edu</a>
 
+<br>
+**TA:** Andreu Casas <br>
+<a> acasas2@uw.edu </a>
+
 # Class Meetings
 
 <table class = "table table-striped table-hover">
