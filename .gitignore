@@ -2,3 +2,4 @@ venv
 .doit.db.db
 cache/
 __pycache__
+web/output
