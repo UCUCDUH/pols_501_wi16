@@ -1,0 +1,10 @@
+- Hainmueller and Hiscox, 2010. "Attitudes toward Highly Skilled and Low-skilled Immigration: Evidence from a    Survey Experiment" *APSR* http://dx.doi.org/10.1017/S0003055409990372 In *SMISS* 
+- Beissiger 2002 *Nationalist Mobilization and the Collapse of the Soviet State*. Data is [here](http://www.princeton.edu/~mbeissin/research1.htm#Data). Used in *SMISS*
+- Reinhardt and Rogoff, 2010. "Growth in a Time of Debt" *AER* 10.1257/aer.100.2.573 In *SMISS*
+- Herndon, Ash, and Pollin, 2014. "Does High Public Debt Consistently Stifle Economic Growth? A Critique of Reinhardt and Rogoff" *Cambridge Journal of Economics* Data [here](http://www.peri.umass.edu/236/hash/31e2ff374b6377b2ddec04deaa6388b1/publication/566/) In *SMISS*
+- Gerber, Green, and Larimer (2008, APSR) In GOVT 2000
+- Acemoglu, Johnson, and Robinson (2001, AER) In GOVT 2000
+- Nunn and Wantchekon (2011, AER) In GOVT 2000
+- UN parking tickets
+- Crowdsourced paper with Dark-Skinned players and red cards: https://osf.io/j5v8f/
+- Sprinting linear regression paper in Nature

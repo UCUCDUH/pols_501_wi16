@@ -1,7 +1,7 @@
 # Books
 
-- Gailmard *
-- David Freedman, Pisani and Purves *Statistics*
+- Gailmard *Statistical Modeling and Inference for Social Science*
+- Freedman, Pisani and Purves *Statistics*
 - *OpenIntro Statistics* https://www.openintro.org/stat/textbook.php?stat_book=os
 - John Hopkins
 
@@ -15,6 +15,18 @@
    
 - Allen Downey, *Think Stats*, http://greenteapress.com/thinkstats/
 - Shasha and Wilson *Statistics is Easy*
+- Reinhardt, *Statistics Done WRong*
+- Gelman and Hill *Data Analysis Using Regression and Multilevel/Hierarchical Models*
+
+Other
+
+- Gandrud *Reproducible Research in R and RStudio* http://www.amazon.com/exec/obidos/ASIN/1498715370/7210-20
+- Xie *Dynamic Documents with R and knitr*
+- Nolan and Lang *Data Science in R: A Case Studies Approach* 
+- Zumel *Practical Data Science in R*
+- Kabakoff *R in Action*
+- Grus *Data Science from Scratch*
+- Chang *R Graphics Cookbook*
 
 
 # Classes to Compare
@@ -43,6 +55,7 @@ Quantitative Research Methodology. Matthew Blackwell. http://www.mattblackwell.o
 	- [R for reproducible scientific analysis](http://swcarpentry.github.io/r-novice-gapminder/)
 	
 	- [Instructor Training](https://github.com/swcarpentry/instructor-training) (for pedagogy).
+	
 
 Also look at the classes listed in Aronow's intro stats book proposal: http://aronow.research.yale.edu/aronowmillerproposal.pdf
 
@@ -76,3 +89,54 @@ Also look at the classes listed in Aronow's intro stats book proposal: http://ar
 
 
 
+- Shpariro Social Science Code and Data https://people.stanford.edu/gentzkow/sites/default/files/codeanddata.pdf
+- Code Review For and By Scientists: http://arxiv.org/abs/1407.5648
+- Nine Simple Ways to Make it Easier for Others to Reuse Your Data: https://peerj.com/preprints/7/
+- Best Practices for Scientific Computing http://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.1001745. [Slides](http://swcarpentry.github.io/slideshows/best-practices/index.html#slide-0)
+- Software Carpentry Lessons Learned http://f1000research.com/articles/3-62/v1 [Slides](http://swcarpentry.github.io/slideshows/lessons-learned/index.html)
+- Good Enough Practices for Scientific Computing [github](https://github.com/swcarpentry/good-enough-practices-in-scientific-computing), [web](http://swcarpentry.github.io/good-enough-practices-in-scientific-computing/)
+
+- Workflows and project organization
+
+	- What do DataCarpentry, SoftwareCarpentry and Stat 545 suggest?
+	- Noble Quick Guide to Organizing Computational Biology Projects. http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1000424
+	- Project Template https://cran.r-project.org/web/packages/ProjectTemplate/index.html
+	- http://nicercode.github.io/blog/2013-05-17-organising-my-project/
+	- http://stats.stackexchange.com/questions/10987/what-are-efficient-ways-to-organize-r-code-and-output
+	- http://www.r-statistics.com/2010/09/managing-a-statistical-analysis-project-guidelines-and-best-practices/
+	- http://www.r-statistics.com/2010/09/managing-a-statistical-analysis-project-guidelines-and-best-practices/
+	- http://www.stat.ubc.ca/~jenny/STAT545A/block01_basicsWorkspaceWorkingDirProject.html
+	- http://blog.revolutionanalytics.com/2010/10/a-workflow-for-r.html
+	- https://www.reddit.com/r/bioinformatics/comments/3rdlhf/help_how_do_you_organize_your_projectsfiles/
+	- http://stackoverflow.com/questions/3759723/best-way-to-organize-bioinformatics-projects
+	- http://christianlemp.com/blog/2014/02/05/How-I-Manage-Data-Projects-with-RStudio-and-Git.html
+	
+# Interactive Courses for R
+
+## Data Camp
+
+See course list [here](https://www.datacamp.com/courses)
+
+* [Introduction to R](https://www.datacamp.com/courses/free-introduction-to-r): Cover as first 
+* [Intermediate R](https://www.datacamp.com/courses/intermediate-r) Probably not needed in this course. Loops, functions, apply family, utilities (dates, regex). Some of these useful, but may be better for 503.
+* [Data Manipulation with dplyr](https://www.datacamp.com/courses/dplyr-data-manipulation-r-tutorial) Definitely cover in 501
+* [Data Analysis in R, the data.table way](https://www.datacamp.com/courses/data-table-data-manipulation-r-tutorial) We're going to use dplyr in 501/503.
+* [Reporting with R Markdown](https://www.datacamp.com/courses/reporting-with-r-markdown) Useful tutorial to R markdown
+* [Introduction to Statistics](https://www.datacamp.com/introduction-to-statistics) Some of the tutorials may be useful. Intro, Student's t test, Analysis of Variance, Repeated measure Anova, Correlation and Regression, Multiple regression
+* [How to work with Quandl in R](https://www.datacamp.com/courses/quandl-r-tutorial)
+* [Data visualization in R with ggvis](https://www.datacamp.com/courses/ggvis-data-visualization-r-tutorial) Ignore. Going to use ggplot2 for 501/503. Will move to ggvis relatively soon as it matures.
+* [Data Analysis and Statistical Inference](https://www.datacamp.com/courses/statistical-inference-and-data-analysis) Cetinkaya-Rundel's course. Possibly some interest. 
+* EdX Texas Foundations of Data Analysis, [Part 1: Statistics Using R](https://www.edx.org/course/foundations-data-analysis-part-1-utaustinx-ut-7-10x) and [Part 2: Inferential Statistics](https://www.edx.org/course/foundations-data-analysis-part-2-utaustinx-ut-7-20x)
+
+## TryR
+
+The O'Reilly Codeschool very simple intro to R: http://tryr.codeschool.com/
+
+## Swirl
+
+- Data Analysis
+- Exploratory Data Analysis
+- Getting and Cleaning Data
+- Statistical Inference
+- Regression Models
+- OpenIntro Stats 

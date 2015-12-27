@@ -1,0 +1,8 @@
+- The Political Methodologist Special Issue on Replication (Dec 2014) http://thepoliticalmethodologist.com/2014/12/05/introduction-to-the-special-issue-on-replication/
+- Harvard Gov 2001 Replication Paper: http://projects.iq.harvard.edu/gov2001/book/replication-paper
+- King, *Publication, Publication* http://gking.harvard.edu/papers/
+- King, *Replication, Replication* http://gking.harvard.edu/files/abs/replication-abs.shtml
+- *PS* special issue on transparency: http://journals.cambridge.org/action/displayIssue?jid=PSC&volumeId=47&seriesId=0&issueId=01
+- DA-RT statement http://www.dartstatement.org/
+- Leeper on the difference between replication and reproducibility: http://thomasleeper.com/2015/05/open-science-language/ 
+- Leeper slides: http://thomasleeper.com/rrcourse/Slides/WhatWhyHow.pdf
