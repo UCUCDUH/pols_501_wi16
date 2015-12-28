@@ -377,8 +377,8 @@ INDEX_PATH = "stories"
 # URL_TYPE = 'rel_path'
 
 # Final location for the blog main RSS feed is:
-# output / TRANSLATION[lang] / RSS_PATH / rss.xml
-# RSS_PATH = ""
+# output / TRANSLATION[lang] / FEED_PATH / rss.xml
+# FEED_PATH = ""
 
 # Number of posts in RSS feeds
 # FEED_LENGTH = 10
@@ -628,10 +628,10 @@ IMAGE_FOLDERS = {'images': 'images'}
 
 # 'Read more...' for the index page, if INDEX_TEASERS is True (translatable)
 INDEX_READ_MORE_LINK = '<p class="more"><a href="{link}">{read_more}…</a></p>'
-# 'Read more...' for the RSS_FEED, if RSS_TEASERS is True (translatable)
-RSS_READ_MORE_LINK = '<p><a href="{link}">{read_more}…</a> ({min_remaining_read})</p>'
+# 'Read more...' for the FEED_FEED, if FEED_TEASERS is True (translatable)
+FEED_READ_MORE_LINK = '<p><a href="{link}">{read_more}…</a> ({min_remaining_read})</p>'
 
-# Append a URL query to the RSS_READ_MORE_LINK in Atom and RSS feeds. Advanced
+# Append a URL query to the FEED_READ_MORE_LINK in Atom and RSS feeds. Advanced
 # option used for traffic source tracking.
 # Minimum example for use with Piwik: "pk_campaign=feed"
 # The following tags exist and are replaced for you:
@@ -639,7 +639,7 @@ RSS_READ_MORE_LINK = '<p><a href="{link}">{read_more}…</a> ({min_remaining_rea
 # {feedFormat}                  The name of the syndication format.
 # Example using replacement for use with Google Analytics:
 # "utm_source={feedRelUri}&utm_medium=nikola_feed&utm_campaign={feedFormat}_feed"
-RSS_LINKS_APPEND_QUERY = False
+FEED_LINKS_APPEND_QUERY = False
 
 # A HTML fragment describing the license, for the sidebar.
 # (translatable)
@@ -838,21 +838,21 @@ MARKDOWN_EXTENSIONS = ['fenced_code', 'codehilite', 'extra']
 # them. Generate Atom for tags by setting TAG_PAGES_ARE_INDEXES to True.
 # Atom feeds are built based on INDEX_DISPLAY_POST_COUNT and not FEED_LENGTH
 # Switch between plain-text summaries and full HTML content using the
-# RSS_TEASER option. RSS_LINKS_APPEND_QUERY is also respected. Atom feeds
+# FEED_TEASER option. FEED_LINKS_APPEND_QUERY is also respected. Atom feeds
 # are generated even for old indexes and have pagination link relations
 # between each other. Old Atom feeds with no changes are marked as archived.
 # GENERATE_ATOM = False
 
-# RSS_LINK is a HTML fragment to link the RSS or Atom feeds. If set to None,
+# FEED_LINK is a HTML fragment to link the RSS or Atom feeds. If set to None,
 # the base.tmpl will use the feed Nikola generates. However, you may want to
 # change it for a FeedBurner feed or something else.
-# RSS_LINK = None
+# FEED_LINK = None
 
 # Show only teasers in the RSS and Atom feeds? Default to True
-# RSS_TEASERS = True
+# FEED_TEASERS = True
 
 # Strip HTML in the RSS feed? Default to False
-# RSS_PLAIN = False
+# FEED_PLAIN = False
 
 # A search form to search this site, for the sidebar. You can use a Google
 # custom search (http://www.google.com/cse/)
