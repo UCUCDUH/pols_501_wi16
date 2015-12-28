@@ -27,7 +27,7 @@ SITE_URL = "https://UW-POLS501.github.io/pols_501_wi16/"
 # BASE_URL = "https://UW-POLS501.github.io/pols_501_wi16/"
 BLOG_EMAIL = "jrnold@uw.edu"
 BLOG_DESCRIPTION = "Course website for University of Washington, POL S/CS&SS 501: Advanced Research Design & Analysis, Winter 2016"  # (translatable)
-SOURCE_URL = "http://github.com/pols503/pols_503_sp15/"
+SOURCE_URL = "http://github.com/UW-POLS501/pols_501_wi16/"
 
 # Nikola is multilingual!
 #
@@ -124,7 +124,9 @@ TRANSLATIONS_PATTERN = "{path}.{lang}.{ext}"
 
 NAVIGATION_LINKS = {
     DEFAULT_LANG: (
-        ("/index.html", "Syllabus"),
+        ("index.html", "Syllabus"),
+        ("resources.html", "Resources"),
+        ("https://canvas.uw.edu/courses/1021420", "Canvas"),        
     ),
 }
 
@@ -645,16 +647,13 @@ FEED_LINKS_APPEND_QUERY = False
 LICENSE = ""
 # I recommend using the Creative Commons' wizard:
 # http://creativecommons.org/choose/
-# LICENSE = """
-# <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/2.5/ar/">
-# <img alt="Creative Commons License BY-NC-SA"
-# style="border-width:0; margin-bottom:12px;"
-# src="http://i.creativecommons.org/l/by-nc-sa/2.5/ar/88x31.png"></a>"""
+LICENSE = """
+<a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/80x15.png" /></a><br />"""
 
 # A small copyright notice for the page footer (in HTML).
 # (translatable)
 CONTENT_FOOTER = """<hr>Contents &copy; {date}  <a href="mailto:{email}">{author}</a>  {license} <br>
-Powered by <a href="http://getnikola.com" rel="nofollow">Nikola</a> | Theme is <a href="http://bootswatch.com/flatly/" rel="nofollow">Flatly</a> <br>
+Powered by <a href="http://getnikola.com" rel="nofollow">Nikola</a>
 Source on <a href="{source_url}">github</a>
 """
 
