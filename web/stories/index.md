@@ -11,15 +11,27 @@ University of Washington, Winter 2016
 
 # Teaching Team
 
-**Jeffrey Arnold**
-<br>
-Assistant Professor, Political Science and CSSS<br>
-<a href="mailto:jrnold@uw.ed">jrnold@uw.edu</a>
 
-<br> 
-**TA**: Andreu Casas, Graudate Student <br>
-<a> acasas@uw.edu </a>
+<table class = "table table-striped">
+<tr>
+<td>
+<strong>Professor</strong>
+</td>
+<td><a href="http://jrnold.me">Jeffrey Arnold</a></td>
+<td><a href="mailto:jrnold@uw.edu">jrnold@uw.edu</a></td>
+</tr>
+<tr>
+<td>
+<strong>The power behind the throne</strong>
+</td>
+<td>< href="mailto:http://andreucasas.com/">Andreu Casas</a>
+</td>
+<td>
+<a href="mailto:acasas@uw.edu">acasas@uw.edu</a>
+</td>
+</tr>
 
+</table>
 # Class Meetings
 
 <table class = "table table-striped table-hover">
