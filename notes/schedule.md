@@ -118,3 +118,21 @@ Grading
 | Research presentation	| 25 points
 | Final Stats Paper (20 pages +/-)	| 25 points
 
+## UC Berkeley POLS 541 Gailmard
+
+Organization of the Course (semester)
+
+1. Descriptive Statistics
+2. Probability
+3. Random Variables and Probability Distributions
+4. Expectation, Variance, Covariance
+5. Families of Distributions
+6. Models
+7. Sampling, Sampling Distriubtions, CLT
+8. Sampling, Derived Distributions
+9. Hypothesis Testing
+10. Hypothesis Testing II
+11. Interval Estimation, Likelihood
+12. Likelihood, Point Estimation
+13. Estimation, Evaulating Estimators
+

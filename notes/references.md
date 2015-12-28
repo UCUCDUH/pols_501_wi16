@@ -17,6 +17,7 @@
 - Shasha and Wilson *Statistics is Easy*
 - Reinhardt, *Statistics Done WRong*
 - Gelman and Hill *Data Analysis Using Regression and Multilevel/Hierarchical Models*
+- Grolemund and Wickham, *R for Data Science [page](http://r4ds.had.co.nz/), [github]
 
 Other
 
@@ -33,7 +34,7 @@ Other
 
 - Harvard Gov 1000/2000/2000e/Stat E-190:
 Quantitative Research Methodology. Matthew Blackwell. http://www.mattblackwell.org/files/teaching/gov2000-syllabus.pdf
-- UC Berekeley, PS 231A: Quantitative Analysis in Political Research, Sean Gailmard. PhD course using *SMISS*.  https://www.ocf.berkeley.edu/~gailmard/syl.ps231a.pdf
+- UC Berekeley, PS 231A: Quantitative Analysis in Political Research, Sean Gailmard. PhD course using *SMISS*.  https: //www.ocf.berkeley.edu/~gailmard/syl.ps231a.pdf
 - SOC 504 Spring 2015: Advanced Data Analysis for the Social Sciences. [site](http://www.princeton.edu/~mjs3/soc504_s2015/). It would be equivalent to 503 or 510, but it uses github and is influenced by online courses.
 - JHU Data Science specialization on [Coursera](https://www.coursera.org/specializations/jhu-data-science/1). Source for the courses is on [github](https://github.com/DataScienceSpecialization/courses). It has 9 courses and a capstone project.
 
