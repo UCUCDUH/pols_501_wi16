@@ -22,7 +22,7 @@ University of Washington, Winter 2016
 </tr>
 <tr>
 <td>
-<strong>The power behind the throne</strong>
+<strong>TA</strong>
 </td>
 <td>< href="mailto:http://andreucasas.com/">Andreu Casas</a>
 </td>
