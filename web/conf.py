@@ -131,8 +131,8 @@ NAVIGATION_LINKS = {
 }
 
 # Name of the theme to use.
-THEME = "bootstrap3"
-#THEME = "custom"
+# THEME = "bootstrap3"
+THEME = "cerulean"
 
 # Below this point, everything is optional
 
