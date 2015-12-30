@@ -14,38 +14,57 @@ University of Washington, Winter 2016
 
 <table class = "table table-striped">
 <tr>
-<td>
-<strong>Professor</strong>
-</td>
-<td><a href="http://jrnold.me">Jeffrey Arnold</a></td>
-<td><a href="mailto:jrnold@uw.edu">jrnold@uw.edu</a></td>
+  <td>
+    <strong>Professor</strong>
+  </td>
+  <td><a href="http://jrnold.me">Jeffrey Arnold</a></td>
+  <td><a href="mailto:jrnold@uw.edu">jrnold@uw.edu</a></td>
 </tr>
 <tr>
-<td>
-<strong>TA</strong>
-</td>
-<td>< href="mailto:http://andreucasas.com/">Andreu Casas</a>
-</td>
-<td>
-<a href="mailto:acasas@uw.edu">acasas@uw.edu</a>
-</td>
+  <td>
+    <strong>TA</strong>
+  </td>
+    <td>< href="mailto:http://andreucasas.com/">Andreu Casas</a>
+  </td>
+  <td>
+    <a href="mailto:acasas@uw.edu">acasas@uw.edu</a>
+  </td>
 </tr>
 
 </table>
 # Class Meetings
 
 <table class = "table table-striped table-hover">
-<td>Class </td>
-<td>Th </td>
-<td> 4:30-7:20 pm </td>
-<td> SAV 157 </td>
-</tr>
+  <tr>
+    <td>Class </td>
+    <td>Th </td>
+    <td> 4:30-7:20 pm </td>
+    <td> SAV 157 </td>
+  </tr>
+  <tr>
+    <td>Lab </td>
+    <td>Fri </td>
+    <td>1:30-3:20 pm </td>
+    <td> SAV 117 </td>
+  </tr>
+</table>
+
+# Office Hours
+
+<table class = "table table-striped">
 <tr>
-<td>Lab </td>
-<td>Fri </td>
-<td>1:30-3:20 pm </td>
-<td> SAV 117 </td>
+
 </tr>
+  <tr>
+    <td>Jeff</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>Andreu</td>
+    <td>Monday</td>
+    <td>12:30-2:30 pm</td>
+  </tr>
 </table>
 
 # Learning Objectives
