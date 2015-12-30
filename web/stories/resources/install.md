@@ -1,5 +1,5 @@
 <!--
-.. title: Installing R and RStudio
+.. title: Installing Software for this course
 -->
 
 This course will require the following software, all of which is *free*

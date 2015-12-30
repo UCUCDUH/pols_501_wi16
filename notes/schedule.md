@@ -53,6 +53,23 @@
 
 Final paper due: Mar 16. Then 6 days to grade? 
 
+# Detailed Schedule
+
+## Week 1
+
+### Jan 7
+
+Readings
+
+- SMISS Ch 1. 
+- http://bulletin.imstat.org/2014/09/data-science-how-is-it-different-to-statistics%E2%80%89/
+- Art of Data Science, Ch 1-2
+- R and Rstudio downloaded and installed
+- DataCamp #1 completed
+- R for Everyone preface
+
+### Jan 8
+
 # Statistical Learning Objectives
 
 - Understand sampling distributions
@@ -60,8 +77,12 @@ Final paper due: Mar 16. Then 6 days to grade?
 - Significance testing
 
 
-# Technology learning objectives
+## Week 2
 
+- 
+- http://www.johnmyleswhite.com/notebook/2013/03/22/modes-medians-and-means-an-unifying-perspective/
+
+# Technology learning objectives
 
 - Use R and ggplot to visualize graphics: scatterplot, histogram, density
 - Read data from a variety of sources into R
@@ -118,21 +139,44 @@ Grading
 | Research presentation	| 25 points
 | Final Stats Paper (20 pages +/-)	| 25 points
 
-## UC Berkeley POLS 541 Gailmard
+## UC Berkeley POLS 231 Gailmard
 
 Organization of the Course (semester)
 
-1. Descriptive Statistics
-2. Probability
-3. Random Variables and Probability Distributions
-4. Expectation, Variance, Covariance
-5. Families of Distributions
-6. Models
-7. Sampling, Sampling Distriubtions, CLT
-8. Sampling, Derived Distributions
-9. Hypothesis Testing
-10. Hypothesis Testing II
-11. Interval Estimation, Likelihood
-12. Likelihood, Point Estimation
-13. Estimation, Evaulating Estimators
+1. Descriptive Statistics (G 1-2, FPP 3-4, 8-12)
+2. Probability (G 3-4, FPP 6, 13-14, CB 1.1-1.3)
+3. Random Variables and Probability Distributions (G 5, FPP 15, CB 1.4-1.6)
+4. Expectation, Variance, Covariance (G 5, CB 2)
+5. Families of Distributions (G 6, CB 3)
+6. Models (G 6, CB 3)
+7. Sampling, Sampling Distriubtions, CLT (G 7, FPP 16-19, CB 5.1-5.2)
+8. Sampling, Derived Distributions (G 7, FPP 20, CB 5.3--)
+9. Hypothesis Testing (G 8, FPP 26-29)
+10. Hypothesis Testing II (G 8)
+11. Interval Estimation, Likelihood (G 9; FPP 21, 23; CB 7, 9, 10)
+12. Likelihood, Point Estimation (G 9, FPP 1-2)
+13. Estimation, Evauluating Estimators (G 9, FPP 1-2)
+
+Where G = Gailmard, *Statistical Methods in the Social Sciences*, FPP = Freedman, Pisani, Purves *Statistics*,
+and CB is Casella and Berger.
+
+Evaluation
+
+1. Problem Sets 3-4
+2. Participation
+3. Final Exam
+
+## Stat 101
+
+
+| Week 1 - 2 | Chapter 1 | Intro to data |
+| Week 3 - 4 | Chapter 2.1--2.2, 3.1, 3.2, 3.4 | Probability and distributions |
+| Week 5 - 6 | Chapter 4  | Foundations for Inference |
+| Week 7 - 9 | Chapter 5 | Inference for categorical data: Proportions, Chi-squared |
+| Week 10-11 | Chapter 6 | Inference for numerical Data |
+| Week 12 | Chapter 7 | Intro to linear regression |
+| Week 13-14 | Chapter 8.1-8.3 | Multivariate Regression |
+
+Note that 
+
 
