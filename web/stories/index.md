@@ -135,14 +135,14 @@ Beyond what I and Andreu can providing, there are several resources on campus th
 
 # Schedule
 
-The following schedule is an guideline and will be evolving to meet course needs up to and during the quarter.
+The following schedule is a *tentative* guideline and will be evolving to meet course needs up to and during the quarter.
 
-- *SMISS* = *Statistical Methods for the Social Sciences*
+- *SMISS* = *Statistical Modeling and Inference for Social Science*
 - *OpenIntro* = *Open Intro Statistics* 
 
 ## Week 1
 
-### Class 
+### January 7 (Class)
 
 - Complete the class survey and statistical knowledge pre-test
 - Download R and RStudio. Instructions are [here](resources/install).
@@ -154,45 +154,68 @@ The following schedule is an guideline and will be evolving to meet course needs
     - Roger D. Peng and Elizabth Matsui (2015), *The Art of Data Science*, Chapters 1--2. [[link](https://leanpub.com/artofdatascience)] (the minimum price is free)
 	- Hadley Wickham interview [[link](http://bulletin.imstat.org/2014/09/data-science-how-is-it-different-to-statistics%E2%80%89/)]
     - *R is for Everyone*, Preface
+	
+### January 8 (Lab)
+
 
 ## Week 2
 
-- SMISS, Ch 3: Observable Data and Data-Generating Processes
-- *Project Paragraph Due*
+Observable Data, Descriptive Statistics and Exploratory Data Analysis
+
+- *OpenIntro*, Ch 1. *SMISS* Ch 2-3.
 
 ## Week 3
 
-- SMISS, Ch 4: Probability Theory: Basic Properties of Data Generating Processes
-- *Dataset Due*
+Probability
+
+- *OpenIntro*, Ch 2., *SMISS* Ch 4.
 
 ## Week 4
 
-- SMISS, Ch 5: Expectation and Moments: Summaries of Data-Generating Processes
+Distributions of Random Variables, Expectations, Linking Theories to the Data-Generating Process
+
+- *OpenIntro*, Ch 3. 
+- *SMISS*, Ch 5-6 
 
 ## Week 5
 
-- SMISS, Ch 6: Probability and Models: Linking Theories and Data-Generating Processes
+Foundations of Inference: Sampling distributions, cofidence intervals, hypothesis testing.
+
+- *OpenIntro*, Ch 4
+- *SMISS*, Ch 7-8 
 
 ## Week 6
 
-- SMISS, Ch 7: Sampling Distributions: Linking Data-Generating Processes and Observable Data
+Inference for Numerical Data
+
+- *OpenIntro*, Ch 5
+- *SMISS*, Parts of Ch 7--9
+
 
 ## Week 7
 
-- SMISS Ch 8: Hypothesis Testing: Assessing Claims about the Data Generating Process
+Inference for Categorical data
 
+- *OpenIntro*, CH 6
+- *SMISS*, Parts of Ch 7--9
 
 ## Week 8
 
-- SMISS Ch 9: Estimation: Recovering Properties of the Data Generating Process
+Introduction to Linear Regression
 
+- *OpenIntro*, Ch 7
+- *SMISS*, Parts of Ch 7--9
 
 ## Week 9
 
-- SMISS Ch 9 Estimation: Recovering Properties of the Data-Generating Process
+Multiple regression
 
+- *OpenIntro*, Ch 8
+- *SMISS*, Parts of Ch 7--9
 
 ## Week 10
+
+TBD
 
 
 
