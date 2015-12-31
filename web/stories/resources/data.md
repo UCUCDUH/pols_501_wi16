@@ -16,7 +16,6 @@ Here are links to some datasets potentially of interest to political scientists.
 - Paul Hensel maintains a list of Political Science Datasets <http://www.paulhensel.org/data.html>
 - Policy Agendas Project <http://www.policyagendas.org/page/datasets-codebooks>
 - Varieties of Democracy (VDEM) project <http://kellogg.nd.edu/projects/vdem/>
-- Some of the best datasets are collected by data journalists. vox.com, fivethirtyeight.com, nytimes, [ProPublica](https://www.propublica.org/)
 - [UCDP/PRIO Armed Conflict](http://www.pcr.uu.se/research/ucdp/datasets/ucdp_prio_armed_conflict_dataset/) Datasets on armed conflict
 - [Polity Project data](http://www.systemicpeace.org/polity/polity4.htm) Political regime characteristics
 - [ACLED (Armed Conflict Location and Event Data Project)](http://www.acleddata.com/data/) Real-time data on political violence in African and Asian states

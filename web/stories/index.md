@@ -130,10 +130,11 @@ We will be discussing some additional data or research opportunities.
 
 # Resources
 
-There are a couple places on campus that you can go to get additional statistical conulting
+Beyond what I and Andreu can providing, there are several resources on campus that you can go for help on data, computing, and statistical problems:
 
-- [CSSCR](http://csscr.washington.edu/consulting.html) has a drop-in statistical consulting center in Savery 119. They provide consulting on statistical software, such as R. 
-- [CSSS Statistical Consulting](https://www.csss.washington.edu/Consulting/) provides general statistical consulting (questions about your research project).  You can find their hours and locations on their site.
+- [CSSCR](http://csscr.washington.edu/consulting.html) has a drop-in statistical consulting center in Savery 119. They provide consulting on statistical software, e.g. R. Go there for R or data questions.
+- [CSSS Statistical Consulting](https://www.csss.washington.edu/Consulting/) provides general statistical consulting. Go there for questions about statistical methods.
+- [eScience Data Science Office Hours](http://escience.washington.edu/office-hours/)
 
 # Schedule
 
