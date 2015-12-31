@@ -15,14 +15,14 @@ University of Washington, Winter 2016
 <table class = "table table-striped">
 <tr>
   <td>
-    <strong>Professor</strong>
+    <strong>Primary</strong>
   </td>
   <td><a href="http://jrnold.me">Jeffrey Arnold</a></td>
   <td><a href="mailto:jrnold@uw.edu">jrnold@uw.edu</a></td>
 </tr>
 <tr>
   <td>
-    <strong>TA</strong>
+    <strong></strong>
   </td>
     <td>< href="https://www.polisci.washington.edu/people/andreu-casas-salleras">Andreu Casas</a>
   </td>
@@ -94,7 +94,7 @@ No prior statistical, mathematical, or programming experience is necessary beyon
 Course evaluation will consist of approximately weekly assignments, and a research project.
 
 
-# Materials
+# Textbooks and Online Resources
 
 - Gailmard, Sean. *Statistical Modeling and Inference for Social Science*. Cambridge University Press, 2014.
 - Diez, David M., Christopher D Barr, and Mine Çetinkaya-Rundel. *OpenIntro Statistics*. 3rd ed., 2015. https://www.openintro.org/stat/textbook.php.
@@ -102,12 +102,9 @@ Course evaluation will consist of approximately weekly assignments, and a resear
 - *optional* David Freedman, Robert Pisani, Roger Purves, *Statistics*, 4th edition. Norton.
 - [Data Camp](https://www.datacamp.com/), a website which provides online interactive R tutorials. There is a [student subscription rate](https://www.datacamp.com/enroll-student).
 
-
-
 # Software and Computing
 
-This course will use R. R is a free and open-source programming language primarily used for statistics and data analysis.
-You can download R https://cran.r-project.org/
+This course will use [R](https://www.r-project.org/), which is a free and open-source programming language primarily used for statistics and data analysis. We will also use [RStudio](https://www.rstudio.com/), which is an easy-to-use interface to R. Instructions to install them are [here](resources/install).
 
 Students should have a laptop that they can bring to both class and lab as we will integrate computing with learning data analysis and statistics throughout the course.
 
@@ -140,10 +137,23 @@ Beyond what I and Andreu can providing, there are several resources on campus th
 
 The following schedule is an guideline and will be evolving to meet course needs up to and during the quarter.
 
+- *SMISS* = *Statistical Methods for the Social Sciences*
+- *OpenIntro* = *Open Intro Statistics* 
+
 ## Week 1
 
-- SMISS, Ch 1: Introduction
-- SMISS, Ch 2: Descriptive Statistics
+### Class 
+
+- Complete the class survey and statistical knowledge pre-test
+- Download R and RStudio. Instructions are [here](resources/install).
+- Complete Data Camp [Introduction to R](https://www.datacamp.com/courses/free-introduction-to-r) Chapters 1 (Intro to Basics), 2 (Vectors), 4 (Factors), and 5 (Data Frames).
+- Optional: Complete [TryR](http://tryr.codeschool.com/) if you want more practice with R.
+- Readings
+
+    - *SMISS*, Ch 1
+    - Roger D. Peng and Elizabth Matsui (2015), *The Art of Data Science*, Chapters 1--2. [[link](https://leanpub.com/artofdatascience)] (the minimum price is free)
+	- Hadley Wickham interview [[link](http://bulletin.imstat.org/2014/09/data-science-how-is-it-different-to-statistics%E2%80%89/)]
+    - *R is for Everyone*, Preface
 
 ## Week 2
 

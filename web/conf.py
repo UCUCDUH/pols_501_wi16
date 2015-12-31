@@ -124,9 +124,9 @@ TRANSLATIONS_PATTERN = "{path}.{lang}.{ext}"
 
 NAVIGATION_LINKS = {
     DEFAULT_LANG: (
-        ("index.html", "Syllabus"),
-        ("resources.html", "Resources"),
-        ("https://canvas.uw.edu/courses/1021420", "Canvas"),        
+        ("/index", "Syllabus"),
+        ("/resources", "Resources"),
+        ("https://canvas.uw.edu/courses/1021420", "Canvas"),
     ),
 }
 
@@ -247,7 +247,7 @@ COMPILERS = {
     # but is disabled by default as it would conflict
     # with many of the others.
     # "pandoc": ('.rst', '.md', '.txt'),
-    "rmarkdown": ('.Rmd',)    
+    "rmarkdown": ('.Rmd',)
 }
 
 # Create by default posts in one file format?
@@ -741,7 +741,7 @@ COMMENT_SYSTEM_ID = ""
 # This can be disabled on a per-page/post basis by adding
 #    .. pretty_url: False
 # to the metadata
-# PRETTY_URLS = False
+PRETTY_URLS = True
 
 # If True, publish future dated posts right away instead of scheduling them.
 # Defaults to False.
@@ -819,10 +819,10 @@ MARKDOWN_EXTENSIONS = ['extra', 'smarty', 'toc', 'fenced_code', 'codehilite']
 
 # Show link to source for the posts?
 # Formerly known as HIDE_SOURCELINK (inverse)
-# SHOW_SOURCELINK = True
+SHOW_SOURCELINK = False
 # Copy the source files for your pages?
 # Setting it to False implies SHOW_SOURCELINK = False
-# COPY_SOURCES = True
+COPY_SOURCES = False
 
 # Modify the number of Post per Index Page
 # Defaults to 10

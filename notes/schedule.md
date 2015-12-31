@@ -62,8 +62,8 @@ Final paper due: Mar 16. Then 6 days to grade?
 Readings
 
 - SMISS Ch 1. 
-- http://bulletin.imstat.org/2014/09/data-science-how-is-it-different-to-statistics%E2%80%89/
 - Art of Data Science, Ch 1-2
+- http://bulletin.imstat.org/2014/09/data-science-how-is-it-different-to-statistics%E2%80%89/
 - R and Rstudio downloaded and installed
 - DataCamp #1 completed
 - R for Everyone preface

@@ -17,7 +17,7 @@
 - Shasha and Wilson *Statistics is Easy*
 - Reinhardt, *Statistics Done WRong*
 - Gelman and Hill *Data Analysis Using Regression and Multilevel/Hierarchical Models*
-- Grolemund and Wickham, *R for Data Science [page](http://r4ds.had.co.nz/), [github]
+- Grolemund and Wickham, *R for Data Science [page](http://r4ds.had.co.nz/), [github] , [page](http://garrettgman.github.io/).
 
 Other
 
@@ -48,8 +48,8 @@ Quantitative Research Methodology. Matthew Blackwell. http://www.mattblackwell.o
 	- Practical Machine Learning (not relevant)
 	- Developing Data Products (not relevant)
 
-- Sta 101: Duke (undergrad) but innovative in pedagogy. Mine Cetinkaya-Rundel. [Fall 2015](https://stat.duke.edu/courses/Fall15/sta101.002/) with its sources on [github](https://github.com/mine-cetinkaya-rundel/sta101_f15). Sta 104 Data Analysis and Statistical Inference [site](https://stat.duke.edu/courses/Summer15/sta104.01-1/).
-- UBC Stat 545: Data Wrangling, exploration and analysis with R. Jennifer Bryan. [site](https://stat545-ubc.github.io/), [github](https://github.com/STAT545-UBC/STAT545-UBC.github.io).
+- Sta 101: Duke (undergrad) but innovative in pedagogy. Mine Cetinkaya-Rundel: Fall 2015 [site](httpspa://stat.duke.edu/courses/Fall15/sta101.002/), [github](https://github.com/mine-cetinkaya-rundel/sta101_f15). Sta 104 Data Analysis and Statistical Inference [site](https://stat.duke.edu/courses/Summer15/sta104.01-1/).
+- UBC Stat 545: Data Wrangling, exploration and analysis with R. by Jenny Bryan [site](https://stat545-ubc.github.io/), [github](https://github.com/STAT545-UBC/STAT545-UBC.github.io).
 - Software Carpentry courses 
 
     - [Programming with R](http://swcarpentry.github.io/r-novice-inflammation/)
