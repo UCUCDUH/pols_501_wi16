@@ -38,13 +38,13 @@ University of Washington, Winter 2016
   <tr>
     <td>Class </td>
     <td>Th </td>
-    <td> 4:30-7:20 pm </td>
+    <td> 4:30&ndash;7:20 pm </td>
     <td> SAV 157 </td>
   </tr>
   <tr>
     <td>Lab </td>
     <td>Fri </td>
-    <td>1:30-3:20 pm </td>
+    <td>1:30&ndash;3:20 pm </td>
     <td> SAV 117 </td>
   </tr>
 </table>
@@ -56,14 +56,19 @@ University of Washington, Winter 2016
 
 </tr>
   <tr>
-    <td>Jeff</td>
-    <td></td>
-    <td></td>
-  </tr>
-  <tr>
     <td>Andreu</td>
     <td>Monday</td>
-    <td>12:30-2:30 pm</td>
+    <td>12:30&ndash;2:30 pm</td>
+  </tr>
+  <tr>
+    <td>Jeff</td>
+    <td>Tuesday</td>
+    <td>2:30&ndash;3:30 pm</td>
+  </tr>
+  <tr>
+    <td>Jeff</td>
+    <td>Friday</td>
+    <td>3:30&ndash;4:30 pm</td>
   </tr>
 </table>
 
@@ -97,7 +102,7 @@ Course evaluation will consist of approximately weekly assignments, and a resear
 # Textbooks and Online Resources
 
 - Gailmard, Sean. *Statistical Modeling and Inference for Social Science*. Cambridge University Press, 2014.
-- Diez, David M., Christopher D Barr, and Mine Çetinkaya-Rundel. *OpenIntro Statistics*. 3rd ed., 2015. https://www.openintro.org/stat/textbook.php.
+- Diez, David M., Christopher D Barr, and Mine Çetinkaya-Rundel. *OpenIntro Statistics*. 3rd ed., 2015. <https://www.openintro.org/stat/textbook.php> (Free)
 - Lander, Jared P. *R for Everyone: Advanced Analytics and Graphics*. Upper Saddle River, New Jersey: Addison-Wesley Professional, 2013.
 - *optional* David Freedman, Robert Pisani, Roger Purves, *Statistics*, 4th edition. Norton.
 - [Data Camp](https://www.datacamp.com/), a website which provides online interactive R tutorials. There is a [student subscription rate](https://www.datacamp.com/enroll-student).
