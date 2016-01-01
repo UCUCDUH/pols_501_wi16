@@ -39,13 +39,13 @@ University of Washington, Winter 2016
     <td>Class </td>
     <td>Th </td>
     <td> 4:30&ndash;7:20 pm </td>
-    <td> SAV 157 </td>
+    <td><a href="https://uw.edu/maps/?sav">SAV 157</a></td>	
   </tr>
   <tr>
     <td>Lab </td>
     <td>Fri </td>
     <td>1:30&ndash;3:20 pm </td>
-    <td> SAV 117 </td>
+    <td><a href="https://uw.edu/maps/?sav">SAV 117</a></td>
   </tr>
 </table>
 
@@ -59,18 +59,28 @@ University of Washington, Winter 2016
     <td>Andreu</td>
     <td>Monday</td>
     <td>12:30&ndash;2:30 pm</td>
+	<td></td>
   </tr>
   <tr>
     <td>Jeff</td>
     <td>Tuesday</td>
     <td>2:30&ndash;3:30 pm</td>
+	<td><a href="https://uw.edu/maps/?smi">SMI 221B</a></td>	
   </tr>
   <tr>
     <td>Jeff</td>
     <td>Friday</td>
     <td>3:30&ndash;4:30 pm</td>
+	<td><a href="https://uw.edu/maps/?smi">SMI 221B</a></td>
   </tr>
 </table>
+
+Instructions for Jeff's office hours: 
+
+- Sign up for a slot on using Schedular in Canvas
+- Email me 24 hours prior to your appointment with what you would like to discuss
+
+These instructions will ensure that our time is efficiently spent and I can be of the most help to you.
 
 # Learning Objectives
 
