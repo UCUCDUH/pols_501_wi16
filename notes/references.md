@@ -141,3 +141,11 @@ The O'Reilly Codeschool very simple intro to R: http://tryr.codeschool.com/
 - Statistical Inference
 - Regression Models
 - OpenIntro Stats 
+
+# Papers for Replication
+
+- Devil in the Details http://www.nyu.edu/projects/beber/files/Beber_Scacco_The_Devil_Is_in_the_Digits.pdf. Beber and Scacco on Iran election (Hattip: Dartmouth GOV10)
+- Gledisch and Ruggeri (2010) "Political opportunity structures, democracy, and civil war" *JPR* http://jpr.sagepub.com/content/47/3/299.full.pdf (Hattip: Dartmouth GOV10)
+- Loewen, Koop, Settle, and Fowler (2014) "A Natural Experiment in Proposal Power and Electoral Success" *AJPS* http://onlinelibrary.wiley.com/doi/10.1111/ajps.12042/abstract (Hattip: Dartmouth GOV10)
+- Panagopoulos (2013) "Extrensic Rewards, Intrinsic Motivation, and Voting" *JOP* http://journals.cambridge.org/action/displayAbstract?fromPage=online&aid=8820778&fileId=S0022381612001016 (Hattip: Dartmouth GOV10)
+- 

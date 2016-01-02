@@ -5,6 +5,8 @@
 	- Colquhoun "An Investigation of the false discovery rate and the misinterpretation of p-values" http://rsos.royalsocietypublishing.org/content/1/3/140216
 	- Regina Nuzzo, "Scientific Method: Statistical Errors", http://www.nature.com/news/scientific-method-statistical-errors-1.14700?WT.mc_id=TWT_NatureNews
 	- The Statistical Crisis in Science, http://www.americanscientist.org/issues/pub/2014/6/the-statistical-crisis-in-science/2
+	- Economist video [Daily chart: unlikely results](https://www.youtube.com/watch?v=TosyACdsh-g )	
+	- Nature "Scientific method: Statistical errors" http://www.nature.com/news/scientific-method-statistical-errors-1.14700
 
 - Defenses of p-values
 
@@ -35,3 +37,5 @@
 
     - Rainey, http://www.carlislerainey.com/papers/meaningful.pdf
 	- Rainey, "Arguing for Neglible Effect"
+	
+	
