@@ -6,8 +6,13 @@ Repository containing materials and the website for POLS 501: Advanced Political
 
 Course website is at https://UW-POLS501.github.io/pols_501_wi16/
 
-## Build
+The website is built with 
 
+- [Nikola](https://getnikola.com/) a static site generator
+- [travis](https://travis-ci.org) (to automatically build and deploy to github pages)
+
+
+## Build
 
 ### Dependencies
 
