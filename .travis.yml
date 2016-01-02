@@ -1,5 +1,12 @@
 language: python
-sudo: required
+addons:
+  apt:
+    packages:
+      - python3-zmq
+      - python3-lxml
+      - python3-pil
+      - libxslt1-dev
+      - libxml2-dev
 python:
 - '3.5'
 install:
