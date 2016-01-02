@@ -1,17 +1,18 @@
 language: python
-
 sudo: required
-
 python:
-  - "3.5"
-
+- '3.5'
 install:
-  - pip install Nikola[extras]
-    
+- pip install Nikola[extras]
 script:
-  - cd web && nikola build
-
-
+- cd web && nikola build
+after_success:
+- ghp-import -n web/output  -m "Travis CI build"  && git push -fq https://${GH_TOKEN}@github.com/UW-POLS501/pols501_wi16.git
+evn:
+  global:
+  - secure: 
 branches:
-  - master
-  
+- master
+env:
+  global:
+    secure: QSgKz8WLEjvIW2kAVpc56HIsxG2sJWb+x36g1LPuCyR4ZXERjjmMvlINQ2Qf+5BYvnypbsfKKQ17uoZLI2kNd8mee/y4RmQ+U+ql8fl3b+xOcViOHkUqlQIGS1pQKp/iX8BHxrHCeqrpR+dm6NWiOZio+fZOzgbr6UoAFOPegszMrIIujwXrND0thPYfhT49NQ2rpRvShc7nczh1FuN7z7X7play4LfW8zGwBW3WMK9C+c/hMVZnrBEGLFsRnyfLsASOBrUWDP+ej6mkML43ZXv3vi6Uryyo1dYB7fgxEMjocTRyVHMli6KaIUoYkriQO8XZois5hmQowXOWHUzuMglicu8kWw2pj2bo/c2AojGCQu/+eKLPvawBRagQWGdrweyuzCQRivwBpz4iS9pTNiKANXDQ+PWyp34ajXFar8NVAJcE9D6NBm5CkrH5Fgc0QLEj1kRRqOaPMPoiRfv2Xzny9oLQ+CAqQ1yMivqviIvbpEhe2oeCR+TyJFeSaH/MD+UWGw4LF3vIXTgnYAM8Y5YTU7gbZRoODFbJboZi072is2/GsQpP3c/K56UXN6Zammr0163ayY1oYes8GsVDyzGoXtRgsDbYVftRlHZDOFQ+rdjzlMCmX/jYD8gnLVokuLOH/usbies+yDmk94um9ICTxl5nLQZrkLO87K7MX/U=
