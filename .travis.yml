@@ -1,0 +1,13 @@
+language: python
+python:
+  - 3.4
+
+install:
+  - ./travis-install.sh
+
+build:
+  - cd web && nikola build
+
+env:
+  global:
+    - secure: 
