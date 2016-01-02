@@ -13,7 +13,7 @@ script:
 - git remote rm origin
 - git remote add origin https://${GH_TOKEN}@github.com/UW-POLS501/pols_501_wi16.git
 - git fetch origin
-- cd web && nikola github_deploy
+- cd web && nikola github_deploy &2>1 > /dev/null
 branches:
 - master
 env:
