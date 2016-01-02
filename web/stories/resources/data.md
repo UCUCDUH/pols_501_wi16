@@ -38,3 +38,7 @@ See also the Washington Library [Data Research Guide](http://guides.lib.uw.edu/c
 - [ProPublica](https://www.propublica.org/data/)
 - [NYTimes Campaign Finance API](http://developer.nytimes.com/docs/campaign_finance_api/)
 - [UCI Machine Learning Repository](http://archive.ics.uci.edu/ml/) : repository of machine learning datasets
+
+Cleaning data guide
+
+- [The Quartz guide to bad data](https://github.com/Quartz/bad-data-guide)

@@ -33,6 +33,7 @@ University of Washington, Winter 2016
 </tr>
 
 </table>
+
 # Class Meetings
 
 <table class = "table table-striped table-hover">
@@ -146,9 +147,10 @@ We will be discussing some additional data or research opportunities.
 
 Beyond what I and Andreu can providing, there are several resources on campus that you can go for help on data, computing, and statistical problems:
 
-- [CSSCR](http://csscr.washington.edu/consulting.html) has a drop-in statistical consulting center in Savery 119. They provide consulting on statistical software, e.g. R. Go there for R or data questions.
+-  (Center for Social Science Computing and Research) [CSSCR](http://csscr.washington.edu/consulting.html)and the  has a drop-in statistical consulting center in Savery 119. They provide consulting on statistical software, e.g. R. Go there for R or data questions.
 - [CSSS Statistical Consulting](https://www.csss.washington.edu/Consulting/) provides general statistical consulting. Go there for questions about statistical methods.
 - [eScience Data Science Office Hours](http://escience.washington.edu/office-hours/)
+- UW Library: [Data](http://guides.lib.uw.edu/friendly.php?s=research/data), [Political Science](http://guides.lib.uw.edu/friendly.php?s=research/polisci)
 
 # Bugs
 
