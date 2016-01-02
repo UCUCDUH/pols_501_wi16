@@ -3,6 +3,7 @@
 -->
 
 Here are links to some datasets potentially of interest to political scientists. However, the data collection process in academia is disaggregated, with many data sets collected by researchers for specific purposes and distributed by the researcher with their paper. 
+See also the Washington Library [Data Research Guide](http://guides.lib.uw.edu/c.php?g=341607&p=2299327)
 
 - [Harvard Dataverse](https://dataverse.harvard.edu/) Contains replication data for many political science articles (among other data). The R package [dvn](https://cran.r-project.org/web/packages/dvn/index.html) allows for direct download and upload of data to and from the Dataverse.
 - [ICPSR](http://www.icpsr.umich.edu/icpsrweb/landing.jsp) Collection of many political science and economics datasets.
