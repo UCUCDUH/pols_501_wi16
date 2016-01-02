@@ -142,7 +142,7 @@ The O'Reilly Codeschool very simple intro to R: http://tryr.codeschool.com/
 - Regression Models
 - OpenIntro Stats 
 
-# Papers for Replication
+# Papers for Replication or Assignments
 
 - Devil in the Details http://www.nyu.edu/projects/beber/files/Beber_Scacco_The_Devil_Is_in_the_Digits.pdf. Beber and Scacco on Iran election (Hattip: Dartmouth GOV10)
 - Gledisch and Ruggeri (2010) "Political opportunity structures, democracy, and civil war" *JPR* http://jpr.sagepub.com/content/47/3/299.full.pdf (Hattip: Dartmouth GOV10)
