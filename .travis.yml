@@ -5,11 +5,12 @@ python:
 install:
 - pip install Nikola[extras]
 script:
-- cd web
-- nikola build
 - git config user.name "Travis CI"
 - git config user.email "jeffrey.arnold@gmail.com"
-- ghp-import -n  -m "Travis CI build" output  && git push -fq https://jrnold:${GH_TOKEN}@github.com/UW-POLS501/pols501_wi16.git origin:ghpage
+- git remote rm origin
+- git add origin https://jrnold:${GH_TOKEN}@github.com/UW-POLS501/pols501_wi16.git
+- cd web
+- nikola github_deploy
 branches:
 - master
 env:
