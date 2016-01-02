@@ -5,9 +5,13 @@ python:
 install:
   - ./travis-install.sh
 
-build:
+script:
   - cd web && nikola build
 
 env:
   global:
     - secure: 
+
+branches:
+  - master
+  
