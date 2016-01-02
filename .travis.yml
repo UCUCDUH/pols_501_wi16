@@ -1,8 +1,4 @@
 language: python
-addons:
-  apt:
-    packages:
-    - libxml2-dev
 python:
 - '3.5'
 # install:
@@ -15,8 +11,7 @@ python:
 # - git fetch origin
 # - cd web && nikola github_deploy 2>&1 | sed -e "s/${GH_TOKEN}/XXXX/g"
 script:
-- echo "https://${GH_TOKEN}@github.com/foo.git" 2>&1 | sed -e "s/${GH_TOKEN}/XXXX/g"
-
+- ./deploy-travis.sh
 branches:
 - master
 env:
