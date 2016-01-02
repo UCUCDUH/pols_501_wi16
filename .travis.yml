@@ -8,7 +8,7 @@ script:
 - git config user.name "Travis CI"
 - git config user.email "jeffrey.arnold@gmail.com"
 - git remote rm origin
-- git remote add origin https://jrnold:${GH_TOKEN}@github.com/UW-POLS501/pols501_wi16.git
+- git remote add origin https://${GH_TOKEN}@github.com/UW-POLS501/pols_501_wi16.git
 - cd web && nikola github_deploy
 branches:
 - master
