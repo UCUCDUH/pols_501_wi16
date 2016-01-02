@@ -11,6 +11,6 @@ conda update -q conda
 conda info -a
 
  # Replace dep1 dep2 ... with your dependencies
-conda create -f environment.yml
+conda env create -f environment.yml
 source activate pols_501_wi16
 
