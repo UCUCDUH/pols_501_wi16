@@ -7,10 +7,7 @@ install:
 script:
 - cd web && nikola build
 after_success:
-- ghp-import -n web/output  -m "Travis CI build"  && git push -fq https://${GH_TOKEN}@github.com/UW-POLS501/pols501_wi16.git
-evn:
-  global:
-  - secure: 
+- ghp-import -n  -m "Travis CI build" output  && git push -fq https://${GH_TOKEN}@github.com/UW-POLS501/pols501_wi16.git
 branches:
 - master
 env:
