@@ -1,60 +1,3 @@
-# Tentative Schedule
-
-## Week 1
-
-- Intro to the course
-- Types of Research Questions
-- Intro to R
-
-## Week 2
-
-- Descriptive Statistics
-- Grammar of Graphics
-- Tidy Data
-
-## Week 3
-
-- Probability
-- Random Variables
-- Distributions
-
-## Week 4
-
-- Expectation, Variance, Covariance
-- Families of Distributions
-
-## Week 5
-
-- Models
-- Sampling Distributions, Central Limit Theorem
-
-## Week 6
-
-- Hypothesis Testing
-- Confidence Intervals
-
-## Week 7
-
-- Testing 
-
-## Week 8
-
-- Issues with NHS
-
-## Week 9
-
-## Week 10
-
-## Important dates
-
-- Last day of class: Mar 11
-- Final Exams: Mar 12, 14-18.
-- Grades Due: Mar 22
-
-Final paper due: Mar 16. Then 6 days to grade? 
-
-# Detailed Schedule
-
 ## Week 1
 
 ### Jan 7
@@ -76,21 +19,22 @@ Readings
 - Confidence intervals
 - Significance testing
 
-
 ## Week 2
 
-- 
+- EDA: Something by Tukey
+- Wickham article on graphics as inference, or Gelman
 - http://www.johnmyleswhite.com/notebook/2013/03/22/modes-medians-and-means-an-unifying-perspective/
 
-# Technology learning objectives
 
-- Use R and ggplot to visualize graphics: scatterplot, histogram, density
-- Read data from a variety of sources into R
-- Use R and dplyr and tidyr to manipulate data
-- Learn to use R Markdown for reproducible research
-- Also: lubridate, stringr
-- Create tables for HTML/LaTeX
-- Write LaTeX with math
+## Week 3
+
+Probability:
+
+- King Ch 1: Language of inference
+- Moore and Siegel Chapters 9-11
+
+
+## Week 4
 
 # Outlines of Previous Courses
 
