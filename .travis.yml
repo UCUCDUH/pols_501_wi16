@@ -9,6 +9,7 @@ script:
 - git config user.email "jeffrey.arnold@gmail.com"
 - git remote rm origin
 - git remote add origin https://${GH_TOKEN}@github.com/UW-POLS501/pols_501_wi16.git
+- git pull origin
 - cd web && nikola github_deploy
 branches:
 - master
