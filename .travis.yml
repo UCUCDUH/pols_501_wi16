@@ -2,11 +2,10 @@ language: python
 addons:
   apt:
     packages:
-      - python3-zmq
-      - python3-lxml
-      - python3-pil
       - libxslt1-dev
       - libxml2-dev
+      - libzmq-dev
+      - libyaml-dev
 python:
 - '3.5'
 install:
