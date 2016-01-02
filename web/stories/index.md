@@ -152,11 +152,18 @@ Beyond what I and Andreu can providing, there are several resources on campus th
 - [eScience Data Science Office Hours](http://escience.washington.edu/office-hours/)
 - UW Library: [Data](http://guides.lib.uw.edu/friendly.php?s=research/data), [Political Science](http://guides.lib.uw.edu/friendly.php?s=research/polisci)
 
+# License
+
+<a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a>
+
+Science should be open, and this has benefitted from others releasing their materials under an open license, so unless otherwise noted, all materials for this class are licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
+
+
 # Bugs
 
 If you find any typos or other issues in this page, any page in the site, or any materials for this course, go to https://github.com/UW-POLS501/pols_501_wi16/issues, click on "New Issue" button to create a new issue, and describe the problem.
 
-# Schedule
+
 
 
 <!--
