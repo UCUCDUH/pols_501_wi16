@@ -79,7 +79,7 @@ University of Washington, Winter 2016
 
 Instructions for Jeff's office hours: 
 
-- Sign up for a slot on using Schedular in Canvas
+- Sign up for a slot on Canvas using the Scheduler tab in the Calendar.
 - Email me 24 hours prior to your appointment with what you would like to discuss
 
 These instructions will ensure that our time is efficiently spent and I can be of the most help to you.
@@ -129,7 +129,7 @@ Students should have a laptop that they can bring to both class and lab as we wi
 
 # Class Expectations
 
-Students should do the readings *before* the class. Some class time will be spent on leacture, but the majority of class time consist of discussion, questions, and problem solving.
+Students should do the readings *before* the class. Some class time will be spent on lecture, but the majority of class time consist of discussion, questions, and problem solving.
 
 Lab sections will cover how to implement the analysis in R, conceptual review and continued elaboration of the week's material, and time for students to discuss and get feedback on their projects.
 
@@ -147,7 +147,7 @@ We will be discussing some additional data or research opportunities.
 
 Beyond what the teaching team can providing, there are several resources on campus that you can go for assistance with data, computing, and statistical problems:
 
--  (Center for Social Science Computing and Research) [CSSCR](http://julius.csscr.washington.edu/about/consulting.html)and the  has a drop-in statistical consulting center in Savery 119. They provide consulting on statistical software, e.g. R. Go there for R or data questions.
+-  Center for Social Science Computing and Research ([CSSCR](http://julius.csscr.washington.edu/about/consulting.html)) has a drop-in statistical consulting center in Savery 119. They provide consulting on statistical software, e.g. R. Go there for software or data related questions.mag
 - [CSSS Statistical Consulting](https://www.csss.washington.edu/consulting) provides general statistical consulting. Go there for questions about statistical methods.
 - [eScience Data Science Office Hours](http://escience.washington.edu/office-hours/)
 - UW Library: [Data](http://guides.lib.uw.edu/friendly.php?s=research/data), [Political Science](http://guides.lib.uw.edu/friendly.php?s=research/polisci)
@@ -156,7 +156,7 @@ Beyond what the teaching team can providing, there are several resources on camp
 
 <a rel="license" href="httpso://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://licensebuttons.net/l/by/4.0/88x31.png" /></a>
 
-Science should be open, and this has benefitted from others releasing their materials under an open license, so unless otherwise noted, all materials for this class are licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
+Science should be open, and this course builds up other open licensed material, so unless otherwise noted, all materials for this class are licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
 
 
 # Bugs

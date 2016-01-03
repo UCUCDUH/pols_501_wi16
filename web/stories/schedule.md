@@ -21,7 +21,7 @@ The following schedule is a *tentative* guideline and will be evolving to meet c
 - Readings
 
     - *SMISS*, Ch 1
-    - Roger D. Peng and Elizabth Matsui (2015), *The Art of Data Science*, Chapters 1--2. [[link](https://leanpub.com/artofdatascience)] (the minimum price is free)
+    - Roger D. Peng and Elizabeth Matsui (2015), *The Art of Data Science*, Chapters 1--2. [[link](https://leanpub.com/artofdatascience)] (the minimum price is free)
 	- Hadley Wickham interview [[link](http://bulletin.imstat.org/2014/09/data-science-how-is-it-different-to-statistics%E2%80%89/)]
     - *R is for Everyone*, Preface
 	
