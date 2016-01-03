@@ -24,7 +24,7 @@ BLOG_TITLE = "POL S/CS&SS 501: Advanced Research Design & Analysis"  # (translat
 SITE_URL = "https://UW-POLS501.github.io/pols_501_wi16/"
 # This is the URL where Nikola's output will be deployed.
 # If not set, defaults to SITE_URL
-# BASE_URL = "https://UW-POLS501.github.io/pols_501_wi16/"
+# BASE_URL = "https://UW-POLS501.github.io/pols_501_wi16/
 BLOG_EMAIL = "jrnold@uw.edu"
 BLOG_DESCRIPTION = "Course website for University of Washington, POL S/CS&SS 501: Advanced Research Design & Analysis, Winter 2016"  # (translatable)
 SOURCE_URL = "http://github.com/UW-POLS501/pols_501_wi16/"
@@ -36,7 +36,7 @@ SOURCE_URL = "http://github.com/UW-POLS501/pols_501_wi16/"
 # en     English
 # ar     Arabic
 # az     Azerbaijani
-# bg     Bulgarian
+# bg     Bulgarianz
 # ca     Catalan
 # cs     Czech [ALTERNATIVELY cz]
 # da     Danish
@@ -653,8 +653,10 @@ LICENSE = """
 
 # A small copyright notice for the page footer (in HTML).
 # (translatable)
-CONTENT_FOOTER = """<hr>Contents &copy; {date}  <a href="mailto:{email}">{author}</a>  {license} <br>
-Powered by <a href="http://getnikola.com" rel="nofollow">Nikola</a>
+CONTENT_FOOTER = """
+Contents &copy; {date}  <a href="mailto:{email}">{author}</a>  {license}
+<br>
+Powered by <a href="http://getnikola.com" rel="nofollow">Nikola</a>;
 Source on <a href="{source_url}">github</a>
 """
 
@@ -881,7 +883,7 @@ COPY_SOURCES = False
 # If you prefer a Google search form, here's an example that should just work:
 SEARCH_FORM = """
 <!-- Custom search with Google-->
-<form id="search" action="//www.google.com/search" method="get" class="navbar-form pull-left">
+<form id="search" action="//www.google.com/search" method="get" class="navbar-form pull-right">
 <input type="hidden" name="q" value="site:%s" />
 <input type="text" name="q" maxlength="255" results="0" placeholder="Search"/>
 </form>

@@ -48,7 +48,7 @@ Distributions of Random Variables, Expectations, Linking Theories to the Data-Ge
 
 ## Week 5
 
-Foundations of Inference: Sampling distributions, cofidence intervals, hypothesis testing.
+Foundations of Inference: Sampling distributions, confidence intervals, hypothesis testing.
 
 - *OpenIntro*, Ch 4
 - *SMISS*, Ch 7-8 

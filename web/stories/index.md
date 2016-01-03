@@ -145,7 +145,7 @@ We will be discussing some additional data or research opportunities.
 
 # Resources
 
-Beyond what I and Andreu can providing, there are several resources on campus that you can go for help on data, computing, and statistical problems:
+Beyond what the teaching team can providing, there are several resources on campus that you can go for assistance with data, computing, and statistical problems:
 
 -  (Center for Social Science Computing and Research) [CSSCR](http://csscr.washington.edu/consulting.html)and the  has a drop-in statistical consulting center in Savery 119. They provide consulting on statistical software, e.g. R. Go there for R or data questions.
 - [CSSS Statistical Consulting](https://www.csss.washington.edu/Consulting/) provides general statistical consulting. Go there for questions about statistical methods.
@@ -163,17 +163,3 @@ Science should be open, and this has benefitted from others releasing their mate
 
 If you find any typos or other issues in this page, any page in the site, or any materials for this course, go to https://github.com/UW-POLS501/pols_501_wi16/issues, click on "New Issue" button to create a new issue, and describe the problem.
 
-TESTING 2
-
-<!--
-# References
-
-- Sean Gailmard, https://www.ocf.berkeley.edu/~gailmard/syl.ps231a.pdf
-- Matthew Blackwell, http://www.mattblackwell.org/files/teaching/gov2000-syllabus.pdf
-- Mine Çetinkaya-Rundel, https://stat.duke.edu/courses/Spring15/sta101.001/info/
--->
-
-<!--  LocalWords:  CSSS Gailmard Diez Çetinkaya br href td SAV
- -->
-<!--  LocalWords:  Çetinkaya
- -->
