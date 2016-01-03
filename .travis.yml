@@ -14,7 +14,7 @@ before_script:
 - PATH="node_modules/.bin:$PATH"
 
 script:
-- mdspell --en-us -a -n -r stories/*.md
+- mdspell --en-us -a -n -r web/stories/*.md
 - cd web
 - nikola build
 - nikola check -l -r

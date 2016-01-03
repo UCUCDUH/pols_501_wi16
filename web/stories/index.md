@@ -117,15 +117,17 @@ Course evaluation will consist of approximately weekly assignments, and a resear
 - Gailmard, Sean. *Statistical Modeling and Inference for Social Science*. Cambridge University Press, 2014.
 - Diez, David M., Christopher D Barr, and Mine Çetinkaya-Rundel. *OpenIntro Statistics*. 3rd ed., 2015. <https://www.openintro.org/stat/textbook.php> (Free)
 - Lander, Jared P. *R for Everyone: Advanced Analytics and Graphics*. Upper Saddle River, New Jersey: Addison-Wesley Professional, 2013.
-- *optional* David Freedman, Robert Pisani, Roger Purves, *Statistics*, 4th edition. Norton.
+
 
 ## Software and Computing
 
 This course will use [R](https://www.r-project.org/), which is a free and open-source programming language primarily used for statistics and data analysis. We will also use [RStudio](https://www.rstudio.com/), which is an easy-to-use interface to R. Instructions to install them are [here](/resources/install/).
 
+Additionally, [Data Camp](https://www.datacamp.com/), a website which provides online interactive R tutorials, will be used to teach R. 
+Although it is not free, there is a [student subscription rate](https://www.datacamp.com/enroll-student).
+
 Students should have a laptop that they can bring to both class and lab as we will integrate computing with learning data analysis and statistics throughout the course.
 
-[Data Camp](https://www.datacamp.com/), a website which provides online interactive R tutorials. There is a [student subscription rate](https://www.datacamp.com/enroll-student).
 
 # Class Expectations
 
