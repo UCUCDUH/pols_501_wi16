@@ -3,3 +3,4 @@ venv
 cache/
 __pycache__
 web/output
+node_modules

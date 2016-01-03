@@ -11,10 +11,11 @@ install:
 
 before_script:
 - npm install markdown-spellcheck
+- PATH="node_modules/.bin:$PATH"
 
 script:
+- mdspell --en-us -a -n -r stories/*.md
 - cd web
-- node_modules/markdown-spellcheck/bin/mdspell --en-us -a -n -r stories/*.md
 - nikola build
 - nikola check -l -r
 - nikola github_deploy 2>&1 | sed -e "s/${GH_TOKEN}/XXXX/g"
