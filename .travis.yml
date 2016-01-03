@@ -10,9 +10,10 @@ install:
 - git fetch origin
 
 script:
+- cd web
 - nikola build
 - nikola check -l -f -r | grep "\(WARNING\|ERROR\):"
-- cd web && nikola github_deploy 2>&1 | sed -e "s/${GH_TOKEN}/XXXX/g"
+- nikola github_deploy 2>&1 | sed -e "s/${GH_TOKEN}/XXXX/g"
 
 branches:
 - master
