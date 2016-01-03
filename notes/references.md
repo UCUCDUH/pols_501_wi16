@@ -152,3 +152,5 @@ The O'Reilly Codeschool very simple intro to R: http://tryr.codeschool.com/
 - Acemoglu, Johnson, and Robinson (2001, AER)  (Hattip: Harvard GOV 2000)
 - Nunn and Wantchekon (2011, AER) (Hattip: Harvard GOV 2000)
 - Fisman and Miguel "Corrupation, Normals and Legal Enforcement: Evidence from Diplomatic Parking Tickets" http://emiguel.econ.berkeley.edu/research/corruption-norms-and-legal-enforcement-evidence-from-diplomatic-parking-tickets
+- Chen "The Effect of Language on Economic Behavior" *AER* https://www.aeaweb.org/articles.php?doi=10.1257/aer.103.2.690
+
