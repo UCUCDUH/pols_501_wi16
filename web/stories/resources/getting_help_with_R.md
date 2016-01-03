@@ -12,7 +12,7 @@
 - Google has gotten better with R searches, but `R` (like other one-letter language names) is a particularly unfriendly search term.
   Use [rseek.org](http://rseek.org) intead; it is a specialized search restricted to sites already known to be related to R the statistical programming language
 
-- [The Cookbook for R](https://www.cookbook-r.com) and [Quick-R](https://www.statmethods.net/) are organized by task and thus may be easier to find what you are looking for.
+- [The Cookbook for R](http://www.cookbook-r.com) and [Quick-R](http://www.statmethods.net/) are organized by task and thus may be easier to find what you are looking for.
 
 - Do you want to know what packages exist for a given topic? [CRAN Task Views](https://cran.r-project.org/web/views/) provide subject matter groupings of R packages.
   E.g. [Environmetrics](https://cran.r-project.org/web/views/Environmetrics.html) and [Social Sciences](https://cran.r-project.org/web/views/SocialSciences.html)
@@ -28,14 +28,14 @@
 - If you are going to ask for help, it is important to know how to ask for help
 
 	- Coding Killed the Cat "How to ask programming question" <https://codingkilledthecat.wordpress.com/2012/06/26/how-to-ask-for-programming-help/>
-	- Matt Gemmell, "What Have You Tried?" <https://mattgemmell.com/what-have-you-tried/>
+	- Matt Gemmell, "What Have You Tried?" <http://mattgemmell.com/what-have-you-tried/>
 
 - Other people giving advice on how to get help with R (keeping it meta):
 
     - <https://www.rstudio.com/resources/training/online-learning/>
     - <https://support.rstudio.com/hc/en-us/articles/200552336-Getting-Help-with-R>
-    - <https://www.quora.com/How-do-I-learn-R>
-	- <https://www.ats.ucla.edu/stat/r/>
+    - <https://www.quora.com/What-are-some-good-resources-for-learning-R-1?redirected_qid=228273>
+	- <http://www.ats.ucla.edu/stat/r/>
 
 
 
