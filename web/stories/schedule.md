@@ -15,13 +15,13 @@ The following schedule is a *tentative* guideline and will be evolving to meet c
 ### January 7 (Class)
 
 - Complete the class survey and statistical knowledge pre-test
-- Download R and RStudio. Instructions are [here](resources/install).
+- Download R and RStudio. Instructions are [here](/resources/install/).
 - Complete Data Camp [Introduction to R](https://www.datacamp.com/courses/free-introduction-to-r) Chapters 1 (Intro to Basics), 2 (Vectors), 4 (Factors), and 5 (Data Frames).
 - Optional: Complete [TryR](http://tryr.codeschool.com/) if you want more practice with R.
 - Readings
 
     - *SMISS*, Ch 1
-    - Roger D. Peng and Elizabth Matsui (2015), *The Art of Data Science*, Chapters 1--2. [[link](https://leanpub.com/artofdatascience)] (the minimum price is free)
+    - Roger D. Peng and Elizabeth Matsui (2015), *The Art of Data Science*, Chapters 1--2. [[link](https://leanpub.com/artofdatascience)] (the minimum price is free)
 	- Hadley Wickham interview [[link](http://bulletin.imstat.org/2014/09/data-science-how-is-it-different-to-statistics%E2%80%89/)]
     - *R is for Everyone*, Preface
 	
@@ -31,27 +31,27 @@ The following schedule is a *tentative* guideline and will be evolving to meet c
 
 Observable Data, Descriptive Statistics and Exploratory Data Analysis
 
-- *OpenIntro*, Ch 1. *SMISS* Ch 2-3.
+- *OpenIntro*, Ch 1. *SMISS* Ch 2
 
 ## Week 3
 
 Probability
 
-- *OpenIntro*, Ch 2., *SMISS* Ch 4.
+- *OpenIntro*, Ch 2., *SMISS* Ch 3--4.
 
 ## Week 4
 
 Distributions of Random Variables, Expectations, Linking Theories to the Data-Generating Process
 
 - *OpenIntro*, Ch 3. 
-- *SMISS*, Ch 5-6 
+- *SMISS*, Ch 5--6 
 
 ## Week 5
 
-Foundations of Inference: Sampling distributions, cofidence intervals, hypothesis testing.
+Foundations of Inference: Sampling distributions, confidence intervals, hypothesis testing.
 
 - *OpenIntro*, Ch 4
-- *SMISS*, Ch 7-8 
+- *SMISS*, Ch 7--8 
 
 ## Week 6
 

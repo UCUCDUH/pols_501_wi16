@@ -21,13 +21,13 @@ See also the Washington Library [Data Research Guide](http://guides.lib.uw.edu/c
 - [Polity Project data](http://www.systemicpeace.org/polity/polity4.htm) Political regime characteristics
 - [ACLED (Armed Conflict Location and Event Data Project)](http://www.acleddata.com/data/) Real-time data on political violence in African and Asian states
 - [Sunlight Foundation](http://sunlightfoundation.com/) Provides open data on the U.S. government. Data on Congress, state legislatures, campaign finance, contributions, dockets.
-- [OpenEvent Data/Phoenix Data Project](http://phoenixdata.org/)
+- [OpenEvent Data/Phoenix Data Project](http://openeventdata.org/datasets/OEDA.datasets.php)
 - [Database of Political Institutions](http://econ.worldbank.org/WBSITE/EXTERNAL/EXTDEC/EXTRESEARCH/0,,contentMDK:20649465~pagePK:64214825~piPK:64214943~theSitePK:469382,00.html)
 - [Penn World Table](http://cid.econ.ucdavis.edu/pwt.html)
 - [NOMINATE Ideal Points of U.S. Congress](http://voteview.com/)
 - [Paul Hensel's List of International Relations Data](http://www.paulhensel.org/data.html)
 - [Issue Correlates of War (ICOW)](http://www.paulhensel.org/icow.html)
-- [ROpenGov](http://ropengov.github.io/) has R packages to access various government related data. For packages to access data on the web from within R see the [Web Technologies and Services](https://cran.r-project.org/web/views/WebTechnologies.html) CRAN Task View.
+- [ROpenGov](https://ropengov.github.io/) has R packages to access various government related data. For packages to access data on the web from within R see the [Web Technologies and Services](https://cran.r-project.org/web/views/WebTechnologies.html) CRAN Task View.
 - [Awesome Public Datasets](https://github.com/caesar0301/awesome-public-datasets) by [caesar0301](https://github.com/caesar0301)
 - [Vox](http://www.vox.com/) stories on [github](https://github.com/voxmedia/data-projects)
 - NY Times [Upshot](http://www.nytimes.com/upshot/) on [github](https://github.com/TheUpshot)
