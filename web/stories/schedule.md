@@ -31,27 +31,27 @@ The following schedule is a *tentative* guideline and will be evolving to meet c
 
 Observable Data, Descriptive Statistics and Exploratory Data Analysis
 
-- *OpenIntro*, Ch 1. *SMISS* Ch 2-3.
+- *OpenIntro*, Ch 1. *SMISS* Ch 2
 
 ## Week 3
 
 Probability
 
-- *OpenIntro*, Ch 2., *SMISS* Ch 4.
+- *OpenIntro*, Ch 2., *SMISS* Ch 3--4.
 
 ## Week 4
 
 Distributions of Random Variables, Expectations, Linking Theories to the Data-Generating Process
 
 - *OpenIntro*, Ch 3. 
-- *SMISS*, Ch 5-6 
+- *SMISS*, Ch 5--6 
 
 ## Week 5
 
 Foundations of Inference: Sampling distributions, confidence intervals, hypothesis testing.
 
 - *OpenIntro*, Ch 4
-- *SMISS*, Ch 7-8 
+- *SMISS*, Ch 7--8 
 
 ## Week 6
 

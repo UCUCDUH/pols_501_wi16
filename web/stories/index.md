@@ -7,7 +7,7 @@
 University of Washington, Winter 2016
 </p>
 
-<button type="button" class="btn btn-danger">WARNING</button> This syllabus is a draft and will be updated before (and during) the quarter**
+<button type="button" class="btn btn-danger">WARNING</button> This syllabus is a draft and will be updated before (and during) the quarter
 
 
 # Teaching Team
