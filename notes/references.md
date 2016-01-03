@@ -142,7 +142,7 @@ The O'Reilly Codeschool very simple intro to R: http://tryr.codeschool.com/
 - Regression Models
 - OpenIntro Stats 
 
-# Papers for Replication or Assignments
+# Papers for Data Replication or Assignments
 
 - Devil in the Details http://www.nyu.edu/projects/beber/files/Beber_Scacco_The_Devil_Is_in_the_Digits.pdf. Beber and Scacco on Iran election (Hattip: Dartmouth GOV10)
 - Gledisch and Ruggeri (2010) "Political opportunity structures, democracy, and civil war" *JPR* http://jpr.sagepub.com/content/47/3/299.full.pdf (Hattip: Dartmouth GOV10)
@@ -152,3 +152,9 @@ The O'Reilly Codeschool very simple intro to R: http://tryr.codeschool.com/
 - Acemoglu, Johnson, and Robinson (2001, AER)  (Hattip: Harvard GOV 2000)
 - Nunn and Wantchekon (2011, AER) (Hattip: Harvard GOV 2000)
 - Fisman and Miguel "Corrupation, Normals and Legal Enforcement: Evidence from Diplomatic Parking Tickets" http://emiguel.econ.berkeley.edu/research/corruption-norms-and-legal-enforcement-evidence-from-diplomatic-parking-tickets
+- Titanic Dataset
+- Challenger Dataset
+- Gapminder Data
+- ANES
+- OpenEvent Data; ACLED
+- Polity - look at index
