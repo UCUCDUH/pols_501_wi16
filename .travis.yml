@@ -12,7 +12,7 @@ install:
 script:
 - cd web
 - nikola build
-- nikola check -l -f -r | grep "\(WARNING\|ERROR\):"
+- nikola check -l -f -r 2>&1 | grep "\(WARNING\|ERROR\):"
 - nikola github_deploy 2>&1 | sed -e "s/${GH_TOKEN}/XXXX/g"
 
 branches:

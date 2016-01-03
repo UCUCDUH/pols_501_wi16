@@ -41,13 +41,13 @@ University of Washington, Winter 2016
     <td>Class </td>
     <td>Th </td>
     <td> 4:30&ndash;7:20 pm </td>
-    <td><a href="https://uw.edu/maps/?sav">SAV 157</a></td>	
+    <td><a href="https://www.washington.edu/maps/?sav">SAV 157</a></td>	
   </tr>
   <tr>
     <td>Lab </td>
     <td>Fri </td>
     <td>1:30&ndash;3:20 pm </td>
-    <td><a href="https://uw.edu/maps/?sav">SAV 117</a></td>
+    <td><a href="https://www.washington.edu/maps/?sav">SAV 117</a></td>
   </tr>
 </table>
 
@@ -67,13 +67,13 @@ University of Washington, Winter 2016
     <td>Jeff</td>
     <td>Tuesday</td>
     <td>2:30&ndash;3:30 pm</td>
-	<td><a href="https://uw.edu/maps/?smi">SMI 221B</a></td>	
+	<td><a href="https://www.washington.edu/maps/?smi">SMI 221B</a></td>	
   </tr>
   <tr>
     <td>Jeff</td>
     <td>Friday</td>
     <td>3:30&ndash;4:30 pm</td>
-	<td><a href="https://uw.edu/maps/?smi">SMI 221B</a></td>
+	<td><a href="https://www.washington.edu/maps/?smi">SMI 221B</a></td>
   </tr>
 </table>
 
@@ -121,7 +121,7 @@ Course evaluation will consist of approximately weekly assignments, and a resear
 
 ## Software and Computing
 
-This course will use [R](https://www.r-project.org/), which is a free and open-source programming language primarily used for statistics and data analysis. We will also use [RStudio](https://www.rstudio.com/), which is an easy-to-use interface to R. Instructions to install them are [here](resources/install).
+This course will use [R](https://www.r-project.org/), which is a free and open-source programming language primarily used for statistics and data analysis. We will also use [RStudio](https://www.rstudio.com/), which is an easy-to-use interface to R. Instructions to install them are [here](/resources/install/).
 
 Students should have a laptop that they can bring to both class and lab as we will integrate computing with learning data analysis and statistics throughout the course.
 
@@ -147,16 +147,16 @@ We will be discussing some additional data or research opportunities.
 
 Beyond what the teaching team can providing, there are several resources on campus that you can go for assistance with data, computing, and statistical problems:
 
--  (Center for Social Science Computing and Research) [CSSCR](http://csscr.washington.edu/consulting.html)and the  has a drop-in statistical consulting center in Savery 119. They provide consulting on statistical software, e.g. R. Go there for R or data questions.
-- [CSSS Statistical Consulting](https://www.csss.washington.edu/Consulting/) provides general statistical consulting. Go there for questions about statistical methods.
+-  (Center for Social Science Computing and Research) [CSSCR](http://julius.csscr.washington.edu/about/consulting.html)and the  has a drop-in statistical consulting center in Savery 119. They provide consulting on statistical software, e.g. R. Go there for R or data questions.
+- [CSSS Statistical Consulting](https://www.csss.washington.edu/consulting) provides general statistical consulting. Go there for questions about statistical methods.
 - [eScience Data Science Office Hours](http://escience.washington.edu/office-hours/)
 - UW Library: [Data](http://guides.lib.uw.edu/friendly.php?s=research/data), [Political Science](http://guides.lib.uw.edu/friendly.php?s=research/polisci)
 
 # License
 
-<a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a>
+<a rel="license" href="httpso://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://licensebuttons.net/l/by/4.0/88x31.png" /></a>
 
-Science should be open, and this has benefitted from others releasing their materials under an open license, so unless otherwise noted, all materials for this class are licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
+Science should be open, and this has benefitted from others releasing their materials under an open license, so unless otherwise noted, all materials for this class are licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
 
 
 # Bugs

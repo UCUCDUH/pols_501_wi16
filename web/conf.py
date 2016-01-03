@@ -27,7 +27,7 @@ SITE_URL = "https://UW-POLS501.github.io/pols_501_wi16/"
 # BASE_URL = "https://UW-POLS501.github.io/pols_501_wi16/
 BLOG_EMAIL = "jrnold@uw.edu"
 BLOG_DESCRIPTION = "Course website for University of Washington, POL S/CS&SS 501: Advanced Research Design & Analysis, Winter 2016"  # (translatable)
-SOURCE_URL = "http://github.com/UW-POLS501/pols_501_wi16/"
+SOURCE_URL = "https://github.com/UW-POLS501/pols_501_wi16/"
 
 # Nikola is multilingual!
 #
@@ -127,7 +127,6 @@ NAVIGATION_LINKS = {
         #("/", "Syllabus"),
         ("/schedule", "Schedule"),        
         ("/resources", "Resources"),
-        ("https://canvas.uw.edu/courses/1021420", "Canvas"),
     ),
 }
 
@@ -649,14 +648,14 @@ LICENSE = ""
 # I recommend using the Creative Commons' wizard:
 # http://creativecommons.org/choose/
 LICENSE = """
-<a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/80x15.png" /></a><br />"""
+<a rel="license" href="https://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://licensebuttons.net/l/by/4.0/80x15.png" /></a><br />"""
 
 # A small copyright notice for the page footer (in HTML).
 # (translatable)
 CONTENT_FOOTER = """
 Contents &copy; {date}  <a href="mailto:{email}">{author}</a>  {license}
 <br>
-Powered by <a href="http://getnikola.com" rel="nofollow">Nikola</a>;
+Powered by <a href="https://getnikola.com" rel="nofollow">Nikola</a>;
 Source on <a href="{source_url}">github</a>
 """
 

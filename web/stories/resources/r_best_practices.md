@@ -28,7 +28,7 @@ Yes, I've seen bugs due to this in real life.
 
 ## Best Practices {#best-practices}
 
-These are some best practices for writing R code suggested by [Software Carpentry](https://github.com/swcarpentry/r-novice-inflammation). Many of these are applicable, although some are more specific to putting your analyses in R scripts rather than when writing your analyses in R Markdown documents.
+These are some best practices for writing R code suggested by [Software Carpentry](http://swcarpentry.github.io/r-novice-inflammation/06-best-practices-R.html). Many of these are applicable, although some are more specific to putting your analyses in R scripts rather than when writing your analyses in R Markdown documents.
 
 1. Start your code with a description of what it is:
 
@@ -115,4 +115,4 @@ source("foo.R")
 
 * * *
 
-Copywrite  © [Software Carpentry](http://software-carpentry.org/), [link to the license][cc-by-human]. Page derived from "[Best practices for using R and designing programs](https://raw.githubusercontent.com/swcarpentry/r-novice-inflammation/gh-pages/06-best-practices-R.Rmd"), with only minor edits.
+Copywrite  © [Software Carpentry](http://software-carpentry.org/), [link to the license][cc-by-human]. Page derived from "[Best practices for using R and designing programs](http://swcarpentry.github.io/r-novice-inflammation/06-best-practices-R.html), with only minor edits.

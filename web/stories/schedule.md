@@ -15,7 +15,7 @@ The following schedule is a *tentative* guideline and will be evolving to meet c
 ### January 7 (Class)
 
 - Complete the class survey and statistical knowledge pre-test
-- Download R and RStudio. Instructions are [here](resources/install).
+- Download R and RStudio. Instructions are [here](/resources/install/).
 - Complete Data Camp [Introduction to R](https://www.datacamp.com/courses/free-introduction-to-r) Chapters 1 (Intro to Basics), 2 (Vectors), 4 (Factors), and 5 (Data Frames).
 - Optional: Complete [TryR](http://tryr.codeschool.com/) if you want more practice with R.
 - Readings
