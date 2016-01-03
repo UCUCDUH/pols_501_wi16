@@ -14,9 +14,9 @@ before_script:
 
 script:
 - cd web
-- mdspell --en-us -a -n -r stories/*.md
+- node_modules/markdown-spellcheck/bin/mdspell --en-us -a -n -r stories/*.md
 - nikola build
-- nikola check -l -f -r 2>&1 | grep "\(WARNING\|ERROR\):"
+- nikola check -l -r
 - nikola github_deploy 2>&1 | sed -e "s/${GH_TOKEN}/XXXX/g"
 
 branches:
