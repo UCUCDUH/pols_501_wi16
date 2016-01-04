@@ -35,3 +35,5 @@ Tukey: We need both confirmatory and exploratory http://www.tandfonline.com/doi/
 Principals and Procedures of EDA http://cll.stanford.edu/~willb/course/behrens97pm.pdf
 
 Wichkam Graphical Inference http://jonathanstray.com/papers/wickham.pdf
+
+http://andrewgelman.com/2014/03/25/statistical-graphics-course-statistical-graphics-advice/

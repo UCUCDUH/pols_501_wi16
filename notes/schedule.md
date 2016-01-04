@@ -53,6 +53,9 @@ Probability:
 
 Final exams Mar 14-15. 
 
+- Project paragraph on week 2
+- Dataset on week 5
+- Draft on week 8
 - Posters on 3/13 during Lab.
 - Final Paper 3/18 (finals period)
 
@@ -73,6 +76,16 @@ Tentative Course Outline: (subject to change)
 - Week 10: Final Presentations in class (PowerPoint)
 
 Finals Week: Mon or Tues: Poster Presentations (Gowen 1A)
+
+Paper included
+
+- Outline
+- Extended outline
+- Dataset by Week 5
+- Final presentation
+- Poster session
+- Paper
+
 
 Grading
 

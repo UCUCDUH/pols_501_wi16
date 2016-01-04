@@ -7,7 +7,7 @@
 University of Washington, Winter 2016
 </p>
 
-<button type="button" class="btn btn-danger">WARNING</button> This syllabus is a draft and will be updated before (and during) the quarter
+<button type="button" class="btn btn-danger">Work in Progress</button>
 
 
 # Instructors
@@ -24,7 +24,8 @@ University of Washington, Winter 2016
   <td>
     <strong></strong>
   </td>
-    <td>< href="https://www.polisci.washington.edu/people/andreu-casas-salleras">Andreu Casas</a>
+  <td>
+    <a href="https://www.polisci.washington.edu/people/andreu-casas-salleras">Andreu Casas Salleras</a>
   </td>
   <td>
     <a href="mailto:acasas@uw.edu">acasas@uw.edu</a>
