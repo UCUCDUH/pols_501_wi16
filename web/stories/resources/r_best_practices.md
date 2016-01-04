@@ -37,7 +37,7 @@ These are some best practices for writing R code suggested by [Software Carpentr
 #Code developed by Sarah Supp, Tracy Teal, and Jon Borelli
 ```
 
-2. The first code should all of your import statments (`library`)
+2. The first code should all of your import statements (`library`)
 
 ```r
 library("ggplot2")
@@ -115,4 +115,4 @@ source("foo.R")
 
 * * *
 
-Copywrite  © [Software Carpentry](http://software-carpentry.org/), [link to the license][cc-by-human]. Page derived from "[Best practices for using R and designing programs](http://swcarpentry.github.io/r-novice-inflammation/06-best-practices-R.html), with only minor edits.
+Copyright  © [Software Carpentry](http://software-carpentry.org/), [link to the license][cc-by-human]. Page derived from "[Best practices for using R and designing programs](http://swcarpentry.github.io/r-novice-inflammation/06-best-practices-R.html), with only minor edits.

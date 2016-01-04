@@ -21,7 +21,7 @@ Getting your data into R is
 - Increasingly data is available on the web through [APIs](https://en.wikipedia.org/wiki/Application_programming_interface). See the CRAN task view [Web Technologies](https://cran.r-project.org/web/views/WebTechnologies.html) for a list of packages that provide interfaces to web data. For example,
 
     - [WDI](https://cran.r-project.org/web/packages/WDI/index.html) World Bank's World Development Indicators.
-	- The [rOpenGov](http://ropengov.github.io/) project maintains many government data related R packages.
+	- The [ROpenGov](http://ropengov.github.io/) project maintains many government data related R packages.
 
 - R has functions and packages to handle many more types of data and documents (json, HTML, XML, databases, ...) but you will probably not encounter them in this course. If you do, try finding it up yourself, and if you cannot, ask one of us and we'll point you to the right means to load it.
 

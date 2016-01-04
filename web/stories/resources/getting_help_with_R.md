@@ -10,12 +10,21 @@
 - [Rdocumentation.org](http://www.rdocumentation.org) searches the documentation of all R packages on CRAN and more
 
 - Google has gotten better with R searches, but `R` (like other one-letter language names) is a particularly unfriendly search term.
-  Use [rseek.org](http://rseek.org) intead; it is a specialized search restricted to sites already known to be related to R the statistical programming language
+  Use [rseek.org](http://rseek.org) instead. It is a specialized search restricted to sites already known to be related to R the statistical programming language
 
 - [The Cookbook for R](http://www.cookbook-r.com) and [Quick-R](http://www.statmethods.net/) are organized by task and thus may be easier to find what you are looking for.
 
-- Do you want to know what packages exist for a given topic? [CRAN Task Views](https://cran.r-project.org/web/views/) provide subject matter groupings of R packages.
-  E.g. [Environmetrics](https://cran.r-project.org/web/views/Environmetrics.html) and [Social Sciences](https://cran.r-project.org/web/views/SocialSciences.html)
+- Do you want to know what packages exist for a given topic? [CRAN Task Views](https://cran.r-project.org/web/views/) provide subject matter groupings of R packages. Some potentially useful task-views to social scientists are
+
+	- [Econometrics](https://cran.r-project.org/web/views/Econometrics.html)
+	- [Natural Language Processing](https://cran.r-project.org/web/views/NaturalLanguageProcessing.html)
+	- [Official Statistics & Survey Methodology](https://cran.r-project.org/web/views/OfficialStatistics.html)
+	- [Reproducible Research](https://cran.r-project.org/web/views/ReproducibleResearch.html)
+	- [Spatial](https://cran.r-project.org/web/views/Spatial.html)
+	- [Survival Analysis](https://cran.r-project.org/web/views/Survival.html)
+	- [Time Series](https://cran.r-project.org/web/views/TimeSeries.html)
+	- [Web Technologies and Services](https://cran.r-project.org/web/views/WebTechnologies.html)
+    - [Social Sciences](https://cran.r-project.org/web/views/SocialSciences.html)
 
 - Want to find out what datasets are included in the R packages that you have installed? `data()`
 
@@ -23,7 +32,7 @@
 
 - If you have a question about "statistics" rather than "R", then [Cross Validated](https://stats.stackexchange.com/) is a Q-and-A site like Stack Overflow, but for statistics and machine learning.
 
-- How to write a minimal repdroducible example <https://stackoverflow.com/questions/5963269/how-to-make-a-great-r-reproducible-example>
+- How to write a minimal reproducible example <https://stackoverflow.com/questions/5963269/how-to-make-a-great-r-reproducible-example>
 
 - If you are going to ask for help, it is important to know how to ask for help
 

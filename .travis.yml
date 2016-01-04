@@ -15,11 +15,9 @@ before_script:
 - PATH="node_modules/.bin:$PATH"
 
 script:
-- mdspell --en-us -a -n -r web/stories/*.md
-- cd web
-- nikola build
-- nikola check -l -r
-- nikola github_deploy 2>&1 | sed -e "s/${GH_TOKEN}/XXXX/g"
+- ./spell-check.sh
+- ./check-links.sh
+- ./travis-deploy.sh
 
 branches:
 - master

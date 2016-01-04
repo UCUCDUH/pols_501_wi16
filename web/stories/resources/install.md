@@ -13,5 +13,5 @@ Install R from [CRAN](https://cran.rstudio.com/). CRAN stands for the the Compre
 
 # Installing RStudio
 
-Rstudio is an a user-friendly interface to the R programmming language.
-Download Rstudio Desktop from [rstudio.com] <https://www.rstudio.com/products/rstudio/download/>. You want to install *Rstudio Desktop*, not Rstudio Server, which is something different.
+RStudio is an a user-friendly interface to the R programming language.
+Download RStudio Desktop from [rstudio.com] <https://www.rstudio.com/products/rstudio/download/>. You want to install *RStudio Desktop*, not RStudio Server, which is something different.
