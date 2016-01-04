@@ -61,7 +61,7 @@ University of Washington, Winter 2016
     <td>Andreu</td>
     <td>Monday</td>
     <td>12:30&ndash;2:30 pm</td>
-	<td><a href="https://www.washington.edu/maps/?smi"> SMI 221B </td>
+	<td><a href="https://www.washington.edu/maps/?smi"> SMI 221 </td>
   </tr>
   <tr>
     <td>Jeff</td>
