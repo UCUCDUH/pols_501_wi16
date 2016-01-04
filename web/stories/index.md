@@ -71,8 +71,8 @@ University of Washington, Winter 2016
   </tr>
   <tr>
     <td>Jeff</td>
-    <td>Friday</td>
-    <td>3:30&ndash;4:30 pm</td>
+    <td>Wednesday</td>
+    <td>9:00&ndash;10:00 am</td>
 	<td><a href="https://www.washington.edu/maps/?smi">SMI 221B</a></td>
   </tr>
 </table>
