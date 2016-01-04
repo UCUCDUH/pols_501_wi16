@@ -54,7 +54,7 @@ Key:
 Observable Data, Descriptive Statistics and Exploratory Data Analysis
 
 <ul class="fa-ul">
-<li><i class="fa-li fa fa-puzzle-piece"></i></td><td>Paragraph describing your paggper</td>
+<li><i class="fa-li fa fa-puzzle-piece"></i></td><td>Paragraph describing your paper</td>
 <li> <i class="fa-li fa fa-book"></i> <emph>OpenIntro</emph>, Ch 1. <emph>SMISS</emph> Ch 2 </li>
 </ul>
 
