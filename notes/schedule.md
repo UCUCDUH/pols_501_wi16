@@ -1,41 +1,3 @@
-## Week 1
-
-### Jan 7
-
-Readings
-
-- SMISS Ch 1. 
-- Art of Data Science, Ch 1-2
-- http://bulletin.imstat.org/2014/09/data-science-how-is-it-different-to-statistics%E2%80%89/
-- R and Rstudio downloaded and installed
-- DataCamp #1 completed
-- R for Everyone preface
-
-### Jan 8
-
-# Statistical Learning Objectives
-
-- Understand sampling distributions
-- Confidence intervals
-- Significance testing
-
-## Week 2
-
-- EDA: Something by Tukey
-- Wickham article on graphics as inference, or Gelman
-- http://www.johnmyleswhite.com/notebook/2013/03/22/modes-medians-and-means-an-unifying-perspective/
-
-
-## Week 3
-
-Probability:
-
-- King Ch 1: Language of inference
-- Moore and Siegel Chapters 9-11
-
-
-## Week 4
-
 # Outlines of Previous Courses
 
 ## Winter 2015 (John Wilkerson)
@@ -57,18 +19,18 @@ Final exams Mar 14-15.
 - Dataset on week 5
 - Draft on week 8
 - Posters on 3/13 during Lab.
-- Final Paper 3/18 (finals period)
+- Final Paper 3/18 (finals period) (Finals ended on 3/20 and grades were due on Mar 24)
 
 
 ## Winter 2014 (Matt Barreto)
 
 Tentative Course Outline: (subject to change)
 
-- Week 1:	Welcome and Introductions
-- Week 2:	W&W Chapters 1, 2:  Descriptive Statistics and Probability
+- Week 1: Welcome and Introductions
+- Week 2: W&W Chapters 1, 2:  Descriptive Statistics and Probability
 - Week 3: W&W Chapters 3, 5:  Distributions of Variables (MLK Day - To be rescheduled)
 - Week 4: W&W Chapter 6, 8:  Samples and Point Estimates
-- Week 5:	W&W Chapter 9 & 17:  Hypothesis Testing, Chi-Squred MUST HAVE YOUR DATASET PICKED OUT TO SHARE IN LAB
+- Week 5: W&W Chapter 9 & 17:  Hypothesis Testing, Chi-Squred MUST HAVE YOUR DATASET PICKED OUT TO SHARE IN LAB
 - Week 6: W&W Chapters 15, then 11, 12:  Correlation and Intro to Regression
 - Week 7: W&W Chapters 13, 14:  Regression Part II (Presidents Day - To be = rescheduled)
 - Week 8: Data management tips and tricks in Stata

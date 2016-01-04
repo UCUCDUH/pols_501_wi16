@@ -135,15 +135,25 @@ Students should do the readings *before* the class. Some class time will be spen
 
 Lab sections will cover how to implement the analysis in R, conceptual review and continued elaboration of the week's material, and time for students to discuss and get feedback on their projects.
 
+# 
+
+<!--
+#
+
+1. Conceptual questions
+2. Programming Assignments
+3. Final-paper related assignments
+
+-->
 
 # Research Project
 
 Every student in this class will execute their own statistical analysis of a research question, from data collection, to analysis, to presentation.
 If you developed a research design for POLS 500, you may be able to use it in 501.
 However you need to confirm that you will be able to assemble a dataset to test a specific research hypothesis within the time constraints of this course, because you will be using it throughout the course.
-If that seems unlikely, you will need to choose a different project.
-We will be discussing some additional data or research opportunities.
+If that seems unlikely, you will need to choose a different project. 
 
+See the [schedule](/schedule/#finals-period) for the final paper due date.
 
 # Resources
 

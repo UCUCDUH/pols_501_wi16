@@ -129,5 +129,5 @@ TBD
 
 ## Finals Period
 
-
+The final paper is due on **March 16 17:00 PDT**
 
