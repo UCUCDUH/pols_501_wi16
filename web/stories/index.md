@@ -25,7 +25,7 @@ University of Washington, Winter 2016
     <strong></strong>
   </td>
   <td>
-    <a href="https://www.polisci.washington.edu/people/andreu-casas-salleras">Andreu Casas Salleras</a>
+    <a href="https://www.polisci.washington.edu/people/andreu-casas-salleras">Andreu Casas</a>
   </td>
   <td>
     <a href="mailto:acasas@uw.edu">acasas@uw.edu</a>
@@ -61,7 +61,7 @@ University of Washington, Winter 2016
     <td>Andreu</td>
     <td>Monday</td>
     <td>12:30&ndash;2:30 pm</td>
-	<td></td>
+	<td><a href="https://www.washington.edu/maps/?smi"> SMI 221B </td>
   </tr>
   <tr>
     <td>Jeff</td>
