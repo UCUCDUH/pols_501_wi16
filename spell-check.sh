@@ -2,19 +2,16 @@
 #PATH=./node_modules/.bin:$PATH
 #find web/stories -name "*.md" -exec mdspell --en-us -a -n -r {} \;
 
-find . web/output -name "*.html" |
-    while read file
-    do
-        filename="$file"
-        echo "$file"
-        misspellings=$(hunspell -d en_US,en_pols501 -H -l "$file")
-        if [ -z "$mispellings" ]
+rc=0
+find web/output -name "*.html" |
+    while read filename; do
+        misspellings=$(hunspell -d en_US,en_pols501 --check-apostrophe -H -l "$filename" 2>&1)
+        if [ ! -z "$misspellings" ]
         then
-            exit 0
-        else
-            echo $misspellings
-            exit 0
+            echo "ERROR: mispelled words in $filename"
+            echo $misspellings | sort | uniq
+            rc=$(($rc + 1))
         fi
     done
-
+exit 0
 
