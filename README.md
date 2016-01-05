@@ -6,15 +6,21 @@ Repository containing materials and the website for POLS 501: Advanced Political
 
 Course website is at https://UW-POLS501.github.io/pols_501_wi16/
 
+
+## Organization
+
+- `web/` : Materials for the website
+- `data/` : Any datasets used in the course
+- `docs/` : `.Rmd` docs used in labs
+
+## Build
+
 The website is built with 
 
 - [Nikola](https://getnikola.com/) a static site generator
 - [travis](https://travis-ci.org) (to automatically build and deploy to github pages)
 
 
-## Build
-
-### Dependencies
 
 The python dependencies are handled with [conda](http://conda.pydata.org/docs/using/envs.html#export-the-environment-file).
 
