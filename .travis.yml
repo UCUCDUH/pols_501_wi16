@@ -15,9 +15,17 @@ before_script:
 - PATH="node_modules/.bin:$PATH"
 
 script:
-- ./spell-check.sh
 - ./check-links.sh
+- ./spell-check.sh
 - ./travis-deploy.sh
+
+notifications:
+  email:
+    recipients:
+      - jrnold@uw.edu
+      - acasas2@uw.edu
+    on_success: change
+    on_failure: always
 
 branches:
 - master
