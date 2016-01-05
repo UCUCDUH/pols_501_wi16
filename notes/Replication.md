@@ -73,3 +73,47 @@ Notes on http://www.press.uchicago.edu/journals/jop/style.html?journal=jop
 # Political Analysis
 
 
+# Journal Submission 
+
+## APSR
+
+http://www.apsanet.org/apsrsubmissions
+
+- 12,000 words, including all figures, tables
+- 12 point
+- Double space, including footnotes
+- Footnotes not used for citations, endnotes used for citations
+- Tables and figures indicated by approximate locations
+
+## JOP
+
+
+- 35 pages, disregarding title page and abstract; including all text, footnotes/ennotes, references, and tables/figures
+- 12 pt double-space for all text and appendix 
+- 1 inch margins
+- Footnote/endnotes and citations in same font size as body of manuscript
+- Tables/figures may be single spaced
+- Separate references section at end of manuscript ordered alphabetically
+- Abstract of 150 words or less: research question addressed, analytical approach, and major findings of the manuscript
+
+## AJPS
+
+- title page with an abstract of 150 words or less, followed by wordcournt
+- abstract: research stream of contribution, research topic it addresses, research strategy employed, results, implications
+- tables and figures into the body of text
+- All Text, footnotes, and bibliographic references should be double spaced and printed in a standard 12 point type font. Tables and 
+  figures may be single spaced. Page margins should be a minimum of 1 inch.
+
+# Political Analysis
+
+- Articles
+    - 25-30 pages, double spaces 12 point font (including notes and references)
+    - 3-6 tables and figures
+- Letters
+    - 2-4 pages, 1500-3000 words
+	- 1-3 small display items conveying the main results
+
+- sections numbered (Introduction is section 1), pages numbered
+- In general only 1 level of numbering should be used, though in some cases subsection numbering to clarify an argument
+- Very detailed description of how to format tables and figures
+- Neal Beck, Jeff Gill, Gary King, and Jonathan Nagle: "Instructions to Authors on Reporting Quantitative Analysis" http://polmeth.wustl.edu/files/polmeth/imce/reporting.pdf

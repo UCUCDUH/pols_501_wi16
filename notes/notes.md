@@ -41,34 +41,3 @@ What do people use for their sites
     * http://www.princeton.edu/~mjs3/soc504_s2015/
 	* straight html + bootstrap
 
-
-# Reading Data into R
-
-What to cover?
-
-1. Difference between text and binary data formats
-2. Data in R: look at some of Hadleys data only examples
-3. Data in R native format (RData, rda)
-4. Common tabular data formats
-
-   - csv, tsv
-   - xls
-   - Stata (dta)
-   - SPSS
-
-4. Example of data export on Dataverse in multiple formats
-4. Data on the web: JSON, XML - Not tabular.
-5. How to save and share data: use open/shareable formats?
-
-Conceptual 
-
-1. Identify or know how to identify if a 
-2. Understand how and why to share data in open formats
-3. Find out how to read data into SPSS.
-
-Packages: foreign, haven, readr, readxl, and rio
-
-# Understanding what is in the data
-
-1. Rstudio
-1. nrow / ncol
