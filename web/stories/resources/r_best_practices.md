@@ -6,7 +6,7 @@
 
 It is important to follow a consistent and clear style when writing R.
 
-Follow the Hadley Wickham's *Advanced R* [Style guide](http://adv-r.had.co.nz/Style.html).
+Follow the Hadley Wickham&rsquo;s *Advanced R* [Style guide](http://adv-r.had.co.nz/Style.html).
 
 Writing code in a  consistent (and good) style will make is easier for others and you to read your code.
 It will also result fewer bugs.

@@ -25,7 +25,7 @@ See also the Washington Library [Data Research Guide](http://guides.lib.uw.edu/c
 - [Database of Political Institutions](http://econ.worldbank.org/WBSITE/EXTERNAL/EXTDEC/EXTRESEARCH/0,,contentMDK:20649465~pagePK:64214825~piPK:64214943~theSitePK:469382,00.html)
 - [Penn World Table](http://cid.econ.ucdavis.edu/pwt.html)
 - [NOMINATE Ideal Points of U.S. Congress](http://voteview.com/)
-- [Paul Hensel's List of International Relations Data](http://www.paulhensel.org/data.html)
+- [Paul Hensel&rsquo;s List of International Relations Data](http://www.paulhensel.org/data.html)
 - [Issue Correlates of War (ICOW)](http://www.paulhensel.org/icow.html)
 - [ROpenGov](https://ropengov.github.io/) has R packages to access various government related data. For packages to access data on the web from within R see the [Web Technologies and Services](https://cran.r-project.org/web/views/WebTechnologies.html) CRAN Task View.
 - [Awesome Public Datasets](https://github.com/caesar0301/awesome-public-datasets) by [caesar0301](https://github.com/caesar0301)
