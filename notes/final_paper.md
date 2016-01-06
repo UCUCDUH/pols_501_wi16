@@ -31,6 +31,12 @@ Failure comply with the sylistic and formatting requirements will result in a re
 - The paper should be self contained
 - As it is impossible for me to blind review these papers, the manuscripts should not be anonymized. 
 
+
+- [Chicago Manual of Style](http://www.chicagomanualofstyle.org/search.epl) (15th or 16th edition)
+- American Political Science Association's Style Manual for Political Science (revised 2006) [[url](http://www.apsanet.org/Portals/54/APSA%20Files/publications/APSAStyleManual2006.pdf)]
+- Political Analysis guidlines for Tables, Figures, and Numbers and Variables [[url](http://www.oxfordjournals.org/our_journals/polana/for_authors/general.html)].
+
+
 - The use of astrisks or symbols to represent statistical significance is discouraged. Tables should include standard errors rather than $z$-scores, $t$-scores, or $p$-values.
 - Authors reporting that results are "statistically significant" should use the 0.05 level or lower. Results at the 0.10 should not be referred to as "statistically significant". However, the strength of evidence necessary to justify findings cannot be captured by any single criterion, such as the conventional .05 level of statistical significance. I will evaluate the "strength of findings on a range of criteria beyond statistical significance, including substantive significance, theoretical aptness, the importance of the problem under study, and the feasibility of obtaining additional evidence." (APSR)
 - Short variable name acronymns should not be used. 
@@ -40,10 +46,16 @@ Failure comply with the sylistic and formatting requirements will result in a re
 - If possible, tables and figures should not be longer than one page, though there may be exceptions, such as multipaneled figures.
 
 
-
 These guidelines are derived from those used for submissions by the [American Political Science Review](http://www.apsanet.org/apsrsubmissions), [American Journal of Political Science](http://ajps.org/guidelines-for-manuscripts/), [Journal of Politics](http://www.journals.uchicago.edu/journals/jop/instruct), and [Political Analysis](http://www.oxfordjournals.org/our_journals/polana/for_authors/general.html)
 
-- Chicago Manual of Style (15th or 16th edition)
-- American Political Science Association's Style Manual for Political Science (revised 2006)
-- Political Analysis guidlines for Tables, Figures, and Numbers and Variables.
-- Beck, King, et. al Guide.
+
+# Assignments
+
+- Assignments before each class
+- Data camp assignments
+- Programming assignments
+- Project assignments
+- Peer review assignments
+
+
+
