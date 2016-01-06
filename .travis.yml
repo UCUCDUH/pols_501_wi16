@@ -7,7 +7,7 @@ install:
 - git config user.email "jeffrey.arnold@gmail.com"
 - git config push.default tracking
 - git remote rm origin
-- git remote add origin https://${GH_TOKEN}@github.com/UW-POLS501/pols_501_wi16.git
+- git remote add origin 
 - git fetch origin
 
 before_script:
@@ -31,4 +31,5 @@ branches:
 - master
 env:
   global:
+    GH_REF: UW-POLS501/pols_501_wi16.git
     secure: f09qdoxwi/ZAHdUwIi/ib2UZLUmxY+zZUDyZUj+iBBnxRGqwnLUF9bzzLKd3hLkpRwM4tEnSo+QN80oaRGOgTLn5zZwdj+AQ2E/kOxEDHWNY0VX99SmJ3lX6Xstgyr4uKeHt7oFUma9x39PLpG3rOFWyj7LpLDVdZC5z9ElPOyv5HFSiHf2He2HVCP4E/fxkyNDGbyC684QQtIRlu3GcMfb+sq+ZhH+1hWxWsLidwC+eNGfBK+bIY+50Nol0my1VvEc/+9nu1Hgurmz2OJ1bxA/Icq8yJwXIcxrt2mk4LN8vQ/RDi9K2gGUIPTv5qEZtOFg9yBmcW2kFMden8yWXOGgv68QxkhxT4Ix0HIO1wr1jFDT9H0SJPBIntJcGxEh63C9JnfFx9H9du6nJvE/dAShlt03dy90TywpEe79M5YvqfAu9gnt2hSKUFQ4rfSpMuamkZpViElhMecDLut+Wtx2fA6765oVOCnQquX2BHe59P1FewYhN3nmhdPmslysUpwzy5o9qnlvzV56d97wOpch2Kzll8rkA66TVtqoVig53rBcwiNdvn0/SFB0IQSVE0FEK5MleTGcuLqfIK7BA+82nDE02z2iThGo6Wllg6Q5b6XMxksoqjIgQsO1PxnQCELMcPF5YSgR7uJnGMfx0c+nPhj2mz8j4Zj0WRwLdZBU=
