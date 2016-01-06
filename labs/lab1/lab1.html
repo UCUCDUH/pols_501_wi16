@@ -191,11 +191,41 @@ hljs.initHighlightingOnLoad();
 <li>Reading data in R&#39;s native format</li>
 <li>Read and write CSVs</li>
 <li>Read and write other type of data formats: STATA, SPSS, XLS&hellip;</li>
-<li>Getting data from an external source</li>
-<li>Searching and using replication data</li>
+<li>Replication, Dataverse, and getting data from an external source</li>
 </ol>
 
 <hr/>
+
+<h3>0. R Projects and R Markdown</h3>
+
+<p>Keeping all the files associated with a project organized together – input data, R scripts, analytical results, figures – is such a wise and common practice that RStudio has built-in support for this via its projects.  Read <a href="https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects">this</a> for more information about RStudio projects.</p>
+
+<p>You will use RStudio projects for your labs and homework. Create a RStudio project that you will use for all your labs.</p>
+
+<ol>
+<li><em>File -&gt; New Project</em></li>
+<li>Select &ldquo;New Directory&rdquo;</li>
+<li>Select &ldquo;Empty Project&rdquo;</li>
+<li>Select a name for your project as Directory Name.
+&ldquo;POLS_501_Labs&rdquo; is as good as any, and better than most.
+Then choose where to put this directory with &ldquo;Create project as sub-directory of&rdquo;.
+Don&#39;t worry about the other options.</li>
+<li>Create a new directory within &ldquo;POLS_501_Labs&rdquo; called &ldquo;lab1&rdquo;</li>
+<li>Create a new directory within &ldquo;lab1&rdquo; called &ldquo;data&rdquo;</li>
+<li>Open this new project and open a new R script where you will be writing (and copy-pasting) and running code.</li>
+</ol>
+
+<p>For this course, you will also be we using R Markdown documents for labs and homeworks.
+Create your first R Markdown document for this lab.</p>
+
+<ol>
+<li><em>File -&gt; New File -&gt; R Markdown</em></li>
+<li>This will open a template for your Markdown file.</li>
+<li>Save this file with <code>Ctrl-S</code> and name it e.g. &#39;lab1&#39;</li>
+<li>Click on the &ldquo;Knit HTML&rdquo; button. This will create a HTML document from this document.</li>
+</ol>
+
+<p>Cheatsheets and additional resources about R Markdown are available at <a href="http://rmarkdown.rstudio.com/">http://rmarkdown.rstudio.com/</a>.</p>
 
 <h3>1. Reading data in R&#39;s native format</h3>
 
@@ -224,6 +254,7 @@ library(gapminder)
 <li><code>str</code> shows the internal structure of an R object</li>
 <li><code>names</code> shows the column names of the data frame.</li>
 <li><code>head</code> shows the first few observations</li>
+<li><code>tail</code> shows the last few observations</li>
 <li><code>summary</code> calculates summary statistics for all variables in the data frame.</li>
 </ul>
 
@@ -237,13 +268,110 @@ summary(gapminder)
 
 <p>We can save any R object in our environment using R&#39;s native format: <code>.Rdata</code> &amp; <code>.Rda</code>. In this case we use the <code>save(&lt;name-of-the-object&gt;)</code> function</p>
 
-<pre><code class="r">save(gapminder, file=&#39;gapminder.Rdata&#39;)
+<pre><code class="r">save(gapminder, file=&#39;data/gapminder.Rdata&#39;)
 </code></pre>
 
 <p>We can later load these R data files using the <code>load(&lt;name-of-the-file&gt;)</code> function. Let&#39;s delete the <code>gapminder</code> dataset that we curently have in the R environment and load it again using the <code>save()</code> function</p>
 
 <pre><code class="r">rm(gapminder)
-load(&#39;gapminder.Rdata&#39;)
+load(&#39;data/gapminder.Rdata&#39;)
+dim(gapminder)
+</code></pre>
+
+<hr/>
+
+<h3>2. Read and write CSVs</h3>
+
+<p>One of the most common data formats is the CSV (Comma Separated Values). CSV datasets are easy to share and read using multiple statistical softwares. </p>
+
+<p>Download the dataset <strong>wdi_sample.csv</strong> from the following <a href="https://github.com/UW-POLS501/pols_501_wi16/blob/master/labs/lab1/data/wdi_subset.csv">link</a> and save it in <code>lab1/data</code>. To read in the CSV file, use the <code>read.csv()</code> function, which has the main following parameters:</p>
+
+<ul>
+<li><code>file</code> name of the file (e.g. &#39;data/wdi_sample.csv&#39;)</li>
+<li><code>header</code> (TRUE/FALSE) whether the first row contains variable names (TRUE default value)</li>
+<li><code>sep</code> character that separates variables (&#39;,&#39; default value)</li>
+</ul>
+
+<pre><code class="r">wdi &lt;- read.csv(file=&#39;data/wdi_sample.csv&#39;)
+</code></pre>
+
+<p>Briefly explore the dataset</p>
+
+<pre><code class="r">dim(wdi)
+head(wdi)
+names(wdi)
+unique(wdi$Country.Name)
+unique(wdi$Indicator.Name)
+wdi[50,]
+</code></pre>
+
+<p>Add an extra variable to the dataset</p>
+
+<pre><code class="r">wdi$test_var &lt;- 1
+</code></pre>
+
+<p>Save the new version of the dataset in CSV format</p>
+
+<pre><code class="r">write.csv(wdi, file=&#39;data/wdi_sample2.csv&#39;)
+</code></pre>
+
+<hr/>
+
+<h3>3. Read and write other type of data formats: STATA, SPSS, XLS, XLSX&hellip;</h3>
+
+<p>Not all datasets we want to use are in CSV format. They are often in other formats such as <code>.txt</code>, <code>.sav</code> (SPSS&#39;s native format), <code>.dta</code> (STATA), <code>.xls</code> or <code>.xlsx</code> (Excel formats), etc. There are some R packages that make it easy to read those data formats into R. One of them is the <code>rio</code> package. Download the following datasets, install the <code>rio</code> package, and load them into R using <code>rio</code></p>
+
+<ul>
+<li><p><a href="https://github.com/UW-POLS501/pols_501_wi16/blob/master/labs/lab1/data/phd.txt">phd.txt</a> Time to PhD dataset from Espenshade and Rodriguez (1997) SSQ, avialable <a href="http://data.princeton.edu/wws509/datasets/#phd">here</a>.</p></li>
+<li><p><a href="https://github.com/UW-POLS501/pols_501_wi16/blob/master/labs/lab1/data/edu_expend_1975.sav">edu_expend_1975.sav</a> Education Expenditure 1960, from Chatterjee, Hadi and Price (1977), available <a href="http://www.ats.ucla.edu/stat/spss/examples/chp/chpspss_dl.htm">here</a></p></li>
+<li><p><a href="https://github.com/UW-POLS501/pols_501_wi16/blob/master/labs/lab1/data/salary.dta">salary.dta</a> Discrimination in Salaries, from Weisber (1985), available <a href="http://data.princeton.edu/wws509/datasets/#salary">here</a></p></li>
+<li><p><a href="https://github.com/UW-POLS501/pols_501_wi16/blob/master/labs/lab1/data/divorce.xlsx">divorce.xlsx</a> Marriage Dissolution in the U.S., from Lillard and Panis (2000), available <a href="http://data.princeton.edu/wws509/datasets/#divorce">here</a></p></li>
+</ul>
+
+<pre><code class="r">install.packages(&#39;rio&#39;)
+library(rio)
+phd &lt;- import(&#39;data/phd.txt&#39;)
+edu &lt;- import(&#39;data/edu_expend_1975.sav&#39;)
+salary &lt;- import(&#39;data/salary.dta&#39;)
+divorce &lt;- import(&#39;data/divorce.xlsx&#39;)
+</code></pre>
+
+<p>Explore the datasets that we just loaded using some of the functions that we have already seen. Check if they all have been correctly loaded.</p>
+
+<p>We observe 2 issues when reading in the <code>phd</code> dataset: it has no variable names in the first row, and R believes the datset has only 1 variable. Let&#39;s read the dataset in using the <code>read.table()</code> function of the <code>utils</code> package</p>
+
+<pre><code class="r">phd &lt;- read.table(&#39;data/phd.txt&#39;)
+</code></pre>
+
+<p>The <code>rio</code> package is very useful but not perfect. The following are other functions and packages you may consider when importing datasets into R:</p>
+
+<ul>
+<li><code>read.xls</code> from the <code>gdata</code> package: To import <code>.xls</code> files</li>
+<li><code>foreign</code> package has multiple functions to import numeorus data formats such as <code>.sav</code>, <code>.dta</code>, etc.</li>
+</ul>
+
+<p>For further information you can take a look at this <a href="http://www.r-tutor.com/r-introduction/data-frame/data-import">post</a></p>
+
+<hr/>
+
+<h3>4. Replication, Dataverse, and getting data from an external source</h3>
+
+<p>Replication and transparency are key components of all scientific research. However, in the past social scientists have often not been very transparent. For this reason, there are currently numerous initatives aiming to increase transparency in social science research. See <a href="http://www.dartstatement.org/">www.dartstatement.org</a> for an example. One of the main objectives of this course is to learn how to produce clear guidelines when developing our research so others can easily replicate it in the future. </p>
+
+<p>As part of these replication efforts, authors and journals often share replication datasets and code in their websites or online repositories. One of the most used repositories is <a href="https://dataverse.harvard.edu/"><code>Dataverse</code> </a>. For example, the American Journal of Political Science (AJPS) posts replication files in <a href="https://dataverse.harvard.edu/dataverse/ajps">dataverse</a> for all the articles published in the journal. </p>
+
+<p>For example, AJPS recently posted the replication files of an article by Broockman and Bulter (2015) &#39;The Causal Effects of Elite Position-Taking on Voter Attitudes: Field Experiments with Elite Communication&#39;. In this article the authors perform two experiments to show how opinions stated by public representatives have the potential to change the opinions of their constituents. You can access the replication files <a href="https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/YZQTAH">here</a> and the paper <a href="http://onlinelibrary.wiley.com/doi/10.1111/ajps.12243/abstract">here</a>. </p>
+
+<p>Go to the replication site of the paper and download the replication dataset <code>Study1_data.tab</code>. You can choose the format of the dataset, choose to download it in <code>RData</code> format. Save it in the working the directory you are using for this lab. </p>
+
+<p>Now load it and play with it! </p>
+
+<pre><code class="r">load(&#39;data/Study1_data.Rdata&#39;)
+</code></pre>
+
+<pre><code class="r">names(x)
+table(x$policy_letter_treat)
+table(x$policy_letter_treat,x$movable_total)
 </code></pre>
 
 </body>
