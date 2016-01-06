@@ -1,4 +1,8 @@
 language: python
+addons:
+  apt:
+    packages:
+      - hunspell
 python:
 - '3.5'
 install:
