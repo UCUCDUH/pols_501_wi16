@@ -5,6 +5,6 @@ set -e # exit with nonzero if anything fails
 # destroying all the history.
 cd web/output
 git init
-git add . 
+git add .
 git commit -m "Travis update"
 git push -f -q "https://${GH_TOKEN}@github.com/${GH_REF}/" master:gh-pages 2>&1 | sed -e "s/${GH_TOKEN}/XXXX/g"
