@@ -6,7 +6,7 @@
 
 ### Learning Objectives
 
-1. Reading data in R's native format
+1. Reading data form R packages
 2. Read and write CSVs
 3. Read and write other type of data formats: STATA, SPSS, XLS...
 4. Replication, Dataverse, and getting data from an external source
@@ -15,7 +15,7 @@
 
 ***
 
-### 0. R Projects and R Markdown
+### 0. R Projects
 
 Keeping all the files associated with a project organized together – input data, R scripts, analytical results, figures – is such a wise and common practice that RStudio has built-in support for this via its projects.  Read [this](https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects) for more information about RStudio projects.
 
@@ -32,76 +32,81 @@ You will use RStudio projects for your labs and homework. Create a RStudio proje
 6. Create a new directory within "lab1" called "data"
 7. Open this new project and open a new R script where you will be writing (and copy-pasting) and running code.
 
-For this course, you will also be we using R Markdown documents for labs and homeworks.
-Create your first R Markdown document for this lab.
+In lab I'll do live-coding and we'll use R scripts to take notes and write the code:  
 
-1. *File -> New File -> R Markdown*
-2. This will open a template for your Markdown file.
-4. Save this file with `Ctrl-S` and name it e.g. 'lab1'
-5. Click on the "Knit HTML" button. This will create a HTML document from this document.
+1. Open a new R script
+2. Write a title 
+3. Your name (and email?)
+4. Date
 
-Cheatsheets and additional resources about R Markdown are available at <http://rmarkdown.rstudio.com/>.
+### 1. Reading data from R packages
 
-### 1. Reading data in R's native format  
+Some R packages have datasets that you can load if you have those packages installed and loaded. The `base` package already comes with some datasets. To view the datasets, use the function `data()`. To load a specific dataset, use the same function and add the name of the dataset as a parameter: e.g. `data(UCBAdmissions)`. 
 
-In this section we will see 2 different types of data. First, we will work with datasets that are part of R packages. Second, we will learn how to save and load data in the R's native format (.Rdata & .rda)    
+#### Challenge:
 
-Some R packages have datasets that you can load if you have those packages installed and loaded. For example, let's install the **gapminder** package. You need R version ≥ 3.1.0. If you have an older version, this is a good moment to go the [R Project website] (https://cran.fhcrc.org/) and update it.
+- Load any dataset you like
+- Explore it. Tell me what type of information contains, its dimensions, variables, etc.
+- Use the functions:
 
+  - `dim` shows the dimensions of the data frame as the number of rows, columns
+  - `str` shows the internal structure of an R object
+  - `names` shows the column names of the data frame.
+  - `head` shows the first few observations
+  - `tail` shows the last few observations
+  - `summary` calculates summary statistics for all variables in the data frame.
 
-```r
-install.packages('gapminder')
-library(gapminder)
-```
+When we load new packages that have datasets within them, R adds them to the `data()` list. Actually some packages have no functions, only dataset/s: e.g. `gapminder` and `HistData`. Let's load the `HistData` package and take a look at the datasets it contains using the `data()` function and also the `help` file of the package.
 
-We can take a look at what's in the package by using the help function: `help(<name-of-the-package>)` or `?<name-of-the-package>`
-
-
-```r
-?gapminder
-```
-
-The package documentation indicates that the package comes with a dataset named `gapminder`. To load the dataset in the R environment, we use the following function: `data(<name-of-the-dataset>)`. When loading datasets from packages we don't need to assign them to any object, they will be automatically loaded into the R enviornment and given the original dataset name
 
 
 ```r
-data(gapminder)
+install.packages('HistData')
+library(HistData)
+data()
+?HistData
 ```
 
-We can now explore the **gapminder** dataset using the following functions:
+The `help` files give us a brief description of packages, functions, and its parameters. A very useful characteristic of `help` files is that they come with sample code (scroll-down to the bottom of the `help` file to find it).
 
-- `dim` shows the dimensions of the data frame as the number of rows, columns
-- `str` shows the internal structure of an R object
-- `names` shows the column names of the data frame.
-- `head` shows the first few observations
-- `tail` shows the last few observations
-- `summary` calculates summary statistics for all variables in the data frame.
+To explore a `help` file, click to the `help` file for the `Snow` dataset in `HistData`. 
+
+#### Challenge:
+
+- Do you know about John Snow's 1854 London cholear outbreak study and his visualization of the Pump on Broad Street? Google it and see if you can find the map/visualization.
+
+Now let's try to replicate his map using this R package/dataset. Scroll down to the bottom of the help file and copy and runt the following lines of code:
 
 
 ```r
-dim(gapminder)
-str(gapminder)
-names(gapminder)
-head(gapminder)
-tail(gapminder)
-summary(gapminder)
+data(Snow.deaths); data(Snow.pumps); data(Snow.streets); data(Snow.polygons)
+Sdeaths <- function(col="red", pch=15, cex=0.6) {
+  	# make sure that the plot limits include all the other stuff
+   plot(Snow.deaths[,c("x","y")], col=col, pch=pch, cex=cex, 
+   	xlab="", ylab="", xlim=c(3,20), ylim=c(3,20),
+   	main="Snow's Cholera Map of London")
+	}
+Spumps <- function(col="blue", pch=17, cex=1.5)  {
+   points(Snow.pumps[,c("x","y")], col=col, pch=pch, cex=cex)
+   text(Snow.pumps[,c("x","y")], labels=Snow.pumps$label, pos=1, cex=0.8)
+}
+Sstreets <- function(col="gray") {
+  slist <- split(Snow.streets[,c("x","y")],as.factor(Snow.streets[,"street"]))
+	invisible(lapply(slist, lines, col=col))
+}
 ```
 
-We can save any R object in our environment using R's native format: `.Rdata` & `.Rda`. In this case we use the `save(<name-of-the-object>)` function
+Finally, let's plot the dataset using the functions we just created (copied from the help file).
 
 
 ```r
-save(gapminder, file='data/gapminder.Rdata')
+Sdeaths()
+Spumps()
+Sstreets()
 ```
 
-We can later load these R data files using the `load(<name-of-the-file>)` function. Let's delete the `gapminder` dataset that we curently have in the R environment and load it again using the `save()` function
+![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-4-1.png) 
 
-
-```r
-rm(gapminder)
-load('data/gapminder.Rdata')
-dim(gapminder)
-```
 
 ***
 
@@ -132,7 +137,27 @@ unique(wdi$Indicator.Name)
 wdi[50,]
 ```
 
-Add an extra variable to the dataset
+#### Challenge:
+
+- Tell me the `country` and `wdi indicator` in the first row of the dataset
+- And the `country` and `indicator` in the last row?
+
+
+```r
+head(wdi$Country.Name)
+head(wdi$Indicator.Name)
+tail(wdi$Country.Name)
+tail(wdi$Indicator.Name)
+```
+
+CSV files can easily be manipulated using a Spreadsheet editor such as Excel. Let's open the `wdi_sample.csv` in Excel (or another editor) and:
+
+- Add an extra row
+- Save the file
+- Read in the CSV file in R again (remove first the `wdi` dataset that we previously loaded using the function `rm()`)
+
+Explore the dataset to see if the observation we added is there. Add an extra column/variable to the dataset.
+
 
 
 ```r
@@ -143,7 +168,7 @@ Save the new version of the dataset in CSV format
 
 
 ```r
-write.csv(wdi, file='data/wdi_sample2.csv')
+write.csv(x=wdi, file='data/wdi_sample2.csv')
 ```
 
 ***
@@ -170,7 +195,8 @@ salary <- import('data/salary.dta')
 divorce <- import('data/divorce.xlsx')
 ```
 
-Explore the datasets that we just loaded using some of the functions that we have already seen. Check if they all have been correctly loaded.
+#### Challenge:
+- Explore the datasets that we just loaded using some of the functions that we have already seen. Check if they all have been correctly loaded.
 
 We observe 2 issues when reading in the `phd` dataset: it has no variable names in the first row, and R believes the datset has only 1 variable. Let's read the dataset in using the `read.table()` function of the `utils` package
 
@@ -181,16 +207,15 @@ phd <- read.table('data/phd.txt')
 
 The `rio` package is very useful but not perfect. The following are other functions and packages you may consider when importing datasets into R:
 
-- `read.xls` from the `gdata` package: To import `.xls` files
+- `excel_sheets` and `read_excel` from the `readxl` package: to import excel files
 - `foreign` package has multiple functions to import numeorus data formats such as `.sav`, `.dta`, etc.
 
-For further information you can take a look at this [post] (http://www.r-tutor.com/r-introduction/data-frame/data-import)
 
 ***
 
 ### 4. Replication, Dataverse, and getting data from an external source
 
-Replication and transparency are key components of all scientific research. However, in the past social scientists have often not been very transparent. For this reason, there are currently numerous initatives aiming to increase transparency in social science research. See [www.dartstatement.org] (http://www.dartstatement.org/) for an example. One of the main objectives of this course is to learn how to produce clear guidelines when developing our research so others can easily replicate it in the future. 
+Replication and transparency are key components of all scientific research. However, in the past social scientists have often not been very transparent. For this reason, there are currently numerous initatives aiming to increase transparency in social science research. One of the main objectives of this course is to learn how to produce clear guidelines when developing our research so others can easily replicate it in the future. 
 
 As part of these replication efforts, authors and journals often share replication datasets and code in their websites or online repositories. One of the most used repositories is [`Dataverse` ] (https://dataverse.harvard.edu/). For example, the American Journal of Political Science (AJPS) posts replication files in [dataverse] (https://dataverse.harvard.edu/dataverse/ajps) for all the articles published in the journal. 
 
@@ -198,13 +223,15 @@ For example, AJPS recently posted the replication files of an article by Broockm
 
 Go to the replication site of the paper and download the replication dataset `Study1_data.tab`. You can choose the format of the dataset, choose to download it in `RData` format. Save it in the working the directory you are using for this lab. 
 
-Now load it and play with it! 
+Now load it and play with it! `.Rdata` is R's native format. To load an `.Rdata` (or `.rda`) dataset, you use the `load()` function and you don't need to assign the dataset to any object, the `load()` function will automatically create a new dataset in your R environment (similar to what happens when we use the `data()` function to load datasets from R packages).
 
 
 ```r
 load('data/Study1_data.Rdata')
 ```
 
+#### Challenge:
+- Look at the article and explore the dataset and see if you can identify in the dataset some of the key variables they discuss in the paper. 
 
 
 ```r
