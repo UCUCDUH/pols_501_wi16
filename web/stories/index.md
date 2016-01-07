@@ -128,12 +128,12 @@ The guidelines for the data analysis project paper are [here](resources/data_ana
 
 There will be weekly assignments. Each assignment will consist of up to five different parts. No late homework will accepted except in the case of a documented emergency. Assignments will be submitted via Canvas.
 
-1. *Reading questions*: For each week students will be expected to complete questions on the reading for that week, which will be due at the start of class. We will grade on a CR/NC basis (including half grades between these categories). Credit will be granted if the student gives an honest effort in completing the assignment. Given that statistics is effectively learned by solving problems in one form or another, these questions should not be considered "in addition to reading", but should be considered the assitned readings.
+1. *Reading questions*: For each week students will be expected to complete questions on the reading for that week, which will be due at the start of class. We will grade on a CR/NC basis (including half grades between these categories). Credit will be granted if the student gives an honest effort in completing the assignment. Given that statistics is effectively learned by solving problems in one form or another, these questions should not be considered "in addition to reading", but should be considered the assitned readings. These assignments will be due at the start of Thurs class.
 2. *Corrected reading questions*: The key for reading questions will be given at each class, and some of class can be spent reviewing any problems students had with the questions. Corrected reading questions will be due at the start of class the following week. The correction should take the form of comments added to the original homework that
 indicate where mistakes were made and that demonstrate an understanding of those mistakes. These will be graded on a CR/NC basis.
-3. *Research project assignments*: Each week students will complete an assignment that makes some progress on their research project. These will generally apply the concepts covered to their research projects.
-4. *Peer review assignments*: There will be several assignments in which students are asked to peer review the research projects of other students in the course. These assignments will be due at the start of Thurs class. These assignments will be graded on a (0, 1) scale.
-5. *Computing assignments*: These assignments will apply concepts to real or simulated data using R. These assignments will be due at the start of Fri lab. These will be graded on a (0, +, ++) scale.
+3. *Research project assignments*: Each week students will complete an assignment that makes some progress on their research project. These will generally apply the concepts covered to their research projects. These assignments will be due at the start of Thurs class.
+4. *Peer review assignments*: There will be several assignments in which students are asked to peer review the research projects of other students in the course. These assignments will be due at the start of Thurs class.
+5. *Computing assignments*: These assignments will apply concepts to real or simulated data using R. These assignments will be due at the start of Fri lab.
 
 
 # Materials
