@@ -33,7 +33,6 @@ Key:
 
 </table>
 
-
 ## Week 1
 
 Introduction
@@ -112,7 +111,7 @@ Inference for Numerical Data (t-tests, ANOVA); Bootstrap.
 
 ## Week 7
 
-Inference for Categorical data (proportion tests, $\Chi^2$-tests)
+Inference for Categorical data (proportion tests, Chi-squared tests)
 
 <ul class="fa-ul">
 <li> <i class="fa-li fa fa-book"></i> <em>OpenIntro</em>, CH 6 </li>
