@@ -29,7 +29,7 @@ Want to find out what datasets are included in the R packages that you have inst
 ```r
 data()
 ```
-To find datasets included in a specific packge, use `data` with the `package` argument,
+To find datasets included in a specific package, use `data` with the `package` argument,
 For example,
 ``` r
 data(package = "ggplot2")

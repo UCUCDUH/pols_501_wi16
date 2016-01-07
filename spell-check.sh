@@ -5,7 +5,7 @@
 rc=0
 find web/output -name "*.html" |
     while read filename; do
-        misspellings=$(hunspell -d en_US,en_pols501 --check-apostrophe -H -l "$filename" 2>&1)
+        misspellings=$(hunspell -i utf-8 -d en_US,en_pols501 --check-apostrophe -H -l "$filename" 2>&1)
         if [ ! -z "$misspellings" ]
         then
             echo "ERROR: mispelled words in $filename"
