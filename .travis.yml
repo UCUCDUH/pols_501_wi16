@@ -1,34 +1,31 @@
 language: python
+addons:
+  apt:
+    packages:
+    - hunspell
 python:
 - '3.5'
 install:
 - pip install Nikola[extras]
-- git config user.name "Travis CI"
-- git config user.email "jeffrey.arnold@gmail.com"
-- git config push.default tracking
-- git remote rm origin
-- git remote add origin https://${GH_TOKEN}@github.com/UW-POLS501/pols_501_wi16.git
-- git fetch origin
-
+- git config --global user.name "Travis CI"
+- git config --global user.email "jeffrey.arnold@gmail.com"
 before_script:
 - npm install markdown-spellcheck
 - PATH="node_modules/.bin:$PATH"
-
 script:
 - ./check-links.sh
 - ./spell-check.sh
 - ./travis-deploy.sh
-
 notifications:
   email:
     recipients:
-      - jrnold@uw.edu
-      - acasas2@uw.edu
+    - jrnold@uw.edu
+    - acasas2@uw.edu
     on_success: change
     on_failure: always
-
 branches:
 - master
 env:
   global:
-    secure: f09qdoxwi/ZAHdUwIi/ib2UZLUmxY+zZUDyZUj+iBBnxRGqwnLUF9bzzLKd3hLkpRwM4tEnSo+QN80oaRGOgTLn5zZwdj+AQ2E/kOxEDHWNY0VX99SmJ3lX6Xstgyr4uKeHt7oFUma9x39PLpG3rOFWyj7LpLDVdZC5z9ElPOyv5HFSiHf2He2HVCP4E/fxkyNDGbyC684QQtIRlu3GcMfb+sq+ZhH+1hWxWsLidwC+eNGfBK+bIY+50Nol0my1VvEc/+9nu1Hgurmz2OJ1bxA/Icq8yJwXIcxrt2mk4LN8vQ/RDi9K2gGUIPTv5qEZtOFg9yBmcW2kFMden8yWXOGgv68QxkhxT4Ix0HIO1wr1jFDT9H0SJPBIntJcGxEh63C9JnfFx9H9du6nJvE/dAShlt03dy90TywpEe79M5YvqfAu9gnt2hSKUFQ4rfSpMuamkZpViElhMecDLut+Wtx2fA6765oVOCnQquX2BHe59P1FewYhN3nmhdPmslysUpwzy5o9qnlvzV56d97wOpch2Kzll8rkA66TVtqoVig53rBcwiNdvn0/SFB0IQSVE0FEK5MleTGcuLqfIK7BA+82nDE02z2iThGo6Wllg6Q5b6XMxksoqjIgQsO1PxnQCELMcPF5YSgR7uJnGMfx0c+nPhj2mz8j4Zj0WRwLdZBU=
+  - GH_REF: UW-POLS501/pols_501_wi16.git
+  - secure: uzpq8SNvMA9tkE9FSwPKrnKffpylIEPi+dXai3Zfgw2ogogkpToijyOdAOR+Zzxj98vs8TjeY5YEOszB/THOpsVj3YfkrJ0kr1jKrxgdbOwGkH2sk6VDTjvF4ca2oEM+BZN7vPE4Ze0Ldsex2GztpLeEl1vJow7xZUu6N1t5Hs3pKtoby/LHY8pFOC1ztiZ9M6MaQBZ8+X9Uk7DDdsSNm5UaxG/ky2yZ/iT9B4NyUVDh6q5tNrT3XqX3LR9db46LwT3jDnusJiyWtPXUqIOrkOUpoL/6NnlE+J0ulV+ChC0X0gB2XGHmfirepV7R4N08xvXRf0EFMVHq94RksbAooArznQrQrNMro3uS9ZAJ1XpQmIZWhY9DHwlpsjyYr3tkHiSsCLsswEgZRJAGHMF/nNldaDHp4pKDd9fk/oT1RRYH7N3AuxBcoEP1Xk1izb1Da2qwJ1OGrACFL8lMfDYafXEjIxQFze4vW8J8oAiO+UWIo7R7ryu7ondE0YJRKyyio9A8epHeL0Xz6HhRR5bvtGQFGp7msPSEtC4Hm7ZzAmkt00ndGbUUJovt3AHKy7eNiSE0rBsVmYUwtYj1FlaREnu04p/qmMS/l1gvJohGYQ9+mj3oMBDEVt+XLk9lwT5ZgizCaP+lcOROnMjAKOk7B6QnTfB2vKwTm65VpgE6i8Q=
