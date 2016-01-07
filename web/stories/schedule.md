@@ -45,7 +45,7 @@ Introduction
 <li> <i class="fa-li fa fa-code"></i> (Optional) Complete <a href="http://tryr.codeschool.com/">TryR</a> if you want more practice with R. </li>
 <li> <i class="fa-li fa fa-book"></i> <em>SMISS</em>, Ch 1 </li>
 <li>  <i class="fa-li fa fa-book"></i> Peng, Roger D., and Elizabeth Matsui. 2015. <em>The Art of Data Science</em>. Chapters 1&ndash;2. <a href="https://leanpub.com/artofdatascience">[url]</a> (the minimum price is free) </li>
-<li> <i class="fa-li fa fa-book"></i> Hadley Wickham interview <a href="http://bulletin.imstat.org/2014/09/data-science-how-is-it-different-to-statistics%E2%80%89/">[link]</a>. </li>
+<li> <i class="fa-li fa fa-book"></i> Hadley Wickham interview <a href="http://bulletin.imstat.org/2014/09/data-science-how-is-it-different-to-statistics%E2%80%89/">[url]</a>. </li>
 <li> <i class="fa-li fa fa-book"></i> <em>R is for Everyone</em>, "Preface" </li>
 </ul>
 
@@ -60,8 +60,8 @@ Observable Data, Descriptive Statistics and Exploratory Data Analysis
 <li><i class="fa-li fa fa-code"></i> Data Camp <a href="https://campus.datacamp.com/courses/data-visualization-with-ggplot2-1">Data Visualization with ggplot2 (1)</a> </li>
 <li><i class="fa-li fa fa-book"></i> <em>OpenIntro</em>, Ch. 1, "Introduction to data."</li>
 <li><i class="fa-li fa fa-book"></i> <em>SMISS</em>. Ch. 2, "Descriptive Statistics: Data and Information." </li>
-<li><i class="fa-li fa fa-book"></i> Wickham, Hadley. 2010. "A Layered Grammar of Graphics." <em>Journal of Computational and Graphical Statistics</em>. <a href="http://dx.doi.org/10.1198/jcgs.2009.07098">[url]</a></li>
-<li><i class="fa-li fa fa-book"></i>Tukey, John. W. 1980. "We Need Both Explanatory and Confirmatory." <em>The American Statistician</em>. <a href=http://dx.doi.org/10.2307/2682991">[url]</a></li>
+<li><i class="fa-li fa fa-book"></i> Wickham, Hadley. 2010. "A Layered Grammar of Graphics." <em>Journal of Computational and Graphical Statistics</em>. <a href="http://dx.doi.org/10.1198/jcgs.2009.07098">[doi]</a></li>
+<li><i class="fa-li fa fa-book"></i>Tukey, John. W. 1980. "We Need Both Explanatory and Confirmatory." <em>The American Statistician</em>. <a href="http://dx.doi.org/10.2307/2682991">[doi]</a> </li>
 </ul>
 
 <!-- All graphics are comparisons.  -->

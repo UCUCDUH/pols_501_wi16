@@ -20,7 +20,7 @@ The paper should contain 2--5 figures or tables. The paper should present its co
 - The use of astrisks or symbols to represent statistical significance is discouraged. Tables should include standard errors rather than $z$-scores, $t$-scores, or $p$-values.
 - Authors reporting that results are "statistically significant" should use the 0.05 level or lower. Results at the 0.10 should not be referred to as "statistically significant". However, the strength of evidence necessary to justify findings cannot be captured by any single criterion, such as the conventional .05 level of statistical significance. The instructor will evaluate the strength of findings on "a range of criteria beyond statistical significance, including substantive significance, theoretical aptness, the importance of the problem under study, and the feasibility of obtaining additional evidence. (APSR)"
 
-These guidelins are derived from those used for submissions by the [American Political Science Review](http://www.apsanet.org/apsrsubmissions), [American Journal of Political Science](http://ajps.org/guidelines-for-papers/), [Journal of Politics](http://www.journals.uchicago.edu/journals/jop/instruct), and [Political Analysis](http://www.oxfordjournals.org/our_journals/polana/for_authors/general.html)
+These guidelins are derived from those used for submissions by the [American Political Science Review](http://www.apsanet.org/apsrsubmissions), [American Journal of Political Science](http://ajps.org/guidelines-for-manuscripts/), [Journal of Politics](http://www.journals.uchicago.edu/journals/jop/instruct), and [Political Analysis](http://www.oxfordjournals.org/our_journals/polana/for_authors/general.html)
 
 
 <!--
