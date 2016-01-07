@@ -35,7 +35,9 @@ Key:
 
 ## Week 1
 
-Introduction
+**Introduction**
+
+Pre-class
 
 <ul class="fa-ul">
 <li> <i class="fa-li fa fa-gears"></i> Complete the class survey and statistical knowledge pre-test </li>
@@ -48,9 +50,18 @@ Introduction
 <li> <i class="fa-li fa fa-book"></i> <em>R is for Everyone</em>, "Preface" </li>
 </ul>
 
+Class
+
+<ul>
+<li><a href="https://docs.google.com/a/uw.edu/document/d/1V7r1BIR-xIMInUT6xHIYii7WWF_lsMsLHNVD0Y-fTb4/edit?usp=sharing">class notepad</li>
+</ul>
+
+Lab
+
+
 ## Week 2
 
-Observable Data, Descriptive Statistics and Exploratory Data Analysis
+**Observable Data, Descriptive Statistics and Exploratory Data Analysis**
 
 <ul class="fa-ul">
 <li><i class="fa-li fa fa-puzzle-piece"></i>Paragraph describing your data analysis project topic.</li>
@@ -70,7 +81,7 @@ Observable Data, Descriptive Statistics and Exploratory Data Analysis
 
 ## Week 3
 
-Probability; Data wrangling and tidy data.
+**Probability; Data wrangling and tidy data.**
 
 <ul class="fa-ul">
 <li><i class="fa-li fa fa-puzzle-piece"></i></td><td>Dataset for your data analysis paper</td>
@@ -81,7 +92,7 @@ Probability; Data wrangling and tidy data.
 
 ## Week 4
 
-Distributions of Random Variables, Expectations, Linking Theories to the Data-Generating Process
+**Distributions of Random Variables, Expectations, Linking Theories to the Data-Generating Process**
 
 <ul class="fa-ul">
 <li> <i class="fa-li fa fa-book"></i> <em>OpenIntro</em>, Ch 3.  </li>
@@ -90,7 +101,7 @@ Distributions of Random Variables, Expectations, Linking Theories to the Data-Ge
 
 ## Week 5
 
-Foundations of Inference: Sampling distributions, confidence intervals, hypothesis testing
+**Foundations of Inference: Sampling distributions, confidence intervals, hypothesis testing**
 
 <ul class="fa-ul">
 <li> <i class="fa-li fa fa-book"></i> <em>OpenIntro</em>, Ch 4 </li>
@@ -101,7 +112,7 @@ Foundations of Inference: Sampling distributions, confidence intervals, hypothes
 
 ## Week 6
 
-Inference for Numerical Data (t-tests, ANOVA); Bootstrap.
+**Inference for Numerical Data (t-tests, ANOVA); Bootstrap.**
 
 <ul class="fa-ul">
 <li> <i class="fa-li fa fa-book"></i> <em>OpenIntro</em>, Ch 5 </li>
@@ -111,7 +122,7 @@ Inference for Numerical Data (t-tests, ANOVA); Bootstrap.
 
 ## Week 7
 
-Inference for Categorical data (proportion tests, Chi-squared tests)
+**Inference for Categorical data (proportion tests, Chi-squared tests)**
 
 <ul class="fa-ul">
 <li> <i class="fa-li fa fa-book"></i> <em>OpenIntro</em>, CH 6 </li>
@@ -120,7 +131,7 @@ Inference for Categorical data (proportion tests, Chi-squared tests)
 
 ## Week 8
 
-Introduction to Linear Regression
+**Introduction to Linear Regression**
 
 <ul class="fa-ul">
 <li> <i class="fa-li fa fa-book"></i> <em>OpenIntro</em>, Ch 7 </li>
@@ -129,7 +140,7 @@ Introduction to Linear Regression
 
 ## Week 9
 
-Multiple regression
+**Multiple regression**
 
 <ul class="fa-ul">
 <li> <i class="fa-li fa fa-book"></i> <em>OpenIntro</em>, Ch 8 </li>
