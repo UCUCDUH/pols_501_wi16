@@ -102,15 +102,42 @@ The learning objectives for this course are:
 
 # Prerequisites
 
-The course is suitable for students with a large range of prior exposure to statistics and mathematics.
+The course is suitable for students with a large range of prior exposure to statistics and mathematics. 
 No prior statistical, mathematical, or programming experience is necessary beyond arithmetic, algebra, and elementary calculus.
 
 
 # Evaluation
 
-Course evaluation will consist of approximately weekly assignments, and a research project.
+
+## Data analysis project paper
+
+Every student in this class will execute their own statistical data analysis of a research question.
+The results of this analysis will be presented as a paper due at the end of the course [schedule](/schedule/#finals-period).
+
+The purpose of this paper is for the students to apply the quantitative methods used in this course to the real-world research problems that they will encounter in their research careers.
+However, due to the limited time in this course, it is not necessary for this paper to address an important research problem or a novel contribution to the literature.
+While those will not be criteria for the evaluation of this paper, the author is encouraged to pursue those, as they are what leads to publications. 
+The paper will be evaluated on the appropriateness of the statistical methods applied to the data and question, and not the novelty or contribution of the question itself.
+
+If you developed a research design for POLS 500, you may be able to use it in 501.
+However you need to confirm that you will be able to assemble a dataset to test a specific research hypothesis within the time constraints of this course, because you will be using it throughout the course. If that seems unlikely, you will need to choose a different project. 
+
+The guidelines for the data analysis project paper are [here](resources/data_analysis_project_paper_guidelines/).
+
+## Assignments
+
+There will be weekly assignments. Each assignment will consist of up to five different parts. No late homework will accepted except in the case of a documented emergency. Assignments will be submitted via Canvas.
+
+1. *Reading questions*: For each week students will be expected to complete questions on the reading for that week, which will be due at the start of class. We will grade on a CR/NC basis (including half grades between these categories). Credit will be granted if the student gives an honest effort in completing the assignment. Given that statistics is effectively learned by solving problems in one form or another, these questions should not be considered "in addition to reading", but should be considered the assitned readings.
+2. *Corrected reading questions*: The key for reading questions will be given at each class, and some of class can be spent reviewing any problems students had with the questions. Corrected reading questions will be due at the start of class the following week. The correction should take the form of comments added to the original homework that
+indicate where mistakes were made and that demonstrate an understanding of those mistakes. These will be graded on a CR/NC basis.
+3. *Research project assignments*: Each week students will complete an assignment that makes some progress on their research project. These will generally apply the concepts covered to their research projects.
+4. *Peer review assignments*: There will be several assignments in which students are asked to peer review the research projects of other students in the course. These assignments will be due at the start of Thurs class. These assignments will be graded on a (0, 1) scale.
+5. *Computing assignments*: These assignments will apply concepts to real or simulated data using R. These assignments will be due at the start of Fri lab. These will be graded on a (0, +, ++) scale.
+
 
 # Materials
+
 
 ## Textbooks 
 
@@ -129,31 +156,6 @@ Although it is not free, there is a [student subscription rate](https://www.data
 Students should have a laptop that they can bring to both class and lab as we will integrate computing with learning data analysis and statistics throughout the course.
 
 
-# Class Expectations
-
-Students should do the readings *before* the class. Some class time will be spent on lecture, but the majority of class time consist of discussion, questions, and problem solving.
-
-Lab sections will cover how to implement the analysis in R, conceptual review and continued elaboration of the week's material, and time for students to discuss and get feedback on their projects.
-
-# 
-
-<!--
-#
-
-1. Conceptual questions
-2. Programming Assignments
-3. Final-paper related assignments
-
--->
-
-# Research Project
-
-Every student in this class will execute their own statistical analysis of a research question, from data collection, to analysis, to presentation.
-If you developed a research design for POLS 500, you may be able to use it in 501.
-However you need to confirm that you will be able to assemble a dataset to test a specific research hypothesis within the time constraints of this course, because you will be using it throughout the course.
-If that seems unlikely, you will need to choose a different project. 
-
-See the [schedule](/schedule/#finals-period) for the final paper due date.
 
 # Resources
 
@@ -163,6 +165,7 @@ Beyond what the teaching team can providing, there are several resources on camp
 - [CSSS Statistical Consulting](https://www.csss.washington.edu/consulting) provides general statistical consulting. Go there for questions about statistical methods.
 - [eScience Data Science Office Hours](http://escience.washington.edu/office-hours/)
 - UW Library: [Data](http://guides.lib.uw.edu/friendly.php?s=research/data), [Political Science](http://guides.lib.uw.edu/friendly.php?s=research/polisci)
+
 
 # License
 
@@ -175,3 +178,8 @@ Science should be open, and this course builds up other open licensed material, 
 
 If you find any typos or other issues in this page, any page in the site, or any materials for this course, go to https://github.com/UW-POLS501/pols_501_wi16/issues, click on "New Issue" button to create a new issue, and describe the problem.
 
+
+# References
+
+- Learning objectives are derived from those of Sta 101 
+- Govt 2000 for idea of self-grading

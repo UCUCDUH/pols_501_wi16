@@ -124,7 +124,7 @@ TRANSLATIONS_PATTERN = "{path}.{lang}.{ext}"
 
 NAVIGATION_LINKS = {
     DEFAULT_LANG: (
-        #("/", "Syllabus"),
+        ("/", "Syllabus"),
         ("/schedule", "Schedule"),        
         ("/resources", "Resources"),
     ),

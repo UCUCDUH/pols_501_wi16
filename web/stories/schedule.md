@@ -5,9 +5,12 @@
 
 [TOC]
 
-
 <i class="fa fa-warning"></i> The following schedule is a *tentative* guideline and will be evolving to meet course needs up to and during the quarter.
 In particular, the pace of the course will be adjusted so that we move as possible conditional on everyone "getting" the material. 
+
+Students should do the readings *before* the class. Some class time will be spent on lecture, but the majority of class time consist of discussion, questions, and problem solving.
+Lab sections will cover how to implement the analysis in R, conceptual review and continued elaboration of the week's material, and time for students to discuss and get feedback on their projects.
+
 
 - *SMISS* = *Statistical Modeling and Inference for Social Science*
 - *OpenIntro* = *Open Intro Statistics* 
@@ -33,75 +36,87 @@ Key:
 
 ## Week 1
 
-### January 7 (Class)
+Introduction
 
 <ul class="fa-ul">
 <li> <i class="fa-li fa fa-gears"></i> Complete the class survey and statistical knowledge pre-test </li>
 <li> <i class="fa-li fa fa-gears"></i> Download R and RStudio. Instructions are <a href="/resources/install/">here</a>. </li>
 <li> <i class="fa-li fa fa-code"></i> Complete Data Camp <a href="https://www.datacamp.com/courses/free-introduction-to-r">Introduction to R</a> Chapters 1 (Intro to Basics), 2 (Vectors), 4 (Factors), and 5 (Data Frames). </li>
-<li> <i class="fa-li fa fa-book"></i> <emph>SMISS</emph>, Ch 1 </li>
-<li>  <i class="fa-li fa fa-book"></i> Roger D. Peng and Elizabeth Matsui (2015), <emph>The Art of Data Science</emph>, Chapters 1&ndash;2. <a href="https://leanpub.com/artofdatascience">[link</a>] (the minimum price is free) </li>
-<li> <i class="fa-li fa fa-book"></i> Hadley Wickham interview <a href="http://bulletin.imstat.org/2014/09/data-science-how-is-it-different-to-statistics%E2%80%89/">[link</a>] </li>
-<li> <i class="fa-li fa fa-book"></i> <emph>R is for Everyone</emph>, "Preface" </li>
-<li> <i class="fa-li fa fa-code"></i> Optional: Complete <a href="http://tryr.codeschool.com/">TryR</a> if you want more practice with R. </li>
+<li> <i class="fa-li fa fa-code"></i> (Optional) Complete <a href="http://tryr.codeschool.com/">TryR</a> if you want more practice with R. </li>
+<li> <i class="fa-li fa fa-book"></i> <em>SMISS</em>, Ch 1 </li>
+<li>  <i class="fa-li fa fa-book"></i> Peng, Roger D., and Elizabeth Matsui. 2015. <em>The Art of Data Science</em>. Chapters 1&ndash;2. <a href="https://leanpub.com/artofdatascience">[url]</a> (the minimum price is free) </li>
+<li> <i class="fa-li fa fa-book"></i> Hadley Wickham interview <a href="http://bulletin.imstat.org/2014/09/data-science-how-is-it-different-to-statistics%E2%80%89/">[link]</a>. </li>
+<li> <i class="fa-li fa fa-book"></i> <em>R is for Everyone</em>, "Preface" </li>
 </ul>
-
-	
-### January 8 (Lab)
 
 ## Week 2
 
 Observable Data, Descriptive Statistics and Exploratory Data Analysis
 
 <ul class="fa-ul">
-<li><i class="fa-li fa fa-puzzle-piece"></i></td><td>Paragraph describing your paper</td>
-<li> <i class="fa-li fa fa-book"></i> <emph>OpenIntro</emph>, Ch 1. <emph>SMISS</emph> Ch 2 </li>
+<li><i class="fa-li fa fa-puzzle-piece"></i>Paragraph describing your data analysis project topic.</li>
+<li><i class="fa-li fa fa-code"></i> Data Camp <a href="https://www.datacamp.com/courses/dplyr-data-manipulation-r-tutorial">Data Manipulation in R with dplyr</a> </li>
+<!-- <li><i class="fa-li fa fa-code"></i> Data Camp <a href="https://campus.datacamp.com/courses/data-visualization-with-ggplot2-2">Data Visualization with ggplot2 (2)</a> </li> -->
+<li><i class="fa-li fa fa-code"></i> Data Camp <a href="https://campus.datacamp.com/courses/data-visualization-with-ggplot2-1">Data Visualization with ggplot2 (1)</a> </li>
+<li><i class="fa-li fa fa-book"></i> <em>OpenIntro</em>, Ch 1.</li>
+<li><i class="fa-li fa fa-book"></i> <em>SMISS</em> Ch 2 </li>
+<li><i class="fa-li fa fa-book"></i> Wickham, Hadley. 2010. "A Layered Grammar of Graphics." <em>Journal of Computational and Graphical Statistics</em>. <a href="http://dx.doi.org/10.1198/jcgs.2009.07098">[url]</a></li>
+<li><i class="fa-li fa fa-book"></i>Tukey, John. W. 1980. "We Need Both Explanatory and Confirmatory." <em>The American Statistician</em>. <a href=http://dx.doi.org/10.2307/2682991">[url]</a></li>
 </ul>
+
+<!-- All graphics are comparisons.  -->
+<!-- 1. Information content of graphs or tables -->
+<!-- 2. Understandability of graphs or tables -->
+<!-- 3.  -->
+<!-- Graph is an "explicit or implicit" comparison to some unstated expectation. -->
 
 ## Week 3
 
-Probability
+Probability; Tidy Data
 
 <ul class="fa-ul">
 <li><i class="fa-li fa fa-puzzle-piece"></i></td><td>Dataset for your final paper</td>
-<li> <i class="fa-li fa fa-book"></i> <emph>OpenIntro</emph>, Ch 2., <emph>SMISS</emph> Ch 3&ndash;4. </li>
+<li> <i class="fa-li fa fa-book"></i> <em>OpenIntro</em>, Ch 2., <em>SMISS</em> Ch 3&ndash;4. </li>
+<li><i class="fa-li fa fa-book"></i> Wickham, Hadley. 2014. "Tidy Data." <em>Journal of Statistical Software</em>. <a href="http://dx.doi.org/10.18637/jss.v059.i10">[url]</a>. </li>
 </ul>
 
 ## Week 4
 
-Distributions of Random Variables, Expectations, Linking Theories to the Data-Generating Process
+Distributions of Random Variables, Expectations, Linking Theories to the Data-Generating Process; Reproducible Research; R Markdown
 
 <ul class="fa-ul">
-<li> <i class="fa-li fa fa-book"></i> <emph>OpenIntro</emph>, Ch 3.  </li>
-<li> <i class="fa-li fa fa-book"></i> <emph>SMISS</emph>, Ch 5&ndash;6  </li>
+<li> <i class="fa-li fa fa-book"></i> <em>OpenIntro</em>, Ch 3.  </li>
+<li> <i class="fa-li fa fa-book"></i> <em>SMISS</em>, Ch 5&ndash;6  </li>
 </ul>
 
 ## Week 5
 
-Foundations of Inference: Sampling distributions, confidence intervals, hypothesis testing.
+Foundations of Inference: Sampling distributions, confidence intervals, hypothesis testing; For loops
 
 <ul class="fa-ul">
-<li> <i class="fa-li fa fa-book"></i> <emph>OpenIntro</emph>, Ch 4 </li>
-<li> <i class="fa-li fa fa-book"></i> <emph>SMISS</emph>, Ch 7&ndash;8  </li>
+<li> <i class="fa-li fa fa-book"></i> <em>OpenIntro</em>, Ch 4 </li>
+<li> <i class="fa-li fa fa-book"></i> <em>SMISS</em>, Ch 7&ndash;8  </li>
+<li><i class="fa-li fa fa-book"></i> Wickham, Hadley. 2010. "Graphical Inference for Infovis." <em>IEEE Transactions on Visualization and Computer Graphics</em>. <http://dx.doi.org/10.1109/TVCG.2010.161>.
+<li><i class="fa-li fa fa-code"></i> Data Camp <a href="https://www.datacamp.com/courses/reporting-with-r-markdown">Reporting with R Markdown</a></li>
 </ul>
 
 ## Week 6
 
-Inference for Numerical Data
+Inference for Numerical Data (t-tests, ANOVA)
 
 <ul class="fa-ul">
-<li> <i class="fa-li fa fa-book"></i> <emph>OpenIntro</emph>, Ch 5 </li>
-<li> <i class="fa-li fa fa-book"></i> <emph>SMISS</emph>, Parts of Ch 7&ndash;9 </li>
+<li> <i class="fa-li fa fa-book"></i> <em>OpenIntro</em>, Ch 5 </li>
+<li> <i class="fa-li fa fa-book"></i> <em>SMISS</em>, Parts of Ch 7&ndash;9 </li>
 </ul>
 
 
 ## Week 7
 
-Inference for Categorical data
+Inference for Categorical data (proportion tests, $\Chi^2$-tests)
 
 <ul class="fa-ul">
-<li> <i class="fa-li fa fa-book"></i> <emph>OpenIntro</emph>, CH 6 </li>
-<li> <i class="fa-li fa fa-book"></i> <emph>SMISS</emph>, Parts of Ch 7&ndash;9 </li>
+<li> <i class="fa-li fa fa-book"></i> <em>OpenIntro</em>, CH 6 </li>
+<li> <i class="fa-li fa fa-book"></i> <em>SMISS</em>, Parts of Ch 7&ndash;9 </li>
 </ul>
 
 ## Week 8
@@ -109,8 +124,8 @@ Inference for Categorical data
 Introduction to Linear Regression
 
 <ul class="fa-ul">
-<li> <i class="fa-li fa fa-book"></i> <emph>OpenIntro</emph>, Ch 7 </li>
-<li> <i class="fa-li fa fa-book"></i> <emph>SMISS</emph>, Parts of Ch 7&ndash;9 </li>
+<li> <i class="fa-li fa fa-book"></i> <em>OpenIntro</em>, Ch 7 </li>
+<li> <i class="fa-li fa fa-book"></i> <em>SMISS</em>, Parts of Ch 7&ndash;9 </li>
 </ul>
 
 ## Week 9
@@ -118,8 +133,8 @@ Introduction to Linear Regression
 Multiple regression
 
 <ul class="fa-ul">
-<li> <i class="fa-li fa fa-book"></i> <emph>OpenIntro</emph>, Ch 8 </li>
-<li> <i class="fa-li fa fa-book"></i> <emph>SMISS</emph>, Parts of Ch 7&ndash;9 </li>
+<li> <i class="fa-li fa fa-book"></i> <em>OpenIntro</em>, Ch 8 </li>
+<li> <i class="fa-li fa fa-book"></i> <em>SMISS</em>, Parts of Ch 7&ndash;9 </li>
 </ul>
 
 ## Week 10

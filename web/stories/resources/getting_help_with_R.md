@@ -50,7 +50,7 @@ Note that `search()` **does not** do what you expect it to do, unless you expect
 
 # Internet
 
-[Rdocumentation.org](https://www.rdocumentation.org) searches the documentation of all R packages on CRAN and more
+[Rdocumentation.org](http://www.rdocumentation.org/) searches the documentation of all R packages on CRAN and more
 
 Google has gotten better with R searches, but `R` is a particularly unfriendly search term.
 However, if you are searching for "R" with other words in context, you are likely to have some success.
