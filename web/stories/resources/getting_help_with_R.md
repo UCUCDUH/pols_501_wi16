@@ -55,7 +55,7 @@ Note that `search()` **does not** do what you expect it to do, unless you expect
 Google has gotten better with R searches, but `R` is a particularly unfriendly search term.
 However, if you are searching for "R" with other words in context, you are likely to have some success.
 An alternative is to use [rseek.org](http://rseek.org) instead.
-It is a google search restricted to a curated set of sites related to R.
+It is a Google search restricted to a curated set of sites related to R.
 
 Many R packages have an article in either the [Journal of Statistical Software](http://www.jstatsoft.org/index) or [The R Journal](https://journal.r-project.org/)
 These articles are similar to package does. 
