@@ -54,7 +54,6 @@ Observable Data, Descriptive Statistics and Exploratory Data Analysis
 
 <ul class="fa-ul">
 <li><i class="fa-li fa fa-puzzle-piece"></i>Paragraph describing your data analysis project topic.</li>
-<li><i class="fa-li fa fa-code"></i> Data Camp <a href="https://www.datacamp.com/courses/dplyr-data-manipulation-r-tutorial">Data Manipulation in R with dplyr</a> </li>
 <!-- <li><i class="fa-li fa fa-code"></i> Data Camp <a href="https://campus.datacamp.com/courses/data-visualization-with-ggplot2-2">Data Visualization with ggplot2 (2)</a> </li> -->
 <li><i class="fa-li fa fa-code"></i> Data Camp <a href="https://campus.datacamp.com/courses/data-visualization-with-ggplot2-1">Data Visualization with ggplot2 (1)</a> </li>
 <li><i class="fa-li fa fa-book"></i> <em>OpenIntro</em>, Ch. 1, "Introduction to data."</li>
@@ -71,10 +70,11 @@ Observable Data, Descriptive Statistics and Exploratory Data Analysis
 
 ## Week 3
 
-Probability; Tidy Data
+Probability; Data wrangling and tidy data.
 
 <ul class="fa-ul">
-<li><i class="fa-li fa fa-puzzle-piece"></i></td><td>Dataset for your final paper</td>
+<li><i class="fa-li fa fa-puzzle-piece"></i></td><td>Dataset for your data analysis paper</td>
+<li><i class="fa-li fa fa-code"></i> Data Camp <a href="https://www.datacamp.com/courses/dplyr-data-manipulation-r-tutorial">Data Manipulation in R with dplyr</a> </li>
 <li> <i class="fa-li fa fa-book"></i> <em>OpenIntro</em>, Ch 2., <em>SMISS</em> Ch. 3, "Observable Data and Data-Generating Processes"; Ch. 4, "Probability Theory: Basic Properties of Data-Generating Processes" </li>
 <li><i class="fa-li fa fa-book"></i> Wickham, Hadley. 2014. "Tidy Data." <em>Journal of Statistical Software</em>. <a href="http://dx.doi.org/10.18637/jss.v059.i10">[URL]</a>. </li>
 </ul>
