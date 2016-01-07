@@ -7,8 +7,6 @@
 University of Washington, Winter 2016
 </p>
 
-<button type="button" class="btn btn-danger">Work in Progress</button>
-
 
 # Instructors
 
