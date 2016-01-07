@@ -15,6 +15,7 @@ before_script:
 script:
 - ./check-links.sh
 - ./spell-check.sh
+after_success:
 - ./travis-deploy.sh
 notifications:
   email:
