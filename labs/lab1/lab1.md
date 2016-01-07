@@ -69,11 +69,11 @@ data()
 
 The `help` files give us a brief description of packages, functions, and its parameters. A very useful characteristic of `help` files is that they come with sample code (scroll-down to the bottom of the `help` file to find it).
 
-To explore a `help` file, click to the `help` file for the `Snow` dataset in `HistData`. 
+Let's explore a `help` file: click to the `help` file for the `Snow` dataset in `HistData`. 
 
 #### Challenge:
 
-- Do you know about John Snow's 1854 London cholear outbreak study and his visualization of the Pump on Broad Street? Google it and see if you can find the map/visualization.
+- Do you know about John Snow's 1854 London Cholear Outbreak study and his visualization of the Pump on Broad Street? Google it and see if you can find the [map-visualization] (http://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2013/3/14/1363276044871/John-Snows-cholera-map-of-009.jpg).
 
 Now let's try to replicate his map using this R package/dataset. Scroll down to the bottom of the help file and copy and runt the following lines of code:
 

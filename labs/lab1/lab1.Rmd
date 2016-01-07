@@ -11,7 +11,7 @@
 3. Read and write other type of data formats: STATA, SPSS, XLS...
 4. Replication, Dataverse, and getting data from an external source
 
-```{r,echo=FALSE}
+```{r,echo=FALSE, results='hide'}
 options(repos=c(CRAN="https://cran.fhcrc.org/"))
 ```
 
