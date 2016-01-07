@@ -33,7 +33,6 @@ Key:
 
 </table>
 
-
 ## Week 1
 
 Introduction
@@ -44,8 +43,8 @@ Introduction
 <li> <i class="fa-li fa fa-code"></i> Complete Data Camp <a href="https://www.datacamp.com/courses/free-introduction-to-r">Introduction to R</a> Chapters 1 (Intro to Basics), 2 (Vectors), 4 (Factors), and 5 (Data Frames). </li>
 <li> <i class="fa-li fa fa-code"></i> (Optional) Complete <a href="http://tryr.codeschool.com/">TryR</a> if you want more practice with R. </li>
 <li> <i class="fa-li fa fa-book"></i> <em>SMISS</em>, Ch 1 </li>
-<li>  <i class="fa-li fa fa-book"></i> Peng, Roger D., and Elizabeth Matsui. 2015. <em>The Art of Data Science</em>. Chapters 1&ndash;2. <a href="https://leanpub.com/artofdatascience">[url]</a> (the minimum price is free) </li>
-<li> <i class="fa-li fa fa-book"></i> Hadley Wickham interview <a href="http://bulletin.imstat.org/2014/09/data-science-how-is-it-different-to-statistics%E2%80%89/">[url]</a>. </li>
+<li>  <i class="fa-li fa fa-book"></i> Peng, Roger D., and Elizabeth Matsui. 2015. <em>The Art of Data Science</em>. Chapters 1&ndash;2. <a href="https://leanpub.com/artofdatascience">[URL]</a> (the minimum price is free) </li>
+<li> <i class="fa-li fa fa-book"></i> Hadley Wickham interview <a href="http://bulletin.imstat.org/2014/09/data-science-how-is-it-different-to-statistics%E2%80%89/">[URL]</a>. </li>
 <li> <i class="fa-li fa fa-book"></i> <em>R is for Everyone</em>, "Preface" </li>
 </ul>
 
@@ -77,7 +76,7 @@ Probability; Tidy Data
 <ul class="fa-ul">
 <li><i class="fa-li fa fa-puzzle-piece"></i></td><td>Dataset for your final paper</td>
 <li> <i class="fa-li fa fa-book"></i> <em>OpenIntro</em>, Ch 2., <em>SMISS</em> Ch. 3, "Observable Data and Data-Generating Processes"; Ch. 4, "Probability Theory: Basic Properties of Data-Generating Processes" </li>
-<li><i class="fa-li fa fa-book"></i> Wickham, Hadley. 2014. "Tidy Data." <em>Journal of Statistical Software</em>. <a href="http://dx.doi.org/10.18637/jss.v059.i10">[url]</a>. </li>
+<li><i class="fa-li fa fa-book"></i> Wickham, Hadley. 2014. "Tidy Data." <em>Journal of Statistical Software</em>. <a href="http://dx.doi.org/10.18637/jss.v059.i10">[URL]</a>. </li>
 </ul>
 
 ## Week 4
@@ -112,7 +111,7 @@ Inference for Numerical Data (t-tests, ANOVA); Bootstrap.
 
 ## Week 7
 
-Inference for Categorical data (proportion tests, $\Chi^2$-tests)
+Inference for Categorical data (proportion tests, Chi-squared tests)
 
 <ul class="fa-ul">
 <li> <i class="fa-li fa fa-book"></i> <em>OpenIntro</em>, CH 6 </li>
