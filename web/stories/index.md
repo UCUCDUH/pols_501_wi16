@@ -51,6 +51,8 @@ University of Washington, Winter 2016
   </tr>
 </table>
 
+<i class="fa fa-warning"></i> Note the lab location. It is not the one listed for the course by the registrar.
+
 # Office Hours
 
 <table class = "table table-striped">
@@ -84,11 +86,15 @@ Instructions for Jeff's office hours:
 
 These instructions will ensure that our time is efficiently spent and I can be of the most help to you.
 
+# Communication
+
+For questions about the course that would be of general interest to all students in the course, email the course mailing list, [multi_pols503a_sp15@uw.edu](mailto:multi_pols503a_sp15@uw.edu), rather than the individual instructors.
+Please reserve emails to individual instructors for individual concerns, such as your data analysis project or personal matters.
+
 # Learning Objectives
 
 This is a first course in applied data analysis and statistical inference in social science.
-The topics covered in this course are data hygiene, graphical summaries of data, descriptive statistics and exploratory data analysis, introduction to probability, introduction to statistical inference, statistical inference for means and proportions, and some linear regression.
-Although linear regression will be introduced, but most discussion of linear regression will occur in POL S 501/CS&SS 501
+The topics covered in this course are data hygiene, graphical summaries of data, descriptive statistics and exploratory data analysis, introduction to probability, introduction to statistical inference, statistical inference for means and proportions, and linear regression.
 
 The learning objectives for this course are:
 
@@ -112,7 +118,7 @@ No prior statistical, mathematical, or programming experience is necessary beyon
 ## Data analysis project paper
 
 Every student in this class will execute their own statistical data analysis of a research question.
-The results of this analysis will be presented as a paper due at the end of the course [schedule](/schedule/#finals-period).
+The results of this analysis will be presented as a paper due at the end of the course. See the [schedule](/schedule/#finals-period) for the due date.
 
 The purpose of this paper is for the students to apply the quantitative methods used in this course to the real-world research problems that they will encounter in their research careers.
 However, due to the limited time in this course, it is not necessary for this paper to address an important research problem or a novel contribution to the literature.
@@ -141,10 +147,9 @@ indicate where mistakes were made and that demonstrate an understanding of those
 
 ## Textbooks 
 
-- Gailmard, Sean. *Statistical Modeling and Inference for Social Science*. Cambridge University Press, 2014.
-- Diez, David M., Christopher D Barr, and Mine Çetinkaya-Rundel. *OpenIntro Statistics*. 3rd ed., 2015. <https://www.openintro.org/stat/textbook.php> (Free)
-- Lander, Jared P. *R for Everyone: Advanced Analytics and Graphics*. Upper Saddle River, New Jersey: Addison-Wesley Professional, 2013.
-
+- Gailmard, Sean. 2014. *Statistical Modeling and Inference for Social Science*. [amazon](http://www.amazon.com/Statistical-Modeling-Inference-Analytical-Research/dp/1107003148/).
+- Diez, David M., Christopher D Barr, and Mine Çetinkaya-Rundel. *OpenIntro Statistics*. 3rd ed. <https://www.openintro.org/stat/textbook.php>. (This textbook is free)
+- Lander, Jared P. 2013. *R for Everyone: Advanced Analytics and Graphics*. [amazon](http://www.amazon.com/Everyone-Advanced-Analytics-Graphics-Addison-Wesley/dp/0321888030).
 
 ## Software and Computing
 
@@ -167,12 +172,14 @@ Beyond what the teaching team can providing, there are several resources on camp
 - UW Library: [Data](http://guides.lib.uw.edu/friendly.php?s=research/data), [Political Science](http://guides.lib.uw.edu/friendly.php?s=research/polisci)
 
 
+
 # License
 
 <a rel="license" href="httpso://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://licensebuttons.net/l/by/4.0/88x31.png" /></a>
 
 Science should be open, and this course builds up other open licensed material, so unless otherwise noted, all materials for this class are licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
 
+The source for the materials of this course is on GitHub at <https://github.com/UW-POLS501/pols_501_wi16>.
 
 # Bugs
 
@@ -181,5 +188,5 @@ If you find any typos or other issues in this page, any page in the site, or any
 
 # References
 
-- Learning objectives are derived from those of Sta 101 
-- Govt 2000 for idea of self-grading
+This course has benefitted from numerous open materials, which are listed [here](https://github.com/UW-POLS501/pols_501_wi16/blob/master/notes/references.md). On this page, the learning objectives from this course are derived from Mine Çetinkaya-Rundel's [Duke Sta 101](https://stat.duke.edu/courses/Fall15/sta101.002/syllabus/) syllabus.
+The idea for self-correction is from Matt Blackwell's [Harvard GOV 2000](http://www.mattblackwell.org/files/teaching/gov2000-syllabus.pdf).

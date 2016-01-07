@@ -58,8 +58,8 @@ Observable Data, Descriptive Statistics and Exploratory Data Analysis
 <li><i class="fa-li fa fa-code"></i> Data Camp <a href="https://www.datacamp.com/courses/dplyr-data-manipulation-r-tutorial">Data Manipulation in R with dplyr</a> </li>
 <!-- <li><i class="fa-li fa fa-code"></i> Data Camp <a href="https://campus.datacamp.com/courses/data-visualization-with-ggplot2-2">Data Visualization with ggplot2 (2)</a> </li> -->
 <li><i class="fa-li fa fa-code"></i> Data Camp <a href="https://campus.datacamp.com/courses/data-visualization-with-ggplot2-1">Data Visualization with ggplot2 (1)</a> </li>
-<li><i class="fa-li fa fa-book"></i> <em>OpenIntro</em>, Ch 1.</li>
-<li><i class="fa-li fa fa-book"></i> <em>SMISS</em> Ch 2 </li>
+<li><i class="fa-li fa fa-book"></i> <em>OpenIntro</em>, Ch. 1, "Introduction to data."</li>
+<li><i class="fa-li fa fa-book"></i> <em>SMISS</em>. Ch. 2, "Descriptive Statistics: Data and Information." </li>
 <li><i class="fa-li fa fa-book"></i> Wickham, Hadley. 2010. "A Layered Grammar of Graphics." <em>Journal of Computational and Graphical Statistics</em>. <a href="http://dx.doi.org/10.1198/jcgs.2009.07098">[url]</a></li>
 <li><i class="fa-li fa fa-book"></i>Tukey, John. W. 1980. "We Need Both Explanatory and Confirmatory." <em>The American Statistician</em>. <a href=http://dx.doi.org/10.2307/2682991">[url]</a></li>
 </ul>
@@ -76,37 +76,37 @@ Probability; Tidy Data
 
 <ul class="fa-ul">
 <li><i class="fa-li fa fa-puzzle-piece"></i></td><td>Dataset for your final paper</td>
-<li> <i class="fa-li fa fa-book"></i> <em>OpenIntro</em>, Ch 2., <em>SMISS</em> Ch 3&ndash;4. </li>
+<li> <i class="fa-li fa fa-book"></i> <em>OpenIntro</em>, Ch 2., <em>SMISS</em> Ch. 3, "Observable Data and Data-Generating Processes"; Ch. 4, "Probability Theory: Basic Properties of Data-Generating Processes" </li>
 <li><i class="fa-li fa fa-book"></i> Wickham, Hadley. 2014. "Tidy Data." <em>Journal of Statistical Software</em>. <a href="http://dx.doi.org/10.18637/jss.v059.i10">[url]</a>. </li>
 </ul>
 
 ## Week 4
 
-Distributions of Random Variables, Expectations, Linking Theories to the Data-Generating Process; Reproducible Research; R Markdown
+Distributions of Random Variables, Expectations, Linking Theories to the Data-Generating Process
 
 <ul class="fa-ul">
 <li> <i class="fa-li fa fa-book"></i> <em>OpenIntro</em>, Ch 3.  </li>
-<li> <i class="fa-li fa fa-book"></i> <em>SMISS</em>, Ch 5&ndash;6  </li>
+<li> <i class="fa-li fa fa-book"></i> <em>SMISS</em>. "Chapter 5: Expectation and Moments: Summaries of Data Generating Processes", "Chapter 6: Linking Positive Theories and Data-Generating Processes." </li>
 </ul>
 
 ## Week 5
 
-Foundations of Inference: Sampling distributions, confidence intervals, hypothesis testing; For loops
+Foundations of Inference: Sampling distributions, confidence intervals, hypothesis testing
 
 <ul class="fa-ul">
 <li> <i class="fa-li fa fa-book"></i> <em>OpenIntro</em>, Ch 4 </li>
-<li> <i class="fa-li fa fa-book"></i> <em>SMISS</em>, Ch 7&ndash;8  </li>
+<li> <i class="fa-li fa fa-book"></i> <em>SMISS</em>. 7.1&ndash;7.4,   </li>
 <li><i class="fa-li fa fa-book"></i> Wickham, Hadley. 2010. "Graphical Inference for Infovis." <em>IEEE Transactions on Visualization and Computer Graphics</em>. <http://dx.doi.org/10.1109/TVCG.2010.161>.
 <li><i class="fa-li fa fa-code"></i> Data Camp <a href="https://www.datacamp.com/courses/reporting-with-r-markdown">Reporting with R Markdown</a></li>
 </ul>
 
 ## Week 6
 
-Inference for Numerical Data (t-tests, ANOVA)
+Inference for Numerical Data (t-tests, ANOVA); Bootstrap.
 
 <ul class="fa-ul">
 <li> <i class="fa-li fa fa-book"></i> <em>OpenIntro</em>, Ch 5 </li>
-<li> <i class="fa-li fa fa-book"></i> <em>SMISS</em>, Parts of Ch 7&ndash;9 </li>
+<li> <i class="fa-li fa fa-book"></i> <em>SMISS</em> Parts of Chapter 7&ndash;9 </li>
 </ul>
 
 
@@ -116,7 +116,7 @@ Inference for Categorical data (proportion tests, $\Chi^2$-tests)
 
 <ul class="fa-ul">
 <li> <i class="fa-li fa fa-book"></i> <em>OpenIntro</em>, CH 6 </li>
-<li> <i class="fa-li fa fa-book"></i> <em>SMISS</em>, Parts of Ch 7&ndash;9 </li>
+<li> <i class="fa-li fa fa-book"></i> <em>SMISS</em>. Parts of Chapters 7&ndash;9 </li>
 </ul>
 
 ## Week 8
@@ -125,7 +125,7 @@ Introduction to Linear Regression
 
 <ul class="fa-ul">
 <li> <i class="fa-li fa fa-book"></i> <em>OpenIntro</em>, Ch 7 </li>
-<li> <i class="fa-li fa fa-book"></i> <em>SMISS</em>, Parts of Ch 7&ndash;9 </li>
+<li> <i class="fa-li fa fa-book"></i> <em>SMISS</em>, Parts of Chapters 7&ndash;9 (7.5) </li>
 </ul>
 
 ## Week 9
@@ -134,7 +134,7 @@ Multiple regression
 
 <ul class="fa-ul">
 <li> <i class="fa-li fa fa-book"></i> <em>OpenIntro</em>, Ch 8 </li>
-<li> <i class="fa-li fa fa-book"></i> <em>SMISS</em>, Parts of Ch 7&ndash;9 </li>
+<li> <i class="fa-li fa fa-book"></i> <em>SMISS</em>, Parts of Chapters 7&ndash;9 </li>
 </ul>
 
 ## Week 10

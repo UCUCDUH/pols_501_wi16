@@ -1,0 +1,55 @@
+# Outline of the Course
+
+## Introductions
+
+## Motivating Slides
+
+## Syllabus Review
+
+- Lab is in the CSSCR lab
+- Office hours
+
+   - show how to sign up for office hours
+   - explain reasoning
+   - remind those people who have not signed up for office hours to sign up
+
+- Learning objectives
+- Prerequisites
+
+   - No prior math. This is **not a math course**
+
+- Data analysis project paper
+
+   - Objective: dealing with real world data. Not to develop an original research idea.
+   - How the assignments
+
+- Assignments: discuss purpose behind each
+- Grading ... ? 
+- Software and Computing: R
+
+   - Did everyone sign up to R? 
+   - Data camp. Why am I using it? What do people think about it? 
+   - Did people sign up to the group?
+
+- Resources
+- How to make changes or report bugs?
+
+## Introduction to R with Gapminder Data
+
+## Next Course
+
+
+# Checklist
+
+- [ ] Index cards: 
+
+   - How long did reading take? 
+   - One good thing about reading.
+   - One bad thing about reading.
+
+- [ ] Calculus pre-test
+
+
+
+
+
