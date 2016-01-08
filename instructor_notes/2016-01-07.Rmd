@@ -47,9 +47,22 @@
    - One good thing about reading.
    - One bad thing about reading.
 
-- [ ] Calculus pre-test
+Decided not to do a calculus pre-test.
 
+# Class Summary
 
+- Introductions: each student said one thing about their break and one thing about what they will
+  be working on.
+- 1:15 on syllabus
+- Break
+- Remaind
+
+# Post-Course
+
+- Too much time was spent on the syllabus. I should have assumed students would have read it.
+  Not using slides actually made it slower as well.
+- The script for live coding needs to be concrete. I noticed myself lost 
+- I noticed myself using negative 
 
 
 
