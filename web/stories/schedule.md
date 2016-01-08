@@ -64,8 +64,8 @@ Lab
 **Observable Data, Descriptive Statistics and Exploratory Data Analysis**
 
 <ul class="fa-ul">
-<li><i class="fa-li fa fa-puzzle-piece"></i>Paragraph describing your data analysis project topic.</li>
-<!-- <li><i class="fa-li fa fa-code"></i> Data Camp <a href="https://campus.datacamp.com/courses/data-visualization-with-ggplot2-2">Data Visualization with ggplot2 (2)</a> </li> -->
+<li><i class="fa-li fa fa-puzzle-piece"></i><a href="/assignments/project-01/">Research project assignment 1 due</a></li>
+<li><i class="fa-li fa fa-puzzle-piece"></i><a href="/assignments/reading-01/">Readings assignment 1 due</a></li>
 <li><i class="fa-li fa fa-code"></i> Data Camp <a href="https://campus.datacamp.com/courses/data-visualization-with-ggplot2-1">Data Visualization with ggplot2 (1)</a> </li>
 <li><i class="fa-li fa fa-book"></i> <em>OpenIntro</em>, Ch. 1, "Introduction to data."</li>
 <li><i class="fa-li fa fa-book"></i> <em>SMISS</em>. Ch. 2, "Descriptive Statistics: Data and Information." </li>
