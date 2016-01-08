@@ -3,7 +3,9 @@ set -e # exit with nonzero if anything fails
 
 # This force pushes build directory and overwrites the gh-pages branch on github
 # destroying all the history.
-cd web/output
+cd web
+nikola build
+cd output
 git init
 git add .
 git commit -m "Travis update"
