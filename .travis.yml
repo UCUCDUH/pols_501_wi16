@@ -13,9 +13,9 @@ before_script:
 - npm install markdown-spellcheck
 - PATH="node_modules/.bin:$PATH"
 script:
-- ./check-links.sh
 - ./travis-deploy.sh
 after_success:
+- ./check-links.sh
 - ./spell-check.sh
 notifications:
   email:
