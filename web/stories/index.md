@@ -86,7 +86,7 @@ These instructions will ensure that our time is efficiently spent and I can be o
 
 # Communication
 
-For questions about the course that would be of general interest to all students in the course, email the course mailing list, [multi_pols503a_sp15@uw.edu](mailto:multi_pols503a_sp15@uw.edu), rather than the individual instructors.
+For questions about the course that would be of general interest to all students in the course, email the course mailing list, [multi_pols501a_wi16@uw.edu](mailto:multi_pols501a_wi16@uw.edu), rather than the individual instructors.
 Please reserve emails to individual instructors for individual concerns, such as your data analysis project or personal matters.
 
 # Learning Objectives
