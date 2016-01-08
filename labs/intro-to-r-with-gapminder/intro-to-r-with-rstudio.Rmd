@@ -55,36 +55,12 @@ Of those, the most likely to be useful to you are:
 2. What happens when you type `Alt+Shift+K`?
 
 
-# Using R as a calculator
+# Variables and the Environment
 
-Although it is so much more, you can use R as a calculator.
-For example, to add, subtract, multiply or divide:
+I 
 
-```{r }
-2 + 3
-2 - 3
-2 * 3
-2 / 3
-```
 
-The power of a number is calculated with ``^``, e.g. $4^2$ is,
-
-```{r }
-4 ^ 2
-```
-
-R includes many functions for standard math functions.
-For example, the square root function is ``sqrt``, e.g. $\sqrt{2}$,
-
-```{r }
-sqrt(2)
-```
-
-And you can combine many of them together
-```{r}
-(2 * 4 + 3 ) / 10
-sqrt(2 * 2)
-```
+# 
 
 
 # Variables and Assignment
@@ -111,11 +87,6 @@ You can use `=` instead of `<-` for assignment.
 You may see this in some other code.
 There are some technical reasons to use `<-` instead of `=`, but the primary reason we will use `<-` instead of `=` is that this is the convention used in modern `R` programs.
 
-**Challenge**
-
-1. Create a variable named whatever strikes your fancy and set it equal to the square root of 2. Then multiply it by 4.
-2. Create a variable with a really long name and assign it a value. Start typing its name
-3. Enter the following in the console `sdgagasdgjasda`.
 
 
 # Working Directory and R Projects
@@ -123,34 +94,30 @@ There are some technical reasons to use `<-` instead of `=`, but the primary rea
 ## Working Directory
 
 
+
 ## R Projects
 
-Keeping all the files associated with a project organized together – input data, R scripts, analytical results, figures – is such a wise and common practice that RStudio has built-in support for this via its projects.  Read [this](https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects) for more information about RStudio projects.
+Keeping all the files associated with a project organized together – input data, R scripts, analytical results, figures – is such a wise and common practice that RStudio has built-in support for this via its projects. 
+Read [this](https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects) for more information about RStudio projects.
 
-You will use RStudio projects for your labs and homeworks, and **final paper**.
-Create a RStudio project that you will use for all your labs.
+You will use RStudio projects for your labs and homework, and **final paper**.
+Create a RStudio project that you will use for all this lab.
 
 1. *File -> New Project*
 2. Select "New Directory"
 3. Select "Empty Project"
-4. Select a name for your project as Directory Name.
-"POLS_503_Labs" is as good as any, and better than most.
-Then choose where to put this directory with "Create project as sub-directory of".
+4. Select a name for your project as Directory Name. "pols_501_lab01" is as good as any, and better than most. Choose where to put this directory with "Create project as sub-directory of".
 Do not worry about the other options.
 
 
-
 # Creating your first R script
+9
 
-For this course, you will be we using R Markdown documents for homeworks.
-Create your firs
-
-1. *File -> New File -> R Markdown*
+1. *File -> New File -> R Script*
 2. Choose a title and author for your file.  HTML output is fine.
 3. Hit OK. This will open a template for your Markdown file.
 4. Save this file with `Ctrl-S`.
-5. Click on the "Knit HTML" button. This will create a HTML document from this
-document.
+
 
 
 Cheatsheets and additional resources about R Markdown are available at <http://rmarkdown.rstudio.com/>.
