@@ -14,9 +14,9 @@ before_script:
 - PATH="node_modules/.bin:$PATH"
 script:
 - ./check-links.sh
-- ./spell-check.sh
-after_success:
 - ./travis-deploy.sh
+after_success:
+- ./spell-check.sh
 notifications:
   email:
     recipients:
