@@ -1,21 +1,17 @@
-# Lab 1: Reading Data in R
+# Reading Data in R
+Andreu Casas  
+January 9, 2016  
 
-#### Jeff Arnold (Primary Instructor) & Andreu Casas (TA)
+# Lab 1: 
 
-***
-
-### Learning Objectives
+## Learning Objectives
 
 1. Reading data form R packages
 2. Read and write CSVs
 3. Read and write other type of data formats: STATA, SPSS, XLS...
 4. Replication, Dataverse, and getting data from an external source
 
-
-
-***
-
-### 0. R Projects
+## R Projects
 
 Keeping all the files associated with a project organized together – input data, R scripts, analytical results, figures – is such a wise and common practice that RStudio has built-in support for this via its projects.  Read [this](https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects) for more information about RStudio projects.
 
@@ -32,18 +28,19 @@ You will use RStudio projects for your labs and homework. Create a RStudio proje
 6. Create a new directory within "lab1" called "data"
 7. Open this new project and open a new R script where you will be writing (and copy-pasting) and running code.
 
-In lab I'll do live-coding and we'll use R scripts to take notes and write the code:  
+In lab I'll do live-coding and we'll use R scripts to take notes and write the code:
 
 1. Open a new R script
 2. Write a title 
 3. Your name (and email?)
 4. Date
 
-### 1. Reading data from R packages
+## 1. Reading data from R packages
 
 Some R packages have datasets that you can load if you have those packages installed and loaded. The `base` package already comes with some datasets. To view the datasets, use the function `data()`. To load a specific dataset, use the same function and add the name of the dataset as a parameter: e.g. `data(UCBAdmissions)`. 
 
-#### Challenge:
+
+**Challenge:**
 
 - Load any dataset you like
 - Explore it. Tell me what type of information contains, its dimensions, variables, etc.
@@ -62,8 +59,14 @@ When we load new packages that have datasets within them, R adds them to the `da
 
 ```r
 install.packages('HistData')
-library(HistData)
+```
+
+```r
+library("HistData")
 data()
+```
+
+```r
 ?HistData
 ```
 
@@ -71,9 +74,9 @@ The `help` files give us a brief description of packages, functions, and its par
 
 Let's explore a `help` file: click to the `help` file for the `Snow` dataset in `HistData`. 
 
-#### Challenge:
+**Challenge:**
 
-- Do you know about John Snow's 1854 London Cholear Outbreak study and his visualization of the Pump on Broad Street? Google it and see if you can find the [map-visualization] (http://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2013/3/14/1363276044871/John-Snows-cholera-map-of-009.jpg).
+- Do you know about John Snow's 1854 London Cholera Outbreak study and his visualization of the Pump on Broad Street? Google it and see if you can find the [map-visualization] (http://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2013/3/14/1363276044871/John-Snows-cholera-map-of-009.jpg).
 
 Now let's try to replicate his map using this R package/dataset. Scroll down to the bottom of the help file and copy and runt the following lines of code:
 
@@ -105,12 +108,9 @@ Spumps()
 Sstreets()
 ```
 
-![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-4-1.png) 
+![](index_files/figure-html/unnamed-chunk-5-1.png) 
 
-
-***
-
-### 2. Read and write CSVs
+## 2. Read and write CSVs
 
 One of the most common data formats is the CSV (Comma Separated Values). CSV datasets are easy to share and read using multiple statistical softwares. 
 
@@ -134,10 +134,10 @@ head(wdi)
 names(wdi)
 unique(wdi$Country.Name)
 unique(wdi$Indicator.Name)
-wdi[50,]
+wdi[50, ]
 ```
 
-#### Challenge:
+**Challenge:**
 
 - Tell me the `country` and `wdi indicator` in the first row of the dataset
 - And the `country` and `indicator` in the last row?
@@ -171,13 +171,13 @@ Save the new version of the dataset in CSV format
 write.csv(x=wdi, file='data/wdi_sample2.csv')
 ```
 
-***
 
-### 3. Read and write other type of data formats: STATA, SPSS, XLS, XLSX...
+
+## 3. Read and write other type of data formats: STATA, SPSS, XLS, XLSX...
 
 Not all datasets we want to use are in CSV format. They are often in other formats such as `.txt`, `.sav` (SPSS's native format), `.dta` (STATA), `.xls` or `.xlsx` (Excel formats), etc. There are some R packages that make it easy to read those data formats into R. One of them is the ``rio`` package. Download the following datasets, install the ``rio`` package, and load them into R using ``rio``
 
-- [phd.txt] (https://github.com/UW-POLS501/pols_501_wi16/blob/master/labs/lab1/data/phd.txt) Time to PhD dataset from Espenshade and Rodriguez (1997) SSQ, avialable [here] (http://data.princeton.edu/wws509/datasets/#phd).
+- [phd.txt] (https://github.com/UW-POLS501/pols_501_wi16/blob/master/labs/lab1/data/phd.txt) Time to PhD dataset from Espenshade and Rodriguez (1997) SSQ, available [here] (http://data.princeton.edu/wws509/datasets/#phd).
 
 - [edu_expend_1975.sav] (https://github.com/UW-POLS501/pols_501_wi16/blob/master/labs/lab1/data/edu_expend_1975.sav) Education Expenditure 1960, from Chatterjee, Hadi and Price (1977), available [here] (http://www.ats.ucla.edu/stat/spss/examples/chp/chpspss_dl.htm)
 
@@ -188,15 +188,18 @@ Not all datasets we want to use are in CSV format. They are often in other forma
 
 ```r
 install.packages('rio')
-library(rio)
+```
+
+```r
+library("rio")
 phd <- import('data/phd.txt')
 edu <- import('data/edu_expend_1975.sav')
 salary <- import('data/salary.dta')
 divorce <- import('data/divorce.xlsx')
 ```
 
-#### Challenge:
-- Explore the datasets that we just loaded using some of the functions that we have already seen. Check if they all have been correctly loaded.
+**Challenge:**
+Explore the datasets that we just loaded using some of the functions that we have already seen. Check if they all have been correctly loaded.
 
 We observe 2 issues when reading in the `phd` dataset: it has no variable names in the first row, and R believes the datset has only 1 variable. Let's read the dataset in using the `read.table()` function of the `utils` package
 
@@ -211,9 +214,9 @@ The `rio` package is very useful but not perfect. The following are other functi
 - `foreign` package has multiple functions to import numeorus data formats such as `.sav`, `.dta`, etc.
 
 
-***
 
-### 4. Replication, Dataverse, and getting data from an external source
+
+## 4. Replication, Dataverse, and getting data from an external source
 
 Replication and transparency are key components of all scientific research. However, in the past social scientists have often not been very transparent. For this reason, there are currently numerous initatives aiming to increase transparency in social science research. One of the main objectives of this course is to learn how to produce clear guidelines when developing our research so others can easily replicate it in the future. 
 
@@ -230,8 +233,7 @@ Now load it and play with it! `.Rdata` is R's native format. To load an `.Rdata`
 load('data/Study1_data.Rdata')
 ```
 
-#### Challenge:
-- Look at the article and explore the dataset and see if you can identify in the dataset some of the key variables they discuss in the paper. 
+**Challenge** Look at the article and explore the dataset and see if you can identify in the dataset some of the key variables they discuss in the paper. 
 
 
 ```r
@@ -239,19 +241,3 @@ names(x)
 table(x$policy_letter_treat)
 table(x$policy_letter_treat,x$movable_total)
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
