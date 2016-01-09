@@ -43,7 +43,7 @@ Pre-class
 Class
 
 <ul class="fa-ul">
-<li><i class="fa-li fa fa-bar-chart"></i><a href="/lessons/intro-/">Introduction to R with Gapminder Data</a>
+<li><i class="fa-li fa fa-bar-chart"></i><a href="/lessons/intro-to-r-with-gapminder/">Introduction to R with Gapminder Data</a>
 </ul>
 
 Lab

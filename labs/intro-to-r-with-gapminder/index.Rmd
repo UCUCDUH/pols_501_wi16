@@ -49,12 +49,12 @@ It consists of four windows,
   - **packages** shows which packages are installed and loaded.
   - **help** displays R help.
 
-RStudio documentation can be found at <http://www.rstudio.com/ide/docs/>.
+RStudio documentation can be found at <https://support.rstudio.com/hc/en-us/categories/200035113-Documentation>.
 Of those, the most likely to be useful to you are:
 
-- [Working in the Console](http://www.rstudio.com/ide/docs/using/console)
-- [Editing and Executing Code](http://www.rstudio.com/ide/docs/using/source)
-- [Viewing Command History](http://www.rstudio.com/ide/docs/using/history)
+- [Working in the Console](https://support.rstudio.com/hc/en-us/articles/200404846-Working-in-the-Console)
+- [Editing and Executing Code](https://support.rstudio.com/hc/en-us/articles/200484448-Editing-and-Executing-Code)
+- [Viewing Command History](https://support.rstudio.com/hc/en-us/articles/200526217-Command-History)
 
 **Challenge:**
 
@@ -79,7 +79,7 @@ foo + 3
 foo / 2 * 8 + foo
 ```
 
-[^1]: If you are curious as to why the variable was named `foo`, read [this](http://en.wikipedia.org/wiki/Foobar).
+[^1]: If you are curious as to why the variable was named `foo`, read [this](https://en.wikipedia.org/wiki/Foobar).
 
 You can use `=` instead of `<-` for assignment.
 You may see this in some other code.
@@ -128,7 +128,7 @@ We find out what is in the gapminder dataset using the help function
 help(package = "gapminder")
 ```
 The **gapminder** package includes a couple of datasets.
-This package contains country-level data from [Gapminder.org](https://gapminder.org) on income and life expectancy.
+This package contains country-level data from [Gapminder.org](http://www.gapminder.org) on income and life expectancy.
 This [Ted Talk](https://www.ted.com/talks/hans_rosling_shows_the_best_stats_you_ve_ever_seen) by Hans Rosling is one of the better data visualization talks out there.
 
 The dataset that we are interested in is `gapminder`.
