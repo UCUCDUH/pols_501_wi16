@@ -3,8 +3,6 @@
 .. slug: schedule
 -->
 
-[TOC]
-
 <i class="fa fa-warning"></i> The following schedule is a *tentative* guideline and will be evolving to meet course needs up to and during the quarter.
 In particular, the pace of the course will be adjusted so that we move as possible conditional on everyone "getting" the material. 
 
@@ -18,19 +16,11 @@ Lab sections will cover how to implement the analysis in R, conceptual review an
 Key: 
 
 <table>
-<tr>
-<td><i class="fa fa-book"></i></td><td>Readings</td>
-<tr>
-<tr>
-<td><i class="fa fa-code"></i></td><td>Data Camp or other coding exercises</td>
-<tr>
-<tr>
-<td><i class="fa fa-gears"></i></td><td>Actions to take</td>
-<tr>
-<tr>
-<td><i class="fa fa-puzzle-piece"></i></td><td>Final paper</td>
-<tr>
-
+<tr><td><i class="fa fa-book"></i></td><td>Readings</td>
+<tr><td><i class="fa fa-code"></i></td><td>Data Camp or other coding exercises</td>
+<tr><td><i class="fa fa-gears"></i></td><td>Actions to take</td>
+<tr><td><i class="fa fa-gears"></i></td><td>R lessons</td>
+<tr><td><i class="fa fa-puzzle-piece"></i></td><td>Final paper</td>
 </table>
 
 ## Week 1
@@ -52,11 +42,17 @@ Pre-class
 
 Class
 
-<ul>
-<li><a href="https://docs.google.com/a/uw.edu/document/d/1V7r1BIR-xIMInUT6xHIYii7WWF_lsMsLHNVD0Y-fTb4/edit?usp=sharing">class notepad</li>
+<!--
+<ul class="fa-ul">
+<li><i class="fa-li fa fa-bar-chart"></i><a href="/lessons/intro-/">Introduction to R with Gapminder Data</a>
 </ul>
+-->
 
 Lab
+
+<ul class="fa-ul">
+<li><i class="fa-li fa fa-bar-chart"></i><a href="/lessons/getting-data-into-r/">Getting Data into R</a>
+</ul>
 
 
 ## Week 2
