@@ -6,3 +6,5 @@ web/output
 node_modules
 .Rproj.user
 *_files/
+*.Rhistory
+*.RData
