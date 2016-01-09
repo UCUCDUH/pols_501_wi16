@@ -1,0 +1,345 @@
+---
+title: "Introduction to R and RStudio with Gapminder"
+author: Jeffrey B. Arnold
+date: January 7, 2015
+---
+
+```{r echo=FALSE,results='hide'}
+knitr::opts_chunk$set(warning = FALSE,
+                      message = FALSE)
+```
+
+
+1. Use the RStudio IDE to run R scripts
+2. Setup an RStudio Project
+3. Install and load an R package
+4. Use R functions and help pages to explore the `gapminder` dataset and find the number of rows, columns, names, and descriptions of the data frame.
+5. Use `ggplot2` to create histograms and scatter plots of the `gapminder` data
+
+# Orientation with RStudio
+
+R is the name of the programming language, and RStudio is a convenient and widely used interface to that language.
+
+Since you will be using it for the remainder of the course, you should familiarize yourself with the RStudio GUI.
+
+It consists of four windows,
+
+1. Bottom left: The **console** window. You type commands at the ``>`` prompt and R executes them.
+2. Top left: The **editor** window. Here you can edit and save R scripts which contain multiple R commands.
+  - You can open a new R script using *File -> New -> R script*.
+  - If you highlight an area, you can run those commands in the console with the "Run" button.
+  - You can run all the commands in the **editor** window using the "Source" button.
+3. Top right
+  - **workspace** lists all R objects (variables) that are defined
+  - **history** lists all the commands that have been typed into the console.
+4. Bottom right
+
+  - **files** allows you to browse directories and open files.
+  - **plots** displays any plots created. In this window you can toggle back through previously created plots.
+  - **packages** shows which packages are installed and loaded.
+  - **help** displays R help.
+
+RStudio documentation can be found at <http://www.rstudio.com/ide/docs/>.
+Of those, the most likely to be useful to you are:
+
+- [Working in the Console](http://www.rstudio.com/ide/docs/using/console)
+- [Editing and Executing Code](http://www.rstudio.com/ide/docs/using/source)
+- [Viewing Command History](http://www.rstudio.com/ide/docs/using/history)
+
+**Challenge:**
+
+1. Go to *Tools > Global Options*. Change the font and color of the editor and console. Which one do you like the best?
+2. What happens when you type `Alt+Shift+K`?
+
+# Variables and the Environment
+
+In R, you can save the results of calculations into objects that you can use later.
+This is done using the special symbol, ``<-``.
+For example, this saves the results of 2 + 2 to an object named ``foo`` [^1]
+```{r}
+foo <- 2 + 2
+```
+You can see that ``foo`` is equal to ``4``
+```{r}
+foo
+```
+And you can reuse foo in other calculations,
+```{r}
+foo + 3
+foo / 2 * 8 + foo
+```
+
+[^1]: If you are curious as to why the variable was named `foo`, read [this](http://en.wikipedia.org/wiki/Foobar).
+
+You can use `=` instead of `<-` for assignment.
+You may see this in some other code.
+There are some technical reasons to use `<-` instead of `=`, but the primary reason we will use `<-` instead of `=` is that this is the convention used in modern `R` programs.
+
+
+# Working Directory and R Projects
+
+## R Projects
+
+Keeping all the files associated with a project organized together – input data, R scripts, analytic results, figures – is such a wise and common practice that RStudio has built-in support for this via its projects. 
+Read [this](https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects) for more information about RStudio projects.
+
+You will use RStudio projects for your labs and homework, and **final paper**.
+Create a RStudio project that you will use for all this lab.
+
+1. *File -> New Project*
+2. Select "New Directory"
+3. Select "Empty Project"
+4. Select a name for your project as Directory Name. "pols_501_lab01" is as good as any, and better than most. Choose where to put this directory with "Create project as sub-directory of".
+Do not worry about the other options.
+
+
+# Creating your first R script
+
+1. *File -> New File -> R Script*
+2. Choose a title and author for your file.  HTML output is fine.
+3. Hit OK. This will open a template for your Markdown file.
+4. Save this file with `Ctrl-S`.
+
+
+# Gapminder Data
+
+We will use a dataset from the **gapminder**. 
+
+The gapminder package is not  installed with R by default, so you need to install it using `install.package`.
+```{r eval=FALSE}
+install.packages("gapminder")
+```
+After installing the package, you need to load it using the `library` function  in order to be able to access the functions and data in it.
+```{r}
+library("gapminder")
+```
+We find out what is in the gapminder dataset using the help function
+```{r eval=FALSE}
+help(package = "gapminder")
+```
+The **gapminder** package includes a couple of datasets.
+This package contains country-level data from [Gapminder.org](https://gapminder.org) on income and life expectancy.
+This [Ted Talk](https://www.ted.com/talks/hans_rosling_shows_the_best_stats_you_ve_ever_seen) by Hans Rosling is one of the better data visualization talks out there.
+
+The dataset that we are interested in is `gapminder`.
+You can read the help for this dataset by clicking on the link for it or using the `help` function
+```{r}
+help("gapminder")
+```
+
+Load the dataset into your environment using the `data` function.
+Note that currently `data` is not in the environment
+```{r}
+ls()
+```
+Now load `gapminder` using `data()`,
+```{r}
+data("gapminder")
+```
+You will not see a message if this is successful.
+However, there will be an object called `gapminder` into the environment,
+```{r}
+ls()
+```
+
+The `gapminder` object is a *data frame*.  A data frame is a type of R object that corresponds to what you usually think of as a dataset or a spreadsheet --- rows are observations and columns are variables.
+
+
+**Challenge:**
+What happens when you do the following?
+```{r results='hide'}
+gapminder
+```
+
+This is a lot of information. How can we get a more useful picture of the dataset as a whole?
+```{r results='hide'}
+dim(gapminder)
+names(gapminder)
+head(gapminder)
+tail(gapminder)
+summary(gapminder)
+```
+
+- `dim` shows the dimensions of the data frame as the number of rows, columns
+- `names` shows the column names of the data frame.
+- `head` shows the first few observations
+- `tail` shows the last few observations
+- `summary` calculates summary statistics for all variables in the data frame.
+
+**Challenge:** Given the information previously:
+
+1. What are the variables in the dataset?
+2. How many observations are there?
+3. What is the unit of observation?
+3. What types of data are the different variables?
+4. What is the range of years in the data?
+5. What are the mean and median life expectancy?
+
+# Working with variables in Data Frames
+
+You can extract single variables (columns) and perform different operations on them.
+
+To extract a variable, we use the dollar sign (`$`) extraction operator.
+```{r results='hide'}
+gapminder$lifeExp
+```
+
+Again, perhaps a summary may be more interesting.
+We can do more specific operations on this variable alone:
+```{r results='hide'}
+mean(gapminder$lifeExp)
+median(gapminder$lifeExp)
+min(gapminder$lifeExp)
+max(gapminder$lifeExp)
+```
+
+We can add variables to the data frame using `<-`
+```{r}
+gapminder$log_life_exp <- log(gapminder$lifeExp)
+gapminder$log_gdp_per_cap <- log(gapminder$gdpPercap)
+```
+
+You can extract specific columns and rows using the bracket operators.
+
+**Challenge:**  Run each of the following lines. What does each do?
+```{r results="hide"}
+gapminder[1:5, ]
+gapminder[, 1:2]
+gapminder[ , "year"]
+gapminder[ , c("year", "country")]
+gapminder[1:5, c("year", "country")]
+gapminder[gapminder$year == 2007, ]
+gapminder[gapminder$year == 2007, c("country", "year", "lifeExp")]
+gapminder[gapminder$year == 2007, ][ , c("country", "year", "lifeExp")]
+gapminder[gapminder$year == 2007, ]$lifeExp
+gapminder[gapminder$country == "United States", ]
+gapminder[gapminder$country == "United States", c("year", "gdpPercap", "lifeExp")]
+gapminder[gapminder$country == "United States", c("year", "gdpPercap", "lifeExp")]
+gapminder[gapminder$country == "United States" & gapminder$year == 2007, ]
+gapminder[gapminder$country == "United States" | gapminder$year == 2007, ]
+gapminder[gapminder$country %in% c("United States", "France", "Germany"), ]
+gapminder[gapminder$country %in% c("United States", "France", "Germany") & gapminder$year == 2007, ]
+gapminder[gapminder$country %in% c("United States", "France", "Germany") & gapminder$year > 2000, ]
+gapminder[gapminder$country %in% c("United States", "France", "Germany") & gapminder$year %in% c(2000, 2007), ]
+```
+
+
+**Challenge**
+
+1. What are the mean and median of GDP per capita?
+2. Find the 30th percentile of GDP per capita?
+3. The function `length()` calculates the length of a vector.
+The function `unique()` returns the number of unique values in a vector.
+How many countries in the data are there? How many years?
+
+
+# Creating Plots with `ggplot2`
+
+Summary statistics reduce the information of a distribution to single values.
+A distribution provides a richer understanding of the data.
+Look at the distribution of the variable `lifeExp`.
+
+You will use the **ggplot2** package for graphics for most of this course.
+In order to use it, you will need to load it using `library()`
+```{r}
+library("ggplot2")
+```
+
+Create a histogram:
+```{r}
+ggplot(gapminder, aes(x = lifeExp)) +
+  geom_histogram()
+```
+
+You could also save the plot to a variable
+```{r}
+lifexp_plot <- ggplot(gapminder, aes(x = lifeExp)) +
+  geom_histogram()
+```
+If you just enter the variable name in the console it will "print"" the object, which in this case, simply creates the plot:
+```{r}
+lifexp_plot
+```
+
+To create a scatter plot of life expectancy vs. GDP per capita, we need both an `x` and `y` aesthetic, and we use the `geom_point` geom.
+```{r}
+ggplot(gapminder, aes(x = gdpPercap, y = lifeExp)) +
+  geom_point()
+```
+However, the relationship between life expectancy and GDP per capita is clearer if plotted
+on a log-log scale. 
+Lets use the variables, `log_gdp_per_cap` and `log_life_exp`, that we added to the `gapminder` dataset earlier in the lesson.
+```{r}
+ggplot(gapminder, aes(x = log_gdp_per_cap, y = log_life_exp)) +
+  geom_point()
+```
+
+
+Now add titles to the plot and axis title,
+```{r}
+ggplot(gapminder, aes(x = log_gdp_per_cap, y = log_life_exp)) +
+  geom_point() +
+  ggtitle("Life Expectancy vs. GDP per capita") +
+  ylab("log(Life Expectancy)") +
+  xlab("log(GDP per capita)")
+```
+
+To color points by continent, add the aesthetic `colour = continent`.
+```{r}
+ggplot(gapminder, aes(x = log_gdp_per_cap, y = log_life_exp,
+                      colour = continent)) +
+  geom_point() +
+  ggtitle("Life Expectancy vs. GDP per capita") +
+  ylab("log(Life Expectancy)") +
+  xlab("log(GDP per capita)")
+```
+
+Instead, we could color the points by year,
+```{r}
+ggplot(gapminder, aes(x = log_gdp_per_cap, y = log_life_exp,
+                      colour = year)) +
+  geom_point() +
+  ggtitle("Life Expectancy vs. GDP per capita") +
+  ylab("log(Life Expectancy)") +
+  xlab("log(GDP per capita)")
+```
+
+Now size the points proportional to their population,
+```{r}
+ggplot(gapminder, aes(x = log_gdp_per_cap, y = log_life_exp,
+                      colour = continent,
+                      size = pop)) +
+  geom_point() +
+  ggtitle("Life Expectancy vs. GDP per capita") +
+  ylab("log(Life Expectancy)") +
+  xlab("log(GDP per capita)")
+```
+
+There are way too many points in this plot, so lets only use a single year.
+```{r}
+gapminder2007 <- gapminder[gapminder$year == 2007, ]
+ggplot(gapminder2007, aes(x = log_gdp_per_cap, y = log_life_exp,
+                      colour = continent,
+                      size = pop)) +
+  geom_point() +
+  ggtitle("Life Expectancy vs. GDP per capita (2007)") +
+  ylab("log(Life Expectancy)") +
+  xlab("log(GDP per capita)")
+```
+
+Even better, lets split up the plot into "facets" by year,
+```{r}
+ggplot(gapminder, aes(x = log_gdp_per_cap, y = log_life_exp,
+                      colour = continent,
+                      size = pop)) +
+  geom_point() +
+  facet_wrap(~year, nrow = 3) +
+  ggtitle("Life Expectancy vs. GDP per capita (2007)") +
+  ylab("log(Life Expectancy)") +
+  xlab("log(GDP per capita)")
+```
+
+
+* * *     
+
+This is derived from  [R basics, workspace and working directory, RStudio projects](https://stat545-ubc.github.io/block002_hello-r-workspace-wd-project.html) ([CC BY-NC 3.0](http://creativecommons.org/licenses/by-nc/3.0/)).
