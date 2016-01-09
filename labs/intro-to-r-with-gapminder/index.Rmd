@@ -2,6 +2,16 @@
 title: "Introduction to R and RStudio with Gapminder"
 author: Jeffrey B. Arnold
 date: January 7, 2015
+output:
+  html_document:
+    theme: cosmo
+    highlight: textmate
+    keep_md: false
+    toc: true
+    toc_depth: 2
+    includes:
+      before_body: ../_includes/before_body.html
+      after_body: ../_includes/after_body.html
 ---
 
 ```{r echo=FALSE,results='hide'}
@@ -213,14 +223,19 @@ gapminder[gapminder$year == 2007, c("country", "year", "lifeExp")]
 gapminder[gapminder$year == 2007, ][ , c("country", "year", "lifeExp")]
 gapminder[gapminder$year == 2007, ]$lifeExp
 gapminder[gapminder$country == "United States", ]
-gapminder[gapminder$country == "United States", c("year", "gdpPercap", "lifeExp")]
-gapminder[gapminder$country == "United States", c("year", "gdpPercap", "lifeExp")]
+gapminder[gapminder$country == "United States",
+          c("year", "gdpPercap", "lifeExp")]
+gapminder[gapminder$country == "United States",
+          c("year", "gdpPercap", "lifeExp")]
 gapminder[gapminder$country == "United States" & gapminder$year == 2007, ]
 gapminder[gapminder$country == "United States" | gapminder$year == 2007, ]
 gapminder[gapminder$country %in% c("United States", "France", "Germany"), ]
-gapminder[gapminder$country %in% c("United States", "France", "Germany") & gapminder$year == 2007, ]
-gapminder[gapminder$country %in% c("United States", "France", "Germany") & gapminder$year > 2000, ]
-gapminder[gapminder$country %in% c("United States", "France", "Germany") & gapminder$year %in% c(2000, 2007), ]
+gapminder[gapminder$country %in% c("United States", "France", "Germany") &
+            gapminder$year == 2007, ]
+gapminder[gapminder$country %in% c("United States", "France", "Germany") &
+            gapminder$year > 2000, ]
+gapminder[gapminder$country %in% c("United States", "France", "Germany") &
+            gapminder$year %in% c(2000, 2007), ]
 ```
 
 
@@ -318,7 +333,7 @@ ggplot(gapminder, aes(x = log_gdp_per_cap, y = log_life_exp,
 There are way too many points in this plot, so lets only use a single year.
 ```{r}
 gapminder2007 <- gapminder[gapminder$year == 2007, ]
-ggplot(gapminder2007, aes(x = log_gdp_per_cap, y = log_life_exp,
+ggplot(gapminder, aes(x = log_gdp_per_cap, y = log_life_exp,
                       colour = continent,
                       size = pop)) +
   geom_point() +
