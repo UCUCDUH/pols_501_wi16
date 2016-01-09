@@ -14,8 +14,6 @@ output:
       after_body: ../_includes/after_body.html
 ---
 
-# Lab 1: 
-
 ## Learning Objectives
 
 1. Reading data form R packages
@@ -85,7 +83,7 @@ Let's explore a `help` file: click to the `help` file for the `Snow` dataset in 
 
 **Challenge:**
 
-- Do you know about John Snow's 1854 London Cholera Outbreak study and his visualization of the Pump on Broad Street? Google it and see if you can find the [map-visualization] (http://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2013/3/14/1363276044871/John-Snows-cholera-map-of-009.jpg).
+- Do you know about John Snow's 1854 London Cholera Outbreak study and his visualization of the Pump on Broad Street? Google it and see if you can find the [map-visualization](http://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2013/3/14/1363276044871/John-Snows-cholera-map-of-009.jpg).
 
 Now let's try to replicate his map using this R package/dataset. Scroll down to the bottom of the help file and copy and runt the following lines of code:
 
@@ -115,11 +113,11 @@ Spumps()
 Sstreets()
 ```
 
-## 2. Read and write CSVs
+## Read and write csv filess
 
 One of the most common data formats is the CSV (Comma Separated Values). CSV datasets are easy to share and read using multiple statistical software. 
 
-Download the dataset **wdi_sample.csv** from the following [link] (https://GitHub.com/UW-POLS501/pols_501_wi16/blob/master/labs/lab1/data/wdi_subset.csv) and save it in `lab1/data`. To read in the CSV file, use the `read.csv()` function, which has the main following parameters:
+Download the dataset **wdi_sample.csv** from the following [link](https://GitHub.com/UW-POLS501/pols_501_wi16/blob/master/labs/lab1/data/wdi_subset.csv) and save it in `lab1/data`. To read in the CSV file, use the `read.csv()` function, which has the main following parameters:
 
 - `file` name of the file (e.g. 'data/wdi_sample.csv')
 - `header` (TRUE/FALSE) whether the first row contains variable names (TRUE default value)
@@ -173,17 +171,17 @@ write.csv(x = wdi, file = "data/wdi_sample2.csv")
 
 
 
-## 3. Read and write other type of data formats: STATA, SPSS, XLS, XLSX...
+## Read and write other type of data formats: STATA, SPSS, XLS, XLSX...
 
 Not all datasets we want to use are in CSV format. They are often in other formats such as `.txt`, `.sav` (SPSS's native format), `.dta` (STATA), `.xls` or `.xlsx` (Excel formats), etc. There are some R packages that make it easy to read those data formats into R. One of them is the ``rio`` package. Download the following datasets, install the ``rio`` package, and load them into R using ``rio``
 
-- [phd.txt] (https://GitHub.com/UW-POLS501/pols_501_wi16/blob/master/labs/lab1/data/phd.txt) Time to PhD dataset from Espenshade and Rodriguez (1997) SSQ, available [here] (http://data.princeton.edu/wws509/datasets/#phd).
+- [phd.txt](https://GitHub.com/UW-POLS501/pols_501_wi16/blob/master/labs/lab1/data/phd.txt) Time to PhD dataset from Espenshade and Rodriguez (1997) SSQ, available [here](http://data.princeton.edu/wws509/datasets/#phd).
 
-- [edu_expend_1975.sav] (https://GitHub.com/UW-POLS501/pols_501_wi16/blob/master/labs/lab1/data/edu_expend_1975.sav) Education Expenditure 1960, from Chatterjee, Hadi and Price (1977), available [here] (http://www.ats.ucla.edu/stat/spss/examples/chp/chpspss_dl.htm)
+- [edu_expend_1975.sav](https://GitHub.com/UW-POLS501/pols_501_wi16/blob/master/labs/lab1/data/edu_expend_1975.sav) Education Expenditure 1960, from Chatterjee, Hadi and Price (1977), available [here](http://www.ats.ucla.edu/stat/spss/examples/chp/chpspss_dl.htm)
 
-- [salary.dta] (https://GitHub.com/UW-POLS501/pols_501_wi16/blob/master/labs/lab1/data/salary.dta) Discrimination in Salaries, from Weisber (1985), available [here] (http://data.princeton.edu/wws509/datasets/#salary)
+- [salary.dta](https://GitHub.com/UW-POLS501/pols_501_wi16/blob/master/labs/lab1/data/salary.dta) Discrimination in Salaries, from Weisber (1985), available [here](http://data.princeton.edu/wws509/datasets/#salary)
 
-- [divorce.xlsx] (https://GitHub.com/UW-POLS501/pols_501_wi16/blob/master/labs/lab1/data/divorce.xlsx) Marriage Dissolution in the U.S., from Lillard and Panis (2000), available [here] (http://data.princeton.edu/wws509/datasets/#divorce)
+- [divorce.xlsx](https://GitHub.com/UW-POLS501/pols_501_wi16/blob/master/labs/lab1/data/divorce.xlsx) Marriage Dissolution in the U.S., from Lillard and Panis (2000), available [here](http://data.princeton.edu/wws509/datasets/#divorce)
 
 ```{r eval=FALSE,results="hide"}
 install.packages("rio")
@@ -213,13 +211,13 @@ The `rio` package is very useful but not perfect. The following are other functi
 
 
 
-## 4. Replication, Dataverse, and getting data from an external source
+## Replication, Dataverse, and getting data from an external source
 
 Replication and transparency are key components of all scientific research. However, in the past social scientists have often not been very transparent. For this reason, there are currently numerous initiatives aiming to increase transparency in social science research. One of the main objectives of this course is to learn how to produce clear guidelines when developing our research so others can easily replicate it in the future. 
 
-As part of these replication efforts, authors and journals often share replication datasets and code in their websites or online repositories. One of the most used repositories is [`Dataverse` ] (https://dataverse.harvard.edu/). For example, the American Journal of Political Science (AJPS) posts replication files in [dataverse] (https://dataverse.harvard.edu/dataverse/ajps) for all the articles published in the journal. 
+As part of these replication efforts, authors and journals often share replication datasets and code in their websites or online repositories. One of the most used repositories is [`Dataverse`](https://dataverse.harvard.edu/). For example, the American Journal of Political Science (AJPS) posts replication files in [dataverse](https://dataverse.harvard.edu/dataverse/ajps) for all the articles published in the journal. 
 
-For example, AJPS recently posted the replication files of an article by Broockman and Bulter (2015) 'The Causal Effects of Elite Position-Taking on Voter Attitudes: Field Experiments with Elite Communication'. In this article the authors perform two experiments to show how opinions stated by public representatives have the potential to change the opinions of their constituents. You can access the replication files [here] (https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/YZQTAH) and the paper [here] (http://onlinelibrary.wiley.com/doi/10.1111/ajps.12243/abstract). 
+For example, AJPS recently posted the replication files of an article by Broockman and Bulter (2015) 'The Causal Effects of Elite Position-Taking on Voter Attitudes: Field Experiments with Elite Communication'. In this article the authors perform two experiments to show how opinions stated by public representatives have the potential to change the opinions of their constituents. You can access the replication files [here](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/YZQTAH) and the paper [here](http://onlinelibrary.wiley.com/doi/10.1111/ajps.12243/abstract). 
 
 Go to the replication site of the paper and download the replication dataset `Study1_data.tab`. You can choose the format of the dataset, choose to download it in `RData` format. Save it in the working the directory you are using for this lab. 
 
