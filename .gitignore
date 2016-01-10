@@ -2,9 +2,11 @@ venv
 .doit.db.db
 cache/
 __pycache__
-web/output
-node_modules
-.Rproj.user
 *_files/
 *.Rhistory
 *.RData
+node_modules
+.Rproj.user
+
+/web/output
+/web/files/*-diff.txt

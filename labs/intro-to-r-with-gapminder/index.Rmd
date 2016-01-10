@@ -133,7 +133,7 @@ This [Ted Talk](https://www.ted.com/talks/hans_rosling_shows_the_best_stats_you_
 
 The dataset that we are interested in is `gapminder`.
 You can read the help for this dataset by clicking on the link for it or using the `help` function
-```{r}
+```{r eval=FALSE}
 help("gapminder")
 ```
 
@@ -193,6 +193,11 @@ To extract a variable, we use the dollar sign (`$`) extraction operator.
 ```{r results='hide'}
 gapminder$lifeExp
 ```
+Alternatively use double-brackets.
+```{r results='hide'}
+gapminder[["lifeExpr"]]
+```
+
 
 Again, perhaps a summary may be more interesting.
 We can do more specific operations on this variable alone:
@@ -213,11 +218,16 @@ You can extract specific columns and rows using the bracket operators.
 
 **Challenge:**  Run each of the following lines. What does each do?
 ```{r results="hide"}
+gapminder[["year"]]
+gapminder[ , "year"]
+gapminder[1, ]
 gapminder[1:5, ]
+gapminder[c(1, 10, 20), ]
 gapminder[, 1:2]
 gapminder[ , "year"]
 gapminder[ , c("year", "country")]
 gapminder[1:5, c("year", "country")]
+gapminder[["year"]][1:5]
 gapminder[gapminder$year == 2007, ]
 gapminder[gapminder$year == 2007, c("country", "year", "lifeExp")]
 gapminder[gapminder$year == 2007, ][ , c("country", "year", "lifeExp")]
@@ -261,9 +271,18 @@ library("ggplot2")
 ```
 
 Create a histogram:
-```{r}
+```{r message = TRUE}
 ggplot(gapminder, aes(x = lifeExp)) +
   geom_histogram()
+```
+Note that this gives a message asking the user to choose a binwidth.
+We can solve that by adding a binwidth argument to `geom_histogram`.
+Although there are methods to automatically choose the number and bins of histograms 
+(see the help for [nclass](http://www.inside-r.org/r-doc/grDevices/nclass)), 
+in this case 5 years seems a reasonable value.
+```{r}
+ggplot(gapminder, aes(x = lifeExp)) +
+  geom_histogram(binwidth = 5)
 ```
 
 You could also save the plot to a variable
@@ -288,7 +307,6 @@ Lets use the variables, `log_gdp_per_cap` and `log_life_exp`, that we added to t
 ggplot(gapminder, aes(x = log_gdp_per_cap, y = log_life_exp)) +
   geom_point()
 ```
-
 
 Now add titles to the plot and axis title,
 ```{r}
@@ -354,6 +372,27 @@ ggplot(gapminder, aes(x = log_gdp_per_cap, y = log_life_exp,
   xlab("log(GDP per capita)")
 ```
 
+We will generally not use base R graphics in this course, instead relying on **gplot2**.
+Here is how a couple of those plots would be made using the base R graphics.
+For a histogram use the `hist` function:
+```{r}
+hist(gapminder$lifeExp, main = "Histogram of Life Expectancy",
+     xlab = "Life Expectancy")
+```
+For a scatter plot use the `plot` function:
+```{r}
+plot(gapminder$log_gdp_per_cap, gapminder$log_life_exp,
+     main = "GDP per capita vs. Life Expectancy",
+     ylab = "Log Life Expectancy (years)",
+     xlab = "Log GDP per capita")
+```
+
+
+For more on base graphics see the following sources, among others:
+
+- [Quick R: Basic Graphics](http://www.statmethods.net/graphs/)
+- [Base Graphics in R: A Detailed Idiot's Guide](https://susanejohnston.wordpress.com/2013/08/30/base-graphics-in-r-a-detailed-idiots-guide/)
+- Roger Peng [Exploratory Data Analysis with R](https://leanpub.com/exdata). Chapters "Plotting Systems", "Graphics Devices", "The Base Plotting System", "Plotting and Color in R".
 
 * * *     
 

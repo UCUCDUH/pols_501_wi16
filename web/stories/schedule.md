@@ -20,6 +20,7 @@ Key:
 <i class="fa fa-bar-chart"></i> R lessons; 
 <i class="fa fa-puzzle-piece"></i> Final paper.
 
+A list of changes is available [here](/schedule-diff.txt).
 
 ## Week 1
 

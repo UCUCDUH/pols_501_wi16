@@ -13,6 +13,7 @@ before_script:
 - npm install markdown-spellcheck
 - PATH="node_modules/.bin:$PATH"
 script:
+- ./gen-diffs.sh
 - ./travis-deploy.sh
 after_success:
 - ./check-links.sh
