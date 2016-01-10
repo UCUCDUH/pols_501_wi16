@@ -9,7 +9,7 @@
 .. type: text
 -->
 
-The DataCamp [ggplot2](https://campus.datacamp.com/courses/data-visualization-with-ggplot2-1) uses the `%>%` operator in one [tutoria](https://campus.datacamp.com/courses/data-visualization-with-ggplot2-1/chapter-2-data?ex=10). The `%>%` is referred to as the pipe operator. 
+The DataCamp [ggplot2](https://campus.datacamp.com/courses/data-visualization-with-ggplot2-1) uses the `%>%` operator in one [tutorial](https://campus.datacamp.com/courses/data-visualization-with-ggplot2-1/chapter-2-data?ex=10). The `%>%` is referred to as the pipe operator. 
 The pipe operator comes from the R package **magrittr** (and **dplyr**), and is new feature in R, but one that has been quickly and widely adopted.
 It most commonly used with the [dplyr](https://cran.rstudio.com/web/packages/dplyr/vignettes/introduction.html) package for data manipulation and cleaning.
 The data camp and lab next week will cover this in more detail.
@@ -32,7 +32,7 @@ in a more readable left-to-right form
 x %>% f(y) %>% g(z) %>% h()
 ```
 
-Here is another fake example from [Hadley Wickham](https://twitter.com/_inundata/status/557980236130689024) and based on the children's song, [Little Bunny Foo Foo](http://en.wikipedia.org/wiki/Little_Bunny_Foo_Foo),
+Here is another fake example from [Hadley Wickham](https://twitter.com/_inundata/status/557980236130689024) and based on the children's song, [Little Bunny Foo Foo](https://en.wikipedia.org/wiki/Little_Bunny_Foo_Foo),
 ``` R
 foo_foo <- little_bunny()
 
