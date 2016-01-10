@@ -14,14 +14,12 @@ Lab sections will cover how to implement the analysis in R, conceptual review an
 - *OpenIntro* = *Open Intro Statistics* 
 
 Key: 
+<i class="fa fa-book"></i> Readings; 
+<i class="fa fa-code"></i> Data Camp courses;
+<i class="fa fa-gears"></i> Actions to take;
+<i class="fa fa-bar-chart"></i> R lessons; 
+<i class="fa fa-puzzle-piece"></i> Final paper.
 
-<table>
-<tr><td><i class="fa fa-book"></i></td><td>Readings</td>
-<tr><td><i class="fa fa-code"></i></td><td>Data Camp courses</td>
-<tr><td><i class="fa fa-gears"></i></td><td>Actions to take</td>
-<tr><td><i class="fa fa-bar-chart"></i></td><td>R lessons</td>
-<tr><td><i class="fa fa-puzzle-piece"></i></td><td>Final paper</td>
-</table>
 
 ## Week 1
 
