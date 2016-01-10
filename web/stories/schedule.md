@@ -17,9 +17,9 @@ Key:
 
 <table>
 <tr><td><i class="fa fa-book"></i></td><td>Readings</td>
-<tr><td><i class="fa fa-code"></i></td><td>Data Camp or other coding exercises</td>
+<tr><td><i class="fa fa-code"></i></td><td>Data Camp courses</td>
 <tr><td><i class="fa fa-gears"></i></td><td>Actions to take</td>
-<tr><td><i class="fa fa-gears"></i></td><td>R lessons</td>
+<tr><td><i class="fa fa-bar-chart"></i></td><td>R lessons</td>
 <tr><td><i class="fa fa-puzzle-piece"></i></td><td>Final paper</td>
 </table>
 
