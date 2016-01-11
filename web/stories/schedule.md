@@ -61,7 +61,7 @@ Lab
 <li><i class="fa-li fa fa-puzzle-piece"></i><a href="/assignments/reading-01/">Readings assignment 1 due</a></li>
 <li><i class="fa-li fa fa-code"></i> Data Camp <a href="https://campus.datacamp.com/courses/data-visualization-with-ggplot2-1">Data Visualization with ggplot2 (1)</a> </li>
 <li><i class="fa-li fa fa-book"></i> <em>OpenIntro</em>, Ch. 1, "Introduction to data."</li>
-<li><i class="fa-li fa fa-book"></i> <em>SMISS</em>. Ch. 2, "Descriptive Statistics: Data and Information." </li>
+<li><i class="fa-li fa fa-book"></i> <em>SMISS</em>. Ch. 2 "Descriptive Statistics: Data and Information," Sections 2.1--2.3. </li> 
 <li><i class="fa-li fa fa-book"></i> Wickham, Hadley. 2010. "A Layered Grammar of Graphics." <em>Journal of Computational and Graphical Statistics</em>. <a href="http://dx.doi.org/10.1198/jcgs.2009.07098">[doi]</a></li>
 <li><i class="fa-li fa fa-book"></i>Tukey, John. W. 1980. "We Need Both Explanatory and Confirmatory." <em>The American Statistician</em>. <a href="http://dx.doi.org/10.2307/2682991">[doi]</a> </li>
 </ul>
@@ -79,7 +79,9 @@ Lab
 <ul class="fa-ul">
 <li><i class="fa-li fa fa-puzzle-piece"></i></td><td>Dataset for your data analysis paper</td>
 <li><i class="fa-li fa fa-code"></i> Data Camp <a href="https://www.datacamp.com/courses/dplyr-data-manipulation-r-tutorial">Data Manipulation in R with dplyr</a> </li>
-<li> <i class="fa-li fa fa-book"></i> <em>OpenIntro</em>, Ch 2., <em>SMISS</em> Ch. 3, "Observable Data and Data-Generating Processes"; Ch. 4, "Probability Theory: Basic Properties of Data-Generating Processes" </li>
+<li> <i class="fa-li fa fa-book"></i> <em>OpenIntro</em>, Ch 2.
+<li> <i class="fa-li fa fa-book"></i> <em>SMISS</em> Ch. 3, "Observable Data and Data-Generating Processes"
+<li> <i class="fa-li fa fa-book"></i> <em>SMISS</em> Ch. 4, "Probability Theory: Basic Properties of Data-Generating Processes" </li>
 <li><i class="fa-li fa fa-book"></i> Wickham, Hadley. 2014. "Tidy Data." <em>Journal of Statistical Software</em>. <a href="http://dx.doi.org/10.18637/jss.v059.i10">[URL]</a>. </li>
 </ul>
 
@@ -89,7 +91,8 @@ Lab
 
 <ul class="fa-ul">
 <li> <i class="fa-li fa fa-book"></i> <em>OpenIntro</em>, Ch 3.  </li>
-<li> <i class="fa-li fa fa-book"></i> <em>SMISS</em>. "Chapter 5: Expectation and Moments: Summaries of Data Generating Processes", "Chapter 6: Linking Positive Theories and Data-Generating Processes." </li>
+<li> <i class="fa-li fa fa-book"></i> <em>SMISS</em>. "Chapter 5: Expectation and Moments: Summaries of Data Generating Processes" </li>
+<li> <i class="fa-li fa fa-book"></i> <em>SMISS</em>. "Chapter 6: Linking Positive Theories and Data-Generating Processes." </li>
 </ul>
 
 ## Week 5
