@@ -121,7 +121,7 @@ library(ggplot2)
 
 **Challenge:** What is the code that produces this graph?
 
-```{r, warning=FALSE, echo=FALSE}
+```{r, warning=FALSE, echo=FALSE, fig.keep='all'}
 ggplot(country, aes(x=polity2, y=n_articles)) +
   geom_point()
 ```
