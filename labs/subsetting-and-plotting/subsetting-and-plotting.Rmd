@@ -1,0 +1,40 @@
+---
+title: Subsetting and Plotting Data in R
+date: January 15, 2016
+author: Andreu Casas
+---
+
+### Learning Objectives
+
+1. Improve subsetting skills
+2. Plot data using `ggplot2`
+
+***
+
+### 0. Initial Set up
+
+- Create new R project for this lab
+- Create a **data** subdirectory
+
+Today we will work with data from a recent [article](http://jpr.sagepub.com/content/52/3/384.full):
+
+- Baum, Matthew A. and Yuri M. Zhukov. (2015) "Filtering revolution: Reporting bias in international newspaper coverage of the Libyan civil war." *Journal of Peace Research*, 52(3):384-400.
+
+This article won the [2015 Best Visualization Award](https://www.prio.org/JPR/VisualizationAward/), given by the Journal of Peace Research to the article published in the journal that "not only impresses by its interesting analysis, but also by the large number of aesthetically pleasing and informative graphic."
+
+The replication data for the article is available in JPR's [website](https://www.prio.org/JPR/Datasets/). However, since the replication material for this paper takes a while to download, and the four datasets they use are large and have numerous variables, for the purpose of this class we will use a version of one of their datasets that I put together. 
+
+- Download the dataset in this link and store it in the data subdirectory
+
+
+### 1. Improve subsetting skills
+
+### 2. Plot data using `ggplot2`
+
+```{r, warning=FALSE}
+library(ggplot2)
+country <- read.csv('data/country.csv')
+ggplot(country, aes(x=POLITY2, y=N_ARTICLES)) +
+  geom_point()
+```
+
