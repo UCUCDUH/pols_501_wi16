@@ -1,0 +1,12 @@
+# Lab 2016-0
+
+# Overview
+
+Some questions that were asked:
+
+- Why use a <-, =, or ==?
+- Why not install packages in a script? We should mention to put all library at the start?
+- Snow example: Code is somewhat confusing. It may be better to show a more straightforward example of using example. Perhaps something like `seq`?
+- paths in Windows - \ and unescaped characters
+
+# Self-Assessment

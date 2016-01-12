@@ -24,11 +24,11 @@
    - How the assignments
 
 - Assignments: discuss purpose behind each
-- Grading ... ? 
+- Grading ... ?
 - Software and Computing: R
 
-   - Did everyone sign up to R? 
-   - Data camp. Why am I using it? What do people think about it? 
+   - Did everyone sign up to R?
+   - Data camp. Why am I using it? What do people think about it?
    - Did people sign up to the group?
 
 - Resources
@@ -38,31 +38,40 @@
 
 ## Next Course
 
-
 # Checklist
 
-- [ ] Index cards: 
+- [ ] Index cards:
 
-   - How long did reading take? 
+   - How long did reading take?
    - One good thing about reading.
    - One bad thing about reading.
 
 Decided not to do a calculus pre-test.
+
+# Pre-course feedback
+
+- DataCamp helful (6)
+- R confusing because used to Stata (1)
+- Readings too easy (2)
+- Peng reading contradicted what was taught in 500 (presumably the HARKing article which is predicated on a naive HD-Popperian view of science).
+- Gailmard is expensive
+- SMISS has many formulae
+- Textbooks dry
 
 # Class Summary
 
 - Introductions: each student said one thing about their break and one thing about what they will
   be working on.
 - 1:15 on syllabus
-- Break
-- Remaind
+- Break (10 min)
+- Remainder: live coding [Introduction to R and RStudio with Gapminder](https://uw-pols501.github.io/pols_501_wi16/lessons/intro-to-r-with-gapminder/)
+- 10 minutes feedback: Alternate one good thing, one bad thing about the class.
 
-# Post-Course
+# Self-Assessment
 
-- Too much time was spent on the syllabus. I should have assumed students would have read it.
-  Not using slides actually made it slower as well.
-- The script for live coding needs to be concrete. I noticed myself lost 
-- I noticed myself using negative 
-
-
-
+- Too much time was spent on the syllabus. I should have assumed students would have read it. Not using slides actually made it slower as well.
+- The script for live coding needs to be concrete. I noticed myself lost for next steps several times.
+- Need to familiarize myself with DataCamp lessons. How do I better incorporate
+their assumed prior knowledge.
+- I noticed myself using "just" several times.
+- My default RStudio appearance settings were not high contrast enough and the font size was too small (Solarized / InputMono 11pt). It would be better to use Xcode (light) or Chaos or Monokai (Dark) with 12-13 pt font.
