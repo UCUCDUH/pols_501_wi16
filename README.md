@@ -74,7 +74,11 @@ This site is built using the static site generator [Nikola](http://getnikola.com
 > nikola build
 ```
 
+### Canvas
 
+Canvas is only used for collecting assignments, and scheduling meetings.
+
+Posts from the site are used to generate announcements in Canvas by adding the RSS feed as an external source (see the [instructions](https://guides.instructure.com/m/4152/l/50734-how-do-i-add-an-external-rss-feed-to-an-announcement)).
 
 <!--  LocalWords:  nikola cd venv python3 pyvenv txt pandoc citeproc
  -->

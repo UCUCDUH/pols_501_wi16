@@ -188,3 +188,7 @@ If you find any typos or other issues in this page, any page in the site, or any
 
 This course has benefitted from numerous open materials, which are listed [here](https://github.com/UW-POLS501/pols_501_wi16/blob/master/notes/references.md). On this page, the learning objectives from this course are derived from Mine Çetinkaya-Rundel's [Duke Sta 101](https://stat.duke.edu/courses/Fall15/sta101.002/syllabus/) syllabus.
 The idea for self-correction is from Matt Blackwell's [Harvard GOV 2000](http://www.mattblackwell.org/files/teaching/gov2000-syllabus.pdf).
+
+# Changes
+
+A list of changes to the syllabus is available [here](/index-diff.txt).

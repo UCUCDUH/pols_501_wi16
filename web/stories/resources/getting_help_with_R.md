@@ -37,13 +37,16 @@ data(package = "ggplot2")
 
 The help for R functions is only useful if you know what function you need want to know either what it is doing, or what the arguments are.
 The help files in R are not useful for understanding what a package does or how to use it. 
-The easiest way to find if a package has a vignette is to use `help` with the `package` argument. 
-For example, to find the vignette for `tidyr`, run
+However, *vignettes* for R packages are often overviews of the functionality of packages that serve as tutorials or introdicutions to using the package.
+To get a list of all vignettes of the packages your have installed, run
 ``` r
-help(package = "tidyr")
+browseVignettes()
 ```
-Then, click on the link for "[User guides, package vignettes and other documentation](https://cran.r-project.org/web/packages/tidyr/vignettes/tidy-data.html)
-You can also find vignettes for packages you have not installed on the packages' CRAN page [https://cran.r-project.org/web/packages/tidyr/index.html]https://github.com/hadley/tidyr)". 
+To get the list of vignettes for a specific package, run
+``` r
+browseVignettes("dplyr")
+```
+You can also find vignettes for packages you have not installed on the packages' CRAN page [https://cran.r-project.org/web/packages/tidyr/index.html]https://github.com/hadley/dplyr)". 
 There is also a `vignette` function, but you need the exact name of the vignette, which you generally do not know.
 
 Note that `search()` **does not** do what you expect it to do, unless you expect it to return the search path in which R looks for packages.
