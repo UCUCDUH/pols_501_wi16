@@ -1,0 +1,11 @@
+html_document:
+  theme: cosmo
+  highlight: textmate
+  keep_md: false
+  toc: true
+  toc_depth: 2
+  self_contained: false
+  includes:
+    before_body: _include/before_body.html
+    after_body: _include/after_body.html
+    in_header: _include/in_header.html
