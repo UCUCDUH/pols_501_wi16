@@ -9,10 +9,10 @@
    - Caffo *Statistical Inference for Data Science* https://leanpub.com/LittleInferenceBook
    - Caffo *Regression Models for Data Science in R* https://leanpub.com/regmods
    - Peng *Exploratory Data Analysis with R* https://leanpub.com/exdata
-   - Peng *R Programming for Data Science* 
+   - Peng *R Programming for Data Science*
    - Leek *The Elements of Data Analytic Style* https://leanpub.com/datastyle
    - Peng and Matsui *The Art of Data Science* https://leanpub.com/artofdatascience
-   
+
 - Allen Downey, *Think Stats*, http://greenteapress.com/thinkstats/
 - Shasha and Wilson *Statistics is Easy*
 - Reinhardt, *Statistics Done WRong*
@@ -23,7 +23,7 @@ Other
 
 - Gandrud *Reproducible Research in R and RStudio* http://www.amazon.com/exec/obidos/ASIN/1498715370/7210-20
 - Xie *Dynamic Documents with R and knitr*
-- Nolan and Lang *Data Science in R: A Case Studies Approach* 
+- Nolan and Lang *Data Science in R: A Case Studies Approach*
 - Zumel *Practical Data Science in R*
 - Kabakoff *R in Action*
 - Grus *Data Science from Scratch*
@@ -50,13 +50,13 @@ Quantitative Research Methodology. Matthew Blackwell. http://www.mattblackwell.o
 
 - Sta 101: Duke (undergrad) but innovative in pedagogy. Mine Cetinkaya-Rundel: Fall 2015 [site](httpspa://stat.duke.edu/courses/Fall15/sta101.002/), [github](https://github.com/mine-cetinkaya-rundel/sta101_f15). Sta 104 Data Analysis and Statistical Inference [site](https://stat.duke.edu/courses/Summer15/sta104.01-1/).
 - UBC Stat 545: Data Wrangling, exploration and analysis with R. by Jenny Bryan [site](https://stat545-ubc.github.io/), [github](https://github.com/STAT545-UBC/STAT545-UBC.github.io).
-- Software Carpentry courses 
+- Software Carpentry courses
 
     - [Programming with R](http://swcarpentry.github.io/r-novice-inflammation/)
 	- [R for reproducible scientific analysis](http://swcarpentry.github.io/r-novice-gapminder/)
-	
+
 	- [Instructor Training](https://github.com/swcarpentry/instructor-training) (for pedagogy).
-	
+- John Hopkins, [Winter R Booktcamp](http://seankross.com/rbootcamp/), Sean Cross. R programming. Also uses Swirl examples.
 
 Also look at the classes listed in Aronow's intro stats book proposal: http://aronow.research.yale.edu/aronowmillerproposal.pdf
 
@@ -111,14 +111,14 @@ Also look at the classes listed in Aronow's intro stats book proposal: http://ar
 	- https://www.reddit.com/r/bioinformatics/comments/3rdlhf/help_how_do_you_organize_your_projectsfiles/
 	- http://stackoverflow.com/questions/3759723/best-way-to-organize-bioinformatics-projects
 	- http://christianlemp.com/blog/2014/02/05/How-I-Manage-Data-Projects-with-RStudio-and-Git.html
-	
+
 # Interactive Courses for R
 
 ## Data Camp
 
 See course list [here](https://www.datacamp.com/courses)
 
-* [Introduction to R](https://www.datacamp.com/courses/free-introduction-to-r): Cover as first 
+* [Introduction to R](https://www.datacamp.com/courses/free-introduction-to-r): Cover as first
 * [Intermediate R](https://www.datacamp.com/courses/intermediate-r) Probably not needed in this course. Loops, functions, apply family, utilities (dates, regex). Some of these useful, but may be better for 503.
 * [Data Manipulation with dplyr](https://www.datacamp.com/courses/dplyr-data-manipulation-r-tutorial) Definitely cover in 501
 * [Data Analysis in R, the data.table way](https://www.datacamp.com/courses/data-table-data-manipulation-r-tutorial) We're going to use dplyr in 501/503.
@@ -126,7 +126,7 @@ See course list [here](https://www.datacamp.com/courses)
 * [Introduction to Statistics](https://www.datacamp.com/introduction-to-statistics) Some of the tutorials may be useful. Intro, Student's t test, Analysis of Variance, Repeated measure Anova, Correlation and Regression, Multiple regression
 * [How to work with Quandl in R](https://www.datacamp.com/courses/quandl-r-tutorial)
 * [Data visualization in R with ggvis](https://www.datacamp.com/courses/ggvis-data-visualization-r-tutorial) Ignore. Going to use ggplot2 for 501/503. Will move to ggvis relatively soon as it matures.
-* [Data Analysis and Statistical Inference](https://www.datacamp.com/courses/statistical-inference-and-data-analysis) Cetinkaya-Rundel's course. Possibly some interest. 
+* [Data Analysis and Statistical Inference](https://www.datacamp.com/courses/statistical-inference-and-data-analysis) Cetinkaya-Rundel's course. Possibly some interest.
 * EdX Texas Foundations of Data Analysis, [Part 1: Statistics Using R](https://www.edx.org/course/foundations-data-analysis-part-1-utaustinx-ut-7-10x) and [Part 2: Inferential Statistics](https://www.edx.org/course/foundations-data-analysis-part-2-utaustinx-ut-7-20x)
 
 ## TryR
@@ -140,7 +140,7 @@ The O'Reilly Codeschool very simple intro to R: http://tryr.codeschool.com/
 - Getting and Cleaning Data
 - Statistical Inference
 - Regression Models
-- OpenIntro Stats 
+- OpenIntro Stats
 
 # Papers for Data Replication or Assignments
 
@@ -159,8 +159,7 @@ The O'Reilly Codeschool very simple intro to R: http://tryr.codeschool.com/
 - ANES
 - OpenEvent Data; ACLED
 - Polity - look at index
-- Hainmueller and Hiscox, 2010. "Attitudes toward Highly Skilled and Low-skilled Immigration: Evidence from a    Survey Experiment" *APSR* http://dx.doi.org/10.1017/S0003055409990372 In *SMISS* 
+- Hainmueller and Hiscox, 2010. "Attitudes toward Highly Skilled and Low-skilled Immigration: Evidence from a    Survey Experiment" *APSR* http://dx.doi.org/10.1017/S0003055409990372 In *SMISS*
 - Beissiger 2002 *Nationalist Mobilization and the Collapse of the Soviet State*. Data is [here](http://www.princeton.edu/~mbeissin/research1.htm#Data). Used in *SMISS*
 - Reinhardt and Rogoff, 2010. "Growth in a Time of Debt" *AER* 10.1257/aer.100.2.573 In *SMISS*
 - Herndon, Ash, and Pollin, 2014. "Does High Public Debt Consistently Stifle Economic Growth? A Critique of Reinhardt and Rogoff" *Cambridge Journal of Economics* Data [here](http://www.peri.umass.edu/236/hash/31e2ff374b6377b2ddec04deaa6388b1/publication/566/) In *SMISS*
-
