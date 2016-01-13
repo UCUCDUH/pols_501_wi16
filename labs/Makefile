@@ -6,5 +6,9 @@ HTML_FILES = $(RMD_FILES:%.Rmd=%.html)
 
 build: $(HTML_FILES)
 
-%.html: %.Rmd
-	$(RSCRIPT) $(RSCRIPT_OPTS) -e "rmarkdown::render('$^', output_file='$@')"
+%.html: %.Rmd _output.yaml
+	$(RSCRIPT) $(RSCRIPT_OPTS) -e "rmarkdown::render('$<', output_file='$@')"
+
+deploy: build
+	cp $(HTML_FILES) ../web/files
+	cp -R *_files  ../web/files
