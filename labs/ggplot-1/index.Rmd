@@ -17,7 +17,6 @@ output:
 ## Learning Objectives
 
 1. Improve subsetting skills
-2. Plot data using `ggplot2`
 
 ## Initial Set up
 
@@ -54,6 +53,7 @@ Load the `ggplot2` package
 
 ```{r}
 library(ggplot2)
+country <- read.csv('data/country.csv')
 ```
 
 **Challenge:** What is the code that produces this graph?
@@ -96,14 +96,14 @@ On the one hand, this scatterplot supports Baum and Zhukov's (2015) argument: as
 - How can we fit a line discribing a linear relationship and a line describing a more U-shaped relationship between these two variables?
 
 ```{r}
-p + geom_point() + geom_smooth(se = FALSE) + geom_smooth(method = 'lm", se = FALSE)
+p + geom_point() + geom_smooth(se = FALSE) + geom_smooth(method = 'lm', se = FALSE)
 ```
 
 Since the colors of the two lines are the same, the graph is a little bit confusing. Let's change their color.
 
 ```{r}
 p + geom_point() + geom_smooth(se = FALSE, col = "red") + 
-                   geom_smooth(method =f"lm", se = FALSE, col = "blue")
+                   geom_smooth(method ="lm", se = FALSE, col = "blue")
 ```
 
 In their study, instead of using a discrete representation of a country's **level of democracy** (`polity2`), they use a dichotomus expression: whether the country is democratic or not (`democracy`)
@@ -113,7 +113,7 @@ Let's try to produce a barplot similar to the one they have in page 390, where t
 ```{r}
 country$democracy <- as.factor(country$democracy)
 p2 <- ggplot(country, aes(x = region, y = n_articles, fill = democracy))
-p2 + geom_bar(stat = "identity", position = "dodge")
+p2 + geom_bar(stat = "summary", position = "dodge", fun.y="mean")
 ```
 
 **Challenge:**
