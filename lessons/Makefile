@@ -13,8 +13,9 @@ build: $(HTML_FILES)
 	$(RSCRIPT) $(RSCRIPT_OPTS) -e "rmarkdown::render('$<', output_file='$@')"
 
 deploy: build
-	ls
 	- [ ! -d "$(DEPLOY_DIR)" ] && mkdir -p $(DEPLOY_DIR)
 	-cp $(HTML_FILES) $(DEPLOY_DIR)
 	-cp -R *_files  $(DEPLOY_DIR)
 	-cp -R libs $(DEPLOY_DIR)
+
+.PHONY: build deploy
