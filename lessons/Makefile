@@ -1,6 +1,8 @@
 RSCRIPT ?= Rscript
 RSCRIPT_OPTS ?=
 
+DEPLOY_DIR = ../web/files
+
 RMD_FILES = $(wildcard *.Rmd)
 HTML_FILES = $(RMD_FILES:%.Rmd=%.html)
 
@@ -10,6 +12,6 @@ build: $(HTML_FILES)
 	$(RSCRIPT) $(RSCRIPT_OPTS) -e "rmarkdown::render('$<', output_file='$@')"
 
 deploy: build
-	-cp $(HTML_FILES) ../web/files
-	-cp -R *_files  ../web/files
-	-cp labs.css ../web/files
+	-cp $(HTML_FILES) $(DEPLOY_DIR)
+	-cp -R *_files  $(DEPLOY_DIR)
+	-cp -R libs $(DEPLOY_DIR)
