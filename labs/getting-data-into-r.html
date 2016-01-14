@@ -19,7 +19,7 @@
 <script src="getting-data-into-r_files/bootstrap-3.3.1/js/bootstrap.min.js"></script>
 <script src="getting-data-into-r_files/bootstrap-3.3.1/shim/html5shiv.min.js"></script>
 <script src="getting-data-into-r_files/bootstrap-3.3.1/shim/respond.min.js"></script>
-<<link rel="stylesheet" type = "text/css" href="custom.css">
+<link rel="stylesheet" type = "text/css" href="labs.css">
 
 <style type="text/css">code{white-space: pre;}</style>
 <link rel="stylesheet"
@@ -116,7 +116,7 @@ img {
 <div id="reading-data-from-r-packages" class="section level2">
 <h2>1. Reading data from R packages</h2>
 <p>Some R packages have datasets that you can load if you have those packages installed and loaded. The <code>base</code> package already comes with some datasets. To view the datasets, use the function <code>data()</code>. To load a specific dataset, use the same function and add the name of the dataset as a parameter: e.g. <code>data(UCBAdmissions)</code>.</p>
-<p><strong>Challenge:</strong></p>
+<div class="bs-callout bs-callout-default">
 <ul>
 <li>Load any dataset you like</li>
 <li>Explore it. Tell me what type of information contains, its dimensions, variables, etc.</li>
@@ -126,8 +126,9 @@ img {
 <li><code>names</code> shows the column names of the data frame.</li>
 <li><code>head</code> shows the first few observations</li>
 <li><code>tail</code> shows the last few observations</li>
-<li><p><code>summary</code> calculates summary statistics for all variables in the data frame.</p></li>
+<li><code>summary</code> calculates summary statistics for all variables in the data frame.</li>
 </ul>
+</div>
 <p>When we load new packages that have datasets within them, R adds them to the <code>data()</code> list. Actually some packages have no functions, only dataset/s: e.g. <code>gapminder</code> and <code>HistData</code>. Let’s load the <code>HistData</code> package and take a look at the datasets it contains using the <code>data()</code> function and also the <code>help</code> file of the package.</p>
 <pre class="r"><code>install.packages(&quot;HistData&quot;)</code></pre>
 <pre class="r"><code>library(&quot;HistData&quot;)</code></pre>
@@ -135,10 +136,8 @@ img {
 ?HistData</code></pre>
 <p>The <code>help</code> files give us a brief description of packages, functions, and its parameters. A very useful characteristic of <code>help</code> files is that they come with sample code (scroll-down to the bottom of the <code>help</code> file to find it).</p>
 <p>Let’s explore a <code>help</code> file: click to the <code>help</code> file for the <code>Snow</code> dataset in <code>HistData</code>.</p>
-<p><strong>Challenge:</strong></p>
-<ul>
-<li>Do you know about John Snow’s 1854 London Cholera Outbreak study and his visualization of the Pump on Broad Street? Google it and see if you can find the <a href="http://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2013/3/14/1363276044871/John-Snows-cholera-map-of-009.jpg">map-visualization</a>.</li>
-</ul>
+<div class="bs-callout bs-callout-default&gt; Do you know about John Snow&#39;s 1854 London Cholera Outbreak study and his visualization of the Pump on Broad Street? Google it and see if you can find the [map-visualization](http://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2013/3/14/1363276044871/John-Snows-cholera-map-of-009.jpg). Now let&#39;s try to replicate his map using this R package/dataset. Scroll down to the bottom of the help file and copy and runt the following lines of code: ```r data(Snow.deaths); data(Snow.pumps); data(Snow.streets); data(Snow.polygons) Sdeaths &lt;- function(col=" red",="" pch="15," cex="0.6)" {="" #="" make="" sure="" that="" the="" plot="" limits="" include="" all="" the="" other="" stuff="" plot(snow.deaths[,c("x","y")],="" col="col," pch="pch," cex="cex," xlab="" ,="" ylab="" ,="" xlim="c(3,20)," ylim="c(3,20)," main="Snow&#39;s Cholera Map of London" )="" }="" spumps="" <-="" function(col="blue" ,="" pch="17," cex="1.5)" {="" points(snow.pumps[,c("x","y")],="" col="col," pch="pch," cex="cex)" text(snow.pumps[,c("x","y")],="" labels="Snow.pumps$label," pos="1," cex="0.8)" }="" sstreets="" <-="" function(col="gray" )="" {="" slist="" <-="" split(snow.streets[,c("x","y")],as.factor(snow.streets[,"street"]))="" invisible(lapply(slist,="" lines,="" col="col))" }="" ```="" finally,="" let's="" plot="" the="" dataset="" using="" the="" functions="" we="" just="" created="" (copied="" from="" the="" help="" file).="" ```r="" sdeaths()="" spumps()="" sstreets()="" ```="" <img="" src="getting-data-into-r_files/figure-html/unnamed-chunk-5-1.png" title="" alt="" width="672">
+<p>Do you know about John Snow’s 1854 London Cholera Outbreak study and his visualization of the Pump on Broad Street? Google it and see if you can find the <a href="http://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2013/3/14/1363276044871/John-Snows-cholera-map-of-009.jpg">map-visualization</a>.</p>
 <p>Now let’s try to replicate his map using this R package/dataset. Scroll down to the bottom of the help file and copy and runt the following lines of code:</p>
 <pre class="r"><code>data(Snow.deaths); data(Snow.pumps); data(Snow.streets); data(Snow.polygons)
 Sdeaths &lt;- function(col=&quot;red&quot;, pch=15, cex=0.6) {
@@ -161,6 +160,7 @@ Spumps()
 Sstreets()</code></pre>
 <p><img src="getting-data-into-r_files/figure-html/unnamed-chunk-5-1.png" title="" alt="" width="672" /></p>
 </div>
+</div>
 <div id="read-and-write-csv-files" class="section level2">
 <h2>Read and write csv files</h2>
 <p>One of the most common data formats is the CSV (Comma Separated Values). CSV datasets are easy to share and read using multiple statistical software.</p>
@@ -178,15 +178,13 @@ names(wdi)
 unique(wdi$Country.Name)
 unique(wdi$Indicator.Name)
 wdi[50, ]</code></pre>
-<p><strong>Challenge:</strong></p>
-<ul>
-<li>Tell me the <code>country</code> and <code>wdi indicator</code> in the first row of the dataset</li>
-<li>And the <code>country</code> and <code>indicator</code> in the last row?</li>
-</ul>
+<div class="bs-callout bs-callout-default">
+<p>What are the values of the <code>country</code> and <code>wdi indicator</code> in the first row of the dataset? What are the values of <code>country</code> and <code>indicator</code> in the last row?</p>
 <pre class="r"><code>head(wdi$Country.Name)
 head(wdi$Indicator.Name)
 tail(wdi$Country.Name)
 tail(wdi$Indicator.Name)</code></pre>
+</div>
 <p>CSV files can easily be manipulated using a Spreadsheet editor such as Excel. Let’s open the <code>wdi_sample.csv</code> in Excel (or another editor) and:</p>
 <ul>
 <li>Add an extra row</li>
@@ -213,7 +211,9 @@ phd &lt;- import(&quot;data/phd.txt&quot;)
 edu &lt;- import(&quot;data/edu_expend_1975.sav&quot;)
 salary &lt;- import(&quot;data/salary.dta&quot;)
 divorce &lt;- import(&quot;data/divorce.xlsx&quot;)</code></pre>
-<p><strong>Challenge:</strong> Explore the datasets that we just loaded using some of the functions that we have already seen. Check if they all have been correctly loaded.</p>
+<div class="bs-callout bs-callout-default">
+<p>Explore the datasets that we just loaded using some of the functions that we have already seen. Check if they all have been correctly loaded.</p>
+</div>
 <p>We observe 2 issues when reading in the <code>phd</code> dataset: it has no variable names in the first row, and R believes the datset has only 1 variable. Let’s read the dataset in using the <code>read.table()</code> function of the <code>utils</code> package</p>
 <pre class="r"><code>phd &lt;- read.table(&quot;data/phd.txt&quot;)</code></pre>
 <p>The <code>rio</code> package is very useful but not perfect. The following are other functions and packages you may consider when importing datasets into R:</p>
@@ -230,10 +230,12 @@ divorce &lt;- import(&quot;data/divorce.xlsx&quot;)</code></pre>
 <p>Go to the replication site of the paper and download the replication dataset <code>Study1_data.tab</code>. You can choose the format of the dataset, choose to download it in <code>RData</code> format. Save it in the working the directory you are using for this lab.</p>
 <p>Now load it and play with it! <code>.Rdata</code> is R’s native format. To load an <code>.Rdata</code> (or <code>.rda</code>) dataset, you use the <code>load()</code> function and you don’t need to assign the dataset to any object, the <code>load()</code> function will automatically create a new dataset in your R environment (similar to what happens when we use the <code>data()</code> function to load datasets from R packages).</p>
 <pre class="r"><code>load(&quot;data/Study1_data.Rdata&quot;)</code></pre>
-<p><strong>Challenge</strong> Look at the article and explore the dataset and see if you can identify in the dataset some of the key variables they discuss in the paper.</p>
+<div class="bs-callout bs-callout-default">
+<p>Look at the article and explore the dataset and see if you can identify in the dataset some of the key variables they discuss in the paper.</p>
 <pre class="r"><code>names(x)
 table(x$policy_letter_treat)
 table(x$policy_letter_treat,x$movable_total)</code></pre>
+</div>
 </div>
 
 <hr>

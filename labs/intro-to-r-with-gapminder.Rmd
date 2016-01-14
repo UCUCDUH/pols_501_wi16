@@ -4,11 +4,10 @@ author: Jeffrey B. Arnold
 date: January 7, 2015
 ---
 
-```{r echo=FALSE,results='hide'}
-knitr::opts_chunk$set(warning = FALSE,
-                      message = FALSE)
-```
 
+```{r init,results='hide',echo=FALSE}
+source("init.R")
+```
 
 1. Use the RStudio IDE to run R scripts
 2. Setup an RStudio Project

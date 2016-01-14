@@ -4,6 +4,10 @@ date: January 9, 2016
 author: Andreu Casas
 ---
 
+```{r init,results='hide',echo=FALSE}
+source("init.R")
+```
+
 ## Learning Objectives
 
 1. Reading data form R packages

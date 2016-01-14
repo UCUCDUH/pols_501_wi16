@@ -4,6 +4,11 @@ date: January 15, 2016
 author: Andreu Casas
 ---
 
+
+```{r echo=FALSE,results='hide'}
+source("init.R")
+```
+
 ### Learning Objectives
 
 1. Improve subsetting skills
