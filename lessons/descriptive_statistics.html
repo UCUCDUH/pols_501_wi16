@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="author" content="Jeffrey Arnold" />
+
+<meta name="date" content="2016-01-14" />
+
+<title>Descriptive Statistics</title>
+
+<script src="libs/jquery-1.11.0/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap-3.3.1/css/cerulean.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.1/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.1/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.1/shim/respond.min.js"></script>
+<link rel="stylesheet" type = "text/css" href="labs.css">
+
+<style type="text/css">code{white-space: pre;}</style>
+<link rel="stylesheet"
+      href="libs/highlight/textmate.css"
+      type="text/css" />
+<script src="libs/highlight/highlight.js"></script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img { 
+  max-width:100%; 
+  height: auto; 
+}
+</style>
+<div class="container-fluid main-container">
+
+<p>
+<strong>POL S/CS&amp;SS 501, University of Washington, Spring 2015</strong>
+</p>
+
+<div id="header">
+<h1 class="title">Descriptive Statistics</h1>
+<h4 class="author"><em>Jeffrey Arnold</em></h4>
+<h4 class="date"><em>January 14, 2016</em></h4>
+</div>
+
+<div id="TOC">
+<ul>
+<li><a href="#measures-of-central-tendency">Measures of Central Tendency</a></li>
+<li><a href="#quantiles">Quantiles</a></li>
+<li><a href="#boxplot">Boxplot</a></li>
+<li><a href="#measures-of-spread">Measures of Spread</a></li>
+<li><a href="#summary-of-r-commands-for-descriptive-statistics">Summary of R commands for descriptive statistics</a></li>
+</ul>
+</div>
+
+<p><span class="math display">\[
+\DeclareMathOperator{\mean}{mean}
+\DeclareMathOperator{\var}{var}
+\DeclareMathOperator{\argmin}{argmin}
+\DeclareMathOperator{\argmax}{argmax}
+\]</span></p>
+<p>These are some notes that extend the discussion of descriptive statistics in <em>OpenIntro Statistics</em>, Chapter 1, and <em>Statistical Modeling and Inference for Social Science</em>, Chapter 2. They are not a replacement for that material.</p>
+<p>We will use the following packages in this section, which we will load now.</p>
+<pre class="r"><code>library(&quot;ggplot2&quot;)
+library(&quot;gapminder&quot;)</code></pre>
+<div id="measures-of-central-tendency" class="section level1">
+<h1>Measures of Central Tendency</h1>
+<div class="panel panel-primary">
+<div class="panel-heading">
+<h3 class="panel-title">
+Challenge
+</h3>
+</div>
+<div class="panel-body">
+<p>Let <span class="math inline">\(x = (4, 2, 8, 3)\)</span> be a vector of data. The mean is <span class="math inline">\(\bar{x} = \frac{1}{4}\sum_{i = 1}^4 x_i = \frac{1}{4} 17 = 4.25\)</span>.</p>
+<ol style="list-style-type: decimal">
+<li>Consider a new vector with the addition of a new value <span class="math inline">\(x_5 = 4\)</span>. Call this new vector <span class="math inline">\(x^* = (4, 2, 8, 3, 4)\)</span>. What is the mean of <span class="math inline">\(x^*\)</span>? What is the difference in the means?</li>
+<li>What is difference in means, <span class="math inline">\(\bar{x}^* - \bar{x}\)</span> in terms of <span class="math inline">\(x_5\)</span>?</li>
+<li>Now consider the vector <span class="math inline">\(x&#39; = (4, 2, 8, 3, x_5)\)</span>? What is <span class="math inline">\(\bar{x}&#39;\)</span>? what is the difference in means <span class="math inline">\(\bar{x}&#39; - \bar{x}\)</span>?</li>
+<li>Now, consider the general case.</li>
+</ol>
+</div>
+</div>
+<div class="panel panel-primary">
+<div class="panel-heading">
+<h3 class="panel-title">
+Challenge
+</h3>
+</div>
+<div class="panel-body">
+<p>Let <span class="math inline">\(x = (1, 6, 2, -10, 11)\)</span>.</p>
+<ol style="list-style-type: decimal">
+<li>What is the median?</li>
+<li>Add an observation, <span class="math inline">\(x^* = 4\)</span>. What is the new median?</li>
+<li>Add an observation, <span class="math inline">\(x^* = 1.5\)</span>. What is the new median?</li>
+<li>Add an observation, <span class="math inline">\(x^* = 12\)</span>. What is the new median?</li>
+<li>Add an observation, <span class="math inline">\(x^* = -5\)</span>. What is the new median?</li>
+<li>In general, how does the median change with the addition of a new observation? Hint: there are four cases to consider.</li>
+</ol>
+</div>
+</div>
+<div class="panel panel-primary">
+<div class="panel-heading">
+<h3 class="panel-title">
+Challenge
+</h3>
+</div>
+<div class="panel-body">
+<ol style="list-style-type: decimal">
+<li>What is the definition of the <em>mode</em>?</li>
+<li>What is the mode of continuous variable?</li>
+</ol>
+</div>
+</div>
+<p>The mean, median, and mode are all measures of a central tendency of a sample. But they can produce different values, so why and how do they differ in the way they define what the “center” of the sample. Let <span class="math inline">\(d(x_i, m)\)</span> be the distance between each observation in the sample and the middle; <span class="math inline">\(d(x_i, m)\)</span> is a function that will be equal to 0 if <span class="math inline">\(x_i = m\)</span> and greater than 0 if <span class="math inline">\(x_i \neq m\)</span>.</p>
+<p>The statistics—mean, median, and mode—differ in how they define <span class="math inline">\(d\)</span>.</p>
+<ul>
+<li>Mean: <span class="math inline">\(d(x_i, m) = {(x_i - m)}^2\)</span></li>
+<li>Median: <span class="math inline">\(d(x_i, m) = \left|x_i - m \right|\)</span> where <span class="math inline">\(\left| a \right|\)</span> is the absolute value of <span class="math inline">\(a\)</span>.</li>
+<li>Mode: If <span class="math inline">\(x_i = m\)</span> then d(x_i, m) = 0$, otherwise <span class="math inline">\(d(x_i, m) = 1\)</span> (<span class="math inline">\(\infty\)</span> or any positive constant will work).</li>
+</ul>
+<p>Then to find the value of the statistic find the value of <span class="math inline">\(m\)</span> that minimizes the sum of <span class="math inline">\(d(x_i, m)\)</span> for the sample, <span class="math display">\[
+m = \arg \min_a \sum_{i = 1}^n d(x_i, a)
+\]</span> using the appropriate definition of <span class="math inline">\(d\)</span> .</p>
+<p>There are better ways to find this, but for pedagical purposes, let’s try the brute force way. Let’s randomly draw some values for a sample.</p>
+<pre class="r"><code>x &lt;- sample(-20:20, 10, replace = TRUE)
+x</code></pre>
+<pre><code>##  [1] -20 -19  -2   6 -12  18  -5  -6 -19  -5</code></pre>
+<p>Lets start with the mean. What we want to do is for many different values of <span class="math inline">\(a\)</span>, calculate <span class="math inline">\(\sum_{i = 1}^2 d(x_i, a)\)</span>. The mean will be the value of <span class="math inline">\(a\)</span> that has the smallest value of <span class="math inline">\(\sum_{i = 1}^2 d(x_i, a)\)</span>. Take as given that the mean will be between the minimum and maximum values of the sample. So we will try 100 different values of <span class="math inline">\(a\)</span> between <span class="math inline">\(min(x)\)</span> and <span class="math inline">\(max(x)\)</span>,</p>
+<pre class="r"><code>a &lt;- seq(min(x), max(x), length.out = 100)</code></pre>
+<p>Now we need to calculate <span class="math inline">\(\sum_{i = 1}^2 d(x_i, a)\)</span> for each value of <span class="math inline">\(a\)</span>. But first, let’s calculate it for one value of <span class="math inline">\(a\)</span>. The sum of squared errors for <span class="math inline">\(a = min(x)\)</span> is,</p>
+<pre class="r"><code>sum((x - a) ^ 2)</code></pre>
+<pre><code>## [1] 27826.53</code></pre>
+<p>To calculate it for many values of <span class="math inline">\(a\)</span>, we will use a <code>for</code> loop. First, we will create a new vector, the same length as <span class="math inline">\(a\)</span> which will hold the values of <span class="math inline">\(\sum_{i = 1}^n (x_i - a)^2\)</span> for each value of <span class="math inline">\(a\)</span>.</p>
+<pre class="r"><code>sum_sq_errors &lt;- rep(NA, length(a))</code></pre>
+<p>Now, we will loop through each value of <span class="math inline">\(sum_sq_errors\)</span>, calculate the sum of squared errors, and save it to <code>sum_sq_errors</code>.</p>
+<pre class="r"><code>for (i in 1:length(a)) {
+  a_i &lt;- a[i]
+  print(paste(&quot;a[&quot;, i, &quot;] = &quot;, a[i], sep = &quot;&quot;))
+  err &lt;- sum((a_i - x) ^ 2)
+  paste(&quot;sum (&quot;, a, &quot; - x_i)^2 = &quot;, err, sep = &quot;&quot;)
+  sum_sq_errors[i] &lt;- err
+}</code></pre>
+<p>Let’s plot the values of <code>sum_sq_errors</code> to find the approximate minimum.</p>
+<pre class="r"><code>ggplot() +
+  geom_line(data.frame(a = a, sum_sq_errors = sum_sq_errors),
+            mapping = aes(x = a, y = sum_sq_errors)) +
+  geom_rug(data.frame(x = x), mapping = aes(x = x), sides = &quot;b&quot;)</code></pre>
+<p><img src="descriptive_statistics_files/figure-html/unnamed-chunk-8-1.png" title="" alt="" width="672" /> Use the function <code>which</code> to find the location of the minimum value in <code>sum_sq_errors</code>,</p>
+<pre class="r"><code>sse_loc_min &lt;- which(sum_sq_errors == min(sum_sq_errors))
+sse_loc_min</code></pre>
+<pre><code>## [1] 36</code></pre>
+<p>The minimum value of the sum of squared errors is</p>
+<pre class="r"><code>sum_sq_errors[sse_loc_min]</code></pre>
+<pre><code>## [1] 1306.674</code></pre>
+<p>But the mean is the value of <code>a</code> with the minimum sum of squared errors,</p>
+<pre class="r"><code>a[sse_loc_min]</code></pre>
+<pre><code>## [1] -6.565657</code></pre>
+<p>This should be very close to the actual mean,</p>
+<pre class="r"><code>mean(x)</code></pre>
+<pre><code>## [1] -6.4</code></pre>
+<p>However, the brute force way of searching for the mean is not necessary. We already know this because we have a formula for the mean! The formula for the mean is found by solving for the value that minimizes the squared errors using calculus.</p>
+<div class="panel panel-primary">
+<div class="panel-heading">
+<h3 class="panel-title">
+Challenge
+</h3>
+</div>
+<div class="panel-body">
+<ol style="list-style-type: decimal">
+<li>Edit the code below to find the median of <code>x</code>.</li>
+</ol>
+<pre class="r"><code>errors &lt;- rep(NA, x)
+for (i in 1:length(a)) {
+  a_i &lt;- a[i]
+  # Edit the line below to use the d(x_i, a) for the median
+  # errors[i] &lt;- ???
+}</code></pre>
+<p>Now plot the valus of <code>errors</code> to find the median.</p>
+<pre class="r"><code>ggplot() +
+  geom_line(data.frame(a = a, errors = errors),
+            mapping = aes(x = a, y = errors)) +
+  geom_rug(data.frame(x = x), mapping = aes(x = x), sides = &quot;b&quot;)</code></pre>
+<pre><code>## Error in data.frame(a = a, errors = errors): object &#39;errors&#39; not found</code></pre>
+<ol start="2" style="list-style-type: decimal">
+<li>What is the approximate value of the median?</li>
+<li>Use <code>which</code> to find the value(s) of the median?</li>
+<li>Check your work using the built in function <code>median</code>.</li>
+</ol>
+</div>
+</div>
+<div class="panel panel-primary">
+<div class="panel-heading">
+<h3 class="panel-title">
+Challenge
+</h3>
+</div>
+<div class="panel-body">
+<ol style="list-style-type: decimal">
+<li>Reason about how the mode is found? Is it unique?</li>
+<li>Try calculating the mode in R. Use the <code>mode</code> function? Is it giving you what you expect? Look at the help of <code>mode</code> to find out what is going on.</li>
+<li>What function <code>d</code> would produce the <code>minimum</code> as the best guess?</li>
+<li>What function <code>d</code> would produce the <code>maximum</code> as the best guess?</li>
+</ol>
+</div>
+</div>
+</div>
+<div id="quantiles" class="section level1">
+<h1>Quantiles</h1>
+<div class="panel panel-primary">
+<div class="panel-heading">
+<h3 class="panel-title">
+Challenge
+</h3>
+</div>
+<div class="panel-body">
+<ol style="list-style-type: decimal">
+<li>What is definition of the the <span class="math inline">\(k\)</span>th quantile?</li>
+<li>What are other names of the 0th, 50th, and 75th quantile?</li>
+</ol>
+</div>
+</div>
+<p>A common plot is the quantile plot. This plots the values of the quantile against the values of the variable.</p>
+<p>Let’s look at the quantiles of life expectancy in the <code>gapminder</code> data.</p>
+<pre class="r"><code>data(&quot;gapminder&quot;)</code></pre>
+<p>Let’s focus only on the latest year in the data</p>
+<pre class="r"><code>gapminder2007 &lt;- gapminder[gapminder$year == 2007, ]</code></pre>
+<p>The function quantile can calculate the quantiles of the data. E.g. if we wanted to calcalate the 0th, 25th, 50th, 75th, and 100th quantiles of the data,</p>
+<pre class="r"><code>quantile(gapminder$lifeExp, c(0, 0.25, 0.50, 0.75, 1))</code></pre>
+<pre><code>##      0%     25%     50%     75%    100% 
+## 23.5990 48.1980 60.7125 70.8455 82.6030</code></pre>
+<p>Then we can also plot the values of each quantile.</p>
+<pre class="r"><code>q &lt;- seq(0, 100, by = 1) / 100
+v &lt;- quantile(gapminder2007$lifeExp, prob = q)
+quantilggplot(data.frame(lifeExp = v, q = q),
+       aes(x = q, y = lifeExp)) + 
+  geom_point() +
+  xlab(&quot;Life Expectancy (years)&quot;) +
+  ylab(&quot;Quantile&quot;)</code></pre>
+<pre><code>## Error in eval(expr, envir, enclos): could not find function &quot;quantilggplot&quot;</code></pre>
+<p>Something similar is to plot the empirical distribution function (ECDF). For each value, the ECDF is the proportion of observations less than or equal to it.</p>
+<pre class="r"><code>ggplot(gapminder2007, aes(x = lifeExp)) +
+  stat_ecdf() +
+  geom_rug() +
+  ggtitle(&quot;Life Expectancy in 2007&quot;) +
+  xlab(&quot;Life Expectancy (years)&quot;) +
+  ylab(&quot;ECDF&quot;)</code></pre>
+<p><img src="descriptive_statistics_files/figure-html/unnamed-chunk-19-1.png" title="" alt="" width="672" /> The ECDF is the inverse of the quantile plot.</p>
+</div>
+<div id="boxplot" class="section level1">
+<h1>Boxplot</h1>
+<div class="panel panel-primary">
+<div class="panel-heading">
+<h3 class="panel-title">
+Challenge
+</h3>
+</div>
+<div class="panel-body">
+<ol style="list-style-type: decimal">
+<li>What are the values of the midpoint in a boxplot?</li>
+<li>When is the boxplot useful? When should you plot the raw data instead?</li>
+</ol>
+</div>
+</div>
+</div>
+<div id="measures-of-spread" class="section level1">
+<h1>Measures of Spread</h1>
+<p>Variance is defined as <span class="math display">\[
+\frac{1}{n - 1} \sum_{i = 1}^n (x_i - \bar{x})^2
+\]</span> Let <span class="math inline">\(e_i = (x_i - \bar{x}^2\)</span> be the squared errors, the square of the difference between each data point, <span class="math inline">\(x_i\)</span>, and the mean, <span class="math inline">\(\bar{x}\)</span>. The variance is approximately the <em>mean</em> of the squared errors, <span class="math display">\[
+var(x) = \frac{1}{n - 1} \sum_{i = 1}^n (x_i - \bar{x})^2 = \frac{1}{n} \sum_{i = 1}^n e_i^2 \approx \frac{1}{n} e_i^2 = mean(e)
+\]</span> The difference between the variance and the mean of the squared errors is that the variance divides the sum of squared errors by <span class="math inline">\(n - 1\)</span> instead of <span class="math inline">\(n\)</span>. The reasons for this is that dividing by <span class="math inline">\(n - 1\)</span> instead of <span class="math inline">\(n\)</span> makes the sample variance an unbiased estimator of the population variance (something which we have not covered yet). This adjustment is not necessary for the sample mean, because it turns out to be an unbiased estimator of the population mean.</p>
+<p>You can visualize variance using the following plot, which creates a plot with the data, squared errors, mean, and variance.</p>
+<pre class="r"><code>variance_plot &lt;- function(x) {
+  x_mean &lt;- mean(x)
+  errors &lt;- x - x_mean
+  sq_errors &lt;- errors ^ 2
+  df &lt;- data.frame(x = x,
+                   sq_errors = sq_errors)
+  offset &lt;- diff(range(x)) * 0.01
+  xlim &lt;- range(x) + c(-1, 1) * offset
+  xseg &lt;- seq(min(x), max(x), length.out = 100)
+  ggplot(df) +
+    # Data points on the x axis
+    geom_rug(aes(x = x, y = sq_errors), sides = &quot;bl&quot;) +
+    geom_segment(xend = x, x = x, y = 0, yend = sq_errors,
+                 color = &quot;gray&quot;) +
+    geom_segment(xend = xlim[1], x = x, y = sq_errors, yend = sq_errors,
+                 color = &quot;gray&quot;) +
+    geom_line(data.frame(x = xseg, y = (xseg - x_mean)^2),
+              mapping = aes(x = x, y = y), colour = &quot;gray&quot;) +
+    # Line for mean
+    geom_vline(xintercept = x_mean, color = &quot;red&quot;) +
+    # Line for variance
+    geom_hline(yintercept = var(x), color = &quot;red&quot;) +
+    # Data points with their squared errors
+    geom_point(aes(y = sq_errors, x = x)) +
+    ylab(expression((x - bar(x)) ^ 2 )) +
+    xlab(expression(x)) +
+    # minimial theme with no gridlines
+    theme_minimal() +
+    theme(panel.grid = element_blank(),
+          axis.ticks = element_blank())
+}</code></pre>
+<p>Lets randomly draw some numbers and visualize the variance and mean, and squared errors.</p>
+<pre class="r"><code>set.seed(1234789)
+x &lt;- sample(-20:20, 10)
+variance_plot(x)</code></pre>
+<p><img src="descriptive_statistics_files/figure-html/unnamed-chunk-21-1.png" title="" alt="" width="672" /></p>
+<div class="panel panel-primary">
+<div class="panel-heading">
+<h3 class="panel-title">
+Challenge
+</h3>
+</div>
+<div class="panel-body">
+<p>How does the variance respond to outliers? What is your reasoning?</p>
+</div>
+</div>
+</div>
+<div id="summary-of-r-commands-for-descriptive-statistics" class="section level1">
+<h1>Summary of R commands for descriptive statistics</h1>
+<ul>
+<li>Mean: <code>mean</code></li>
+<li>Median: <code>median</code> or <code>quantile</code></li>
+<li>quantiles: <code>quantile</code></li>
+<li>Mode: It is not the <code>mode</code> function.</li>
+<li>Variance: <code>var</code></li>
+<li>Standard deviation: <code>sd</code></li>
+<li>IQR: <code>IQR</code></li>
+<li>Boxplot: In ggplot: <code>geom_boxplot</code></li>
+<li>Histogram: In ggplot: <code>geom_histogram</code></li>
+</ul>
+</div>
+
+<hr>
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://licensebuttons.net/l/by-nc-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
+R code is licensed under a <a href="https://www.r-project.org/Licenses/BSD_2_clause">BSD 2-clause</a> license.
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
