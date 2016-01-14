@@ -145,7 +145,7 @@ ls()
 The `gapminder` object is a *data frame*.  A data frame is a type of R object that corresponds to what you usually think of as a dataset or a spreadsheet --- rows are observations and columns are variables.
 
 
-**Challenge:**
+<div class="bs-callout bs-callout-default">
 What happens when you do the following?
 ```{r results='hide'}
 gapminder
@@ -165,8 +165,10 @@ summary(gapminder)
 - `head` shows the first few observations
 - `tail` shows the last few observations
 - `summary` calculates summary statistics for all variables in the data frame.
+</div>
 
-**Challenge:** Given the information previously:
+<div class="bs-callout bs-callout-default">
+Given the information previously:
 
 1. What are the variables in the dataset?
 2. How many observations are there?
@@ -174,6 +176,7 @@ summary(gapminder)
 3. What types of data are the different variables?
 4. What is the range of years in the data?
 5. What are the mean and median life expectancy?
+</div>
 
 # Working with variables in Data Frames
 
@@ -206,7 +209,8 @@ gapminder$log_gdp_per_cap <- log(gapminder$gdpPercap)
 
 You can extract specific columns and rows using the bracket operators.
 
-**Challenge:**  Run each of the following lines. What does each do?
+<div class="bs-callout bs-callout-default">
+Run each of the following lines. What does each do?
 ```{r results="hide"}
 gapminder[["year"]]
 gapminder[ , "year"]
@@ -237,16 +241,16 @@ gapminder[gapminder$country %in% c("United States", "France", "Germany") &
 gapminder[gapminder$country %in% c("United States", "France", "Germany") &
             gapminder$year %in% c(2000, 2007), ]
 ```
+</div>
 
-
-**Challenge**
+<div class="bs-callout bs-callout-default">
 
 1. What are the mean and median of GDP per capita?
 2. Find the 30th percentile of GDP per capita?
 3. The function `length()` calculates the length of a vector.
 The function `unique()` returns the number of unique values in a vector.
 How many countries in the data are there? How many years?
-
+</div>
 
 # Creating Plots with `ggplot2`
 

@@ -40,7 +40,7 @@ In lab I'll do live-coding and we'll use R scripts to take notes and write the c
 Some R packages have datasets that you can load if you have those packages installed and loaded. The `base` package already comes with some datasets. To view the datasets, use the function `data()`. To load a specific dataset, use the same function and add the name of the dataset as a parameter: e.g. `data(UCBAdmissions)`. 
 
 
-**Challenge:**
+<div class="bs-callout bs-callout-default">
 
 - Load any dataset you like
 - Explore it. Tell me what type of information contains, its dimensions, variables, etc.
@@ -52,6 +52,7 @@ Some R packages have datasets that you can load if you have those packages insta
   - `head` shows the first few observations
   - `tail` shows the last few observations
   - `summary` calculates summary statistics for all variables in the data frame.
+</div>
 
 When we load new packages that have datasets within them, R adds them to the `data()` list. Actually some packages have no functions, only dataset/s: e.g. `gapminder` and `HistData`. Let's load the `HistData` package and take a look at the datasets it contains using the `data()` function and also the `help` file of the package.
 
@@ -72,9 +73,9 @@ The `help` files give us a brief description of packages, functions, and its par
 
 Let's explore a `help` file: click to the `help` file for the `Snow` dataset in `HistData`. 
 
-**Challenge:**
 
-- Do you know about John Snow's 1854 London Cholera Outbreak study and his visualization of the Pump on Broad Street? Google it and see if you can find the [map-visualization](http://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2013/3/14/1363276044871/John-Snows-cholera-map-of-009.jpg).
+<div class="bs-callout bs-callout-default>
+Do you know about John Snow's 1854 London Cholera Outbreak study and his visualization of the Pump on Broad Street? Google it and see if you can find the [map-visualization](http://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2013/3/14/1363276044871/John-Snows-cholera-map-of-009.jpg).
 
 Now let's try to replicate his map using this R package/dataset. Scroll down to the bottom of the help file and copy and runt the following lines of code:
 
@@ -103,6 +104,7 @@ Sdeaths()
 Spumps()
 Sstreets()
 ```
+</div>
 
 ## Read and write csv files
 
@@ -129,10 +131,9 @@ unique(wdi$Indicator.Name)
 wdi[50, ]
 ```
 
-**Challenge:**
 
-- Tell me the `country` and `wdi indicator` in the first row of the dataset
-- And the `country` and `indicator` in the last row?
+<div class="bs-callout bs-callout-default">
+What are the values of the `country` and `wdi indicator` in the first row of the dataset? What are the values of `country` and `indicator` in the last row?
 
 ```{r, results='hide'}
 head(wdi$Country.Name)
@@ -140,6 +141,7 @@ head(wdi$Indicator.Name)
 tail(wdi$Country.Name)
 tail(wdi$Indicator.Name)
 ```
+</div>
 
 CSV files can easily be manipulated using a Spreadsheet editor such as Excel. Let's open the `wdi_sample.csv` in Excel (or another editor) and:
 
@@ -185,8 +187,9 @@ salary <- import("data/salary.dta")
 divorce <- import("data/divorce.xlsx")
 ```
 
-**Challenge:**
+<div class="bs-callout bs-callout-default">
 Explore the datasets that we just loaded using some of the functions that we have already seen. Check if they all have been correctly loaded.
+</div>
 
 We observe 2 issues when reading in the `phd` dataset: it has no variable names in the first row, and R believes the datset has only 1 variable. Let's read the dataset in using the `read.table()` function of the `utils` package
 
@@ -218,10 +221,12 @@ Now load it and play with it! `.Rdata` is R's native format. To load an `.Rdata`
 load("data/Study1_data.Rdata")
 ```
 
-**Challenge** Look at the article and explore the dataset and see if you can identify in the dataset some of the key variables they discuss in the paper. 
+<div class="bs-callout bs-callout-default">
+Look at the article and explore the dataset and see if you can identify in the dataset some of the key variables they discuss in the paper. 
 
 ```{r, results='hide'}
 names(x)
 table(x$policy_letter_treat)
 table(x$policy_letter_treat,x$movable_total)
 ```
+</div>

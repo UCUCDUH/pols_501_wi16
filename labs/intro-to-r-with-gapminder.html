@@ -19,7 +19,7 @@
 <script src="intro-to-r-with-gapminder_files/bootstrap-3.3.1/js/bootstrap.min.js"></script>
 <script src="intro-to-r-with-gapminder_files/bootstrap-3.3.1/shim/html5shiv.min.js"></script>
 <script src="intro-to-r-with-gapminder_files/bootstrap-3.3.1/shim/respond.min.js"></script>
-<<link rel="stylesheet" type = "text/css" href="custom.css">
+<<link rel="stylesheet" type = "text/css" href="labs.css">
 
 <style type="text/css">code{white-space: pre;}</style>
 <link rel="stylesheet"
@@ -193,7 +193,8 @@ img {
 <pre class="r"><code>ls()</code></pre>
 <pre><code>## [1] &quot;foo&quot;       &quot;gapminder&quot;</code></pre>
 <p>The <code>gapminder</code> object is a <em>data frame</em>. A data frame is a type of R object that corresponds to what you usually think of as a dataset or a spreadsheet — rows are observations and columns are variables.</p>
-<p><strong>Challenge:</strong> What happens when you do the following?</p>
+<div class="bs-callout bs-callout-default">
+<p>What happens when you do the following?</p>
 <pre class="r"><code>gapminder</code></pre>
 <p>This is a lot of information. How can we get a more useful picture of the dataset as a whole?</p>
 <pre class="r"><code>dim(gapminder)
@@ -208,7 +209,9 @@ summary(gapminder)</code></pre>
 <li><code>tail</code> shows the last few observations</li>
 <li><code>summary</code> calculates summary statistics for all variables in the data frame.</li>
 </ul>
-<p><strong>Challenge:</strong> Given the information previously:</p>
+</div>
+<div class="bs-callout bs-callout-default">
+<p>Given the information previously:</p>
 <ol style="list-style-type: decimal">
 <li>What are the variables in the dataset?</li>
 <li>How many observations are there?</li>
@@ -217,6 +220,7 @@ summary(gapminder)</code></pre>
 <li>What is the range of years in the data?</li>
 <li>What are the mean and median life expectancy?</li>
 </ol>
+</div>
 </div>
 <div id="working-with-variables-in-data-frames" class="section level1">
 <h1>Working with variables in Data Frames</h1>
@@ -234,7 +238,8 @@ max(gapminder$lifeExp)</code></pre>
 <pre class="r"><code>gapminder$log_life_exp &lt;- log(gapminder$lifeExp)
 gapminder$log_gdp_per_cap &lt;- log(gapminder$gdpPercap)</code></pre>
 <p>You can extract specific columns and rows using the bracket operators.</p>
-<p><strong>Challenge:</strong> Run each of the following lines. What does each do?</p>
+<div class="bs-callout bs-callout-default">
+<p>Run each of the following lines. What does each do?</p>
 <pre class="r"><code>gapminder[[&quot;year&quot;]]
 gapminder[ , &quot;year&quot;]
 gapminder[1, ]
@@ -263,12 +268,14 @@ gapminder[gapminder$country %in% c(&quot;United States&quot;, &quot;France&quot;
             gapminder$year &gt; 2000, ]
 gapminder[gapminder$country %in% c(&quot;United States&quot;, &quot;France&quot;, &quot;Germany&quot;) &amp;
             gapminder$year %in% c(2000, 2007), ]</code></pre>
-<p><strong>Challenge</strong></p>
+</div>
+<div class="bs-callout bs-callout-default">
 <ol style="list-style-type: decimal">
 <li>What are the mean and median of GDP per capita?</li>
 <li>Find the 30th percentile of GDP per capita?</li>
 <li>The function <code>length()</code> calculates the length of a vector. The function <code>unique()</code> returns the number of unique values in a vector. How many countries in the data are there? How many years?</li>
 </ol>
+</div>
 </div>
 <div id="creating-plots-with-ggplot2" class="section level1">
 <h1>Creating Plots with <code>ggplot2</code></h1>
