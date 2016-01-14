@@ -3,6 +3,7 @@ venv
 cache/
 __pycache__
 *_files/
+*_cache/
 *.Rhistory
 *.RData
 node_modules
