@@ -193,7 +193,7 @@ divorce <- import("data/divorce.xlsx")
 Explore the datasets that we just loaded using some of the functions that we have already seen. Check if they all have been correctly loaded.
 `r challenge_end()`
 
-We observe 2 issues when reading in the `phd` dataset: it has no variable names in the first row, and R believes the datset has only 1 variable. Let's read the dataset in using the `read.table()` function of the `utils` package
+We observe 2 issues when reading in the `phd` dataset: it has no variable names in the first row, and R believes the dataset has only 1 variable. Let's read the dataset in using the `read.table()` function of the `utils` package
 
 ```{r}
 phd <- read.table("data/phd.txt")

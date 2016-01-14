@@ -83,7 +83,7 @@ p <- ggplot(country, aes(x = polity2, y = n_articles))
 p + geom_point()
 ```
 
-On the one hand, this scatterplot supports Baum and Zhukov's (2015) argument: as the level of democracy of a country increases, the number of articles covering the Lybian civil war also increases. However, the data also shows a pattern that they ignore in the paper: in countries with very low levels of democracy (`polity2` < -1) the coverage of the Lybian civil war was larger than in countries with mediuum level of democracy (-1 < `polity2` < 6). Literature on regime types and transition theorize similar U-shaped relationships: e.g. Acemoglu and Robinson (2006) when discussing the relationship between Inequality and Democratization.
+On the one hand, this scatterplot supports Baum and Zhukov's (2015) argument: as the level of democracy of a country increases, the number of articles covering the Lybian civil war also increases. However, the data also shows a pattern that they ignore in the paper: in countries with very low levels of democracy (`polity2` < -1) the coverage of the Lybian civil war was larger than in countries with medium level of democracy (-1 < `polity2` < 6). Literature on regime types and transition theorize similar U-shaped relationships: e.g. Acemoglu and Robinson (2006) when discussing the relationship between Inequality and Democratization.
 
 **Challenge:** 
 
@@ -100,7 +100,7 @@ p + geom_point() + geom_smooth(se = FALSE, col = "red") +
                    geom_smooth(method ="lm", se = FALSE, col = "blue")
 ```
 
-In their study, instead of using a discrete representation of a country's **level of democracy** (`polity2`), they use a dichotomus expression: whether the country is democratic or not (`democracy`)
+In their study, instead of using a discrete representation of a country's **level of democracy** (`polity2`), they use a dichotomous expression: whether the country is democratic or not (`democracy`)
 
 Let's try to produce a barplot similar to the one they have in page 390, where they show the number of articles related to the Lybian civil crisis by regime type (democracy/non-democracy) and region (East Europe, Western Europe, Latin America, Africa, Asia, Middle East, and United States and Canada)
 
