@@ -37,7 +37,7 @@ data(package = "ggplot2")
 
 The help for R functions is only useful if you know what function you need want to know either what it is doing, or what the arguments are.
 The help files in R are not useful for understanding what a package does or how to use it. 
-However, *vignettes* for R packages are often overviews of the functionality of packages that serve as tutorials or introdicutions to using the package.
+However, *vignettes* for R packages are often overviews of the functionality of packages that serve as tutorials or introductions to using the package.
 To get a list of all vignettes of the packages your have installed, run
 ``` r
 browseVignettes()

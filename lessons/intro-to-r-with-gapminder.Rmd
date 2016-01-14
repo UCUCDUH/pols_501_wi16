@@ -365,7 +365,7 @@ ggplot(gapminder, aes(x = log_gdp_per_cap, y = log_life_exp,
   xlab("log(GDP per capita)")
 ```
 
-We will generally not use base R graphics in this course, instead relying on **gplot2**.
+We will generally not use base R graphics in this course, instead relying on **ggplot2**.
 Here is how a couple of those plots would be made using the base R graphics.
 For a histogram use the `hist` function:
 ```{r}

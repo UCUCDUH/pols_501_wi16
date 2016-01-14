@@ -87,7 +87,7 @@ On the one hand, this scatterplot supports Baum and Zhukov's (2015) argument: as
 
 **Challenge:** 
 
-- How can we fit a line discribing a linear relationship and a line describing a more U-shaped relationship between these two variables?
+- How can we fit a line describing a linear relationship and a line describing a more U-shaped relationship between these two variables?
 
 ```{r}
 p + geom_point() + geom_smooth(se = FALSE) + geom_smooth(method = 'lm', se = FALSE)
