@@ -1,3 +1,0 @@
-```{r results='hide'}
-read.csv("get_from_csv")
-```
