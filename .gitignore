@@ -2,7 +2,6 @@ venv
 .doit.db.db
 cache/
 __pycache__
-*_files/
 *_cache/
 *.Rhistory
 *.RData
