@@ -13,7 +13,10 @@ before_script:
 - npm install markdown-spellcheck
 - PATH="node_modules/.bin:$PATH"
 script:
-- mkdir web/files/  
+- mkdir web/files/
+- which Rscript
+- which RScript
+- which R
 - make -C lessons deploy
 - ./gen-diffs.sh
 - ./travis-deploy.sh
