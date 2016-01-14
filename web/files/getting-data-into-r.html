@@ -164,7 +164,7 @@ Sstreets()</code></pre>
 <div id="read-and-write-csv-files" class="section level2">
 <h2>Read and write csv files</h2>
 <p>One of the most common data formats is the CSV (Comma Separated Values). CSV datasets are easy to share and read using multiple statistical software.</p>
-<p>Download the dataset <strong>wdi_sample.csv</strong> from the following <a href="https://GitHub.com/UW-POLS501/pols_501_wi16/blob/master/labs/getting-data-into-r/data/wdi_subset.csv">link</a> and save it in <code>lab1/data</code>. To read in the CSV file, use the <code>read.csv()</code> function, which has the main following parameters:</p>
+<p>Download the dataset <strong>wdi_sample.csv</strong> from the following <a href="https://GitHub.com/UW-POLS501/pols_501_wi16/blob/master/lessons/data/wdi_subset.csv">link</a> and save it in <code>lab1/data</code>. To read in the CSV file, use the <code>read.csv()</code> function, which has the main following parameters:</p>
 <ul>
 <li><code>file</code> name of the file (e.g. ‘data/wdi_sample.csv’)</li>
 <li><code>header</code> (TRUE/FALSE) whether the first row contains variable names (TRUE default value)</li>
@@ -200,10 +200,10 @@ tail(wdi$Indicator.Name)</code></pre>
 <h2>Read and write other type of data formats: STATA, SPSS, XLS, XLSX…</h2>
 <p>Not all datasets we want to use are in CSV format. They are often in other formats such as <code>.txt</code>, <code>.sav</code> (SPSS’s native format), <code>.dta</code> (STATA), <code>.xls</code> or <code>.xlsx</code> (Excel formats), etc. There are some R packages that make it easy to read those data formats into R. One of them is the <code>rio</code> package. Download the following datasets, install the <code>rio</code> package, and load them into R using <code>rio</code></p>
 <ul>
-<li><p><a href="https://GitHub.com/UW-POLS501/pols_501_wi16/blob/master/labs/getting-data-into-r/data/phd.txt">phd.txt</a> Time to PhD dataset from Espenshade and Rodriguez (1997) SSQ, available <a href="http://data.princeton.edu/wws509/datasets/#phd">here</a>.</p></li>
-<li><p><a href="https://GitHub.com/UW-POLS501/pols_501_wi16/blob/master/labs/getting-data-into-r/data/edu_expend_1975.sav">edu_expend_1975.sav</a> Education Expenditure 1960, from Chatterjee, Hadi and Price (1977), available <a href="http://www.ats.ucla.edu/stat/spss/examples/chp/chpspss_dl.htm">here</a></p></li>
-<li><p><a href="https://GitHub.com/UW-POLS501/pols_501_wi16/blob/master/labs/getting-data-into-r/data/salary.dta">salary.dta</a> Discrimination in Salaries, from Weisber (1985), available <a href="http://data.princeton.edu/wws509/datasets/#salary">here</a></p></li>
-<li><p><a href="https://GitHub.com/UW-POLS501/pols_501_wi16/blob/master/labs/getting-data-into-r/data/divorce.xlsx">divorce.xlsx</a> Marriage Dissolution in the U.S., from Lillard and Panis (2000), available <a href="http://data.princeton.edu/wws509/datasets/#divorce">here</a></p></li>
+<li><p><a href="https://GitHub.com/UW-POLS501/pols_501_wi16/blob/master/lessons/data/phd.txt">phd.txt</a> Time to PhD dataset from Espenshade and Rodriguez (1997) SSQ, available <a href="http://data.princeton.edu/wws509/datasets/#phd">here</a>.</p></li>
+<li><p><a href="https://GitHub.com/UW-POLS501/pols_501_wi16/blob/master/lessons/data/edu_expend_1975.sav">edu_expend_1975.sav</a> Education Expenditure 1960, from Chatterjee, Hadi and Price (1977), available <a href="http://www.ats.ucla.edu/stat/spss/examples/chp/chpspss_dl.htm">here</a></p></li>
+<li><p><a href="https://GitHub.com/UW-POLS501/pols_501_wi16/blob/master/lessons/data/salary.dta">salary.dta</a> Discrimination in Salaries, from Weisber (1985), available <a href="http://data.princeton.edu/wws509/datasets/#salary">here</a></p></li>
+<li><p><a href="https://GitHub.com/UW-POLS501/pols_501_wi16/blob/master/lessons/data/divorce.xlsx">divorce.xlsx</a> Marriage Dissolution in the U.S., from Lillard and Panis (2000), available <a href="http://data.princeton.edu/wws509/datasets/#divorce">here</a></p></li>
 </ul>
 <pre class="r"><code>install.packages(&quot;rio&quot;)</code></pre>
 <pre class="r"><code>library(&quot;rio&quot;)

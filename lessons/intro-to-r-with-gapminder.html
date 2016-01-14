@@ -15,7 +15,7 @@
 
 <script src="intro-to-r-with-gapminder_files/jquery-1.11.0/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="intro-to-r-with-gapminder_files/bootstrap-3.3.1/css/cosmo.min.css" rel="stylesheet" />
+<link href="intro-to-r-with-gapminder_files/bootstrap-3.3.1/css/cerulean.min.css" rel="stylesheet" />
 <script src="intro-to-r-with-gapminder_files/bootstrap-3.3.1/js/bootstrap.min.js"></script>
 <script src="intro-to-r-with-gapminder_files/bootstrap-3.3.1/shim/html5shiv.min.js"></script>
 <script src="intro-to-r-with-gapminder_files/bootstrap-3.3.1/shim/respond.min.js"></script>
@@ -356,7 +356,7 @@ ggplot(gapminder, aes(x = log_gdp_per_cap, y = log_life_exp,
   ylab(&quot;log(Life Expectancy)&quot;) +
   xlab(&quot;log(GDP per capita)&quot;)</code></pre>
 <p><img src="intro-to-r-with-gapminder_files/figure-html/unnamed-chunk-30-1.png" title="" alt="" width="672" /></p>
-<p>We will generally not use base R graphics in this course, instead relying on <strong>gplot2</strong>. Here is how a couple of those plots would be made using the base R graphics. For a histogram use the <code>hist</code> function:</p>
+<p>We will generally not use base R graphics in this course, instead relying on <strong>ggplot2</strong>. Here is how a couple of those plots would be made using the base R graphics. For a histogram use the <code>hist</code> function:</p>
 <pre class="r"><code>hist(gapminder$lifeExp, main = &quot;Histogram of Life Expectancy&quot;,
      xlab = &quot;Life Expectancy&quot;)</code></pre>
 <p><img src="intro-to-r-with-gapminder_files/figure-html/unnamed-chunk-31-1.png" title="" alt="" width="672" /> For a scatter plot use the <code>plot</code> function:</p>
