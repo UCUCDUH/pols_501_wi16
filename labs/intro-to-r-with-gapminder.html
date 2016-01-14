@@ -19,7 +19,7 @@
 <script src="intro-to-r-with-gapminder_files/bootstrap-3.3.1/js/bootstrap.min.js"></script>
 <script src="intro-to-r-with-gapminder_files/bootstrap-3.3.1/shim/html5shiv.min.js"></script>
 <script src="intro-to-r-with-gapminder_files/bootstrap-3.3.1/shim/respond.min.js"></script>
-<<link rel="stylesheet" type = "text/css" href="labs.css">
+<link rel="stylesheet" type = "text/css" href="labs.css">
 
 <style type="text/css">code{white-space: pre;}</style>
 <link rel="stylesheet"
@@ -286,30 +286,31 @@ gapminder[gapminder$country %in% c(&quot;United States&quot;, &quot;France&quot;
 <pre class="r"><code>ggplot(gapminder, aes(x = lifeExp)) +
   geom_histogram()</code></pre>
 <pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
-<p><img src="intro-to-r-with-gapminder_files/figure-html/unnamed-chunk-20-1.png" title="" alt="" width="672" /> Note that this gives a message asking the user to choose a binwidth. We can solve that by adding a binwidth argument to <code>geom_histogram</code>. Although there are methods to automatically choose the number and bins of histograms (see the help for <a href="http://www.inside-r.org/r-doc/grDevices/nclass">nclass</a>), in this case 5 years seems a reasonable value.</p>
+<p><img src="intro-to-r-with-gapminder_files/figure-html/unnamed-chunk-19-1.png" title="" alt="" width="672" /> Note that this gives a message asking the user to choose a binwidth. We can solve that by adding a binwidth argument to <code>geom_histogram</code>. Although there are methods to automatically choose the number and bins of histograms (see the help for <a href="http://www.inside-r.org/r-doc/grDevices/nclass">nclass</a>), in this case 5 years seems a reasonable value.</p>
 <pre class="r"><code>ggplot(gapminder, aes(x = lifeExp)) +
   geom_histogram(binwidth = 5)</code></pre>
-<p><img src="intro-to-r-with-gapminder_files/figure-html/unnamed-chunk-21-1.png" title="" alt="" width="672" /></p>
+<p><img src="intro-to-r-with-gapminder_files/figure-html/unnamed-chunk-20-1.png" title="" alt="" width="672" /></p>
 <p>You could also save the plot to a variable</p>
 <pre class="r"><code>lifexp_plot &lt;- ggplot(gapminder, aes(x = lifeExp)) +
   geom_histogram()</code></pre>
 <p>If you just enter the variable name in the console it will “print”&quot; the object, which in this case, simply creates the plot:</p>
 <pre class="r"><code>lifexp_plot</code></pre>
-<p><img src="intro-to-r-with-gapminder_files/figure-html/unnamed-chunk-23-1.png" title="" alt="" width="672" /></p>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="intro-to-r-with-gapminder_files/figure-html/unnamed-chunk-22-1.png" title="" alt="" width="672" /></p>
 <p>To create a scatter plot of life expectancy vs. GDP per capita, we need both an <code>x</code> and <code>y</code> aesthetic, and we use the <code>geom_point</code> geom.</p>
 <pre class="r"><code>ggplot(gapminder, aes(x = gdpPercap, y = lifeExp)) +
   geom_point()</code></pre>
-<p><img src="intro-to-r-with-gapminder_files/figure-html/unnamed-chunk-24-1.png" title="" alt="" width="672" /> However, the relationship between life expectancy and GDP per capita is clearer if plotted on a log-log scale. Lets use the variables, <code>log_gdp_per_cap</code> and <code>log_life_exp</code>, that we added to the <code>gapminder</code> dataset earlier in the lesson.</p>
+<p><img src="intro-to-r-with-gapminder_files/figure-html/unnamed-chunk-23-1.png" title="" alt="" width="672" /> However, the relationship between life expectancy and GDP per capita is clearer if plotted on a log-log scale. Lets use the variables, <code>log_gdp_per_cap</code> and <code>log_life_exp</code>, that we added to the <code>gapminder</code> dataset earlier in the lesson.</p>
 <pre class="r"><code>ggplot(gapminder, aes(x = log_gdp_per_cap, y = log_life_exp)) +
   geom_point()</code></pre>
-<p><img src="intro-to-r-with-gapminder_files/figure-html/unnamed-chunk-25-1.png" title="" alt="" width="672" /></p>
+<p><img src="intro-to-r-with-gapminder_files/figure-html/unnamed-chunk-24-1.png" title="" alt="" width="672" /></p>
 <p>Now add titles to the plot and axis title,</p>
 <pre class="r"><code>ggplot(gapminder, aes(x = log_gdp_per_cap, y = log_life_exp)) +
   geom_point() +
   ggtitle(&quot;Life Expectancy vs. GDP per capita&quot;) +
   ylab(&quot;log(Life Expectancy)&quot;) +
   xlab(&quot;log(GDP per capita)&quot;)</code></pre>
-<p><img src="intro-to-r-with-gapminder_files/figure-html/unnamed-chunk-26-1.png" title="" alt="" width="672" /></p>
+<p><img src="intro-to-r-with-gapminder_files/figure-html/unnamed-chunk-25-1.png" title="" alt="" width="672" /></p>
 <p>To color points by continent, add the aesthetic <code>colour = continent</code>.</p>
 <pre class="r"><code>ggplot(gapminder, aes(x = log_gdp_per_cap, y = log_life_exp,
                       colour = continent)) +
@@ -317,7 +318,7 @@ gapminder[gapminder$country %in% c(&quot;United States&quot;, &quot;France&quot;
   ggtitle(&quot;Life Expectancy vs. GDP per capita&quot;) +
   ylab(&quot;log(Life Expectancy)&quot;) +
   xlab(&quot;log(GDP per capita)&quot;)</code></pre>
-<p><img src="intro-to-r-with-gapminder_files/figure-html/unnamed-chunk-27-1.png" title="" alt="" width="672" /></p>
+<p><img src="intro-to-r-with-gapminder_files/figure-html/unnamed-chunk-26-1.png" title="" alt="" width="672" /></p>
 <p>Instead, we could color the points by year,</p>
 <pre class="r"><code>ggplot(gapminder, aes(x = log_gdp_per_cap, y = log_life_exp,
                       colour = year)) +
@@ -325,7 +326,7 @@ gapminder[gapminder$country %in% c(&quot;United States&quot;, &quot;France&quot;
   ggtitle(&quot;Life Expectancy vs. GDP per capita&quot;) +
   ylab(&quot;log(Life Expectancy)&quot;) +
   xlab(&quot;log(GDP per capita)&quot;)</code></pre>
-<p><img src="intro-to-r-with-gapminder_files/figure-html/unnamed-chunk-28-1.png" title="" alt="" width="672" /></p>
+<p><img src="intro-to-r-with-gapminder_files/figure-html/unnamed-chunk-27-1.png" title="" alt="" width="672" /></p>
 <p>Now size the points proportional to their population,</p>
 <pre class="r"><code>ggplot(gapminder, aes(x = log_gdp_per_cap, y = log_life_exp,
                       colour = continent,
@@ -334,7 +335,7 @@ gapminder[gapminder$country %in% c(&quot;United States&quot;, &quot;France&quot;
   ggtitle(&quot;Life Expectancy vs. GDP per capita&quot;) +
   ylab(&quot;log(Life Expectancy)&quot;) +
   xlab(&quot;log(GDP per capita)&quot;)</code></pre>
-<p><img src="intro-to-r-with-gapminder_files/figure-html/unnamed-chunk-29-1.png" title="" alt="" width="672" /></p>
+<p><img src="intro-to-r-with-gapminder_files/figure-html/unnamed-chunk-28-1.png" title="" alt="" width="672" /></p>
 <p>There are way too many points in this plot, so lets only use a single year.</p>
 <pre class="r"><code>gapminder2007 &lt;- gapminder[gapminder$year == 2007, ]
 ggplot(gapminder, aes(x = log_gdp_per_cap, y = log_life_exp,
@@ -344,7 +345,7 @@ ggplot(gapminder, aes(x = log_gdp_per_cap, y = log_life_exp,
   ggtitle(&quot;Life Expectancy vs. GDP per capita (2007)&quot;) +
   ylab(&quot;log(Life Expectancy)&quot;) +
   xlab(&quot;log(GDP per capita)&quot;)</code></pre>
-<p><img src="intro-to-r-with-gapminder_files/figure-html/unnamed-chunk-30-1.png" title="" alt="" width="672" /></p>
+<p><img src="intro-to-r-with-gapminder_files/figure-html/unnamed-chunk-29-1.png" title="" alt="" width="672" /></p>
 <p>Even better, lets split up the plot into “facets” by year,</p>
 <pre class="r"><code>ggplot(gapminder, aes(x = log_gdp_per_cap, y = log_life_exp,
                       colour = continent,
@@ -354,16 +355,16 @@ ggplot(gapminder, aes(x = log_gdp_per_cap, y = log_life_exp,
   ggtitle(&quot;Life Expectancy vs. GDP per capita (2007)&quot;) +
   ylab(&quot;log(Life Expectancy)&quot;) +
   xlab(&quot;log(GDP per capita)&quot;)</code></pre>
-<p><img src="intro-to-r-with-gapminder_files/figure-html/unnamed-chunk-31-1.png" title="" alt="" width="672" /></p>
+<p><img src="intro-to-r-with-gapminder_files/figure-html/unnamed-chunk-30-1.png" title="" alt="" width="672" /></p>
 <p>We will generally not use base R graphics in this course, instead relying on <strong>gplot2</strong>. Here is how a couple of those plots would be made using the base R graphics. For a histogram use the <code>hist</code> function:</p>
 <pre class="r"><code>hist(gapminder$lifeExp, main = &quot;Histogram of Life Expectancy&quot;,
      xlab = &quot;Life Expectancy&quot;)</code></pre>
-<p><img src="intro-to-r-with-gapminder_files/figure-html/unnamed-chunk-32-1.png" title="" alt="" width="672" /> For a scatter plot use the <code>plot</code> function:</p>
+<p><img src="intro-to-r-with-gapminder_files/figure-html/unnamed-chunk-31-1.png" title="" alt="" width="672" /> For a scatter plot use the <code>plot</code> function:</p>
 <pre class="r"><code>plot(gapminder$log_gdp_per_cap, gapminder$log_life_exp,
      main = &quot;GDP per capita vs. Life Expectancy&quot;,
      ylab = &quot;Log Life Expectancy (years)&quot;,
      xlab = &quot;Log GDP per capita&quot;)</code></pre>
-<p><img src="intro-to-r-with-gapminder_files/figure-html/unnamed-chunk-33-1.png" title="" alt="" width="672" /></p>
+<p><img src="intro-to-r-with-gapminder_files/figure-html/unnamed-chunk-32-1.png" title="" alt="" width="672" /></p>
 <p>For more on base graphics see the following sources, among others:</p>
 <ul>
 <li><a href="http://www.statmethods.net/graphs/">Quick R: Basic Graphics</a></li>
