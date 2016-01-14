@@ -1,5 +1,4 @@
-SHELL = bash
-RSCRIPT ?= RScript
+RSCRIPT ?= Rscript
 RSCRIPT_OPTS ?=
 
 DEPLOY_DIR = ../web/files/lessons/
