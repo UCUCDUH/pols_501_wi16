@@ -42,13 +42,13 @@ Pre-class
 Class
 
 <ul class="fa-ul">
-<li><i class="fa-li fa fa-bar-chart"></i><a href="/lessons/intro-to-r-with-gapminder/">Introduction to R with Gapminder Data</a>
+<li><i class="fa-li fa fa-bar-chart"></i><a href="/lessons/intro-to-r-with-gapminder.html">Introduction to R with Gapminder Data</a>
 </ul>
 
 Lab
 
 <ul class="fa-ul">
-<li><i class="fa-li fa fa-bar-chart"></i><a href="/lessons/getting-data-into-r/">Getting Data into R</a>
+<li><i class="fa-li fa fa-bar-chart"></i><a href="/lessons/getting-data-into-r.html">Getting Data into R</a>
 </ul>
 
 

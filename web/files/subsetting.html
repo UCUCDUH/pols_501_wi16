@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="author" content="Andreu Casas" />
+
+<meta name="date" content="2016-01-15" />
+
+<title>Subsetting and Plotting Data in R</title>
+
+<script src="subsetting_files/jquery-1.11.0/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="subsetting_files/bootstrap-3.3.1/css/cosmo.min.css" rel="stylesheet" />
+<script src="subsetting_files/bootstrap-3.3.1/js/bootstrap.min.js"></script>
+<script src="subsetting_files/bootstrap-3.3.1/shim/html5shiv.min.js"></script>
+<script src="subsetting_files/bootstrap-3.3.1/shim/respond.min.js"></script>
+<link rel="stylesheet" type = "text/css" href="labs.css">
+
+<style type="text/css">code{white-space: pre;}</style>
+<link rel="stylesheet"
+      href="subsetting_files/highlight/textmate.css"
+      type="text/css" />
+<script src="subsetting_files/highlight/highlight.js"></script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img { 
+  max-width:100%; 
+  height: auto; 
+}
+</style>
+<div class="container-fluid main-container">
+
+<p>
+<strong>POL S/CS&amp;SS 501, University of Washington, Spring 2015</strong>
+</p>
+
+<div id="header">
+<h1 class="title">Subsetting and Plotting Data in R</h1>
+<h4 class="author"><em>Andreu Casas</em></h4>
+<h4 class="date"><em>January 15, 2016</em></h4>
+</div>
+
+
+<div id="learning-objectives" class="section level3">
+<h3>Learning Objectives</h3>
+<ol style="list-style-type: decimal">
+<li>Improve subsetting skills</li>
+<li>Plot data using <code>ggplot2</code></li>
+</ol>
+<hr />
+<center>
+<h3>
+Initial Set up
+</h3>
+</center>
+<ul>
+<li>Create new R project for this lab</li>
+<li>Create a <strong>data</strong> subdirectory</li>
+</ul>
+<p>Today we will work with data from a recent <a href="http://jpr.sagepub.com/content/52/3/384.full">article</a>:</p>
+<ul>
+<li>Baum, Matthew A. and Yuri M. Zhukov. (2015) “Filtering revolution: Reporting bias in international newspaper coverage of the Libyan civil war.” <em>Journal of Peace Research</em>, 52(3):384-400.</li>
+</ul>
+<p>This article won the <a href="https://www.prio.org/JPR/VisualizationAward/">2015 Best Visualization Award</a>, given by the Journal of Peace Research to the article published in the journal that “not only impresses by its interesting analysis, but also by the large number of aesthetically pleasing and informative graphic.”</p>
+<p>The replication data for the article is available in JPR’s <a href="https://www.prio.org/JPR/Datasets/">website</a>. However, since the replication material for this paper takes a while to download, and the four datasets they use are large and have numerous variables, for the purpose of this class we will use a version of one of their datasets that I put together.</p>
+<ul>
+<li>Download the dataset in this <a href="https://github.com/UW-POLS501/pols_501_wi16/blob/master/labs/subsetting-and-plotting/data/country.csv">link</a> and store it in the <strong>data</strong> subdirectory</li>
+</ul>
+<p><strong>Challenge:</strong></p>
+<ul>
+<li><p>Go to the article link, skim it (read the abstract and the data section), and briefly tell me:</p>
+<ul>
+<li>What the paper is about</li>
+<li>The type of data they use</li>
+<li>What they do with the data (how they use it to test their hypotheses)</li>
+</ul></li>
+</ul>
+<hr />
+<center>
+<h3>
+Improve subsetting skills
+</h1>
+</center>
+<div id="selecting-variables-of-our-dataset" class="section level4">
+<h4>Selecting variables of our dataset</h4>
+<p>Start by reading the dataset (a CSV file) into <code>R</code>.</p>
+<p><strong>Challenge:</strong></p>
+<ul>
+<li>How do we read CSV files into R?</li>
+</ul>
+<pre class="r"><code>country &lt;- read.csv(&#39;data/country.csv&#39;)</code></pre>
+<p>Explore the dataset using the functions we learned last week:</p>
+<ul>
+<li><code>dim()</code></li>
+<li><code>str()</code></li>
+<li><code>names()</code></li>
+<li><code>head()</code></li>
+<li><code>tail()</code></li>
+<li><code>summary()</code></li>
+</ul>
+<p><strong>Challenge,</strong> how would we select:</p>
+<ul>
+<li>first 10 rows</li>
+<li>last 10 rows</li>
+<li>second variable (<code>polity2</code>)</li>
+<li>first 10 observations of the second variable (<code>polity2</code>)</li>
+<li>a subset of the data with only democratic countries</li>
+<li>a subset of the data with only non-democratic countries</li>
+</ul>
+<pre class="r"><code># First 10 rows
+country[1:10, ]
+head(country,n = 10)
+
+# Last 10 rows
+obs &lt;- nrow(country)
+country[(obs-10):obs,]
+tail(country, n=10)
+
+# Second variable &#39;polity2&#39;
+country[,2]
+country$polity2
+
+# First 10 observations of the second variable (&#39;polity2&#39;)
+country[1:10 , 2]
+country$polity[1:10]
+country[,2][1:10]
+
+# A subset of the data with only democratic countries
+# See the importance of using MEANINGFUL variable names (we know democratic values have democracy = 1)
+table(country$democracy)
+demCountries &lt;- country[country$democracy==1, ]
+nonDemCountries &lt;- country[country$democracy==0, ]</code></pre>
+</div>
+</div>
+
+<hr>
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://licensebuttons.net/l/by-nc-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
+R code is licensed under a <a href="https://www.r-project.org/Licenses/BSD_2_clause">BSD 2-clause</a> license.
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
