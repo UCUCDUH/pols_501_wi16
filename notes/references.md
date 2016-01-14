@@ -57,6 +57,7 @@ Quantitative Research Methodology. Matthew Blackwell. http://www.mattblackwell.o
 
 	- [Instructor Training](https://github.com/swcarpentry/instructor-training) (for pedagogy).
 - John Hopkins, [Winter R Booktcamp](http://seankross.com/rbootcamp/), Sean Cross. R programming. Also uses Swirl examples.
+- Brenton Kenkel, Vanderbilt PSCI 8357 https://github.com/vanderbilt-psci8357/00-hello-world.git (closer to 503)
 
 Also look at the classes listed in Aronow's intro stats book proposal: http://aronow.research.yale.edu/aronowmillerproposal.pdf
 
@@ -163,3 +164,7 @@ The O'Reilly Codeschool very simple intro to R: http://tryr.codeschool.com/
 - Beissiger 2002 *Nationalist Mobilization and the Collapse of the Soviet State*. Data is [here](http://www.princeton.edu/~mbeissin/research1.htm#Data). Used in *SMISS*
 - Reinhardt and Rogoff, 2010. "Growth in a Time of Debt" *AER* 10.1257/aer.100.2.573 In *SMISS*
 - Herndon, Ash, and Pollin, 2014. "Does High Public Debt Consistently Stifle Economic Growth? A Critique of Reinhardt and Rogoff" *Cambridge Journal of Economics* Data [here](http://www.peri.umass.edu/236/hash/31e2ff374b6377b2ddec04deaa6388b1/publication/566/) In *SMISS*
+
+# Markdown
+
+- http://commonmark.org/help/tutorial/
