@@ -114,7 +114,7 @@ Sstreets()
 
 One of the most common data formats is the CSV (Comma Separated Values). CSV datasets are easy to share and read using multiple statistical software. 
 
-Download the dataset **wdi_sample.csv** from the following [link](https://GitHub.com/UW-POLS501/pols_501_wi16/blob/master/labs/data/wdi_subset.csv) and save it in `lab1/data`. To read in the CSV file, use the `read.csv()` function, which has the main following parameters:
+Download the dataset **wdi_sample.csv** from the following [link](https://GitHub.com/UW-POLS501/pols_501_wi16/blob/master/lessons/data/wdi_subset.csv) and save it in `lab1/data`. To read in the CSV file, use the `read.csv()` function, which has the main following parameters:
 
 - `file` name of the file (e.g. 'data/wdi_sample.csv')
 - `header` (TRUE/FALSE) whether the first row contains variable names (TRUE default value)
@@ -172,13 +172,13 @@ write.csv(x = wdi, file = "data/wdi_sample2.csv")
 
 Not all datasets we want to use are in CSV format. They are often in other formats such as `.txt`, `.sav` (SPSS's native format), `.dta` (STATA), `.xls` or `.xlsx` (Excel formats), etc. There are some R packages that make it easy to read those data formats into R. One of them is the ``rio`` package. Download the following datasets, install the ``rio`` package, and load them into R using ``rio``
 
-- [phd.txt](https://GitHub.com/UW-POLS501/pols_501_wi16/blob/master/labs/data/phd.txt) Time to PhD dataset from Espenshade and Rodriguez (1997) SSQ, available [here](http://data.princeton.edu/wws509/datasets/#phd).
+- [phd.txt](https://GitHub.com/UW-POLS501/pols_501_wi16/blob/master/lessons/data/phd.txt) Time to PhD dataset from Espenshade and Rodriguez (1997) SSQ, available [here](http://data.princeton.edu/wws509/datasets/#phd).
 
-- [edu_expend_1975.sav](https://GitHub.com/UW-POLS501/pols_501_wi16/blob/master/labs/data/edu_expend_1975.sav) Education Expenditure 1960, from Chatterjee, Hadi and Price (1977), available [here](http://www.ats.ucla.edu/stat/spss/examples/chp/chpspss_dl.htm)
+- [edu_expend_1975.sav](https://GitHub.com/UW-POLS501/pols_501_wi16/blob/master/lessons/data/edu_expend_1975.sav) Education Expenditure 1960, from Chatterjee, Hadi and Price (1977), available [here](http://www.ats.ucla.edu/stat/spss/examples/chp/chpspss_dl.htm)
 
-- [salary.dta](https://GitHub.com/UW-POLS501/pols_501_wi16/blob/master/labs/data/salary.dta) Discrimination in Salaries, from Weisber (1985), available [here](http://data.princeton.edu/wws509/datasets/#salary)
+- [salary.dta](https://GitHub.com/UW-POLS501/pols_501_wi16/blob/master/lessons/data/salary.dta) Discrimination in Salaries, from Weisber (1985), available [here](http://data.princeton.edu/wws509/datasets/#salary)
 
-- [divorce.xlsx](https://GitHub.com/UW-POLS501/pols_501_wi16/blob/master/labs/data/divorce.xlsx) Marriage Dissolution in the U.S., from Lillard and Panis (2000), available [here](http://data.princeton.edu/wws509/datasets/#divorce)
+- [divorce.xlsx](https://GitHub.com/UW-POLS501/pols_501_wi16/blob/master/lessons/data/divorce.xlsx) Marriage Dissolution in the U.S., from Lillard and Panis (2000), available [here](http://data.princeton.edu/wws509/datasets/#divorce)
 
 ```{r eval=FALSE,results="hide"}
 install.packages("rio")
