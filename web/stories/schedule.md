@@ -66,6 +66,25 @@ Lab
 <li><i class="fa-li fa fa-book"></i>Tukey, John. W. 1980. "We Need Both Explanatory and Confirmatory." <em>The American Statistician</em>. <a href="http://dx.doi.org/10.2307/2682991">[doi]</a> </li>
 </ul>
 
+Class
+
+<ul class="fa-ul">
+<li><i class="fa-li fa fa-bar-chart"></i>
+</ul>
+
+Lab
+
+Useful references for data visualization
+
+- Gelman, Andrew. 2002. "Let's Practice What We Preach: Turning Tables into Graphs." *The American Statistician.* [[URL](http://www.jstor.org/stable/3087382)]
+- Kastellec, Jonathan P., and Eduardo L. Leoni. "Using Graphs Insted of Tables in Political Science." *Perspectives on Politics.* [[DOI](https://dx.doi.org/10.1017/S1537592707072209)] (Also see associated website [tables2graphs.com](http://tables2graphs.com/doku.php).)
+- Stephen Few [perceptualedge.com](https://www.perceptualedge.com/library.php) and his books: *Show Me the Numbers: Designing Tables and Graphs to Enlighten* and *Now You See It: Simple Visualization Techniquest for Quantitative Analysis*. As well as many of his [articles](https://www.perceptualedge.com/library.php#Articles).
+- William S. Cleveland's books are classics: *The Elements of Graphing Data* and *Visualizing Data*
+- Edward Tufte's books are also classics: *The Visual Display of Quantitative Information*, *Visual Explanations*, *Envisioning Information*, and *Beautiful Evidence*.
+- Christopher Adolph's course [CSSS 569: Visualizing Data](http://faculty.washington.edu/cadolph/index.php?page=22).
+- Heer, Jeffrey, and Michael Bostock. 2010. "Crowdsourcing Graphical Perception: Using Mechanical Turk to Assess Visualization Design". This is a gateway to experiments which assess how effectiveness of different visual encodings of data. [[URL](http://vis.stanford.edu/files/2010-MTurk-CHI.pdf)].
+
+
 <!-- All graphics are comparisons.  -->
 <!-- 1. Information content of graphs or tables -->
 <!-- 2. Understandability of graphs or tables -->
