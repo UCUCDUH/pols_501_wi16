@@ -90,7 +90,7 @@ Now we need to calculate $\sum_{i = 1}^2 d(x_i, a)$ for each value of $a$.
 But first, let's calculate it for one value of $a$. 
 The sum of squared errors for $a = min(x)$ is,
 ```{r}
-sum((x - a) ^ 2)
+sum((x - min(a)) ^ 2)
 ```
 To calculate it for many values of $a$, we will use a `for` loop.
 First, we will create a new vector, the same length as $a$ which will hold the values of
@@ -198,7 +198,7 @@ Then we can also plot the values of each quantile.
 ```{r}
 q <- seq(0, 100, by = 1) / 100
 v <- quantile(gapminder2007$lifeExp, prob = q)
-quantilggplot(data.frame(lifeExp = v, q = q),
+ggplot(data.frame(lifeExp = v, q = q),
        aes(x = q, y = lifeExp)) + 
   geom_point() +
   xlab("Life Expectancy (years)") +
