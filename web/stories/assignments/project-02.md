@@ -1,4 +1,6 @@
-# Research Project Assignment 2
+<!-- 
+.. title: Research Project Assignment 2
+-->
 
 For any data you have available, but at least one dataset, answer the following.
 
