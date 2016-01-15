@@ -69,7 +69,7 @@ Lab
 Class
 
 <ul class="fa-ul">
-<li><i class="fa-li fa fa-bar-chart"></i>
+<li><i class="fa-li fa fa-bar-chart"></i><a href="/lessons/descriptive_statistics.html">Descriptive Statistics</a>
 </ul>
 
 Lab
