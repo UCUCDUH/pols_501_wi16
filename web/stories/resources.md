@@ -2,7 +2,9 @@
 
 - [Introduction to R and RStudio with Gapminder data](/lessons/intro-to-r-with-gapminder.html)
 - [Getting data into R](/lessons/getting-data-into-r.html) reading csv, Stata, SPSS, Excel files
-- [Descriptive Statistics](lessons/descriptive_statistics.html)
+- [Descriptive statistics](/lessons/descriptive_statistics.html)
+- [Subsetting data](/lessons/subsetting.html)
+- [Plotting data with ggplot2 (1)](/lessons/ggplot-1.html)
 
 
 # Miscellaneous

@@ -74,6 +74,11 @@ Class
 
 Lab
 
+<ul class="fa-ul">
+<li><i class="fa-li fa fa-bar-chart"></i><a href="/lessons/subsetting.html">Subsetting data</a>
+<li><i class="fa-li fa fa-bar-chart"></i><a href="/lessons/ggplot-1.html">Plotting with ggplot2</a>
+</ul>
+
 Useful references for data visualization
 
 - Gelman, Andrew. 2002. "Let's Practice What We Preach: Turning Tables into Graphs." *The American Statistician.* [[URL](http://www.jstor.org/stable/3087382)]
