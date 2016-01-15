@@ -2,11 +2,13 @@
 
 ## Reading
 
-- [Assignment 1](reading-01/)
+- [#1](reading-01/)
+- [#2](reading-02/)
 
 ## Research Project
 
-- [Assignment 1](project-01/)
+- [#1](project-01/)
+- [#1](project-02/)
 
 ## Peer Review
 
