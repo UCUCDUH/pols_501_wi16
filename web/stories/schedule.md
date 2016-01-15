@@ -97,11 +97,12 @@ Useful references for data visualization
 
 <ul class="fa-ul">
 <li><i class="fa-li fa fa-puzzle-piece"></i></td><td>Dataset for your data analysis paper</td>
-<li><i class="fa-li fa fa-code"></i> Data Camp <a href="https://www.datacamp.com/courses/dplyr-data-manipulation-r-tutorial">Data Manipulation in R with dplyr</a> </li>
-<li> <i class="fa-li fa fa-book"></i> <em>OpenIntro</em>, Ch 2
-<li> <i class="fa-li fa fa-book"></i> <em>SMISS</em> Ch. 3, "Observable Data and Data-Generating Processes"
-<li> <i class="fa-li fa fa-book"></i> <em>SMISS</em> Ch. 4, "Probability Theory: Basic Properties of Data-Generating Processes". </li>
+<li><i class="fa-li fa fa-book"></i> <em>OpenIntro</em>, Ch 2. 
+<li><i class="fa-li fa fa-book"></i> <em>SMISS</em> Ch. 3, "Observable Data and Data-Generating Processes". This reading provides the context for the use of probability within political science research.
 <li><i class="fa-li fa fa-book"></i> Wickham, Hadley. 2014. "Tidy Data." <em>Journal of Statistical Software</em>. <a href="http://dx.doi.org/10.18637/jss.v059.i10">[URL]</a>. </li>
+<li> <i class="fa-li fa fa-book"></i> "Introduction to dplyr" [[URL](https://cran.rstudio.com/web/packages/dplyr/vignettes/introduction.html)]
+<li> <i class="fa-li fa fa-book"></i> <em>SMISS</em> Ch. 4, "Probability Theory: Basic Properties of Data-Generating Processes". Optional. This goes beyond the coverage of probability in OpenIntro. 
+<li><i class="fa-li fa fa-code"></i> Data Camp <a href="https://www.datacamp.com/courses/dplyr-data-manipulation-r-tutorial">Data Manipulation in R with dplyr</a> </li> Optional. This can clarity the information in the vignette.
 </ul>
 
 ## Week 4
