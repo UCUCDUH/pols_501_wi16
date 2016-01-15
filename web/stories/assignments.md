@@ -8,7 +8,7 @@
 ## Research Project
 
 - [#1](project-01/)
-- [#1](project-02/)
+- [#2](project-02/)
 
 ## Peer Review
 
