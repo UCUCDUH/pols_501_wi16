@@ -1,5 +1,5 @@
 ---
-title: Subsetting and Plotting Data in R
+title: Plotting Data in R
 date: January 15, 2016
 author: Andreu Casas
 ---
@@ -10,7 +10,7 @@ source("init.R")
 
 ## Learning Objectives
 
-1. Improve subsetting skills
+1. Plot data using `ggplot2
 
 ## Initial Set up
 
@@ -47,15 +47,19 @@ Load the `ggplot2` package
 
 ```{r}
 library(ggplot2)
-country <- read.csv('data/country.csv')
+country <- read.csv("data/country.csv")
 ```
 
-**Challenge:** What is the code that produces this graph?
+`r challenge_start()`
+What is the code that produces this graph?
 
 ```{r, warning = FALSE, echo = FALSE, fig.keep = "all"}
 ggplot(country, aes(x = polity2, y = n_articles)) +
-  geom_point()
+  geom_point() +
+  labs(x = "Polity Score", y = "# of Articles (Dec-2010 to Oct-2011)") +
+  ggtitle("Level of Democracy and # of Articles about the Lybian Civil War")
 ```
+`r challenge_end()`
 
 First we need to use the `ggplot()` function to assign the variables we want to plot
 
@@ -65,7 +69,7 @@ ggplot(country, aes(x = polity2, y = n_articles))
 
 Assigning values to the `ggplot()` function is not enough and that is why we get either an error or an empty graph if we run the previous command. We also need to specify which type of graph (geometric object) we want to plot. In this case we want to use a scatterplot, so the full command would be:
 
-```{r}
+```{r, warning = FALSE}
 ggplot(country, aes(x = polity2, y = n_articles)) +
   geom_point()
 ```
@@ -83,14 +87,26 @@ p <- ggplot(country, aes(x = polity2, y = n_articles))
 p + geom_point()
 ```
 
+Also, let's add a Title and more meaningful axes labels.
+
+```{r, fig.keep='none', message=FALSE}
+p <- ggplot(country, aes(x = polity2, y = n_articles))
+p <- p + geom_point() +
+    labs(x = "Polity Score", y = "# of Articles (Dec-2010 to Oct-2011)") +
+    ggtitle("Level of Democracy and # of Articles about the Lybian Civil War")
+```
+
 On the one hand, this scatterplot supports Baum and Zhukov's (2015) argument: as the level of democracy of a country increases, the number of articles covering the Lybian civil war also increases. However, the data also shows a pattern that they ignore in the paper: in countries with very low levels of democracy (`polity2` < -1) the coverage of the Lybian civil war was larger than in countries with medium level of democracy (-1 < `polity2` < 6). Literature on regime types and transition theorize similar U-shaped relationships: e.g. Acemoglu and Robinson (2006) when discussing the relationship between Inequality and Democratization.
 
-**Challenge:** 
+`r challenge_start()`
 
 - How can we fit a line describing a linear relationship and a line describing a more U-shaped relationship between these two variables?
 
+`r challenge_end()`
+
 ```{r}
-p + geom_point() + geom_smooth(se = FALSE) + geom_smooth(method = 'lm', se = FALSE)
+p + geom_smooth(se = FALSE) + 
+    geom_smooth(method = 'lm', se = FALSE)
 ```
 
 Since the colors of the two lines are the same, the graph is a little bit confusing. Let's change their color.
@@ -107,24 +123,36 @@ Let's try to produce a barplot similar to the one they have in page 390, where t
 ```{r}
 country$democracy <- as.factor(country$democracy)
 p2 <- ggplot(country, aes(x = region, y = n_articles, fill = democracy))
-p2 + geom_bar(stat = "summary", position = "dodge", fun.y="mean")
+p2 + geom_bar(stat = "summary", position = "dodge", fun.y="mean") +
+  labs(x = "Region", y = "# of Articles") +
+  ggtitle("Average # of articles by Region") +
+  coord_flip() + 
+  scale_x_discrete(labels = c("Africa", "Asia", "E. Europe", "L. America",
+                              "Mediterranean", "N. America", "W. Europe"))
+  
 ```
 
-**Challenge:**
+`r challenge_start()`
 
 - How does our barplot differ from Baum and Zhukov's (2015:390)?
 - Which barplot do you think summarizes the data better?
 
+`r challenge_end()`
+
 Now showing the same information using boxplots
 
 ```{r}
-p2 + geom_boxplot()
+p2 + geom_boxplot() +
+  labs(x = "Region", y = "# of Articles") +
+  ggtitle("Average # of articles by Region")
 ```
 
 Another boxplot excluding the regions North America (`usac`) and Western Europe (`wEurope`)
 ```{r}
 country2 <- country[!(country$region %in% c("usac", "wEurope")), ]
 p3 <- ggplot(country2, aes(x = region, y = n_articles, fill = democracy))
-p3 + geom_boxplot()
+p3 + geom_boxplot() +
+  labs(x = "Region", y = "# of Articles") +
+  ggtitle("Average # of articles by Region")
 ```
 

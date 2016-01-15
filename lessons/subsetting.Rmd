@@ -1,5 +1,5 @@
 ---
-title: Subsetting and Plotting Data in R
+title: Subsetting Data in R
 date: January 15, 2016
 author: Andreu Casas
 ---
@@ -12,7 +12,7 @@ source("init.R")
 ### Learning Objectives
 
 1. Improve subsetting skills
-2. Plot data using `ggplot2`
+2. Plot data using `ggplot2` (ggplot-1 lesson)
 
 ***
 
@@ -31,14 +31,16 @@ The replication data for the article is available in JPR's [website](https://www
 
 - Download the dataset in this [link](https://github.com/UW-POLS501/pols_501_wi16/blob/master/lessons/data/country.csv) and store it in the **data** subdirectory
 
-**Challenge:**
+`r challenge_start()`
 
 - Go to the article link, skim it (read the abstract and the data section), and briefly tell me:
 
     - What the paper is about
     - The type of data they use
     - What they do with the data (how they use it to test their hypotheses)
-  
+
+`r challenge_end()`
+
 ***
 
 <center> <h3> Improve subsetting skills </h1> </center>
@@ -47,12 +49,10 @@ The replication data for the article is available in JPR's [website](https://www
 
 Start by reading the dataset (a CSV file) into `R`. 
 
-**Challenge:**
-
 - How do we read CSV files into R?
 
 ```{r}
-country <- read.csv('data/country.csv')
+country <- read.csv("data/country.csv")
 ```
 
 Explore the dataset using the functions we learned last week:
@@ -64,7 +64,8 @@ Explore the dataset using the functions we learned last week:
 - `tail()`
 - `summary()`
 
-**Challenge,** how would we select:
+`r challenge_start()`
+How would we select:
 
 - first 10 rows
 - last 10 rows
@@ -72,6 +73,8 @@ Explore the dataset using the functions we learned last week:
 - first 10 observations of the second variable (`polity2`)
 - a subset of the data with only democratic countries
 - a subset of the data with only non-democratic countries
+
+`r challenge_end()`
 
 ```{r, results='hide'}
 # First 10 rows
@@ -81,7 +84,7 @@ head(country,n = 10)
 # Last 10 rows
 obs <- nrow(country)
 country[(obs-10):obs,]
-tail(country, n=10)
+tail(country, n = 10)
 
 # Second variable 'polity2'
 country[,2]
@@ -95,8 +98,8 @@ country[,2][1:10]
 # A subset of the data with only democratic countries
 # See the importance of using MEANINGFUL variable names (we know democratic values have democracy = 1)
 table(country$democracy)
-demCountries <- country[country$democracy==1, ]
-nonDemCountries <- country[country$democracy==0, ]
+demCountries <- country[country$democracy == 1, ]
+nonDemCountries <- country[country$democracy == 0, ]
 ```
 
 
