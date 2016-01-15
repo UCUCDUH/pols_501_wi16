@@ -159,8 +159,8 @@ x</code></pre>
 <p>Lets start with the mean. What we want to do is for many different values of <span class="math inline">\(a\)</span>, calculate <span class="math inline">\(\sum_{i = 1}^2 d(x_i, a)\)</span>. The mean will be the value of <span class="math inline">\(a\)</span> that has the smallest value of <span class="math inline">\(\sum_{i = 1}^2 d(x_i, a)\)</span>. Take as given that the mean will be between the minimum and maximum values of the sample. So we will try 100 different values of <span class="math inline">\(a\)</span> between <span class="math inline">\(min(x)\)</span> and <span class="math inline">\(max(x)\)</span>,</p>
 <pre class="r"><code>a &lt;- seq(min(x), max(x), length.out = 100)</code></pre>
 <p>Now we need to calculate <span class="math inline">\(\sum_{i = 1}^2 d(x_i, a)\)</span> for each value of <span class="math inline">\(a\)</span>. But first, let’s calculate it for one value of <span class="math inline">\(a\)</span>. The sum of squared errors for <span class="math inline">\(a = min(x)\)</span> is,</p>
-<pre class="r"><code>sum((x - a) ^ 2)</code></pre>
-<pre><code>## [1] 27826.53</code></pre>
+<pre class="r"><code>sum((x - min(a)) ^ 2)</code></pre>
+<pre><code>## [1] 3156</code></pre>
 <p>To calculate it for many values of <span class="math inline">\(a\)</span>, we will use a <code>for</code> loop. First, we will create a new vector, the same length as <span class="math inline">\(a\)</span> which will hold the values of <span class="math inline">\(\sum_{i = 1}^n (x_i - a)^2\)</span> for each value of <span class="math inline">\(a\)</span>.</p>
 <pre class="r"><code>sum_sq_errors &lt;- rep(NA, length(a))</code></pre>
 <p>Now, we will loop through each value of <span class="math inline">\(sum_sq_errors\)</span>, calculate the sum of squared errors, and save it to <code>sum_sq_errors</code>.</p>
@@ -262,12 +262,12 @@ Challenge
 <p>Then we can also plot the values of each quantile.</p>
 <pre class="r"><code>q &lt;- seq(0, 100, by = 1) / 100
 v &lt;- quantile(gapminder2007$lifeExp, prob = q)
-quantilggplot(data.frame(lifeExp = v, q = q),
+ggplot(data.frame(lifeExp = v, q = q),
        aes(x = q, y = lifeExp)) + 
   geom_point() +
   xlab(&quot;Life Expectancy (years)&quot;) +
   ylab(&quot;Quantile&quot;)</code></pre>
-<pre><code>## Error in eval(expr, envir, enclos): could not find function &quot;quantilggplot&quot;</code></pre>
+<p><img src="descriptive_statistics_files/figure-html/unnamed-chunk-18-1.png" title="" alt="" width="672" /></p>
 <p>Something similar is to plot the empirical distribution function (ECDF). For each value, the ECDF is the proportion of observations less than or equal to it.</p>
 <pre class="r"><code>ggplot(gapminder2007, aes(x = lifeExp)) +
   stat_ecdf() +

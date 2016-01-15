@@ -8,11 +8,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 
-<meta name="author" content="Andreu Casas" />
 
-<meta name="date" content="2016-01-15" />
 
-<title>Plotting Data in R</title>
+<title></title>
 
 <script src="libs/jquery-1.11.0/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -67,11 +65,6 @@ img {
 <strong>POL S/CS&amp;SS 501, University of Washington, Spring 2015</strong>
 </p>
 
-<div id="header">
-<h1 class="title">Plotting Data in R</h1>
-<h4 class="author"><em>Andreu Casas</em></h4>
-<h4 class="date"><em>January 15, 2016</em></h4>
-</div>
 
 <div id="TOC">
 <ul>
@@ -81,6 +74,19 @@ img {
 </ul>
 </div>
 
+<table>
+<tbody>
+<tr class="odd">
+<td align="left">title: Plotting Data in R</td>
+</tr>
+<tr class="even">
+<td align="left">date: January 15, 2016</td>
+</tr>
+<tr class="odd">
+<td align="left">author: Andreu Casas</td>
+</tr>
+</tbody>
+</table>
 <div id="learning-objectives" class="section level2">
 <h2>Learning Objectives</h2>
 <ol style="list-style-type: decimal">
@@ -169,7 +175,10 @@ Challenge
 p2 &lt;- ggplot(country, aes(x = region, y = n_articles, fill = democracy))
 p2 + geom_bar(stat = &quot;summary&quot;, position = &quot;dodge&quot;, fun.y=&quot;mean&quot;) +
   labs(x = &quot;Region&quot;, y = &quot;# of Articles&quot;) +
-  ggtitle(&quot;Average # of articles by Region&quot;)</code></pre>
+  ggtitle(&quot;Average # of articles by Region&quot;) +
+  coord_flip() + 
+  scale_x_discrete(labels = c(&quot;Africa&quot;, &quot;Asia&quot;, &quot;E. Europe&quot;, &quot;L. America&quot;,
+                              &quot;Mediterranean&quot;, &quot;N. America&quot;, &quot;W. Europe&quot;))</code></pre>
 <p><img src="ggplot-1_files/figure-html/unnamed-chunk-10-1.png" title="" alt="" width="672" /></p>
 <div class="panel panel-primary">
 <div class="panel-heading">

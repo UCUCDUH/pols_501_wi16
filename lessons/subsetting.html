@@ -73,19 +73,18 @@ img {
 <h4 class="date"><em>January 15, 2016</em></h4>
 </div>
 
+<div id="TOC">
+<ul>
+<li><a href="#learning-objectives">Learning Objectives</a></li>
+<li><a href="#improve-subsetting-skills">Improve subsetting skills</a></li>
+</ul>
+</div>
 
-<div id="learning-objectives" class="section level3">
-<h3>Learning Objectives</h3>
+<div id="learning-objectives" class="section level2">
+<h2>Learning Objectives</h2>
 <ol style="list-style-type: decimal">
 <li>Improve subsetting skills</li>
-<li>Plot data using <code>ggplot2</code> (ggplot-1 lesson)</li>
 </ol>
-<hr />
-<center>
-<h3>
-Initial Set up
-</h3>
-</center>
 <ul>
 <li>Create new R project for this lab</li>
 <li>Create a <strong>data</strong> subdirectory</li>
@@ -116,19 +115,16 @@ Challenge
 </ul>
 </div>
 </div>
-<hr />
-<center>
-<h3>
-Improve subsetting skills
-</h1>
-</center>
-<div id="selecting-variables-of-our-dataset" class="section level4">
-<h4>Selecting variables of our dataset</h4>
+</div>
+<div id="improve-subsetting-skills" class="section level2">
+<h2>Improve subsetting skills</h2>
+<div id="selecting-variables-of-our-dataset" class="section level3">
+<h3>Selecting variables of our dataset</h3>
 <p>Start by reading the dataset (a CSV file) into <code>R</code>.</p>
 <ul>
 <li>How do we read CSV files into R?</li>
 </ul>
-<pre class="r"><code>country &lt;- read.csv(&#39;data/country.csv&#39;)</code></pre>
+<pre class="r"><code>country &lt;- read.csv(&quot;data/country.csv&quot;)</code></pre>
 <p>Explore the dataset using the functions we learned last week:</p>
 <ul>
 <li><code>dim()</code></li>
@@ -163,7 +159,7 @@ head(country,n = 10)
 # Last 10 rows
 obs &lt;- nrow(country)
 country[(obs-10):obs,]
-tail(country, n=10)
+tail(country, n = 10)
 
 # Second variable &#39;polity2&#39;
 country[,2]
@@ -177,8 +173,8 @@ country[,2][1:10]
 # A subset of the data with only democratic countries
 # See the importance of using MEANINGFUL variable names (we know democratic values have democracy = 1)
 table(country$democracy)
-demCountries &lt;- country[country$democracy==1, ]
-nonDemCountries &lt;- country[country$democracy==0, ]</code></pre>
+demCountries &lt;- country[country$democracy == 1, ]
+nonDemCountries &lt;- country[country$democracy == 0, ]</code></pre>
 </div>
 </div>
 

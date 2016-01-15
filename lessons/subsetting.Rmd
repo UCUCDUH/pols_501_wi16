@@ -4,19 +4,13 @@ date: January 15, 2016
 author: Andreu Casas
 ---
 
-
 ```{r echo=FALSE,results='hide'}
 source("init.R")
 ```
 
-### Learning Objectives
+## Learning Objectives
 
 1. Improve subsetting skills
-2. Plot data using `ggplot2` (ggplot-1 lesson)
-
-***
-
-<center> <h3> Initial Set up </h3> </center>
 
 - Create new R project for this lab
 - Create a **data** subdirectory
@@ -41,11 +35,9 @@ The replication data for the article is available in JPR's [website](https://www
 
 `r challenge_end()`
 
-***
+## Improve subsetting skills
 
-<center> <h3> Improve subsetting skills </h1> </center>
-
-#### Selecting variables of our dataset
+### Selecting variables of our dataset
 
 Start by reading the dataset (a CSV file) into `R`. 
 
