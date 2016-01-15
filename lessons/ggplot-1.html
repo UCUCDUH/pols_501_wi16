@@ -12,7 +12,7 @@
 
 <meta name="date" content="2016-01-15" />
 
-<title>Subsetting and Plotting Data in R</title>
+<title>Plotting Data in R</title>
 
 <script src="libs/jquery-1.11.0/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -68,7 +68,7 @@ img {
 </p>
 
 <div id="header">
-<h1 class="title">Subsetting and Plotting Data in R</h1>
+<h1 class="title">Plotting Data in R</h1>
 <h4 class="author"><em>Andreu Casas</em></h4>
 <h4 class="date"><em>January 15, 2016</em></h4>
 </div>
@@ -84,7 +84,7 @@ img {
 <div id="learning-objectives" class="section level2">
 <h2>Learning Objectives</h2>
 <ol style="list-style-type: decimal">
-<li>Improve subsetting skills</li>
+<li>Plot data using `ggplot2</li>
 </ol>
 </div>
 <div id="initial-set-up" class="section level2">
@@ -115,51 +115,87 @@ img {
 <p>Let’s start by plotting a scatterplot showing the relationship between <strong>level of democracy</strong> (variable <code>polity2</code>) in a country and the <strong>number of articles</strong> published by newspapers in that country related to the Lybian civil war (variable <code>n_articles</code>)</p>
 <p>Load the <code>ggplot2</code> package</p>
 <pre class="r"><code>library(ggplot2)
-country &lt;- read.csv(&#39;data/country.csv&#39;)</code></pre>
-<p><strong>Challenge:</strong> What is the code that produces this graph?</p>
+country &lt;- read.csv(&quot;data/country.csv&quot;)</code></pre>
+<div class="panel panel-primary">
+<div class="panel-heading">
+<h3 class="panel-title">
+Challenge
+</h3>
+</div>
+<div class="panel-body">
+<p>What is the code that produces this graph?</p>
 <p><img src="ggplot-1_files/figure-html/unnamed-chunk-2-1.png" title="" alt="" width="672" /></p>
+</div>
+</div>
 <p>First we need to use the <code>ggplot()</code> function to assign the variables we want to plot</p>
 <pre class="r"><code>ggplot(country, aes(x = polity2, y = n_articles)) </code></pre>
 <p>Assigning values to the <code>ggplot()</code> function is not enough and that is why we get either an error or an empty graph if we run the previous command. We also need to specify which type of graph (geometric object) we want to plot. In this case we want to use a scatterplot, so the full command would be:</p>
 <pre class="r"><code>ggplot(country, aes(x = polity2, y = n_articles)) +
   geom_point()</code></pre>
-<pre><code>## Warning: Removed 2 rows containing missing values (geom_point).</code></pre>
 <p><img src="ggplot-1_files/figure-html/unnamed-chunk-4-1.png" title="" alt="" width="672" /></p>
 <p>When producing the plot, <code>R</code> is telling us that it“s not plotting two observations because they have missing values. For the purpose of this lab, and to avoid getting the same error repeatedly, let’s get rid of those observations using the <code>na.omit()</code> command</p>
 <pre class="r"><code>country &lt;- na.omit(country)</code></pre>
 <p>Good practice would be to store the <code>ggplot()</code> function into an object. This will make future code shorter and easier to read.</p>
 <pre class="r"><code>p &lt;- ggplot(country, aes(x = polity2, y = n_articles))
 p + geom_point()</code></pre>
+<p>Also, let’s add a Title and more meaningful axes labels.</p>
+<pre class="r"><code>p &lt;- ggplot(country, aes(x = polity2, y = n_articles))
+p &lt;- p + geom_point() +
+    labs(x = &quot;Polity Score&quot;, y = &quot;# of Articles (Dec-2010 to Oct-2011)&quot;) +
+    ggtitle(&quot;Level of Democracy and # of Articles about the Lybian Civil War&quot;)</code></pre>
 <p>On the one hand, this scatterplot supports Baum and Zhukov’s (2015) argument: as the level of democracy of a country increases, the number of articles covering the Lybian civil war also increases. However, the data also shows a pattern that they ignore in the paper: in countries with very low levels of democracy (<code>polity2</code> &lt; -1) the coverage of the Lybian civil war was larger than in countries with medium level of democracy (-1 &lt; <code>polity2</code> &lt; 6). Literature on regime types and transition theorize similar U-shaped relationships: e.g. Acemoglu and Robinson (2006) when discussing the relationship between Inequality and Democratization.</p>
-<p><strong>Challenge:</strong></p>
+<div class="panel panel-primary">
+<div class="panel-heading">
+<h3 class="panel-title">
+Challenge
+</h3>
+</div>
+<div class="panel-body">
 <ul>
 <li>How can we fit a line describing a linear relationship and a line describing a more U-shaped relationship between these two variables?</li>
 </ul>
-<pre class="r"><code>p + geom_point() + geom_smooth(se = FALSE) + geom_smooth(method = &#39;lm&#39;, se = FALSE)</code></pre>
-<p><img src="ggplot-1_files/figure-html/unnamed-chunk-7-1.png" title="" alt="" width="672" /></p>
+</div>
+</div>
+<pre class="r"><code>p + geom_smooth(se = FALSE) + 
+    geom_smooth(method = &#39;lm&#39;, se = FALSE)</code></pre>
+<p><img src="ggplot-1_files/figure-html/unnamed-chunk-8-1.png" title="" alt="" width="672" /></p>
 <p>Since the colors of the two lines are the same, the graph is a little bit confusing. Let’s change their color.</p>
 <pre class="r"><code>p + geom_point() + geom_smooth(se = FALSE, col = &quot;red&quot;) + 
                    geom_smooth(method =&quot;lm&quot;, se = FALSE, col = &quot;blue&quot;)</code></pre>
-<p><img src="ggplot-1_files/figure-html/unnamed-chunk-8-1.png" title="" alt="" width="672" /></p>
+<p><img src="ggplot-1_files/figure-html/unnamed-chunk-9-1.png" title="" alt="" width="672" /></p>
 <p>In their study, instead of using a discrete representation of a country’s <strong>level of democracy</strong> (<code>polity2</code>), they use a dichotomous expression: whether the country is democratic or not (<code>democracy</code>)</p>
 <p>Let’s try to produce a barplot similar to the one they have in page 390, where they show the number of articles related to the Lybian civil crisis by regime type (democracy/non-democracy) and region (East Europe, Western Europe, Latin America, Africa, Asia, Middle East, and United States and Canada)</p>
 <pre class="r"><code>country$democracy &lt;- as.factor(country$democracy)
 p2 &lt;- ggplot(country, aes(x = region, y = n_articles, fill = democracy))
-p2 + geom_bar(stat = &quot;summary&quot;, position = &quot;dodge&quot;, fun.y=&quot;mean&quot;)</code></pre>
-<p><img src="ggplot-1_files/figure-html/unnamed-chunk-9-1.png" title="" alt="" width="672" /></p>
-<p><strong>Challenge:</strong></p>
+p2 + geom_bar(stat = &quot;summary&quot;, position = &quot;dodge&quot;, fun.y=&quot;mean&quot;) +
+  labs(x = &quot;Region&quot;, y = &quot;# of Articles&quot;) +
+  ggtitle(&quot;Average # of articles by Region&quot;)</code></pre>
+<p><img src="ggplot-1_files/figure-html/unnamed-chunk-10-1.png" title="" alt="" width="672" /></p>
+<div class="panel panel-primary">
+<div class="panel-heading">
+<h3 class="panel-title">
+Challenge
+</h3>
+</div>
+<div class="panel-body">
 <ul>
 <li>How does our barplot differ from Baum and Zhukov’s (2015:390)?</li>
 <li>Which barplot do you think summarizes the data better?</li>
 </ul>
+</div>
+</div>
 <p>Now showing the same information using boxplots</p>
-<pre class="r"><code>p2 + geom_boxplot()</code></pre>
-<p><img src="ggplot-1_files/figure-html/unnamed-chunk-10-1.png" title="" alt="" width="672" /></p>
+<pre class="r"><code>p2 + geom_boxplot() +
+  labs(x = &quot;Region&quot;, y = &quot;# of Articles&quot;) +
+  ggtitle(&quot;Average # of articles by Region&quot;)</code></pre>
+<p><img src="ggplot-1_files/figure-html/unnamed-chunk-11-1.png" title="" alt="" width="672" /></p>
 <p>Another boxplot excluding the regions North America (<code>usac</code>) and Western Europe (<code>wEurope</code>)</p>
 <pre class="r"><code>country2 &lt;- country[!(country$region %in% c(&quot;usac&quot;, &quot;wEurope&quot;)), ]
 p3 &lt;- ggplot(country2, aes(x = region, y = n_articles, fill = democracy))
-p3 + geom_boxplot()</code></pre>
-<p><img src="ggplot-1_files/figure-html/unnamed-chunk-11-1.png" title="" alt="" width="672" /></p>
+p3 + geom_boxplot() +
+  labs(x = &quot;Region&quot;, y = &quot;# of Articles&quot;) +
+  ggtitle(&quot;Average # of articles by Region&quot;)</code></pre>
+<p><img src="ggplot-1_files/figure-html/unnamed-chunk-12-1.png" title="" alt="" width="672" /></p>
 </div>
 
 <hr>
