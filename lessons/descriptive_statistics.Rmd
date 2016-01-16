@@ -7,12 +7,6 @@ output: html_document
 ```{r results='hide',echo=FALSE}
 source("init.R")
 ```
-$$
-\DeclareMathOperator{\mean}{mean}
-\DeclareMathOperator{\var}{var}
-\DeclareMathOperator{\argmin}{argmin}
-\DeclareMathOperator{\argmax}{argmax}
-$$
 
 These are some notes that extend the discussion of descriptive statistics in
 *OpenIntro Statistics*, Chapter 1, and *Statistical Modeling and Inference for Social Science*, Chapter 2. They are not a replacement for that material.
@@ -23,7 +17,6 @@ library("ggplot2")
 library("gapminder")
 ```
 
-
 # Measures of Central Tendency
 
 `r challenge_start()`
@@ -31,12 +24,31 @@ library("gapminder")
 Let $x = (4, 2, 8, 3)$ be a vector of data.
 The mean is $\bar{x} = \frac{1}{4}\sum_{i = 1}^4 x_i = \frac{1}{4} 17 = 4.25$.
 
-1. Consider a new vector with the addition of a new value $x_5 = 4$. Call this new vector $x^* = (4, 2, 8, 3, 4)$. What is the mean of $x^*$? What is the difference in the means? 
-2. What is difference in means, $\bar{x}^* - \bar{x}$ in terms of $x_5$?
-3. Now consider the vector $x' = (4, 2, 8, 3, x_5)$? What is $\bar{x}'$? what is the difference in means $\bar{x}' - \bar{x}$? 
-4. Now, consider the general case.  
-
+1. Now consider a new vector which is $x$ with an additional element, $x_5 = 11$. Call this new vector $x' = (4, 2, 8, 3, 4)$. What is the mean of $x'$? What is the difference in the means? 
+2. Now consider the vector $x' = (4, 2, 8, 3, x_5)$? What is $\bar{x}'$? what is the difference in means $\bar{x}' - \bar{x}$ in terms of $\bar{x}$ and $x_5$?
+3. Now consider the general case in which $x = (x_1, \dots, x_n)$ and  $x' = (x_1, \dots, x_n, x_{n + 1})$. What is the difference in means in terms of $\bar{x}$ and $x_{n + 1}$?
 `r challenge_end()`
+
+1. The new mean is 5.6. The difference in means is 1.35
+2. The new mean is $\bar{x}' = \frac{1}{5} (192 - x_5)$
+3. In the general case, the new mean is $\bar{x}' = \frac{1}{n + 1}(\bar{x} - x_{n + 1})$:
+   $$
+   \begin{aligned}[t]
+   \bar{x}' = \frac{1}{n + 1} \left(x_1 + \dots + x_n + x_{n + 1}\right) \\
+   &= \frac{1}{n + 1}\left( n \bar{x} + x_{n + 1} \right) .
+   \end{aligned}
+   $$
+   The difference in means is,
+   $$
+   \begin{aligned}[t]
+   \bar{x}' - \bar{x} &= \frac{1}{n + 1}\left( n \bar{x} + x_{n + 1} \right) - \bar{x} \\
+   &= \frac{1}{n + 1} x_{n + 1} + \frac{n}{n + 1} \bar{x} - \bar{x} \\
+   &= \frac{1}{n + 1} x_{n + 1} + \frac{n}{n + 1} \bar{x} - \frac{n + 1}{n + 1} \bar{x} \\
+   &= \frac{1}{n + 1} x_{n + 1} - \frac{1}{n + 1} \bar{x} \\
+   &= \frac{1}{n + 1} \left( x_{n + 1} - \bar{x} \right) .
+   \end{aligned}
+   $$
+   This equation reveals several properties about the mean (1) Since it is divided by $n + 1$, with more observations, each additional observation has less effect on the mean. (2) The effect of an observation on the mean increases with its distance from the mean. This means that an arbitrarily large (or small) observation can change the mean to any desired value. (3) Observations greater than the mean increase the mean, and observations less than the mean decrease the mean.
 
 `r challenge_start()`
 Let $x = (1, 6, 2, -10, 11)$. 
@@ -47,13 +59,14 @@ Let $x = (1, 6, 2, -10, 11)$.
 4. Add an observation, $x^* = 12$. What is the new median?
 5. Add an observation, $x^* = -5$. What is the new median?
 6. In general, how does the median change with the addition of a new observation? Hint: there are four cases to consider.
-
 `r challenge_end()`
 
 `r challenge_start()`
 1. What is the definition of the *mode*? 
 2. What is the mode of continuous variable? 
 `r challenge_end()`
+
+
 
 The mean, median, and mode are all measures of a central tendency of a sample.
 But they can produce different values, so why and how do they differ in the way they define what the "center" of the sample.
@@ -71,20 +84,20 @@ m = \arg \min_a \sum_{i = 1}^n d(x_i, a)
 $$
 using the appropriate definition of $d$ .
 
-There are better ways to find this, but for pedagical purposes, let's try the brute force way.
+There are better ways to find this, but for pedagical purposes, try finding the mean with brute force way.
+Sttart with the mean.
+What we want to do is for many different values of $a$, calculate $\sum_{i = 1}^2 d(x_i, a)$.
+The mean will be the value of $a$ that has the smallest value of $\sum_{i = 1}^2 d(x_i, a)$.
+
 Let's randomly draw some values for a sample.
 ```{r}
 x <- sample(-20:20, 10, replace = TRUE)
 x
 ```
-
-Lets start with the mean.
-What we want to do is for many different values of $a$, calculate $\sum_{i = 1}^2 d(x_i, a)$.
-The mean will be the value of $a$ that has the smallest value of $\sum_{i = 1}^2 d(x_i, a)$.
-Take as given that the mean will be between the minimum and maximum values of the sample.
+Take as given, the mean will be between the minimum and maximum values of the sample.
 So we will try 100 different values of $a$ between $min(x)$ and $max(x)$,
 ```{r}
-a <- seq(min(x), max(x), length.out = 100)
+a <- seq(min(x), max(x), length.out = 500)
 ```
 Now we need to calculate $\sum_{i = 1}^2 d(x_i, a)$ for each value of $a$.
 But first, let's calculate it for one value of $a$. 
@@ -102,9 +115,7 @@ Now, we will loop through each value of $sum_sq_errors$, calculate the sum of sq
 ```{r results='hide'}
 for (i in 1:length(a)) {
   a_i <- a[i]
-  print(paste("a[", i, "] = ", a[i], sep = ""))
   err <- sum((a_i - x) ^ 2)
-  paste("sum (", a, " - x_i)^2 = ", err, sep = "")
   sum_sq_errors[i] <- err
 }
 ```
@@ -133,7 +144,25 @@ This should be very close to the actual mean,
 mean(x)
 ```
 
-However, the brute force way of searching for the mean is not necessary. We already know this because we have a formula for the mean! The formula for the mean is found by solving for the value that minimizes the squared errors using calculus.
+However, the brute force way of searching for the mean is not necessary. We already know this because we have a formula for the mean! The formula for the mean is found by solving for the value that minimizes the squared errors with calculus.
+First, find the extrema (local or global minima or maxima) of $f(a) = \sum_{i = 1}^n (x - a)^2$,
+$$
+\begin{aligned}[t]
+\frac{d}{d\,a} \sum_{i = 1}^n (x_i - a)^2 &= 0 \\
+- 2 \sum_{i = 1}^n (x_i - a)  &= 0 \\
+- 2 \sum_{i = 1}^n x_i + 2 n a &= 0 \\
+2 n a &= \sum{i = 1}^n x_i \\
+a &= \frac{1}{n} \sum{i = 1}^2 x_i
+\end{aligned}
+$$
+Given we already know the answer, it's unsurprising that there is only one extrema and it gives us the formula of the mean.
+However, let's confirm that it is a minima by checking that the second derivative is positive,
+$$
+\begin{aligned}[t]
+\frac{d^2}{d\,a^2} \sum_{i = 1}^n (x_i - a)^2 &= \frac{d}{d\,a} 2(n a - \sum_{i = 1}^n x_i) \\
+&= 2n > 0
+\end{aligned}
+$$
 
 
 `r challenge_start()`
@@ -162,7 +191,7 @@ ggplot() +
 `r challenge_end()`
 
 `r challenge_start()`
-1. Reason about how the mode is found? Is it unique?
+1. Try the same with a mode? Is it unique?
 2. Try calculating the mode in R. Use the `mode` function? Is it giving you what you expect?
    Look at the help of `mode` to find out what is going on.
 2. What function `d` would produce the `minimum` as the best guess?
@@ -170,79 +199,22 @@ ggplot() +
 `r challenge_end()`
 
 
-# Quantiles
-
-`r challenge_start()`
-1. What is definition of the the $k$th quantile? 
-2. What are other names of the 0th, 50th, and 75th quantile?
-`r challenge_end()`
-
-A common plot is the quantile plot. This plots the values of the quantile
-against the values of the variable.
-
-Let's look at the quantiles of life expectancy in the `gapminder` data.
-```{r}
-data("gapminder")
-```
-Let's focus only on the latest year in the data
-```{r}
-gapminder2007 <- gapminder[gapminder$year == 2007, ]
-```
-
-The function quantile can calculate the quantiles of the data.
-E.g. if we wanted to calcalate the 0th, 25th, 50th, 75th, and 100th quantiles of the data,
-```{r}
-quantile(gapminder$lifeExp, c(0, 0.25, 0.50, 0.75, 1))
-```
-Then we can also plot the values of each quantile. 
-```{r}
-q <- seq(0, 100, by = 1) / 100
-v <- quantile(gapminder2007$lifeExp, prob = q)
-ggplot(data.frame(lifeExp = v, q = q),
-       aes(x = q, y = lifeExp)) + 
-  geom_point() +
-  xlab("Life Expectancy (years)") +
-  ylab("Quantile")
-```
-
-Something similar is to plot the empirical distribution function (ECDF).
-For each value, the ECDF is the proportion of observations less than or equal to it.
-```{r}
-ggplot(gapminder2007, aes(x = lifeExp)) +
-  stat_ecdf() +
-  geom_rug() +
-  ggtitle("Life Expectancy in 2007") +
-  xlab("Life Expectancy (years)") +
-  ylab("ECDF")
-```
-The ECDF is the inverse of the quantile plot.
-
-
-# Boxplot
-
-`r challenge_start()`
-1. What are the values of the midpoint in a boxplot?
-3. When is the boxplot useful? When should you plot the raw data instead?
-`r challenge_end()`
-
 # Measures of Spread
 
 Variance is defined as 
 $$
 \frac{1}{n - 1} \sum_{i = 1}^n (x_i - \bar{x})^2
 $$
-Let $e_i = (x_i - \bar{x}^2$ be the squared errors, the square of the difference
-between each data point, $x_i$, and the mean, $\bar{x}$.
+Let $E_i = (x_i - \bar{x})$, and call it the error of datum $i$, as it is the difference between the value of the datum and the mean. Let $E = (E_1, \dots, E_n)$ be the vector of errors.
 The variance is approximately the *mean* of the squared errors,
 $$
-var(x) = \frac{1}{n - 1} \sum_{i = 1}^n (x_i - \bar{x})^2 = \frac{1}{n} \sum_{i = 1}^n e_i^2 \approx \frac{1}{n} e_i^2 = mean(e)
+\var(x) = \frac{1}{n - 1} \sum_{i = 1}^n (x_i - \bar{x})^2 = \frac{1}{n} \sum_{i = 1}^n E_i^2 \approx \frac{1}{n} E_i^2 = \mean(E^2)
 $$
 The difference between the variance and the mean of the squared errors is that the variance divides the sum of squared errors by $n - 1$ instead of $n$. 
 The reasons for this is that dividing by $n - 1$ instead of $n$ makes the sample variance an unbiased estimator of the population variance (something which we have not covered yet).
-This adjustment is not necessary for the sample mean, because it turns out to be an unbiased estimator of the population mean.
+This adjustment is not necessary for the sample mean, because the sample mean happens to be an unbiased estimator of the population mean.
 
-You can visualize variance using the following plot, which creates a plot with the data, squared errors,
-mean, and variance.
+You can visualize the relationship between the mean, squared errors, and variance using the following plot.
 ```{r}
 variance_plot <- function(x) {
   x_mean <- mean(x)
@@ -288,7 +260,7 @@ variance_plot(x)
 How does the variance respond to outliers? What is your reasoning? 
 `r challenge_end()`
 
-# Summary of R commands for descriptive statistics
+# Summary of R functions for descriptive statistics
 
 - Mean: `mean`
 - Median: `median` or `quantile`

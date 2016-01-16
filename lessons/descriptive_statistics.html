@@ -67,6 +67,14 @@ img {
 <strong>POL S/CS&amp;SS 501, University of Washington, Spring 2015</strong>
 </p>
 
+$$
+\DeclareMathOperator{\mean}{mean}
+\DeclareMathOperator{\var}{var}
+\DeclareMathOperator{\E}{E}
+\DeclareMathOperator{\argmin}{argmin}
+\DeclareMathOperator{\argmax}{argmax}
+$$
+
 <div id="header">
 <h1 class="title">Descriptive Statistics</h1>
 <h4 class="author"><em>Jeffrey Arnold</em></h4>
@@ -76,19 +84,11 @@ img {
 <div id="TOC">
 <ul>
 <li><a href="#measures-of-central-tendency">Measures of Central Tendency</a></li>
-<li><a href="#quantiles">Quantiles</a></li>
-<li><a href="#boxplot">Boxplot</a></li>
 <li><a href="#measures-of-spread">Measures of Spread</a></li>
-<li><a href="#summary-of-r-commands-for-descriptive-statistics">Summary of R commands for descriptive statistics</a></li>
+<li><a href="#summary-of-r-functions-for-descriptive-statistics">Summary of R functions for descriptive statistics</a></li>
 </ul>
 </div>
 
-<p><span class="math display">\[
-\DeclareMathOperator{\mean}{mean}
-\DeclareMathOperator{\var}{var}
-\DeclareMathOperator{\argmin}{argmin}
-\DeclareMathOperator{\argmax}{argmax}
-\]</span></p>
 <p>These are some notes that extend the discussion of descriptive statistics in <em>OpenIntro Statistics</em>, Chapter 1, and <em>Statistical Modeling and Inference for Social Science</em>, Chapter 2. They are not a replacement for that material.</p>
 <p>We will use the following packages in this section, which we will load now.</p>
 <pre class="r"><code>library(&quot;ggplot2&quot;)
@@ -104,13 +104,30 @@ Challenge
 <div class="panel-body">
 <p>Let <span class="math inline">\(x = (4, 2, 8, 3)\)</span> be a vector of data. The mean is <span class="math inline">\(\bar{x} = \frac{1}{4}\sum_{i = 1}^4 x_i = \frac{1}{4} 17 = 4.25\)</span>.</p>
 <ol style="list-style-type: decimal">
-<li>Consider a new vector with the addition of a new value <span class="math inline">\(x_5 = 4\)</span>. Call this new vector <span class="math inline">\(x^* = (4, 2, 8, 3, 4)\)</span>. What is the mean of <span class="math inline">\(x^*\)</span>? What is the difference in the means?</li>
-<li>What is difference in means, <span class="math inline">\(\bar{x}^* - \bar{x}\)</span> in terms of <span class="math inline">\(x_5\)</span>?</li>
-<li>Now consider the vector <span class="math inline">\(x&#39; = (4, 2, 8, 3, x_5)\)</span>? What is <span class="math inline">\(\bar{x}&#39;\)</span>? what is the difference in means <span class="math inline">\(\bar{x}&#39; - \bar{x}\)</span>?</li>
-<li>Now, consider the general case.</li>
+<li>Now consider a new vector which is <span class="math inline">\(x\)</span> with an additional element, <span class="math inline">\(x_5 = 11\)</span>. Call this new vector <span class="math inline">\(x&#39; = (4, 2, 8, 3, 4)\)</span>. What is the mean of <span class="math inline">\(x&#39;\)</span>? What is the difference in the means?</li>
+<li>Now consider the vector <span class="math inline">\(x&#39; = (4, 2, 8, 3, x_5)\)</span>? What is <span class="math inline">\(\bar{x}&#39;\)</span>? what is the difference in means <span class="math inline">\(\bar{x}&#39; - \bar{x}\)</span> in terms of <span class="math inline">\(\bar{x}\)</span> and <span class="math inline">\(x_5\)</span>?</li>
+<li>Now consider the general case in which <span class="math inline">\(x = (x_1, \dots, x_n)\)</span> and <span class="math inline">\(x&#39; = (x_1, \dots, x_n, x_{n + 1})\)</span>. What is the difference in means in terms of <span class="math inline">\(\bar{x}\)</span> and <span class="math inline">\(x_{n + 1}\)</span>?</li>
 </ol>
 </div>
 </div>
+<ol style="list-style-type: decimal">
+<li>The new mean is 5.6. The difference in means is 1.35</li>
+<li>The new mean is <span class="math inline">\(\bar{x}&#39; = \frac{1}{5} (192 - x_5)\)</span></li>
+<li>In the general case, the new mean is <span class="math inline">\(\bar{x}&#39; = \frac{1}{n + 1}(\bar{x} - x_{n + 1})\)</span>: <span class="math display">\[
+   \begin{aligned}[t]
+   \bar{x}&#39; = \frac{1}{n + 1} \left(x_1 + \dots + x_n + x_{n + 1}\right) \\
+   &amp;= \frac{1}{n + 1}\left( n \bar{x} + x_{n + 1} \right) .
+   \end{aligned}
+   \]</span> The difference in means is, <span class="math display">\[
+   \begin{aligned}[t]
+   \bar{x}&#39; - \bar{x} &amp;= \frac{1}{n + 1}\left( n \bar{x} + x_{n + 1} \right) - \bar{x} \\
+   &amp;= \frac{1}{n + 1} x_{n + 1} + \frac{n}{n + 1} \bar{x} - \bar{x} \\
+   &amp;= \frac{1}{n + 1} x_{n + 1} + \frac{n}{n + 1} \bar{x} - \frac{n + 1}{n + 1} \bar{x} \\
+   &amp;= \frac{1}{n + 1} x_{n + 1} - \frac{1}{n + 1} \bar{x} \\
+   &amp;= \frac{1}{n + 1} \left( x_{n + 1} - \bar{x} \right) .
+   \end{aligned}
+   \]</span> This equation reveals several properties about the mean (1) Since it is divided by <span class="math inline">\(n + 1\)</span>, with more observations, each additional observation has less effect on the mean. (2) The effect of an observation on the mean increases with its distance from the mean. This means that an arbitrarily large (or small) observation can change the mean to any desired value. (3) Observations greater than the mean increase the mean, and observations less than the mean decrease the mean.</li>
+</ol>
 <div class="panel panel-primary">
 <div class="panel-heading">
 <h3 class="panel-title">
@@ -152,12 +169,13 @@ Challenge
 <p>Then to find the value of the statistic find the value of <span class="math inline">\(m\)</span> that minimizes the sum of <span class="math inline">\(d(x_i, m)\)</span> for the sample, <span class="math display">\[
 m = \arg \min_a \sum_{i = 1}^n d(x_i, a)
 \]</span> using the appropriate definition of <span class="math inline">\(d\)</span> .</p>
-<p>There are better ways to find this, but for pedagical purposes, let’s try the brute force way. Let’s randomly draw some values for a sample.</p>
+<p>There are better ways to find this, but for pedagical purposes, try finding the mean with brute force way. Sttart with the mean. What we want to do is for many different values of <span class="math inline">\(a\)</span>, calculate <span class="math inline">\(\sum_{i = 1}^2 d(x_i, a)\)</span>. The mean will be the value of <span class="math inline">\(a\)</span> that has the smallest value of <span class="math inline">\(\sum_{i = 1}^2 d(x_i, a)\)</span>.</p>
+<p>Let’s randomly draw some values for a sample.</p>
 <pre class="r"><code>x &lt;- sample(-20:20, 10, replace = TRUE)
 x</code></pre>
 <pre><code>##  [1] -20 -19  -2   6 -12  18  -5  -6 -19  -5</code></pre>
-<p>Lets start with the mean. What we want to do is for many different values of <span class="math inline">\(a\)</span>, calculate <span class="math inline">\(\sum_{i = 1}^2 d(x_i, a)\)</span>. The mean will be the value of <span class="math inline">\(a\)</span> that has the smallest value of <span class="math inline">\(\sum_{i = 1}^2 d(x_i, a)\)</span>. Take as given that the mean will be between the minimum and maximum values of the sample. So we will try 100 different values of <span class="math inline">\(a\)</span> between <span class="math inline">\(min(x)\)</span> and <span class="math inline">\(max(x)\)</span>,</p>
-<pre class="r"><code>a &lt;- seq(min(x), max(x), length.out = 100)</code></pre>
+<p>Take as given, the mean will be between the minimum and maximum values of the sample. So we will try 100 different values of <span class="math inline">\(a\)</span> between <span class="math inline">\(min(x)\)</span> and <span class="math inline">\(max(x)\)</span>,</p>
+<pre class="r"><code>a &lt;- seq(min(x), max(x), length.out = 500)</code></pre>
 <p>Now we need to calculate <span class="math inline">\(\sum_{i = 1}^2 d(x_i, a)\)</span> for each value of <span class="math inline">\(a\)</span>. But first, let’s calculate it for one value of <span class="math inline">\(a\)</span>. The sum of squared errors for <span class="math inline">\(a = min(x)\)</span> is,</p>
 <pre class="r"><code>sum((x - min(a)) ^ 2)</code></pre>
 <pre><code>## [1] 3156</code></pre>
@@ -166,9 +184,7 @@ x</code></pre>
 <p>Now, we will loop through each value of <span class="math inline">\(sum_sq_errors\)</span>, calculate the sum of squared errors, and save it to <code>sum_sq_errors</code>.</p>
 <pre class="r"><code>for (i in 1:length(a)) {
   a_i &lt;- a[i]
-  print(paste(&quot;a[&quot;, i, &quot;] = &quot;, a[i], sep = &quot;&quot;))
   err &lt;- sum((a_i - x) ^ 2)
-  paste(&quot;sum (&quot;, a, &quot; - x_i)^2 = &quot;, err, sep = &quot;&quot;)
   sum_sq_errors[i] &lt;- err
 }</code></pre>
 <p>Let’s plot the values of <code>sum_sq_errors</code> to find the approximate minimum.</p>
@@ -179,17 +195,30 @@ x</code></pre>
 <p><img src="descriptive_statistics_files/figure-html/unnamed-chunk-8-1.png" title="" alt="" width="672" /> Use the function <code>which</code> to find the location of the minimum value in <code>sum_sq_errors</code>,</p>
 <pre class="r"><code>sse_loc_min &lt;- which(sum_sq_errors == min(sum_sq_errors))
 sse_loc_min</code></pre>
-<pre><code>## [1] 36</code></pre>
+<pre><code>## [1] 180</code></pre>
 <p>The minimum value of the sum of squared errors is</p>
 <pre class="r"><code>sum_sq_errors[sse_loc_min]</code></pre>
-<pre><code>## [1] 1306.674</code></pre>
+<pre><code>## [1] 1306.41</code></pre>
 <p>But the mean is the value of <code>a</code> with the minimum sum of squared errors,</p>
 <pre class="r"><code>a[sse_loc_min]</code></pre>
-<pre><code>## [1] -6.565657</code></pre>
+<pre><code>## [1] -6.368737</code></pre>
 <p>This should be very close to the actual mean,</p>
 <pre class="r"><code>mean(x)</code></pre>
 <pre><code>## [1] -6.4</code></pre>
-<p>However, the brute force way of searching for the mean is not necessary. We already know this because we have a formula for the mean! The formula for the mean is found by solving for the value that minimizes the squared errors using calculus.</p>
+<p>However, the brute force way of searching for the mean is not necessary. We already know this because we have a formula for the mean! The formula for the mean is found by solving for the value that minimizes the squared errors with calculus. First, find the extrema (local or global minima or maxima) of <span class="math inline">\(f(a) = \sum_{i = 1}^n (x - a)^2\)</span>, <span class="math display">\[
+\begin{aligned}[t]
+\frac{d}{d\,a} \sum_{i = 1}^n (x_i - a)^2 &amp;= 0 \\
+- 2 \sum_{i = 1}^n (x_i - a)  &amp;= 0 \\
+- 2 \sum_{i = 1}^n x_i + 2 n a &amp;= 0 \\
+2 n a &amp;= \sum{i = 1}^n x_i \\
+a &amp;= \frac{1}{n} \sum{i = 1}^2 x_i
+\end{aligned}
+\]</span> Given we already know the answer, it’s unsurprising that there is only one extrema and it gives us the formula of the mean. However, let’s confirm that it is a minima by checking that the second derivative is positive, <span class="math display">\[
+\begin{aligned}[t]
+\frac{d^2}{d\,a^2} \sum_{i = 1}^n (x_i - a)^2 &amp;= \frac{d}{d\,a} 2(n a - \sum_{i = 1}^n x_i) \\
+&amp;= 2n &gt; 0
+\end{aligned}
+\]</span></p>
 <div class="panel panel-primary">
 <div class="panel-heading">
 <h3 class="panel-title">
@@ -227,68 +256,10 @@ Challenge
 </div>
 <div class="panel-body">
 <ol style="list-style-type: decimal">
-<li>Reason about how the mode is found? Is it unique?</li>
+<li>Try the same with a mode? Is it unique?</li>
 <li>Try calculating the mode in R. Use the <code>mode</code> function? Is it giving you what you expect? Look at the help of <code>mode</code> to find out what is going on.</li>
 <li>What function <code>d</code> would produce the <code>minimum</code> as the best guess?</li>
 <li>What function <code>d</code> would produce the <code>maximum</code> as the best guess?</li>
-</ol>
-</div>
-</div>
-</div>
-<div id="quantiles" class="section level1">
-<h1>Quantiles</h1>
-<div class="panel panel-primary">
-<div class="panel-heading">
-<h3 class="panel-title">
-Challenge
-</h3>
-</div>
-<div class="panel-body">
-<ol style="list-style-type: decimal">
-<li>What is definition of the the <span class="math inline">\(k\)</span>th quantile?</li>
-<li>What are other names of the 0th, 50th, and 75th quantile?</li>
-</ol>
-</div>
-</div>
-<p>A common plot is the quantile plot. This plots the values of the quantile against the values of the variable.</p>
-<p>Let’s look at the quantiles of life expectancy in the <code>gapminder</code> data.</p>
-<pre class="r"><code>data(&quot;gapminder&quot;)</code></pre>
-<p>Let’s focus only on the latest year in the data</p>
-<pre class="r"><code>gapminder2007 &lt;- gapminder[gapminder$year == 2007, ]</code></pre>
-<p>The function quantile can calculate the quantiles of the data. E.g. if we wanted to calcalate the 0th, 25th, 50th, 75th, and 100th quantiles of the data,</p>
-<pre class="r"><code>quantile(gapminder$lifeExp, c(0, 0.25, 0.50, 0.75, 1))</code></pre>
-<pre><code>##      0%     25%     50%     75%    100% 
-## 23.5990 48.1980 60.7125 70.8455 82.6030</code></pre>
-<p>Then we can also plot the values of each quantile.</p>
-<pre class="r"><code>q &lt;- seq(0, 100, by = 1) / 100
-v &lt;- quantile(gapminder2007$lifeExp, prob = q)
-ggplot(data.frame(lifeExp = v, q = q),
-       aes(x = q, y = lifeExp)) + 
-  geom_point() +
-  xlab(&quot;Life Expectancy (years)&quot;) +
-  ylab(&quot;Quantile&quot;)</code></pre>
-<p><img src="descriptive_statistics_files/figure-html/unnamed-chunk-18-1.png" title="" alt="" width="672" /></p>
-<p>Something similar is to plot the empirical distribution function (ECDF). For each value, the ECDF is the proportion of observations less than or equal to it.</p>
-<pre class="r"><code>ggplot(gapminder2007, aes(x = lifeExp)) +
-  stat_ecdf() +
-  geom_rug() +
-  ggtitle(&quot;Life Expectancy in 2007&quot;) +
-  xlab(&quot;Life Expectancy (years)&quot;) +
-  ylab(&quot;ECDF&quot;)</code></pre>
-<p><img src="descriptive_statistics_files/figure-html/unnamed-chunk-19-1.png" title="" alt="" width="672" /> The ECDF is the inverse of the quantile plot.</p>
-</div>
-<div id="boxplot" class="section level1">
-<h1>Boxplot</h1>
-<div class="panel panel-primary">
-<div class="panel-heading">
-<h3 class="panel-title">
-Challenge
-</h3>
-</div>
-<div class="panel-body">
-<ol style="list-style-type: decimal">
-<li>What are the values of the midpoint in a boxplot?</li>
-<li>When is the boxplot useful? When should you plot the raw data instead?</li>
 </ol>
 </div>
 </div>
@@ -297,10 +268,10 @@ Challenge
 <h1>Measures of Spread</h1>
 <p>Variance is defined as <span class="math display">\[
 \frac{1}{n - 1} \sum_{i = 1}^n (x_i - \bar{x})^2
-\]</span> Let <span class="math inline">\(e_i = (x_i - \bar{x}^2\)</span> be the squared errors, the square of the difference between each data point, <span class="math inline">\(x_i\)</span>, and the mean, <span class="math inline">\(\bar{x}\)</span>. The variance is approximately the <em>mean</em> of the squared errors, <span class="math display">\[
-var(x) = \frac{1}{n - 1} \sum_{i = 1}^n (x_i - \bar{x})^2 = \frac{1}{n} \sum_{i = 1}^n e_i^2 \approx \frac{1}{n} e_i^2 = mean(e)
-\]</span> The difference between the variance and the mean of the squared errors is that the variance divides the sum of squared errors by <span class="math inline">\(n - 1\)</span> instead of <span class="math inline">\(n\)</span>. The reasons for this is that dividing by <span class="math inline">\(n - 1\)</span> instead of <span class="math inline">\(n\)</span> makes the sample variance an unbiased estimator of the population variance (something which we have not covered yet). This adjustment is not necessary for the sample mean, because it turns out to be an unbiased estimator of the population mean.</p>
-<p>You can visualize variance using the following plot, which creates a plot with the data, squared errors, mean, and variance.</p>
+\]</span> Let <span class="math inline">\(E_i = (x_i - \bar{x})\)</span>, and call it the error of datum <span class="math inline">\(i\)</span>, as it is the difference between the value of the datum and the mean. Let <span class="math inline">\(E = (E_1, \dots, E_n)\)</span> be the vector of errors. The variance is approximately the <em>mean</em> of the squared errors, <span class="math display">\[
+\var(x) = \frac{1}{n - 1} \sum_{i = 1}^n (x_i - \bar{x})^2 = \frac{1}{n} \sum_{i = 1}^n E_i^2 \approx \frac{1}{n} E_i^2 = \mean(E^2)
+\]</span> The difference between the variance and the mean of the squared errors is that the variance divides the sum of squared errors by <span class="math inline">\(n - 1\)</span> instead of <span class="math inline">\(n\)</span>. The reasons for this is that dividing by <span class="math inline">\(n - 1\)</span> instead of <span class="math inline">\(n\)</span> makes the sample variance an unbiased estimator of the population variance (something which we have not covered yet). This adjustment is not necessary for the sample mean, because the sample mean happens to be an unbiased estimator of the population mean.</p>
+<p>You can visualize the relationship between the mean, squared errors, and variance using the following plot.</p>
 <pre class="r"><code>variance_plot &lt;- function(x) {
   x_mean &lt;- mean(x)
   errors &lt;- x - x_mean
@@ -336,7 +307,7 @@ var(x) = \frac{1}{n - 1} \sum_{i = 1}^n (x_i - \bar{x})^2 = \frac{1}{n} \sum_{i 
 <pre class="r"><code>set.seed(1234789)
 x &lt;- sample(-20:20, 10)
 variance_plot(x)</code></pre>
-<p><img src="descriptive_statistics_files/figure-html/unnamed-chunk-21-1.png" title="" alt="" width="672" /></p>
+<p><img src="descriptive_statistics_files/figure-html/unnamed-chunk-16-1.png" title="" alt="" width="672" /></p>
 <div class="panel panel-primary">
 <div class="panel-heading">
 <h3 class="panel-title">
@@ -348,8 +319,8 @@ Challenge
 </div>
 </div>
 </div>
-<div id="summary-of-r-commands-for-descriptive-statistics" class="section level1">
-<h1>Summary of R commands for descriptive statistics</h1>
+<div id="summary-of-r-functions-for-descriptive-statistics" class="section level1">
+<h1>Summary of R functions for descriptive statistics</h1>
 <ul>
 <li>Mean: <code>mean</code></li>
 <li>Median: <code>median</code> or <code>quantile</code></li>
