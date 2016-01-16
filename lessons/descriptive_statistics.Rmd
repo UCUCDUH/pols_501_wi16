@@ -259,17 +259,3 @@ variance_plot(x)
 `r challenge_start()`
 How does the variance respond to outliers? What is your reasoning? 
 `r challenge_end()`
-
-# Summary of R functions for descriptive statistics
-
-- Mean: `mean`
-- Median: `median` or `quantile`
-- quantiles: `quantile`
-- Mode: It is not the `mode` function. 
-- Variance: `var`
-- Standard deviation: `sd`
-- IQR: `IQR`
-- Boxplot: In ggplot: `geom_boxplot`
-- Histogram: In ggplot: `geom_histogram`
-
-
