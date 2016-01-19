@@ -105,6 +105,7 @@ Useful references for data visualization
 <li><i class="fa-li fa fa-puzzle-piece"></i><a href="/assignments/reading-02/">Readings assignment 2 due</a></li>
 <li><i class="fa-li fa fa-book"></i> <em>OpenIntro</em>, Ch 2.
 <li><i class="fa-li fa fa-book"></i> <em>SMISS</em> Ch. 3, "Observable Data and Data-Generating Processes". This reading provides the context for the use of probability within political science research.
+<li><i class="fa-li fa fa-book"></i> <em>SMISS</em> Ch. 4.1.3, "Ontological Interpretations of Probability".
 <li><i class="fa-li fa fa-book"></i> Wickham, Hadley. 2014. "Tidy Data." <em>Journal of Statistical Software</em>. <a href="http://dx.doi.org/10.18637/jss.v059.i10">[URL]</a>. </li>
 <li> <i class="fa-li fa fa-book"></i> "Introduction to dplyr" [[URL](https://cran.rstudio.com/web/packages/dplyr/vignettes/introduction.html)]
 <li> <i class="fa-li fa fa-book"></i> <em>SMISS</em> Ch. 4, "Probability Theory: Basic Properties of Data-Generating Processes". Optional. This goes beyond the coverage of probability in OpenIntro.
