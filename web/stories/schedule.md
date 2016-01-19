@@ -4,20 +4,20 @@
 -->
 
 <i class="fa fa-warning"></i> The following schedule is a *tentative* guideline and will be evolving to meet course needs up to and during the quarter.
-In particular, the pace of the course will be adjusted so that we move as possible conditional on everyone "getting" the material. 
+In particular, the pace of the course will be adjusted so that we move as possible conditional on everyone "getting" the material.
 
 Students should do the readings *before* the class. Some class time will be spent on lecture, but the majority of class time consist of discussion, questions, and problem solving.
 Lab sections will cover how to implement the analysis in R, conceptual review and continued elaboration of the week's material, and time for students to discuss and get feedback on their projects.
 
 
 - *SMISS* = *Statistical Modeling and Inference for Social Science*
-- *OpenIntro* = *Open Intro Statistics* 
+- *OpenIntro* = *Open Intro Statistics*
 
-Key: 
-<i class="fa fa-book"></i> Readings; 
+Key:
+<i class="fa fa-book"></i> Readings;
 <i class="fa fa-code"></i> Data Camp courses;
 <i class="fa fa-gears"></i> Actions to take;
-<i class="fa fa-bar-chart"></i> R lessons; 
+<i class="fa fa-bar-chart"></i> R lessons;
 <i class="fa fa-puzzle-piece"></i> Final paper.
 
 A list of changes is available [here](/schedule-diff.txt).
@@ -61,7 +61,7 @@ Lab
 <li><i class="fa-li fa fa-puzzle-piece"></i><a href="/assignments/reading-01/">Readings assignment 1 due</a></li>
 <li><i class="fa-li fa fa-code"></i> Data Camp <a href="https://campus.datacamp.com/courses/data-visualization-with-ggplot2-1">Data Visualization with ggplot2 (1)</a> </li>
 <li><i class="fa-li fa fa-book"></i> <em>OpenIntro</em>, Ch. 1, "Introduction to data."</li>
-<li><i class="fa-li fa fa-book"></i> <em>SMISS</em>. Ch. 2 "Descriptive Statistics: Data and Information," Sections 2.1, 2.2, 2.3.1--2.3.3. </li> 
+<li><i class="fa-li fa fa-book"></i> <em>SMISS</em>. Ch. 2 "Descriptive Statistics: Data and Information," Sections 2.1, 2.2, 2.3.1--2.3.3. </li>
 <li><i class="fa-li fa fa-book"></i> Wickham, Hadley. 2010. "A Layered Grammar of Graphics." <em>Journal of Computational and Graphical Statistics</em>. <a href="http://dx.doi.org/10.1198/jcgs.2009.07098">[doi]</a></li>
 <li><i class="fa-li fa fa-book"></i>Tukey, John. W. 1980. "We Need Both Explanatory and Confirmatory." <em>The American Statistician</em>. <a href="http://dx.doi.org/10.2307/2682991">[doi]</a> </li>
 </ul>
@@ -103,11 +103,12 @@ Useful references for data visualization
 <ul class="fa-ul">
 <li><i class="fa-li fa fa-puzzle-piece"></i><a href="/assignments/project-02/">Research project assignment 2 due</a></li>
 <li><i class="fa-li fa fa-puzzle-piece"></i><a href="/assignments/reading-02/">Readings assignment 2 due</a></li>
-<li><i class="fa-li fa fa-book"></i> <em>OpenIntro</em>, Ch 2. 
+<li><i class="fa-li fa fa-book"></i> <em>OpenIntro</em>, Ch 2.
 <li><i class="fa-li fa fa-book"></i> <em>SMISS</em> Ch. 3, "Observable Data and Data-Generating Processes". This reading provides the context for the use of probability within political science research.
 <li><i class="fa-li fa fa-book"></i> Wickham, Hadley. 2014. "Tidy Data." <em>Journal of Statistical Software</em>. <a href="http://dx.doi.org/10.18637/jss.v059.i10">[URL]</a>. </li>
 <li> <i class="fa-li fa fa-book"></i> "Introduction to dplyr" [[URL](https://cran.rstudio.com/web/packages/dplyr/vignettes/introduction.html)]
-<li> <i class="fa-li fa fa-book"></i> <em>SMISS</em> Ch. 4, "Probability Theory: Basic Properties of Data-Generating Processes". Optional. This goes beyond the coverage of probability in OpenIntro. 
+<li> <i class="fa-li fa fa-book"></i> <em>SMISS</em> Ch. 4, "Probability Theory: Basic Properties of Data-Generating Processes". Optional. This goes beyond the coverage of probability in OpenIntro.
+<li> <i class="fa-li fa fa-video-camera"></i> Hadley Wickham dplyr tutorial at useR! 2014 [Part 1](https://www.youtube.com/watch?v=8SGif63VW6E), [Part 2](https://www.youtube.com/watch?v=Ue08LVuk790). Video tutorial on the **dplyr** package.
 <li><i class="fa-li fa fa-code"></i> Data Camp <a href="https://www.datacamp.com/courses/dplyr-data-manipulation-r-tutorial">Data Manipulation in R with dplyr</a> </li> Optional. This can clarity the information in the vignette.
 </ul>
 
@@ -117,8 +118,8 @@ Useful references for data visualization
 
 <ul class="fa-ul">
 <li> <i class="fa-li fa fa-book"></i> <em>OpenIntro</em>, Ch 3  </li>
-<li> <i class="fa-li fa fa-book"></i> <em>SMISS</em>. "Chapter 5: Expectation and Moments: Summaries of Data Generating Processes" Sections 5.1, 5.2.1. </li> 
-<li> <i class="fa-li fa fa-book"></i> <em>SMISS</em>. "Chapter 6: Linking Positive Theories and Data-Generating Processes." Section 6.1&ndash;6.3, 6.5&ndash;6.6. </li> 
+<li> <i class="fa-li fa fa-book"></i> <em>SMISS</em>. "Chapter 5: Expectation and Moments: Summaries of Data Generating Processes" Sections 5.1, 5.2.1. </li>
+<li> <i class="fa-li fa fa-book"></i> <em>SMISS</em>. "Chapter 6: Linking Positive Theories and Data-Generating Processes." Section 6.1&ndash;6.3, 6.5&ndash;6.6. </li>
 </ul>
 
 ## Week 5
@@ -177,4 +178,3 @@ TBD
 ## Finals Period
 
 The final paper is due on **March 16 17:00 PDT**
-
