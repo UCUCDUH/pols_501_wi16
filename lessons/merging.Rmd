@@ -1,0 +1,131 @@
+---
+title: Merging Data in R
+date: January 15, 2016
+author: Andreu Casas
+---
+
+```{r init,results='hide',echo=FALSE}
+source("init.R")
+```
+
+## Learning Objectives
+
+Merging datsasets
+
+## Initial Set up
+
+- Create new R project for this lesson
+- Create a `data` subdirectory
+
+Today we will use 2 different datasets:
+
+1. `country.csv`: A simplified dataset of the replication data for Baum and Zhukov's (2015) *JPR* article. 
+2. `vdem.csv`: The *Varieties of Democracy project* evaluates to what extent countries fit certain normative types of democracy (electoral, liberal, majoritarian, consensual, participatory, deliberative, and/or egalitarian) and provide numerous country-level data. Check their [website](https://v-dem.net/en/) for more information or to download the whole dataset.
+
+Download these datasets straight from the Internet using the R function `download.file()`. Save them in the `data` subdirectory.
+
+```{r, eval=FALSE}
+download.file(url = "https://www.dropbox.com/s/qkdcgi3yvj1ugkz/vdem.csv?dl=0&preview=vdem.csv#", destfile = "data/vdem.csv")
+download.file(url = "https://raw.githubusercontent.com/UW-POLS501/pols_501_wi16/master/lessons/data/country.csv", destfile = "data/country.csv")
+```
+
+```{r}
+vdem <- read.csv("data/vdem.csv")
+country <- read.csv("data/country.csv")
+```
+
+## Merging Datasets
+
+Often the data we need is in different datsets and, to facilitate the analysis, we want to have it all in only one dataset. For example, in this case we have two datasets with country-level data: `country` and `vdem`. 
+
+However, before we merge these 2 datasets, we should consider renaming some of the variables of `vdem`:
+
+- `v2x_polyarchy` -> `electoral`
+- `v2x_libdem` -> `liberal`
+- `v2x_partipdem` -> `participatory`
+- `v2x_delibdem` -> `deliberative`
+- `v2x_egaldem` -> `egalitarian`
+
+`r challenge_start()`
+How do we rename these variable names of the `vdem` dataset?
+`r challenge_end()`
+
+```{r, message=FALSE}
+# OPTION 1:
+# names(vdem)[10:length(names(vdem))] <- c("electoral","liberal","participatory",
+#                                          "deliberative","egalitarian")
+```
+
+
+```{r}
+# OPTION B: Using "dplyr" and the "magrittr's" pipe operator (%>%)
+library(dplyr)
+vdem <- vdem %>%
+  rename(electoral = v2x_polyarchy, liberal = v2x_libdem, participatory = v2x_partipdem,
+         deliberative = v2x_delibdem, egalitarian = v2x_egaldem)
+```
+
+To merge datasets we need at least **1 common variable** in both datasets. 
+
+`r challenge_start()`
+Which variable both datsets (`country` and `vdem`) have in common?
+`r challenge_end()`
+
+The dataset `country` has a variable named **cow** and the dataset `vdem` has one named **COWcode**. What about the variables **cow** in `country` and **country_text_id** in `vdem`? In these case these last 2 variables seem to be the same.
+
+For country-level data, a package exists to convert the format of country-identifier variables: `countrycode`. It converts to and from 12 standardized country indentifiers:"cowc", "cown", "iso3c", "iso3n", "iso2c", "imf", "fips104", "fao", "ioc", "un", "wb", "country.name". Let's explore the function `countrycode()`. 
+
+```{r, results='hide', message=FALSE}
+library(countrycode)
+countrycode(sourcevar = country$cow, origin =  "cowc",
+            destination = "cown", warn = FALSE)
+country$COWcode <- countrycode(sourcevar = country$cow, origin =  "cowc",
+            destination = "cown", warn = FALSE)
+```
+
+Using `countrycode()` to convert the variable **cowc** in `country` to "cown" format doesn't seem to work: there are 5 observations for which `countrycode()` doesn't know the "cown" value.
+
+To merge datasets, we can use the following functions of the `dplyr` package:
+
+- `left_join()`
+- `right_join()`
+- `inner_join()`
+- outer join: `union(left_join(x, y), right_join(x, y))`
+
+Let's explore them. 
+
+```{r, eval=FALSE}
+db_left <- left_join(country, vdem, by = c("COWcode"))
+db_right <- right_join(country, vdem, by = c("COWcode"))
+db_inner <- inner_join(country, vdem, by = c("COWcode"))
+```
+
+`r challenge_start()`
+1. How many unique countries are in `country`? And in `vdem`?
+2. Are all countries in `country` in `vdem`, and viceversa?
+3. What are the outputs of the different merging commands? For each of the resulting datasets: what are the number of rows and the unique country codes (`COWcode`)?
+`r challenge_end()`
+
+```{r, eval=FALSE}
+# 1.
+length(unique(country$COWcode))
+summary(country$COWcode)
+length(unique(vdem$COWcode))
+summary(vdem$COWcode)
+
+# 2. 
+length(which(unique(country$COWcode) %in% unique(vdem$COWcode)))
+not_in_vdem <- which(!(unique(country$COWcode) %in% unique(vdem$COWcode)))
+countries_not_vdem_id <- unique(country$COWcode)[not_in_vdem]
+countries_not_vdem_name <- country$cow[country$COWcode %in% countries_not_vdem_id]
+
+# 3. E.g. Exploring the resulting "db_inner" dataset:
+nrow(vdem)
+nrow(db_inner)
+length(unique(db_inner$COWcode))
+
+```
+
+
+
+
