@@ -1,7 +1,26 @@
 ---
-title: "MIssing Values"
+title: "Missing Values"
 output: html_document
 ---
+
+```{r results='hide',echo=FALSE}
+source("init.R")
+```
+
+
+In any set of data 
+
+`r challenge_start()`
+`r challenge_end()`
+
+`r solution_start()`
+Testing
+
+```{r}
+print("solution")
+```
+
+`r solution_end()`
 
 - how does NA work with +, -, *, / 
 - how does mean, sum, etc. work with NA. Using the na.rm 
@@ -10,4 +29,3 @@ output: html_document
 - Replacing NA with missing values
 - Replacing values with NAs. The common use case is 666, 777, 999, -99, -77, -66, etc.
 - how to change the pattern of NA when using read.csv or read_csv
-

@@ -27,12 +27,19 @@ Counter <-
             )
   )
 
-.SOLUTION_COUNTER <- Counter$new(pattern = "solution-%d")
-
+.SOLUTION_COUNTER <- Counter$new()
+.CHALLENGE_COUNTER <- Counter$new()
             
 challenge_start <- function() {
-  string <- paste0('<div class="panel panel-primary">',
-                   '<div class="panel-heading"><h3 class="panel-title">Challenge</h3></div>',
+  .CHALLENGE_COUNTER$add()
+  challenge_id <- sprintf("challenge-%d", .CHALLENGE_COUNTER$label())
+  string <- paste0(sprintf('<div id="%s" class="panel panel-primary">',
+                           challenge_id),
+                   '<div class="panel-heading">',
+                   '<h3 class="panel-title">',
+                   'Challenge',
+                   '</h3>',
+                   '</div>',
                    '<div class="panel-body">')
   string
 }
@@ -43,18 +50,18 @@ challenge_end <- function() {
 
 solution_start <- function() {
   .SOLUTION_COUNTER$add()
-  solution_id <- .SOLUTION_COUNTER$label()
+  solution_id <- sprintf("solution-%d", .SOLUTION_COUNTER$label())
   string <- paste0('<div class="panel panel-info">',
                    '<div class="panel-heading">',
                    '<h3 class="panel-title">',
-                   '<a data-toggle="collapse" href="#',
-                   solution_id,
-                   '">Solution</a>',
+                   sprintf('<a data-toggle="collapse" href="#%s">',
+                           solution_id),
+                   'Solution',
+                   '</a>',
                    '</h3>',
                    '</div>',
-                   '<div id="',
-                   solution_id,
-                   '" class="panel-collapse collapse">')
+                   sprintf('<div id="%s" class="panel-collapse collapse">',
+                           solution_id))
   string
 }
 
