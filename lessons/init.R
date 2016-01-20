@@ -14,3 +14,16 @@ challenge_end <- function() {
   string <- "</div></div>"
   string
 }
+
+solution_start <- function() {
+  string <- paste0('<div class="panel panel-info">',
+                   '<div class="panel-heading"><h3 class="panel-title">Solution</h3></div>',
+                   '<div class="panel-collapse collapse">')
+  string
+}
+
+solution_end <- function() {
+  string <- "</div></div>"
+  string
+}
+
