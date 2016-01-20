@@ -1,8 +1,36 @@
 ---
-title: "tidy data"
+title: "Tidy Data"
 author: "Jeffrey Arnold"
 date: "January 19, 2016"
 output: html_document
 ---
 
+tidy data
+
+
+```{r}
+library("gapminder")
+data("gapminder")
+
+gapminder %>%
+  select(-continent) %>%
+  gather(variable, value, -country, -year) %>%
+  group_by(country, variable) %>%
+  summarise(value = mean(value)) %>%
+  spread(variable, value)
+
+```
+
+
+```{r}
+gapminder %>%
+  gather(variable, value, -country, -year) %>%
+  group_by(country, variable) %>%
+  summarise(mean = mean(value),
+            sd = sd(value)) %>%
+  gather(stat, value, -variable, -country) %>%
+  unite(varname, variable, stat) %>%
+  spread(varname, value)
+
+```
 
