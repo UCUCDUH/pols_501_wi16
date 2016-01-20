@@ -1,0 +1,10 @@
+# Lab 2 Summary (January 15, 2016) 
+
+1. `subsetting` [module](https://github.com/UW-POLS501/pols_501_wi16/blob/master/lessons/subsetting.Rmd)
+2. `ggplot-1` [module](https://github.com/UW-POLS501/pols_501_wi16/blob/master/lessons/ggplot-1.Rmd)
+
+# Self-Assessment
+
+- The `subsetting` module was useful and students really appreciated going through some basic subsetting. Maybe it would had been better to do it the first week
+
+- The part of the `ggplot-1` where we fit lines (linear-regression and conditional-mean lines) to the scatterplot was confusing because we haven't really covered those concepts yet. I would delete that part and focus on the second part of the module where we talk about `means`, `medians`, `distribution`, `boxplots` and `IQRs`; concetps that we have actually seen recently and that are more linked to basic descriptive statistics. Because of the complexitiy of drawing and interpreting those lines, I run out of time and couldn't do the last part; which was the most important one.
