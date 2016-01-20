@@ -1,0 +1,26 @@
+---
+title: "Data Cleaning Utility Functions"
+output: html_document
+---
+
+Functions to cover
+
+- `cut`
+- `plyr::mapvalues`, `plyr::revalue`
+- renaming levels of a factor http://www.cookbook-r.com/Manipulating_data/Renaming_levels_of_a_factor/
+- http://www.cookbook-r.com/Manipulating_data/Mapping_vector_values/
+- `mosaic::derivedFactor`
+- **stringr** functions: `str_c`, `str_match`, `str_replace`. 
+- **lubridate** functions: `parse_date_time`, `ymd`, 
+- lag, diff ? maybe not worth it yet
+
+Also see http://www.cookbook-r.com/Manipulating_data/index.html
+
+
+With strings do not introduce regex, but mention that "abcd" will match anywhere
+in the string, but "^abcd$" will match the whole string.
+
+
+References
+
+- strings: http://r4ds.had.co.nz/strings.html
