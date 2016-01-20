@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="author" content="Andreu Casas" />
+
+<meta name="date" content="2016-01-22" />
+
+<title>R Directories</title>
+
+<script src="libs/jquery-1.11.0/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap-3.3.1/css/cerulean.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.1/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.1/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.1/shim/respond.min.js"></script>
+<link rel="stylesheet" type = "text/css" href="labs.css">
+
+<style type="text/css">code{white-space: pre;}</style>
+<link rel="stylesheet"
+      href="libs/highlight/textmate.css"
+      type="text/css" />
+<script src="libs/highlight/highlight.js"></script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img { 
+  max-width:100%; 
+  height: auto; 
+}
+</style>
+<div class="container-fluid main-container">
+
+<p>
+<strong>POL S/CS&amp;SS 501, University of Washington, Spring 2015</strong>
+</p>
+
+$$
+\DeclareMathOperator{\mean}{mean}
+\DeclareMathOperator{\var}{var}
+\DeclareMathOperator{\E}{E}
+\DeclareMathOperator{\argmin}{argmin}
+\DeclareMathOperator{\argmax}{argmax}
+$$
+
+<div id="header">
+<h1 class="title">R Directories</h1>
+<h4 class="author"><em>Andreu Casas</em></h4>
+<h4 class="date"><em>January 22, 2016</em></h4>
+</div>
+
+<div id="TOC">
+<ul>
+<li><a href="#learning-objectives">Learning Objectives</a></li>
+</ul>
+</div>
+
+<div id="learning-objectives" class="section level2">
+<h2>Learning Objectives</h2>
+<p>Understand R directories and how to use them</p>
+<div id="what-is-a-directory" class="section level3">
+<h3>What is a <code>directory</code>?</h3>
+<ul>
+<li>A directory is a <strong>folder</strong> in your computer</li>
+<li>All programs and data in your computer is in some directory</li>
+<li><p>Directories are hierarchically organized</p>
+<pre><code>main_dir
+│   README.md
+│   file1.txt    
+│
+└───folder1
+│   file11.txt
+│   file12.txt
+│
+├───subfolder1
+│   │   file111.txt
+│   │   file112.txt</code></pre></li>
+<li><p>All directories and files have a <code>path</code> that allows us to access that directory or file</p>
+<pre><code>&quot;main_dir/folder1/subfolder1/file111.txt&quot;</code></pre></li>
+</ul>
+</div>
+<div id="r-and-the-working-directory" class="section level3">
+<h3>R and the working directory</h3>
+<p>When you start an R session, R gets executed in a particular directory in the computer. We call that directory the <code>working directory</code>. You can know your working directory using the command <code>getwd()</code>:</p>
+<p>If you want to change your working directory, you can use the function <code>setwd()</code>; which takes the path of the new working directory as an argument:</p>
+<pre class="r"><code>setwd(&quot;/main_dir/folder1&quot;)</code></pre>
+</div>
+<div id="reading-files-in-r" class="section level3">
+<h3>Reading files in R</h3>
+<p>When reading data into R (e.g. a CSV file), if you only give the file name, R is going to look for that file in the current working directory. If the file is not there but it’s in a subdirectory of the working directory, you need to provide a partial path to the file indicating the subdirectory strucutre to get to that file. For example, imagine that R is being executed in the <code>main_dir</code> of the previous diagram and you want to read the <strong>file112.txt</strong>. You would provide the path from <code>main_dir</code> to <strong>file112.txt</strong>:</p>
+<pre class="r"><code>data &lt;- read.table(file = &quot;/folder1/subfolder1/file112.txt&quot;)</code></pre>
+<p>If the file is neither in the working directory or in a subdirectory of the working directory, you need to provide the full path to that file. For example, imagine that in this case R is being executed in the <code>subfolder1</code> directory and you want to read the <strong>file1.txt</strong>. You would do the following:</p>
+<pre class="r"><code>data &lt;- read.table(file = &quot;/main_dir/file1.txt&quot;)</code></pre>
+</div>
+</div>
+
+<hr>
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://licensebuttons.net/l/by-nc-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
+R code is licensed under a <a href="https://www.r-project.org/Licenses/BSD_2_clause">BSD 2-clause</a> license.
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
