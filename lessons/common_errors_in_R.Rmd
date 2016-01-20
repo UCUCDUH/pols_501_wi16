@@ -1,0 +1,27 @@
+---
+title: "Commons Errors in R and what to do about them"
+author: "Jeffrey Arnold"
+date: "January 19, 2016"
+output: html_document
+---
+
+# Masking Objects
+
+
+- `Could not find function`. Function does not exist, or you did not load a package with that function.
+- `Object '???' not found`
+- `Error in if` Not a logical value
+- `cannot open the connection`, `no such file or directory`: You've given R the wrong path. Check the URL or file path.
+- `no applicable method for '???' applied to an object of class "???"`, `no method for coercing ...`, `no slot of name "group" for this object of class "???"`
+- `subscript out of bounds` Access an element of a vector or list that is not there
+- `Error in ...: replacement has ...`
+- `built under R package`
+- messages in ggplot2
+
+
+# References
+
+- http://www.burns-stat.com/documents/tutorials/impatient-r/#errors
+- http://varianceexplained.org/pages/errors.html
+- http://blog.revolutionanalytics.com/2015/03/the-most-common-r-error-messages.html
+- https://github.com/noamross/zero-dependency-problems/blob/master/misc/stack-overflow-common-r-errors.md
