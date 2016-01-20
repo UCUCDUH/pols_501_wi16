@@ -1,5 +1,5 @@
 ---
-title: R Directories
+title: Directories and R
 date: January 22, 2016
 author: Andreu Casas
 ---
@@ -10,13 +10,14 @@ source("init.R")
 
 ## Learning Objectives
 
-Understand R directories and how to use them
+- Understand R directories and how to use them
 
-### What is a `directory`?
+## What is a `directory`?
 
 - A directory is a **folder** in your computer
 - All programs and data in your computer is in some directory
 - Directories are hierarchically organized
+
 ```
 main_dir
 │   README.md
@@ -35,7 +36,7 @@ main_dir
 "main_dir/folder1/subfolder1/file111.txt"
 ```
 
-### R and the working directory
+## R and the working directory
 
 When you start an R session, R gets executed in a particular directory in the computer. We call that directory the `working directory`. You can know your working directory using the command `getwd()`:
 
@@ -45,19 +46,26 @@ If you want to change your working directory, you can use the function `setwd()`
 setwd("/main_dir/folder1")
 ```
 
-### Reading files in R
+## Reading files in R
 
 When reading data into R (e.g. a CSV file), if you only give the file name, R is going to look for that file in the current working directory. If the file is not there but it's in a subdirectory of the working directory, you need to provide a partial path to the file indicating the subdirectory strucutre to get to that file. For example, imagine that R is being executed in the `main_dir` of the previous diagram and you want to read the **file112.txt**. You would provide the path from `main_dir` to **file112.txt**:
 
 ```{r, eval=FALSE}
-data <- read.table(file = "/folder1/subfolder1/file112.txt")
+data <- read.table(file = "folder1/subfolder1/file112.txt")
 ```
 
 If the file is neither in the working directory or in a subdirectory of the working directory, you need to provide the full path to that file. For example, imagine that in this case R is being executed in the `subfolder1` directory and you want to read the **file1.txt**. You would do the following:
 
 ```{r, eval=FALSE}
-data <- read.table(file = "/main_dir/file1.txt")
+data <- read.table(file = "main_dir/file1.txt")
 ```
 
+Notes
+
+- discuss `..` and `.`
+- discuss using `/` vs. `\` in R.
+- don't use `read.table`
+- discuss what projects do
+- add discussion of `dir()`
 
 
