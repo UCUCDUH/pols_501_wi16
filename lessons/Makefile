@@ -11,7 +11,7 @@ build: $(HTML_FILES)
 %.html: %.Rmd _output.yaml
 	$(RSCRIPT) $(RSCRIPT_OPTS) -e "rmarkdown::render('$<', output_file='$@')"
 
-deploy: build
+deploy:
 	[ ! -d "$(DEPLOY_DIR)" ] && mkdir -p $(DEPLOY_DIR)
 	-cp $(HTML_FILES) $(DEPLOY_DIR)
 	-cp -R *_files  $(DEPLOY_DIR)
