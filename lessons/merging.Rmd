@@ -10,3 +10,4 @@ output: html_document
 - Using `*_join` from dplyr
 - Using `bind_rows()`
 - Using gapminder data
+
