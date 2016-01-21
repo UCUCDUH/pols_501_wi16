@@ -117,11 +117,11 @@ Useful references for data visualization
 # Class
 
 <ul class="fa-ul">
-<li><i class="fa-li fa fa-bar-chart"><a href="/lessons/missing_data.html">Missing values (NA)</a>
-<li><i class="fa-li fa fa-bar-chart"><a href="/lessons/pipe.html">`%>%`: The Pipe Operator </a>
-<li><i class="fa-li fa fa-bar-chart"><a href="/lessons/merging.html">Joining Datasets </a>
-<li><i class="fa-li fa fa-bar-chart"><a href="/lessons/tidy_data.html">Tidy Data</a>
-<li><i class="fa-li fa fa-bar-chart"><a href="/lessons/common_errors_in_R.html">Common Errors in R</a>
+<li><i class="fa-li fa fa-bar-chart"></i><a href="/lessons/missing_data.html">Missing values (NA)</a>
+<li><i class="fa-li fa fa-bar-chart"></i><a href="/lessons/pipe.html">`%>%`: The Pipe Operator </a>
+<li><i class="fa-li fa fa-bar-chart"></i><a href="/lessons/merging.html">Joining Datasets </a>
+<li><i class="fa-li fa fa-bar-chart"></i><a href="/lessons/tidy_data.html">Tidy Data</a>
+<li><i class="fa-li fa fa-bar-chart"></i><a href="/lessons/common_errors_in_R.html">Common Errors in R</a>
 </ul>
 
 ## Week 4
