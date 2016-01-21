@@ -5,6 +5,11 @@ date: "January 20, 2016"
 output: html_document
 ---
 
+```{r results='hide',echo=FALSE}
+source("init.R")
+```
+
+
 R provides functions to calculate many common descriptive statistics:
 
 - `mean(x)`: Mean 
@@ -17,6 +22,22 @@ R provides functions to calculate many common descriptive statistics:
 - `range(x)`: Minimum and maximum
 - `diff(range(x))` : Range
 - `table(x)` Counts of values
+
+`r challenge_start()`
+
+Using the `gapminder` data in the **gapminder** package,
+```{r}
+library("gapminder")
+data("gapminder")
+```
+
+`r challenge_end()`
+
+`r solution_start()`
+
+
+
+`r solution_end()`
 
 
 # Mode
@@ -31,7 +52,12 @@ tbl <- table(x)
 names(tbl)[tbl == max(tbl)]
 ```
 
-See package **modeest** function `mlv` for various methods to calculate the mode, including for continuous distributions.
+- `table(x)` counts the number of observations taking each value
+- `names(tbl)` In the vector returned by the table command, the values of the observations are the names, and counts are values in the vector.
+- `tbl == max(tbl)` is `TRUE` for all (possibly more than one) elements which have the largest counts
+
+That code only works well for discrete data. 
+See package **modeest** function `mlv` for various methods to calculate the mode, including for methods to estimate the mode of continuous distributions.
 
 # Skewness, Kurtosis
 
