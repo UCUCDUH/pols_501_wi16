@@ -5,6 +5,7 @@ date: "January 20, 2016"
 output: html_document
 ---
 
+R provides functions to calculate many common descriptive statistics:
 
 - `mean(x)`: Mean 
 - `median(x)`: median
