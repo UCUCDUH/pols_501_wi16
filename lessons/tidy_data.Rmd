@@ -4,10 +4,21 @@ author: "Jeffrey Arnold"
 output: html_document
 ---
 
-tidy data
+Tidy data is data in which 
+
+1. Each variable forms a column
+2. Each observation forms a row
+3. Each type of observational unit forms a table
+
+See Wickham [Tidy Data](http://vita.had.co.nz/papers/tidy-data.pdf) for more discussion of this.
+This lesson will cover the associated **tidyr** package.
+
+
 
 
 ```{r}
+library("dplyr")
+library("tidyr")
 library("gapminder")
 data("gapminder")
 

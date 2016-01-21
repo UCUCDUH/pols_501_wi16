@@ -1,0 +1,1600 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="author" content="Jeffrey Arnold" />
+
+
+<title>Tidy Data</title>
+
+<script src="libs/jquery-1.11.0/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap-3.3.1/css/cerulean.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.1/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.1/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.1/shim/respond.min.js"></script>
+<link rel="stylesheet" type = "text/css" href="labs.css">
+
+<style type="text/css">code{white-space: pre;}</style>
+<link rel="stylesheet"
+      href="libs/highlight/textmate.css"
+      type="text/css" />
+<script src="libs/highlight/highlight.js"></script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img { 
+  max-width:100%; 
+  height: auto; 
+}
+</style>
+<div class="container-fluid main-container">
+
+<p>
+<strong>POL S/CS&amp;SS 501, University of Washington, Spring 2015</strong>
+</p>
+
+$$
+\DeclareMathOperator{\mean}{mean}
+\DeclareMathOperator{\var}{var}
+\DeclareMathOperator{\E}{E}
+\DeclareMathOperator{\argmin}{argmin}
+\DeclareMathOperator{\argmax}{argmax}
+$$
+
+<div id="header">
+<h1 class="title">Tidy Data</h1>
+<h4 class="author"><em>Jeffrey Arnold</em></h4>
+</div>
+
+
+<p>Tidy data is data in which</p>
+<ol style="list-style-type: decimal">
+<li>Each variable forms a column</li>
+<li>Each observation forms a row</li>
+<li>Each type of observational unit forms a table</li>
+</ol>
+<p>See Wickham <a href="http://vita.had.co.nz/papers/tidy-data.pdf">Tidy Data</a> for more discussion of this. This lesson will cover the associated <strong>tidyr</strong> package.</p>
+<pre class="r"><code>library(&quot;dplyr&quot;)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;dplyr&#39;
+## 
+## The following objects are masked from &#39;package:stats&#39;:
+## 
+##     filter, lag
+## 
+## The following objects are masked from &#39;package:base&#39;:
+## 
+##     intersect, setdiff, setequal, union</code></pre>
+<pre class="r"><code>library(&quot;tidyr&quot;)
+library(&quot;gapminder&quot;)
+data(&quot;gapminder&quot;)
+
+gapminder %&gt;%
+  select(-continent) %&gt;%
+  gather(variable, value, -country, -year) %&gt;%
+  group_by(country, variable) %&gt;%
+  summarise(value = mean(value)) %&gt;%
+  spread(variable, value)</code></pre>
+<pre><code>## Source: local data frame [142 x 4]
+## 
+##        country  lifeExp        pop  gdpPercap
+##         (fctr)    (dbl)      (dbl)      (dbl)
+## 1  Afghanistan 37.47883 15823715.4   802.6746
+## 2      Albania 68.43292  2580249.2  3255.3666
+## 3      Algeria 59.03017 19875406.2  4426.0260
+## 4       Angola 37.88350  7309390.1  3607.1005
+## 5    Argentina 69.06042 28602239.9  8955.5538
+## 6    Australia 74.66292 14649312.5 19980.5956
+## 7      Austria 73.10325  7583298.4 20411.9163
+## 8      Bahrain 65.60567   373913.2 18077.6639
+## 9   Bangladesh 49.83408 90755395.3   817.5588
+## 10     Belgium 73.64175  9725118.7 19900.7581
+## ..         ...      ...        ...        ...</code></pre>
+<pre class="r"><code>gapminder %&gt;%
+  gather(variable, value, -country, -year) %&gt;%
+  group_by(country, variable) %&gt;%
+  summarise(mean = mean(value),
+            sd = sd(value)) %&gt;%
+  gather(stat, value, -variable, -country) %&gt;%
+  unite(varname, variable, stat) %&gt;%
+  spread(varname, value)</code></pre>
+<pre><code>## Warning: attributes are not identical across measure variables; they will
+## be dropped</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;28.801&quot;, &quot;30.332&quot;, &quot;31.997&quot;, &quot;34.02&quot;,
+## &quot;36.088&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;8425333&quot;, &quot;9240934&quot;, &quot;10267083&quot;, &quot;11537966&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;779.4453145&quot;, &quot;820.8530296&quot;, &quot;853.10071&quot;,
+## &quot;836.1971382&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Europe&quot;, &quot;Europe&quot;, &quot;Europe&quot;, &quot;Europe&quot;,
+## &quot;Europe&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;55.23&quot;, &quot;59.28&quot;, &quot;64.82&quot;, &quot;66.22&quot;, &quot;67.69&quot;,
+## &quot;68.93&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;1282697&quot;, &quot;1476505&quot;, &quot;1728137&quot;, &quot;1984060&quot;,
+## &quot;2263554&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;1601.056136&quot;, &quot;1942.284244&quot;, &quot;2312.888958&quot;,
+## &quot;2760.196931&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;,
+## &quot;Africa&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;43.077&quot;, &quot;45.685&quot;, &quot;48.303&quot;, &quot;51.407&quot;,
+## &quot;54.518&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;9279525&quot;, &quot;10270856&quot;, &quot;11000948&quot;, &quot;12760499&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;2449.008185&quot;, &quot;3013.976023&quot;, &quot;2550.81688&quot;,
+## &quot;3246.991771&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;,
+## &quot;Africa&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;30.015&quot;, &quot;31.999&quot;, &quot;34&quot;, &quot;35.985&quot;, &quot;37.928&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;4232095&quot;, &quot;4561361&quot;, &quot;4826015&quot;, &quot;5247469&quot;,
+## &quot;5894858&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;3520.610273&quot;, &quot;3827.940465&quot;, &quot;4269.276742&quot;,
+## &quot;5522.776375&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Americas&quot;, &quot;Americas&quot;, &quot;Americas&quot;, &quot;Americas&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;62.485&quot;, &quot;64.399&quot;, &quot;65.142&quot;, &quot;65.634&quot;,
+## &quot;67.065&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;17876956&quot;, &quot;19610538&quot;, &quot;21283783&quot;, &quot;22934225&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;5911.315053&quot;, &quot;6856.856212&quot;, &quot;7133.166023&quot;,
+## &quot;8052.953021&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Oceania&quot;, &quot;Oceania&quot;, &quot;Oceania&quot;, &quot;Oceania&quot;,
+## &quot;Oceania&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;69.12&quot;, &quot;70.33&quot;, &quot;70.93&quot;, &quot;71.1&quot;, &quot;71.93&quot;,
+## &quot;73.49&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;8691212&quot;, &quot;9712569&quot;, &quot;10794968&quot;, &quot;11872264&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;10039.59564&quot;, &quot;10949.64959&quot;, &quot;12217.22686&quot;,
+## &quot;14526.12465&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Europe&quot;, &quot;Europe&quot;, &quot;Europe&quot;, &quot;Europe&quot;,
+## &quot;Europe&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;66.8&quot;, &quot;67.48&quot;, &quot;69.54&quot;, &quot;70.14&quot;, &quot;70.63&quot;,
+## &quot;72.17&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;6927772&quot;, &quot;6965860&quot;, &quot;7129864&quot;, &quot;7376998&quot;,
+## &quot;7544201&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;6137.076492&quot;, &quot;8842.59803&quot;, &quot;10750.72111&quot;,
+## &quot;12834.6024&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;50.939&quot;, &quot;53.832&quot;, &quot;56.923&quot;, &quot;59.923&quot;, &quot;63.3&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;120447&quot;, &quot;138655&quot;, &quot;171863&quot;, &quot;202182&quot;,
+## &quot;230800&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;9867.084765&quot;, &quot;11635.79945&quot;, &quot;12753.27514&quot;,
+## &quot;14804.6727&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;37.484&quot;, &quot;39.348&quot;, &quot;41.216&quot;, &quot;43.453&quot;,
+## &quot;45.252&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;46886859&quot;, &quot;51365468&quot;, &quot;56839289&quot;, &quot;62821884&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;684.2441716&quot;, &quot;661.6374577&quot;, &quot;686.3415538&quot;,
+## &quot;721.1860862&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Europe&quot;, &quot;Europe&quot;, &quot;Europe&quot;, &quot;Europe&quot;,
+## &quot;Europe&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;68&quot;, &quot;69.24&quot;, &quot;70.25&quot;, &quot;70.94&quot;, &quot;71.44&quot;,
+## &quot;72.8&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;8730405&quot;, &quot;8989111&quot;, &quot;9218400&quot;, &quot;9556500&quot;,
+## &quot;9709100&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;8343.105127&quot;, &quot;9714.960623&quot;, &quot;10991.20676&quot;,
+## &quot;13149.04119&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;,
+## &quot;Africa&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;38.223&quot;, &quot;40.358&quot;, &quot;42.618&quot;, &quot;44.885&quot;,
+## &quot;47.014&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;1738315&quot;, &quot;1925173&quot;, &quot;2151895&quot;, &quot;2427334&quot;,
+## &quot;2761407&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;1062.7522&quot;, &quot;959.6010805&quot;, &quot;949.4990641&quot;,
+## &quot;1035.831411&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Americas&quot;, &quot;Americas&quot;, &quot;Americas&quot;, &quot;Americas&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;40.414&quot;, &quot;41.89&quot;, &quot;43.428&quot;, &quot;45.032&quot;,
+## &quot;46.714&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;2883315&quot;, &quot;3211738&quot;, &quot;3593918&quot;, &quot;4040665&quot;,
+## &quot;4565872&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;2677.326347&quot;, &quot;2127.686326&quot;, &quot;2180.972546&quot;,
+## &quot;2586.886053&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Europe&quot;, &quot;Europe&quot;, &quot;Europe&quot;, &quot;Europe&quot;,
+## &quot;Europe&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;53.82&quot;, &quot;58.45&quot;, &quot;61.93&quot;, &quot;64.79&quot;, &quot;67.45&quot;,
+## &quot;69.86&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;2791000&quot;, &quot;3076000&quot;, &quot;3349000&quot;, &quot;3585000&quot;,
+## &quot;3819000&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;973.5331948&quot;, &quot;1353.989176&quot;, &quot;1709.683679&quot;,
+## &quot;2172.352423&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;,
+## &quot;Africa&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;47.622&quot;, &quot;49.618&quot;, &quot;51.52&quot;, &quot;53.298&quot;,
+## &quot;56.024&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;442308&quot;, &quot;474639&quot;, &quot;512764&quot;, &quot;553541&quot;,
+## &quot;619351&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;851.2411407&quot;, &quot;918.2325349&quot;, &quot;983.6539764&quot;,
+## &quot;1214.709294&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Americas&quot;, &quot;Americas&quot;, &quot;Americas&quot;, &quot;Americas&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;50.917&quot;, &quot;53.285&quot;, &quot;55.665&quot;, &quot;57.632&quot;,
+## &quot;59.504&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;56602560&quot;, &quot;65551171&quot;, &quot;76039390&quot;, &quot;88049823&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;2108.944355&quot;, &quot;2487.365989&quot;, &quot;3336.585802&quot;,
+## &quot;3429.864357&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Europe&quot;, &quot;Europe&quot;, &quot;Europe&quot;, &quot;Europe&quot;,
+## &quot;Europe&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;59.6&quot;, &quot;66.61&quot;, &quot;69.51&quot;, &quot;70.42&quot;, &quot;70.9&quot;,
+## &quot;70.81&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;7274900&quot;, &quot;7651254&quot;, &quot;8012946&quot;, &quot;8310226&quot;,
+## &quot;8576200&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;2444.286648&quot;, &quot;3008.670727&quot;, &quot;4254.337839&quot;,
+## &quot;5577.0028&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;,
+## &quot;Africa&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;31.975&quot;, &quot;34.906&quot;, &quot;37.814&quot;, &quot;40.697&quot;,
+## &quot;43.591&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;4469979&quot;, &quot;4713416&quot;, &quot;4919632&quot;, &quot;5127935&quot;,
+## &quot;5433886&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;543.2552413&quot;, &quot;617.1834648&quot;, &quot;722.5120206&quot;,
+## &quot;794.8265597&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;,
+## &quot;Africa&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;39.031&quot;, &quot;40.533&quot;, &quot;42.045&quot;, &quot;43.548&quot;,
+## &quot;44.057&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;2445618&quot;, &quot;2667518&quot;, &quot;2961915&quot;, &quot;3330989&quot;,
+## &quot;3529983&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;339.2964587&quot;, &quot;379.5646281&quot;, &quot;355.2032273&quot;,
+## &quot;412.9775136&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;39.417&quot;, &quot;41.366&quot;, &quot;43.415&quot;, &quot;45.415&quot;,
+## &quot;40.317&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;4693836&quot;, &quot;5322536&quot;, &quot;6083619&quot;, &quot;6960067&quot;,
+## &quot;7450606&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;368.4692856&quot;, &quot;434.0383364&quot;, &quot;496.9136476&quot;,
+## &quot;523.4323142&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;,
+## &quot;Africa&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;38.523&quot;, &quot;40.428&quot;, &quot;42.643&quot;, &quot;44.799&quot;,
+## &quot;47.049&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;5009067&quot;, &quot;5359923&quot;, &quot;5793633&quot;, &quot;6335506&quot;,
+## &quot;7021028&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;1172.667655&quot;, &quot;1313.048099&quot;, &quot;1399.607441&quot;,
+## &quot;1508.453148&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Americas&quot;, &quot;Americas&quot;, &quot;Americas&quot;, &quot;Americas&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;68.75&quot;, &quot;69.96&quot;, &quot;71.3&quot;, &quot;72.13&quot;, &quot;72.88&quot;,
+## &quot;74.21&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;14785584&quot;, &quot;17010154&quot;, &quot;18985849&quot;, &quot;20819767&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;11367.16112&quot;, &quot;12489.95006&quot;, &quot;13462.48555&quot;,
+## &quot;16076.58803&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;,
+## &quot;Africa&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;35.463&quot;, &quot;37.464&quot;, &quot;39.475&quot;, &quot;41.478&quot;,
+## &quot;43.457&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;1291695&quot;, &quot;1392284&quot;, &quot;1523478&quot;, &quot;1733638&quot;,
+## &quot;1927260&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;1071.310713&quot;, &quot;1190.844328&quot;, &quot;1193.068753&quot;,
+## &quot;1136.056615&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;,
+## &quot;Africa&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;38.092&quot;, &quot;39.881&quot;, &quot;41.716&quot;, &quot;43.601&quot;,
+## &quot;45.569&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;2682462&quot;, &quot;2894855&quot;, &quot;3150417&quot;, &quot;3495967&quot;,
+## &quot;3899068&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;1178.665927&quot;, &quot;1308.495577&quot;, &quot;1389.817618&quot;,
+## &quot;1196.810565&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Americas&quot;, &quot;Americas&quot;, &quot;Americas&quot;, &quot;Americas&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;54.745&quot;, &quot;56.074&quot;, &quot;57.924&quot;, &quot;60.523&quot;,
+## &quot;63.441&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;6377619&quot;, &quot;7048426&quot;, &quot;7961258&quot;, &quot;8858908&quot;,
+## &quot;9717524&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;3939.978789&quot;, &quot;4315.622723&quot;, &quot;4519.094331&quot;,
+## &quot;5106.654313&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;44&quot;, &quot;50.54896&quot;, &quot;44.50136&quot;, &quot;58.38112&quot;,
+## &quot;63.11888&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;556263527&quot;, &quot;637408000&quot;, &quot;665770000&quot;,
+## &quot;754550000&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;400.448611&quot;, &quot;575.9870009&quot;, &quot;487.6740183&quot;,
+## &quot;612.7056934&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Americas&quot;, &quot;Americas&quot;, &quot;Americas&quot;, &quot;Americas&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;50.643&quot;, &quot;55.118&quot;, &quot;57.863&quot;, &quot;59.963&quot;,
+## &quot;61.623&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;12350771&quot;, &quot;14485993&quot;, &quot;17009885&quot;, &quot;19764027&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;2144.115096&quot;, &quot;2323.805581&quot;, &quot;2492.351109&quot;,
+## &quot;2678.729839&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;,
+## &quot;Africa&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;40.715&quot;, &quot;42.46&quot;, &quot;44.467&quot;, &quot;46.472&quot;,
+## &quot;48.944&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;153936&quot;, &quot;170928&quot;, &quot;191689&quot;, &quot;217378&quot;,
+## &quot;250027&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;1102.990936&quot;, &quot;1211.148548&quot;, &quot;1406.648278&quot;,
+## &quot;1876.029643&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;,
+## &quot;Africa&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;39.143&quot;, &quot;40.652&quot;, &quot;42.122&quot;, &quot;44.056&quot;,
+## &quot;45.989&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;14100005&quot;, &quot;15577932&quot;, &quot;17486434&quot;, &quot;19941073&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;780.5423257&quot;, &quot;905.8602303&quot;, &quot;896.3146335&quot;,
+## &quot;861.5932424&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;,
+## &quot;Africa&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;42.111&quot;, &quot;45.053&quot;, &quot;48.435&quot;, &quot;52.04&quot;,
+## &quot;54.907&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;854885&quot;, &quot;940458&quot;, &quot;1047924&quot;, &quot;1179760&quot;,
+## &quot;1340458&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;2125.621418&quot;, &quot;2315.056572&quot;, &quot;2464.783157&quot;,
+## &quot;2677.939642&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Americas&quot;, &quot;Americas&quot;, &quot;Americas&quot;, &quot;Americas&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;57.206&quot;, &quot;60.026&quot;, &quot;62.842&quot;, &quot;65.424&quot;,
+## &quot;67.849&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;926317&quot;, &quot;1112300&quot;, &quot;1345187&quot;, &quot;1588717&quot;,
+## &quot;1834796&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;2627.009471&quot;, &quot;2990.010802&quot;, &quot;3460.937025&quot;,
+## &quot;4161.727834&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;,
+## &quot;Africa&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;40.477&quot;, &quot;42.469&quot;, &quot;44.93&quot;, &quot;47.35&quot;, &quot;49.801&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;2977019&quot;, &quot;3300000&quot;, &quot;3832408&quot;, &quot;4744870&quot;,
+## &quot;6071696&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;1388.594732&quot;, &quot;1500.895925&quot;, &quot;1728.869428&quot;,
+## &quot;2052.050473&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Europe&quot;, &quot;Europe&quot;, &quot;Europe&quot;, &quot;Europe&quot;,
+## &quot;Europe&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;61.21&quot;, &quot;64.77&quot;, &quot;67.13&quot;, &quot;68.5&quot;, &quot;69.61&quot;,
+## &quot;70.64&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;3882229&quot;, &quot;3991242&quot;, &quot;4076557&quot;, &quot;4174366&quot;,
+## &quot;4225310&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;3119.23652&quot;, &quot;4338.231617&quot;, &quot;5477.890018&quot;,
+## &quot;6960.297861&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Americas&quot;, &quot;Americas&quot;, &quot;Americas&quot;, &quot;Americas&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;59.421&quot;, &quot;62.325&quot;, &quot;65.246&quot;, &quot;68.29&quot;,
+## &quot;70.723&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;6007797&quot;, &quot;6640752&quot;, &quot;7254373&quot;, &quot;8139332&quot;,
+## &quot;8831348&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;5586.53878&quot;, &quot;6092.174359&quot;, &quot;5180.75591&quot;,
+## &quot;5690.268015&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Europe&quot;, &quot;Europe&quot;, &quot;Europe&quot;, &quot;Europe&quot;,
+## &quot;Europe&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;66.87&quot;, &quot;69.03&quot;, &quot;69.9&quot;, &quot;70.38&quot;, &quot;70.29&quot;,
+## &quot;70.71&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;9125183&quot;, &quot;9513758&quot;, &quot;9620282&quot;, &quot;9835109&quot;,
+## &quot;9862158&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;6876.14025&quot;, &quot;8256.343918&quot;, &quot;10136.86713&quot;,
+## &quot;11399.44489&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Europe&quot;, &quot;Europe&quot;, &quot;Europe&quot;, &quot;Europe&quot;,
+## &quot;Europe&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;70.78&quot;, &quot;71.81&quot;, &quot;72.35&quot;, &quot;72.96&quot;, &quot;73.47&quot;,
+## &quot;74.69&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;4334000&quot;, &quot;4487831&quot;, &quot;4646899&quot;, &quot;4838800&quot;,
+## &quot;4991596&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;9692.385245&quot;, &quot;11099.65935&quot;, &quot;13583.31351&quot;,
+## &quot;15937.21123&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;,
+## &quot;Africa&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;34.812&quot;, &quot;37.328&quot;, &quot;39.693&quot;, &quot;42.074&quot;,
+## &quot;44.366&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;63149&quot;, &quot;71851&quot;, &quot;89898&quot;, &quot;127617&quot;, &quot;178848&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;2669.529475&quot;, &quot;2864.969076&quot;, &quot;3020.989263&quot;,
+## &quot;3020.050513&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Americas&quot;, &quot;Americas&quot;, &quot;Americas&quot;, &quot;Americas&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;45.928&quot;, &quot;49.828&quot;, &quot;53.459&quot;, &quot;56.751&quot;,
+## &quot;59.631&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;2491346&quot;, &quot;2923186&quot;, &quot;3453434&quot;, &quot;4049146&quot;,
+## &quot;4671329&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;1397.717137&quot;, &quot;1544.402995&quot;, &quot;1662.137359&quot;,
+## &quot;1653.723003&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Americas&quot;, &quot;Americas&quot;, &quot;Americas&quot;, &quot;Americas&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;48.357&quot;, &quot;51.356&quot;, &quot;54.64&quot;, &quot;56.678&quot;,
+## &quot;58.796&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;3548753&quot;, &quot;4058385&quot;, &quot;4681707&quot;, &quot;5432424&quot;,
+## &quot;6298651&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;3522.110717&quot;, &quot;3780.546651&quot;, &quot;4086.114078&quot;,
+## &quot;4579.074215&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;,
+## &quot;Africa&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;41.893&quot;, &quot;44.444&quot;, &quot;46.992&quot;, &quot;49.293&quot;,
+## &quot;51.137&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;22223309&quot;, &quot;25009741&quot;, &quot;28173309&quot;, &quot;31681188&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;1418.822445&quot;, &quot;1458.915272&quot;, &quot;1693.335853&quot;,
+## &quot;1814.880728&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Americas&quot;, &quot;Americas&quot;, &quot;Americas&quot;, &quot;Americas&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;45.262&quot;, &quot;48.57&quot;, &quot;52.307&quot;, &quot;55.855&quot;,
+## &quot;58.207&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;2042865&quot;, &quot;2355805&quot;, &quot;2747687&quot;, &quot;3232927&quot;,
+## &quot;3790903&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;3048.3029&quot;, &quot;3421.523218&quot;, &quot;3776.803627&quot;,
+## &quot;4358.595393&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;,
+## &quot;Africa&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;34.482&quot;, &quot;35.983&quot;, &quot;37.485&quot;, &quot;38.987&quot;,
+## &quot;40.516&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;216964&quot;, &quot;232922&quot;, &quot;249220&quot;, &quot;259864&quot;,
+## &quot;277603&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;375.6431231&quot;, &quot;426.0964081&quot;, &quot;582.8419714&quot;,
+## &quot;915.5960025&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;,
+## &quot;Africa&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;35.928&quot;, &quot;38.047&quot;, &quot;40.158&quot;, &quot;42.189&quot;,
+## &quot;44.142&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;1438760&quot;, &quot;1542611&quot;, &quot;1666618&quot;, &quot;1820319&quot;,
+## &quot;2260187&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;328.9405571&quot;, &quot;344.1618859&quot;, &quot;380.9958433&quot;,
+## &quot;468.7949699&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;,
+## &quot;Africa&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;34.078&quot;, &quot;36.667&quot;, &quot;40.059&quot;, &quot;42.115&quot;,
+## &quot;43.515&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;20860941&quot;, &quot;22815614&quot;, &quot;25145372&quot;, &quot;27860297&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;362.1462796&quot;, &quot;378.9041632&quot;, &quot;419.4564161&quot;,
+## &quot;516.1186438&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Europe&quot;, &quot;Europe&quot;, &quot;Europe&quot;, &quot;Europe&quot;,
+## &quot;Europe&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;66.55&quot;, &quot;67.49&quot;, &quot;68.75&quot;, &quot;69.83&quot;, &quot;70.87&quot;,
+## &quot;72.52&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;4090500&quot;, &quot;4324000&quot;, &quot;4491443&quot;, &quot;4605744&quot;,
+## &quot;4639657&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;6424.519071&quot;, &quot;7545.415386&quot;, &quot;9371.842561&quot;,
+## &quot;10921.63626&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Europe&quot;, &quot;Europe&quot;, &quot;Europe&quot;, &quot;Europe&quot;,
+## &quot;Europe&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;67.41&quot;, &quot;68.93&quot;, &quot;70.51&quot;, &quot;71.55&quot;, &quot;72.38&quot;,
+## &quot;73.83&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;42459667&quot;, &quot;44310863&quot;, &quot;47124000&quot;, &quot;49569000&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;7029.809327&quot;, &quot;8662.834898&quot;, &quot;10560.48553&quot;,
+## &quot;12999.91766&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;,
+## &quot;Africa&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;37.003&quot;, &quot;38.999&quot;, &quot;40.489&quot;, &quot;44.598&quot;,
+## &quot;48.69&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;420702&quot;, &quot;434904&quot;, &quot;455661&quot;, &quot;489004&quot;,
+## &quot;537977&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;4293.476475&quot;, &quot;4976.198099&quot;, &quot;6631.459222&quot;,
+## &quot;8358.761987&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;,
+## &quot;Africa&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;30&quot;, &quot;32.065&quot;, &quot;33.896&quot;, &quot;35.857&quot;, &quot;38.308&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;284320&quot;, &quot;323150&quot;, &quot;374020&quot;, &quot;439593&quot;,
+## &quot;517101&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;485.2306591&quot;, &quot;520.9267111&quot;, &quot;599.650276&quot;,
+## &quot;734.7829124&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Europe&quot;, &quot;Europe&quot;, &quot;Europe&quot;, &quot;Europe&quot;,
+## &quot;Europe&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;67.5&quot;, &quot;69.1&quot;, &quot;70.3&quot;, &quot;70.8&quot;, &quot;71&quot;, &quot;72.5&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;69145952&quot;, &quot;71019069&quot;, &quot;73739117&quot;, &quot;76368453&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;7144.114393&quot;, &quot;10187.82665&quot;, &quot;12902.46291&quot;,
+## &quot;14745.62561&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;,
+## &quot;Africa&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;43.149&quot;, &quot;44.779&quot;, &quot;46.452&quot;, &quot;48.072&quot;,
+## &quot;49.875&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;5581001&quot;, &quot;6391288&quot;, &quot;7355248&quot;, &quot;8490213&quot;,
+## &quot;9354120&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;911.2989371&quot;, &quot;1043.561537&quot;, &quot;1190.041118&quot;,
+## &quot;1125.69716&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Europe&quot;, &quot;Europe&quot;, &quot;Europe&quot;, &quot;Europe&quot;,
+## &quot;Europe&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;65.86&quot;, &quot;67.86&quot;, &quot;69.51&quot;, &quot;71&quot;, &quot;72.34&quot;,
+## &quot;73.68&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;7733250&quot;, &quot;8096218&quot;, &quot;8448233&quot;, &quot;8716441&quot;,
+## &quot;8888628&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;3530.690067&quot;, &quot;4916.299889&quot;, &quot;6017.190733&quot;,
+## &quot;8513.097016&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Americas&quot;, &quot;Americas&quot;, &quot;Americas&quot;, &quot;Americas&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;42.023&quot;, &quot;44.142&quot;, &quot;46.954&quot;, &quot;50.016&quot;,
+## &quot;53.738&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;3146381&quot;, &quot;3640876&quot;, &quot;4208858&quot;, &quot;4690773&quot;,
+## &quot;5149581&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;2428.237769&quot;, &quot;2617.155967&quot;, &quot;2750.364446&quot;,
+## &quot;3242.531147&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;,
+## &quot;Africa&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;33.609&quot;, &quot;34.558&quot;, &quot;35.753&quot;, &quot;37.197&quot;,
+## &quot;38.842&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;2664249&quot;, &quot;2876726&quot;, &quot;3140003&quot;, &quot;3451418&quot;,
+## &quot;3811387&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;510.1964923&quot;, &quot;576.2670245&quot;, &quot;686.3736739&quot;,
+## &quot;708.7595409&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;,
+## &quot;Africa&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;32.5&quot;, &quot;33.489&quot;, &quot;34.488&quot;, &quot;35.492&quot;, &quot;36.486&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;580653&quot;, &quot;601095&quot;, &quot;627820&quot;, &quot;601287&quot;,
+## &quot;625361&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;299.850319&quot;, &quot;431.7904566&quot;, &quot;522.0343725&quot;,
+## &quot;715.5806402&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Americas&quot;, &quot;Americas&quot;, &quot;Americas&quot;, &quot;Americas&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;37.579&quot;, &quot;40.696&quot;, &quot;43.59&quot;, &quot;46.243&quot;,
+## &quot;48.042&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;3201488&quot;, &quot;3507701&quot;, &quot;3880130&quot;, &quot;4318137&quot;,
+## &quot;4698301&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;1840.366939&quot;, &quot;1726.887882&quot;, &quot;1796.589032&quot;,
+## &quot;1452.057666&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Americas&quot;, &quot;Americas&quot;, &quot;Americas&quot;, &quot;Americas&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;41.912&quot;, &quot;44.665&quot;, &quot;48.041&quot;, &quot;50.924&quot;,
+## &quot;53.884&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;1517453&quot;, &quot;1770390&quot;, &quot;2090162&quot;, &quot;2500689&quot;,
+## &quot;2965146&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;2194.926204&quot;, &quot;2220.487682&quot;, &quot;2291.156835&quot;,
+## &quot;2538.269358&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;60.96&quot;, &quot;64.75&quot;, &quot;67.65&quot;, &quot;70&quot;, &quot;72&quot;, &quot;73.6&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;2125900&quot;, &quot;2736300&quot;, &quot;3305200&quot;, &quot;3722800&quot;,
+## &quot;4115700&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;3054.421209&quot;, &quot;3629.076457&quot;, &quot;4692.648272&quot;,
+## &quot;6197.962814&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Europe&quot;, &quot;Europe&quot;, &quot;Europe&quot;, &quot;Europe&quot;,
+## &quot;Europe&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;64.03&quot;, &quot;66.41&quot;, &quot;67.96&quot;, &quot;69.5&quot;, &quot;69.76&quot;,
+## &quot;69.95&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;9504000&quot;, &quot;9839000&quot;, &quot;10063000&quot;, &quot;10223422&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;5263.673816&quot;, &quot;6040.180011&quot;, &quot;7550.359877&quot;,
+## &quot;9326.64467&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Europe&quot;, &quot;Europe&quot;, &quot;Europe&quot;, &quot;Europe&quot;,
+## &quot;Europe&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;72.49&quot;, &quot;73.47&quot;, &quot;73.68&quot;, &quot;73.73&quot;, &quot;74.46&quot;,
+## &quot;76.11&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;147962&quot;, &quot;165110&quot;, &quot;182053&quot;, &quot;198676&quot;,
+## &quot;209275&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;7267.688428&quot;, &quot;9244.001412&quot;, &quot;10350.15906&quot;,
+## &quot;13319.89568&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;37.373&quot;, &quot;40.249&quot;, &quot;43.605&quot;, &quot;47.193&quot;,
+## &quot;50.651&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;372000000&quot;, &quot;409000000&quot;, &quot;454000000&quot;,
+## &quot;506000000&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;546.5657493&quot;, &quot;590.061996&quot;, &quot;658.3471509&quot;,
+## &quot;700.7706107&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;37.468&quot;, &quot;39.918&quot;, &quot;42.518&quot;, &quot;45.964&quot;,
+## &quot;49.203&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;82052000&quot;, &quot;90124000&quot;, &quot;99028000&quot;,
+## &quot;109343000&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;749.6816546&quot;, &quot;858.9002707&quot;, &quot;849.2897701&quot;,
+## &quot;762.4317721&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;44.869&quot;, &quot;47.181&quot;, &quot;49.325&quot;, &quot;52.469&quot;,
+## &quot;55.234&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;17272000&quot;, &quot;19792000&quot;, &quot;22874000&quot;, &quot;26538000&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;3035.326002&quot;, &quot;3290.257643&quot;, &quot;4187.329802&quot;,
+## &quot;5906.731805&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;45.32&quot;, &quot;48.437&quot;, &quot;51.457&quot;, &quot;54.459&quot;, &quot;56.95&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;5441766&quot;, &quot;6248643&quot;, &quot;7240260&quot;, &quot;8519282&quot;,
+## &quot;10061506&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;4129.766056&quot;, &quot;6229.333562&quot;, &quot;8341.737815&quot;,
+## &quot;8931.459811&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Europe&quot;, &quot;Europe&quot;, &quot;Europe&quot;, &quot;Europe&quot;,
+## &quot;Europe&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;66.91&quot;, &quot;68.9&quot;, &quot;70.29&quot;, &quot;71.08&quot;, &quot;71.28&quot;,
+## &quot;72.03&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;2952156&quot;, &quot;2878220&quot;, &quot;2830000&quot;, &quot;2900100&quot;,
+## &quot;3024400&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;5210.280328&quot;, &quot;5599.077872&quot;, &quot;6631.597314&quot;,
+## &quot;7655.568963&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;65.39&quot;, &quot;67.84&quot;, &quot;69.39&quot;, &quot;70.75&quot;, &quot;71.63&quot;,
+## &quot;73.06&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;1620914&quot;, &quot;1944401&quot;, &quot;2310904&quot;, &quot;2693585&quot;,
+## &quot;3095893&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;4086.522128&quot;, &quot;5385.278451&quot;, &quot;7105.630706&quot;,
+## &quot;8393.741404&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Europe&quot;, &quot;Europe&quot;, &quot;Europe&quot;, &quot;Europe&quot;,
+## &quot;Europe&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;65.94&quot;, &quot;67.81&quot;, &quot;69.24&quot;, &quot;71.06&quot;, &quot;72.19&quot;,
+## &quot;73.48&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;47666000&quot;, &quot;49182000&quot;, &quot;50843200&quot;, &quot;52667100&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;4931.404155&quot;, &quot;6248.656232&quot;, &quot;8243.58234&quot;,
+## &quot;10022.40131&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Americas&quot;, &quot;Americas&quot;, &quot;Americas&quot;, &quot;Americas&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;58.53&quot;, &quot;62.61&quot;, &quot;65.61&quot;, &quot;67.51&quot;, &quot;69&quot;,
+## &quot;70.11&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;1426095&quot;, &quot;1535090&quot;, &quot;1665128&quot;, &quot;1861096&quot;,
+## &quot;1997616&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;2898.530881&quot;, &quot;4756.525781&quot;, &quot;5246.107524&quot;,
+## &quot;6124.703451&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;63.03&quot;, &quot;65.5&quot;, &quot;68.73&quot;, &quot;71.43&quot;, &quot;73.42&quot;,
+## &quot;75.38&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;86459025&quot;, &quot;91563009&quot;, &quot;95831757&quot;,
+## &quot;100825279&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;3216.956347&quot;, &quot;4317.694365&quot;, &quot;6576.649461&quot;,
+## &quot;9847.788607&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;43.158&quot;, &quot;45.669&quot;, &quot;48.126&quot;, &quot;51.629&quot;,
+## &quot;56.528&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;607914&quot;, &quot;746559&quot;, &quot;933559&quot;, &quot;1255058&quot;,
+## &quot;1613551&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;1546.907807&quot;, &quot;1886.080591&quot;, &quot;2348.009158&quot;,
+## &quot;2741.796252&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;,
+## &quot;Africa&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;42.27&quot;, &quot;44.686&quot;, &quot;47.949&quot;, &quot;50.654&quot;,
+## &quot;53.559&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;6464046&quot;, &quot;7454779&quot;, &quot;8678557&quot;, &quot;10191512&quot;,
+## &quot;12044785&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;853.540919&quot;, &quot;944.4383152&quot;, &quot;896.9663732&quot;,
+## &quot;1056.736457&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;50.056&quot;, &quot;54.081&quot;, &quot;56.656&quot;, &quot;59.942&quot;,
+## &quot;63.983&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;8865488&quot;, &quot;9411381&quot;, &quot;10917494&quot;, &quot;12617009&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;1088.277758&quot;, &quot;1571.134655&quot;, &quot;1621.693598&quot;,
+## &quot;2143.540609&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;47.453&quot;, &quot;52.681&quot;, &quot;55.292&quot;, &quot;57.716&quot;,
+## &quot;62.612&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;20947571&quot;, &quot;22611552&quot;, &quot;26420307&quot;, &quot;30131000&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;1030.592226&quot;, &quot;1487.593537&quot;, &quot;1536.344387&quot;,
+## &quot;2029.228142&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;55.565&quot;, &quot;58.033&quot;, &quot;60.47&quot;, &quot;64.624&quot;,
+## &quot;67.712&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;160000&quot;, &quot;212846&quot;, &quot;358266&quot;, &quot;575003&quot;,
+## &quot;841934&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;108382.3529&quot;, &quot;113523.1329&quot;, &quot;95458.11176&quot;,
+## &quot;80894.88326&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;55.928&quot;, &quot;59.489&quot;, &quot;62.094&quot;, &quot;63.87&quot;,
+## &quot;65.421&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;1439529&quot;, &quot;1647412&quot;, &quot;1886848&quot;, &quot;2186894&quot;,
+## &quot;2680018&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;4834.804067&quot;, &quot;6089.786934&quot;, &quot;5714.560611&quot;,
+## &quot;6006.983042&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;,
+## &quot;Africa&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;42.138&quot;, &quot;45.047&quot;, &quot;47.747&quot;, &quot;48.492&quot;,
+## &quot;49.767&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;748747&quot;, &quot;813338&quot;, &quot;893143&quot;, &quot;996380&quot;,
+## &quot;1116779&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;298.8462121&quot;, &quot;335.9971151&quot;, &quot;411.8006266&quot;,
+## &quot;498.6390265&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;,
+## &quot;Africa&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;38.48&quot;, &quot;39.486&quot;, &quot;40.502&quot;, &quot;41.536&quot;,
+## &quot;42.614&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;863308&quot;, &quot;975950&quot;, &quot;1112796&quot;, &quot;1279406&quot;,
+## &quot;1482628&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;575.5729961&quot;, &quot;620.9699901&quot;, &quot;634.1951625&quot;,
+## &quot;713.6036483&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;,
+## &quot;Africa&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;42.723&quot;, &quot;45.289&quot;, &quot;47.808&quot;, &quot;50.227&quot;,
+## &quot;52.773&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;1019729&quot;, &quot;1201578&quot;, &quot;1441863&quot;, &quot;1759224&quot;,
+## &quot;2183877&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;2387.54806&quot;, &quot;3448.284395&quot;, &quot;6757.030816&quot;,
+## &quot;18772.75169&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;,
+## &quot;Africa&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;36.681&quot;, &quot;38.865&quot;, &quot;40.848&quot;, &quot;42.881&quot;,
+## &quot;44.851&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;4762912&quot;, &quot;5181679&quot;, &quot;5703324&quot;, &quot;6334556&quot;,
+## &quot;7082430&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;1443.011715&quot;, &quot;1589.20275&quot;, &quot;1643.38711&quot;,
+## &quot;1634.047282&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;,
+## &quot;Africa&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;36.256&quot;, &quot;37.207&quot;, &quot;38.41&quot;, &quot;39.487&quot;,
+## &quot;41.766&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;2917802&quot;, &quot;3221238&quot;, &quot;3628608&quot;, &quot;4147252&quot;,
+## &quot;4730997&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;369.1650802&quot;, &quot;416.3698064&quot;, &quot;427.9010856&quot;,
+## &quot;495.5147806&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;48.463&quot;, &quot;52.102&quot;, &quot;55.737&quot;, &quot;59.371&quot;,
+## &quot;63.01&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;6748378&quot;, &quot;7739235&quot;, &quot;8906385&quot;, &quot;10154878&quot;,
+## &quot;11441462&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;1831.132894&quot;, &quot;1810.066992&quot;, &quot;2036.884944&quot;,
+## &quot;2277.742396&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;,
+## &quot;Africa&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;33.685&quot;, &quot;35.307&quot;, &quot;36.936&quot;, &quot;38.487&quot;,
+## &quot;39.977&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;3838168&quot;, &quot;4241884&quot;, &quot;4690372&quot;, &quot;5212416&quot;,
+## &quot;5828158&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;452.3369807&quot;, &quot;490.3821867&quot;, &quot;496.1743428&quot;,
+## &quot;545.0098873&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;,
+## &quot;Africa&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;40.543&quot;, &quot;42.338&quot;, &quot;44.248&quot;, &quot;46.289&quot;,
+## &quot;48.437&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;1022556&quot;, &quot;1076852&quot;, &quot;1146757&quot;, &quot;1230542&quot;,
+## &quot;1332786&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;743.1159097&quot;, &quot;846.1202613&quot;, &quot;1055.896036&quot;,
+## &quot;1421.145193&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;,
+## &quot;Africa&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;50.986&quot;, &quot;58.089&quot;, &quot;60.246&quot;, &quot;61.557&quot;,
+## &quot;62.944&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;516556&quot;, &quot;609816&quot;, &quot;701016&quot;, &quot;789309&quot;,
+## &quot;851334&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;1967.955707&quot;, &quot;2034.037981&quot;, &quot;2529.067487&quot;,
+## &quot;2475.387562&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Americas&quot;, &quot;Americas&quot;, &quot;Americas&quot;, &quot;Americas&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;50.789&quot;, &quot;55.19&quot;, &quot;58.299&quot;, &quot;60.11&quot;, &quot;62.361&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;30144317&quot;, &quot;35015548&quot;, &quot;41121485&quot;, &quot;47995559&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;3478.125529&quot;, &quot;4131.546641&quot;, &quot;4581.609385&quot;,
+## &quot;5754.733883&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;42.244&quot;, &quot;45.248&quot;, &quot;48.251&quot;, &quot;51.253&quot;,
+## &quot;53.754&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;800663&quot;, &quot;882134&quot;, &quot;1010280&quot;, &quot;1149500&quot;,
+## &quot;1320500&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;786.5668575&quot;, &quot;912.6626085&quot;, &quot;1056.353958&quot;,
+## &quot;1226.04113&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Europe&quot;, &quot;Europe&quot;, &quot;Europe&quot;, &quot;Europe&quot;,
+## &quot;Europe&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;59.164&quot;, &quot;61.448&quot;, &quot;63.728&quot;, &quot;67.178&quot;,
+## &quot;70.636&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;413834&quot;, &quot;442829&quot;, &quot;474528&quot;, &quot;501035&quot;,
+## &quot;527678&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;2647.585601&quot;, &quot;3682.259903&quot;, &quot;4649.593785&quot;,
+## &quot;5907.850937&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;,
+## &quot;Africa&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;42.873&quot;, &quot;45.423&quot;, &quot;47.924&quot;, &quot;50.335&quot;,
+## &quot;52.862&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;9939217&quot;, &quot;11406350&quot;, &quot;13056604&quot;, &quot;14770296&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;1688.20357&quot;, &quot;1642.002314&quot;, &quot;1566.353493&quot;,
+## &quot;1711.04477&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;,
+## &quot;Africa&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;31.286&quot;, &quot;33.779&quot;, &quot;36.161&quot;, &quot;38.113&quot;,
+## &quot;40.328&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;6446316&quot;, &quot;7038035&quot;, &quot;7788944&quot;, &quot;8680909&quot;,
+## &quot;9809596&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;468.5260381&quot;, &quot;495.5868333&quot;, &quot;556.6863539&quot;,
+## &quot;566.6691539&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;36.319&quot;, &quot;41.905&quot;, &quot;45.108&quot;, &quot;49.379&quot;,
+## &quot;53.07&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;20092996&quot;, &quot;21731844&quot;, &quot;23634436&quot;, &quot;25870271&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;331&quot;, &quot;350&quot;, &quot;388&quot;, &quot;349&quot;, &quot;357&quot;, &quot;371&quot;,
+## &quot;424&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;,
+## &quot;Africa&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;41.725&quot;, &quot;45.226&quot;, &quot;48.386&quot;, &quot;51.159&quot;,
+## &quot;53.867&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;485831&quot;, &quot;548080&quot;, &quot;621392&quot;, &quot;706640&quot;,
+## &quot;821782&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;2423.780443&quot;, &quot;2621.448058&quot;, &quot;3173.215595&quot;,
+## &quot;3793.694753&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;36.157&quot;, &quot;37.686&quot;, &quot;39.393&quot;, &quot;41.472&quot;,
+## &quot;43.971&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;9182536&quot;, &quot;9682338&quot;, &quot;10332057&quot;, &quot;11261690&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;545.8657229&quot;, &quot;597.9363558&quot;, &quot;652.3968593&quot;,
+## &quot;676.4422254&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Europe&quot;, &quot;Europe&quot;, &quot;Europe&quot;, &quot;Europe&quot;,
+## &quot;Europe&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;72.13&quot;, &quot;72.99&quot;, &quot;73.23&quot;, &quot;73.82&quot;, &quot;73.75&quot;,
+## &quot;75.24&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;10381988&quot;, &quot;11026383&quot;, &quot;11805689&quot;, &quot;12596822&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;8941.571858&quot;, &quot;11276.19344&quot;, &quot;12790.84956&quot;,
+## &quot;15363.25136&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Oceania&quot;, &quot;Oceania&quot;, &quot;Oceania&quot;, &quot;Oceania&quot;,
+## &quot;Oceania&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;69.39&quot;, &quot;70.26&quot;, &quot;71.24&quot;, &quot;71.52&quot;, &quot;71.89&quot;,
+## &quot;72.22&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;1994794&quot;, &quot;2229407&quot;, &quot;2488550&quot;, &quot;2728150&quot;,
+## &quot;2929100&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;10556.57566&quot;, &quot;12247.39532&quot;, &quot;13175.678&quot;,
+## &quot;14463.91893&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Americas&quot;, &quot;Americas&quot;, &quot;Americas&quot;, &quot;Americas&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;42.314&quot;, &quot;45.432&quot;, &quot;48.632&quot;, &quot;51.884&quot;,
+## &quot;55.151&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;1165790&quot;, &quot;1358828&quot;, &quot;1590597&quot;, &quot;1865490&quot;,
+## &quot;2182908&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;3112.363948&quot;, &quot;3457.415947&quot;, &quot;3634.364406&quot;,
+## &quot;4643.393534&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;,
+## &quot;Africa&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;37.444&quot;, &quot;38.598&quot;, &quot;39.487&quot;, &quot;40.118&quot;,
+## &quot;40.546&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;3379468&quot;, &quot;3692184&quot;, &quot;4076008&quot;, &quot;4534062&quot;,
+## &quot;5060262&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;761.879376&quot;, &quot;835.5234025&quot;, &quot;997.7661127&quot;,
+## &quot;1054.384891&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;,
+## &quot;Africa&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;36.324&quot;, &quot;37.802&quot;, &quot;39.36&quot;, &quot;41.04&quot;, &quot;42.821&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;33119096&quot;, &quot;37173340&quot;, &quot;41871351&quot;, &quot;47287752&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;1077.281856&quot;, &quot;1100.592563&quot;, &quot;1150.927478&quot;,
+## &quot;1014.514104&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Europe&quot;, &quot;Europe&quot;, &quot;Europe&quot;, &quot;Europe&quot;,
+## &quot;Europe&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;72.67&quot;, &quot;73.44&quot;, &quot;73.47&quot;, &quot;74.08&quot;, &quot;74.34&quot;,
+## &quot;75.37&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;3327728&quot;, &quot;3491938&quot;, &quot;3638919&quot;, &quot;3786019&quot;,
+## &quot;3933004&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;10095.42172&quot;, &quot;11653.97304&quot;, &quot;13450.40151&quot;,
+## &quot;16361.87647&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;37.578&quot;, &quot;40.08&quot;, &quot;43.165&quot;, &quot;46.988&quot;,
+## &quot;52.143&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;507833&quot;, &quot;561977&quot;, &quot;628164&quot;, &quot;714775&quot;,
+## &quot;829050&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;1828.230307&quot;, &quot;2242.746551&quot;, &quot;2924.638113&quot;,
+## &quot;4720.942687&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;43.436&quot;, &quot;45.557&quot;, &quot;47.67&quot;, &quot;49.8&quot;, &quot;51.929&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;41346560&quot;, &quot;46679944&quot;, &quot;53100671&quot;, &quot;60641899&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;684.5971438&quot;, &quot;747.0835292&quot;, &quot;803.3427418&quot;,
+## &quot;942.4082588&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Americas&quot;, &quot;Americas&quot;, &quot;Americas&quot;, &quot;Americas&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;55.191&quot;, &quot;59.201&quot;, &quot;61.817&quot;, &quot;64.071&quot;,
+## &quot;66.216&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;940080&quot;, &quot;1063506&quot;, &quot;1215725&quot;, &quot;1405486&quot;,
+## &quot;1616384&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;2480.380334&quot;, &quot;2961.800905&quot;, &quot;3536.540301&quot;,
+## &quot;4421.009084&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Americas&quot;, &quot;Americas&quot;, &quot;Americas&quot;, &quot;Americas&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;62.649&quot;, &quot;63.196&quot;, &quot;64.361&quot;, &quot;64.951&quot;,
+## &quot;65.815&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;1555876&quot;, &quot;1770902&quot;, &quot;2009813&quot;, &quot;2287985&quot;,
+## &quot;2614104&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;1952.308701&quot;, &quot;2046.154706&quot;, &quot;2148.027146&quot;,
+## &quot;2299.376311&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Americas&quot;, &quot;Americas&quot;, &quot;Americas&quot;, &quot;Americas&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;43.902&quot;, &quot;46.263&quot;, &quot;49.096&quot;, &quot;51.445&quot;,
+## &quot;55.448&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;8025700&quot;, &quot;9146100&quot;, &quot;10516500&quot;, &quot;12132200&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;3758.523437&quot;, &quot;4245.256698&quot;, &quot;4957.037982&quot;,
+## &quot;5788.09333&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;47.752&quot;, &quot;51.334&quot;, &quot;54.757&quot;, &quot;56.393&quot;,
+## &quot;58.065&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;22438691&quot;, &quot;26072194&quot;, &quot;30325264&quot;, &quot;35356600&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;1272.880995&quot;, &quot;1547.944844&quot;, &quot;1649.552153&quot;,
+## &quot;1814.12743&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Europe&quot;, &quot;Europe&quot;, &quot;Europe&quot;, &quot;Europe&quot;,
+## &quot;Europe&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;61.31&quot;, &quot;65.77&quot;, &quot;67.64&quot;, &quot;69.61&quot;, &quot;70.85&quot;,
+## &quot;70.67&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;25730551&quot;, &quot;28235346&quot;, &quot;30329617&quot;, &quot;31785378&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;4029.329699&quot;, &quot;4734.253019&quot;, &quot;5338.752143&quot;,
+## &quot;6557.152776&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Europe&quot;, &quot;Europe&quot;, &quot;Europe&quot;, &quot;Europe&quot;,
+## &quot;Europe&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;59.82&quot;, &quot;61.51&quot;, &quot;64.39&quot;, &quot;66.6&quot;, &quot;69.26&quot;,
+## &quot;70.41&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;8526050&quot;, &quot;8817650&quot;, &quot;9019800&quot;, &quot;9103000&quot;,
+## &quot;8970450&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;3068.319867&quot;, &quot;3774.571743&quot;, &quot;4727.954889&quot;,
+## &quot;6361.517993&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Americas&quot;, &quot;Americas&quot;, &quot;Americas&quot;, &quot;Americas&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;64.28&quot;, &quot;68.54&quot;, &quot;69.62&quot;, &quot;71.1&quot;, &quot;72.16&quot;,
+## &quot;73.44&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;2227000&quot;, &quot;2260000&quot;, &quot;2448046&quot;, &quot;2648961&quot;,
+## &quot;2847132&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;3081.959785&quot;, &quot;3907.156189&quot;, &quot;5108.34463&quot;,
+## &quot;6929.277714&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;,
+## &quot;Africa&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;52.724&quot;, &quot;55.09&quot;, &quot;57.666&quot;, &quot;60.542&quot;,
+## &quot;64.274&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;257700&quot;, &quot;308700&quot;, &quot;358900&quot;, &quot;414024&quot;,
+## &quot;461633&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;2718.885295&quot;, &quot;2769.451844&quot;, &quot;3173.72334&quot;,
+## &quot;4021.175739&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Europe&quot;, &quot;Europe&quot;, &quot;Europe&quot;, &quot;Europe&quot;,
+## &quot;Europe&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;61.05&quot;, &quot;64.1&quot;, &quot;66.8&quot;, &quot;66.8&quot;, &quot;69.21&quot;,
+## &quot;69.46&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;16630000&quot;, &quot;17829327&quot;, &quot;18680721&quot;, &quot;19284814&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;3144.613186&quot;, &quot;3943.370225&quot;, &quot;4734.997586&quot;,
+## &quot;6470.866545&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;,
+## &quot;Africa&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;40&quot;, &quot;41.5&quot;, &quot;43&quot;, &quot;44.1&quot;, &quot;44.6&quot;, &quot;45&quot;,
+## &quot;46.218&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;2534927&quot;, &quot;2822082&quot;, &quot;3051242&quot;, &quot;3451079&quot;,
+## &quot;3992121&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;493.3238752&quot;, &quot;540.2893983&quot;, &quot;597.4730727&quot;,
+## &quot;510.9637142&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;,
+## &quot;Africa&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;46.471&quot;, &quot;48.945&quot;, &quot;51.893&quot;, &quot;54.425&quot;,
+## &quot;56.48&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;60011&quot;, &quot;61325&quot;, &quot;65345&quot;, &quot;70787&quot;, &quot;76595&quot;,
+## &quot;86796&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;879.5835855&quot;, &quot;860.7369026&quot;, &quot;1071.551119&quot;,
+## &quot;1384.840593&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;39.875&quot;, &quot;42.868&quot;, &quot;45.914&quot;, &quot;49.901&quot;,
+## &quot;53.886&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;4005677&quot;, &quot;4419650&quot;, &quot;4943029&quot;, &quot;5618198&quot;,
+## &quot;6472756&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;6459.554823&quot;, &quot;8157.591248&quot;, &quot;11626.41975&quot;,
+## &quot;16903.04886&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;,
+## &quot;Africa&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;37.278&quot;, &quot;39.329&quot;, &quot;41.454&quot;, &quot;43.563&quot;,
+## &quot;45.815&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;2755589&quot;, &quot;3054547&quot;, &quot;3430243&quot;, &quot;3965841&quot;,
+## &quot;4588696&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;1450.356983&quot;, &quot;1567.653006&quot;, &quot;1654.988723&quot;,
+## &quot;1612.404632&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Europe&quot;, &quot;Europe&quot;, &quot;Europe&quot;, &quot;Europe&quot;,
+## &quot;Europe&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;57.996&quot;, &quot;61.685&quot;, &quot;64.531&quot;, &quot;66.914&quot;, &quot;68.7&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;6860147&quot;, &quot;7271135&quot;, &quot;7616060&quot;, &quot;7971222&quot;,
+## &quot;8313288&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;3581.459448&quot;, &quot;4981.090891&quot;, &quot;6289.629157&quot;,
+## &quot;7991.707066&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;,
+## &quot;Africa&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;30.331&quot;, &quot;31.57&quot;, &quot;32.767&quot;, &quot;34.113&quot;, &quot;35.4&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;2143249&quot;, &quot;2295678&quot;, &quot;2467895&quot;, &quot;2662190&quot;,
+## &quot;2879013&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;879.7877358&quot;, &quot;1004.484437&quot;, &quot;1116.639877&quot;,
+## &quot;1206.043465&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;60.396&quot;, &quot;63.179&quot;, &quot;65.798&quot;, &quot;67.946&quot;,
+## &quot;69.521&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;1127000&quot;, &quot;1445929&quot;, &quot;1750200&quot;, &quot;1977600&quot;,
+## &quot;2152400&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;2315.138227&quot;, &quot;2843.104409&quot;, &quot;3674.735572&quot;,
+## &quot;4977.41854&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Europe&quot;, &quot;Europe&quot;, &quot;Europe&quot;, &quot;Europe&quot;,
+## &quot;Europe&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;64.36&quot;, &quot;67.45&quot;, &quot;70.33&quot;, &quot;70.98&quot;, &quot;70.35&quot;,
+## &quot;70.45&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;3558137&quot;, &quot;3844277&quot;, &quot;4237384&quot;, &quot;4442238&quot;,
+## &quot;4593433&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;5074.659104&quot;, &quot;6093.26298&quot;, &quot;7481.107598&quot;,
+## &quot;8412.902397&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Europe&quot;, &quot;Europe&quot;, &quot;Europe&quot;, &quot;Europe&quot;,
+## &quot;Europe&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;65.57&quot;, &quot;67.85&quot;, &quot;69.15&quot;, &quot;69.18&quot;, &quot;69.82&quot;,
+## &quot;70.97&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;1489518&quot;, &quot;1533070&quot;, &quot;1582962&quot;, &quot;1646912&quot;,
+## &quot;1694510&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;4215.041741&quot;, &quot;5862.276629&quot;, &quot;7402.303395&quot;,
+## &quot;9405.489397&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;,
+## &quot;Africa&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;32.978&quot;, &quot;34.977&quot;, &quot;36.981&quot;, &quot;38.977&quot;,
+## &quot;40.973&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;2526994&quot;, &quot;2780415&quot;, &quot;3080153&quot;, &quot;3428839&quot;,
+## &quot;3840161&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;1135.749842&quot;, &quot;1258.147413&quot;, &quot;1369.488336&quot;,
+## &quot;1284.73318&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;,
+## &quot;Africa&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;45.009&quot;, &quot;47.985&quot;, &quot;49.951&quot;, &quot;51.927&quot;,
+## &quot;53.696&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;14264935&quot;, &quot;16151549&quot;, &quot;18356657&quot;, &quot;20997321&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;4725.295531&quot;, &quot;5487.104219&quot;, &quot;5768.729717&quot;,
+## &quot;7114.477971&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Europe&quot;, &quot;Europe&quot;, &quot;Europe&quot;, &quot;Europe&quot;,
+## &quot;Europe&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;64.94&quot;, &quot;66.66&quot;, &quot;69.69&quot;, &quot;71.44&quot;, &quot;73.06&quot;,
+## &quot;74.39&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;28549870&quot;, &quot;29841614&quot;, &quot;31158061&quot;, &quot;32850275&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;3834.034742&quot;, &quot;4564.80241&quot;, &quot;5693.843879&quot;,
+## &quot;7993.512294&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;57.593&quot;, &quot;61.456&quot;, &quot;62.192&quot;, &quot;64.266&quot;,
+## &quot;65.042&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;7982342&quot;, &quot;9128546&quot;, &quot;10421936&quot;, &quot;11737396&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;1083.53203&quot;, &quot;1072.546602&quot;, &quot;1074.47196&quot;,
+## &quot;1135.514326&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;,
+## &quot;Africa&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;38.635&quot;, &quot;39.624&quot;, &quot;40.87&quot;, &quot;42.858&quot;,
+## &quot;45.083&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;8504667&quot;, &quot;9753392&quot;, &quot;11183227&quot;, &quot;12716129&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;1615.991129&quot;, &quot;1770.337074&quot;, &quot;1959.593767&quot;,
+## &quot;1687.997641&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;,
+## &quot;Africa&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;41.407&quot;, &quot;43.424&quot;, &quot;44.992&quot;, &quot;46.633&quot;,
+## &quot;49.552&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;290243&quot;, &quot;326741&quot;, &quot;370006&quot;, &quot;420690&quot;,
+## &quot;480105&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;1148.376626&quot;, &quot;1244.708364&quot;, &quot;1856.182125&quot;,
+## &quot;2613.101665&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Europe&quot;, &quot;Europe&quot;, &quot;Europe&quot;, &quot;Europe&quot;,
+## &quot;Europe&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;71.86&quot;, &quot;72.49&quot;, &quot;73.37&quot;, &quot;74.16&quot;, &quot;74.72&quot;,
+## &quot;75.44&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;7124673&quot;, &quot;7363802&quot;, &quot;7561588&quot;, &quot;7867931&quot;,
+## &quot;8122293&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;8527.844662&quot;, &quot;9911.878226&quot;, &quot;12329.44192&quot;,
+## &quot;15258.29697&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Europe&quot;, &quot;Europe&quot;, &quot;Europe&quot;, &quot;Europe&quot;,
+## &quot;Europe&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;69.62&quot;, &quot;70.56&quot;, &quot;71.32&quot;, &quot;72.77&quot;, &quot;73.78&quot;,
+## &quot;75.39&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;4815000&quot;, &quot;5126000&quot;, &quot;5666000&quot;, &quot;6063000&quot;,
+## &quot;6401400&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;14734.23275&quot;, &quot;17909.48973&quot;, &quot;20431.0927&quot;,
+## &quot;22966.14432&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;45.883&quot;, &quot;48.284&quot;, &quot;50.305&quot;, &quot;53.655&quot;,
+## &quot;57.296&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;3661549&quot;, &quot;4149908&quot;, &quot;4834621&quot;, &quot;5680812&quot;,
+## &quot;6701172&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;1643.485354&quot;, &quot;2117.234893&quot;, &quot;2193.037133&quot;,
+## &quot;1881.923632&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;58.5&quot;, &quot;62.4&quot;, &quot;65.2&quot;, &quot;67.5&quot;, &quot;69.39&quot;,
+## &quot;70.59&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;8550362&quot;, &quot;10164215&quot;, &quot;11918938&quot;, &quot;13648692&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;1206.947913&quot;, &quot;1507.86129&quot;, &quot;1822.879028&quot;,
+## &quot;2643.858681&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;,
+## &quot;Africa&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;41.215&quot;, &quot;42.974&quot;, &quot;44.246&quot;, &quot;45.757&quot;,
+## &quot;47.62&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;8322925&quot;, &quot;9452826&quot;, &quot;10863958&quot;, &quot;12607312&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;716.6500721&quot;, &quot;698.5356073&quot;, &quot;722.0038073&quot;,
+## &quot;848.2186575&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;50.848&quot;, &quot;53.63&quot;, &quot;56.061&quot;, &quot;58.285&quot;,
+## &quot;60.405&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;21289402&quot;, &quot;25041917&quot;, &quot;29263397&quot;, &quot;34024249&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;757.7974177&quot;, &quot;793.5774148&quot;, &quot;1002.199172&quot;,
+## &quot;1295.46066&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;,
+## &quot;Africa&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;38.596&quot;, &quot;41.208&quot;, &quot;43.922&quot;, &quot;46.769&quot;,
+## &quot;49.759&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;1219113&quot;, &quot;1357445&quot;, &quot;1528098&quot;, &quot;1735550&quot;,
+## &quot;2056351&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;859.8086567&quot;, &quot;925.9083202&quot;, &quot;1067.53481&quot;,
+## &quot;1477.59676&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Americas&quot;, &quot;Americas&quot;, &quot;Americas&quot;, &quot;Americas&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;59.1&quot;, &quot;61.8&quot;, &quot;64.9&quot;, &quot;65.4&quot;, &quot;65.9&quot;, &quot;68.3&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;662850&quot;, &quot;764900&quot;, &quot;887498&quot;, &quot;960155&quot;,
+## &quot;975199&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;3023.271928&quot;, &quot;4100.3934&quot;, &quot;4997.523971&quot;,
+## &quot;5621.368472&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;,
+## &quot;Africa&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;44.6&quot;, &quot;47.1&quot;, &quot;49.579&quot;, &quot;52.053&quot;, &quot;55.602&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;3647735&quot;, &quot;3950849&quot;, &quot;4286552&quot;, &quot;4786986&quot;,
+## &quot;5303507&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;1468.475631&quot;, &quot;1395.232468&quot;, &quot;1660.30321&quot;,
+## &quot;1932.360167&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Europe&quot;, &quot;Europe&quot;, &quot;Europe&quot;, &quot;Europe&quot;,
+## &quot;Europe&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;43.585&quot;, &quot;48.079&quot;, &quot;52.098&quot;, &quot;54.336&quot;,
+## &quot;57.005&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;22235677&quot;, &quot;25670939&quot;, &quot;29788695&quot;, &quot;33411317&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;1969.10098&quot;, &quot;2218.754257&quot;, &quot;2322.869908&quot;,
+## &quot;2826.356387&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;,
+## &quot;Africa&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;39.978&quot;, &quot;42.571&quot;, &quot;45.344&quot;, &quot;48.051&quot;,
+## &quot;51.016&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;5824797&quot;, &quot;6675501&quot;, &quot;7688797&quot;, &quot;8900294&quot;,
+## &quot;10190285&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;734.753484&quot;, &quot;774.3710692&quot;, &quot;767.2717398&quot;,
+## &quot;908.9185217&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Europe&quot;, &quot;Europe&quot;, &quot;Europe&quot;, &quot;Europe&quot;,
+## &quot;Europe&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;69.18&quot;, &quot;70.42&quot;, &quot;70.76&quot;, &quot;71.36&quot;, &quot;72.01&quot;,
+## &quot;72.76&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;50430000&quot;, &quot;51430000&quot;, &quot;53292000&quot;, &quot;54959000&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;9979.508487&quot;, &quot;11283.17795&quot;, &quot;12477.17707&quot;,
+## &quot;14142.85089&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Americas&quot;, &quot;Americas&quot;, &quot;Americas&quot;, &quot;Americas&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;68.44&quot;, &quot;69.49&quot;, &quot;70.21&quot;, &quot;70.76&quot;, &quot;71.34&quot;,
+## &quot;73.38&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;157553000&quot;, &quot;171984000&quot;, &quot;186538000&quot;,
+## &quot;198712000&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;13990.48208&quot;, &quot;14847.12712&quot;, &quot;16173.14586&quot;,
+## &quot;19530.36557&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Americas&quot;, &quot;Americas&quot;, &quot;Americas&quot;, &quot;Americas&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;66.071&quot;, &quot;67.044&quot;, &quot;68.253&quot;, &quot;68.468&quot;,
+## &quot;68.673&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;2252965&quot;, &quot;2424959&quot;, &quot;2598466&quot;, &quot;2748579&quot;,
+## &quot;2829526&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;5716.766744&quot;, &quot;6150.772969&quot;, &quot;5603.357717&quot;,
+## &quot;5444.61962&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Americas&quot;, &quot;Americas&quot;, &quot;Americas&quot;, &quot;Americas&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;55.088&quot;, &quot;57.907&quot;, &quot;60.77&quot;, &quot;63.479&quot;,
+## &quot;65.712&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;5439568&quot;, &quot;6702668&quot;, &quot;8143375&quot;, &quot;9709552&quot;,
+## &quot;11515649&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;7689.799761&quot;, &quot;9802.466526&quot;, &quot;8422.974165&quot;,
+## &quot;9541.474188&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;40.412&quot;, &quot;42.887&quot;, &quot;45.363&quot;, &quot;47.838&quot;,
+## &quot;50.254&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;26246839&quot;, &quot;28998543&quot;, &quot;33796140&quot;, &quot;39463910&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;605.0664917&quot;, &quot;676.2854478&quot;, &quot;772.0491602&quot;,
+## &quot;637.1232887&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;43.16&quot;, &quot;45.671&quot;, &quot;48.127&quot;, &quot;51.631&quot;,
+## &quot;56.532&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;1030585&quot;, &quot;1070439&quot;, &quot;1133134&quot;, &quot;1142636&quot;,
+## &quot;1089572&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;1515.592329&quot;, &quot;1827.067742&quot;, &quot;2198.956312&quot;,
+## &quot;2649.715007&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, &quot;Asia&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;32.548&quot;, &quot;33.97&quot;, &quot;35.18&quot;, &quot;36.984&quot;, &quot;39.848&quot;, :
+## argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;4963829&quot;, &quot;5498090&quot;, &quot;6120081&quot;, &quot;6740785&quot;,
+## &quot;7407075&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;781.7175761&quot;, &quot;804.8304547&quot;, &quot;825.6232006&quot;,
+## &quot;862.4421463&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;,
+## &quot;Africa&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;42.038&quot;, &quot;44.077&quot;, &quot;46.023&quot;, &quot;47.768&quot;,
+## &quot;50.107&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;2672000&quot;, &quot;3016000&quot;, &quot;3421000&quot;, &quot;3900000&quot;,
+## &quot;4506497&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;1147.388831&quot;, &quot;1311.956766&quot;, &quot;1452.725766&quot;,
+## &quot;1777.077318&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;, &quot;Africa&quot;,
+## &quot;Africa&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;48.451&quot;, &quot;50.469&quot;, &quot;52.358&quot;, &quot;53.995&quot;,
+## &quot;55.635&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;3080907&quot;, &quot;3646340&quot;, &quot;4277736&quot;, &quot;4995432&quot;,
+## &quot;5861135&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in mean.default(c(&quot;406.8841148&quot;, &quot;518.7642681&quot;, &quot;527.2721818&quot;,
+## &quot;569.7950712&quot;, : argument is not numeric or logical: returning NA</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm
+## = na.rm): NAs introduced by coercion</code></pre>
+<pre><code>## Source: local data frame [142 x 9]
+## 
+##        country continent_mean continent_sd gdpPercap_mean gdpPercap_sd
+##         (fctr)          (dbl)        (dbl)          (dbl)        (dbl)
+## 1  Afghanistan             NA           NA             NA     108.2029
+## 2      Albania             NA           NA             NA    1192.3515
+## 3      Algeria             NA           NA             NA    1310.3377
+## 4       Angola             NA           NA             NA    1165.9003
+## 5    Argentina             NA           NA             NA    1862.5832
+## 6    Australia             NA           NA             NA    7815.4052
+## 7      Austria             NA           NA             NA    9655.2815
+## 8      Bahrain             NA           NA             NA    5415.4134
+## 9   Bangladesh             NA           NA             NA     235.0796
+## 10     Belgium             NA           NA             NA    8391.1863
+## ..         ...            ...          ...            ...          ...
+## Variables not shown: lifeExp_mean (dbl), lifeExp_sd (dbl), pop_mean (dbl),
+##   pop_sd (dbl)</code></pre>
+
+<hr>
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://licensebuttons.net/l/by-nc-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
+R code is licensed under a <a href="https://www.r-project.org/Licenses/BSD_2_clause">BSD 2-clause</a> license.
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
