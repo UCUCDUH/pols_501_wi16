@@ -1,0 +1,37 @@
+---
+title: "Descriptive Statistics in R"
+author: "Jeffrey Arnold"
+date: "January 20, 2016"
+output: html_document
+---
+
+
+- `mean(x)`: Mean 
+- `median(x)`: median
+- `sd(x)` : Standard deviation
+- `var(x)` : Variance
+- `IQR(x)` : Interquartile range
+- `fivenumber(x)`: Tukey's five number summary
+- `quantile(x, prob)` : Quantiles
+- `range(x)`: Minimum and maximum
+- `diff(range(x))` : Range
+- `table(x)` Counts of values
+
+
+# Mode
+
+R does not have a built-in function to calculate the mode of a sample distribution.
+The function `mode` in R is not related to the statitics, but is a programming function related to how the object is stored in memory.
+
+To calculate the mode for discrete data, find the values with the highest count
+using `table`:
+```{r}
+tbl <- table(x)
+names(tbl)[tbl == max(tbl)]
+```
+
+See package **modeest** function `mlv` for various methods to calculate the mode, including for continuous distributions.
+
+# Skewness, Kurtosis
+
+Generally you will not be interested in the higher moments of sample data, such as the skewness and kurtosis. If you are, the package **moments** provides functions for these.
