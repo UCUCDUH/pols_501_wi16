@@ -13,6 +13,9 @@ Tidy data is data in which
 See Wickham [Tidy Data](http://vita.had.co.nz/papers/tidy-data.pdf) for more discussion of this.
 This lesson will cover the associated **tidyr** package.
 
+```{r}
+
+```
 
 
 ```{r}
