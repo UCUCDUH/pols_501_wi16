@@ -132,6 +132,11 @@ Q12_clean
 The function `read_csv` has an argument `na` which determines what cell values are converted to `NA`.
 What is it by default? 
 
+Also see: 
+
+- functions `fill_na`, `is_same`, and `replace_na` from [pols501](https://github.com/UW-POLS501/r-uwpols501) package.
+- http://www.cookbook-r.com/Manipulating_data/
+
 <!--
 
 - Talk about NULL? 
