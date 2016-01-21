@@ -5,9 +5,48 @@ date: "January 19, 2016"
 output: html_document
 ---
 
-# Masking Objects
+```
+(1 + (2 * 4)
+```
 
+```
+1 + (2 * 3))
+```
 
+```
+print("Hello, World!)
+```
+
+```
+print(Hello, World!)
+```
+
+```
+print(Hello)
+```
+
+```
+print("R is awesome!"")
+```
+
+```
+blah(2)
+```
+
+```
+ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, colour = Species)) +
+  geom_point()
+```
+
+```
+2 + blah
+```
+
+```
+2 + "blah"
+```
+
+<!--
 - `Could not find function`. Function does not exist, or you did not load a package with that function.
 - `Object '???' not found`
 - `Error in if` Not a logical value
@@ -17,6 +56,68 @@ output: html_document
 - `Error in ...: replacement has ...`
 - `built under R package`
 - messages in ggplot2
+-->
+
+
+```
+iris
+colnames(iris)
+iris[ , "Species"]
+iris[ , Species]
+iris[["Species"]]
+iris[[Species]]
+iris[["blahblah"]]
+iris[ , "blahblah"]
+
+iris[["Species"]] <- NULL
+iris[["Species"]]
+```
+ 
+```{r}
+read.csv("this_file_probably_does_not_exist.csv")
+```
+
+Load **dplyr**, then load the package **MASS**.
+```{r}
+library(dplyr)
+library(MASS)
+```
+What are the messages shown when you load them?
+Now try consider the dataset cars in ggplot`
+```
+data(mpg, package = "ggplot2")
+```
+Select the variables `manufacturer`, `model`, and `year` from `mpg`.
+```
+select(mpg, manufacturer, model, year)
+```
+What's going on? 
+
+`r solution_start()`
+Since you loaded `MASS` second, **R** uses the function `select` from that package, not
+from `dplyr`. You can reference a specific function in a package using `::`, e.g. `dplyr::select` for the `select` function in **dplyr**, and `MASS::select` for the select function in **MASS**.
+```
+dplyr::select(mpg, manufacturer, model, year)
+```
+`r solution_end()`
+
+This problem can also occur if you define functions or variables that have the same
+names as functions and variables from packages or in base R.
+Define a new function called `ggplot`.
+```
+ggplot <- function(x) print(x)
+```
+Try creating a plot with `ggplot`
+```
+ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, colour = Species)) +
+  geom_point()
+```
+However, you can still create a plot with 
+```
+ggplot2::ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, colour = Species)) +
+  geom_point()
+```
+
 
 
 # References
