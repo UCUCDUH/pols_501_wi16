@@ -5,6 +5,7 @@ DEPLOY_DIR = ../web/files/lessons/
 
 RMD_FILES = $(wildcard *.Rmd)
 HTML_FILES = $(RMD_FILES:%.Rmd=%.html)
+R_FILES = $(wildcard *-template.R)
 
 build: $(HTML_FILES)
 
@@ -16,5 +17,6 @@ deploy:
 	-cp $(HTML_FILES) $(DEPLOY_DIR)
 	-cp -R *_files  $(DEPLOY_DIR)
 	-cp -R libs $(DEPLOY_DIR)
+	-cp $(R_FILES) $(DEPLOY_DIR)
 
 .PHONY: build deploy

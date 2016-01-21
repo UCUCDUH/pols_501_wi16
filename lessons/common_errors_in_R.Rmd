@@ -124,7 +124,6 @@ ggplot2::ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, colour = Species)) 
 ```
 
 
-
 # References
 
 - http://www.burns-stat.com/documents/tutorials/impatient-r/#errors
