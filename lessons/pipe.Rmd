@@ -1,0 +1,98 @@
+---
+title: "The Pipe Operator"
+author: "Jeffrey Arnold"
+date: "January 21, 2016"
+output: html_document
+---
+
+```{r result='hide',echo=FALSE}
+source("init.R")
+knitr::opts_chunk$set(results = 'hide')
+```
+
+```{r}
+library("dplyr")
+library("magrittr")
+```
+
+The symbol `%>%` is known as the pipe operator. It is from the **magrittr** package,
+but most widely used in the **dplyr** package. 
+
+The verbal description of what the pipe operator does is it takes the result of the previous expression and uses it as the first argument in the next function.
+
+For example, suppose we wanted to take a sample of 100 from the normal distribution and find the maximum value in the sample.
+```{r}
+n <- 100
+max(rnorm(n))
+```
+Using the `%>%` we can write this as,
+```{r}
+rnorm(n) %>% max()
+```
+or, even,
+```{r}
+n %>% rnorm() %>% max()
+```
+
+The pipe operator is particularly useful with **dplyr**.
+
+Let's use the `gampinder` data, and find the average life expectancy of the median country in each continent in 2007 using **dplyr**,
+```{r}
+library("gapminder")
+data("gapminder")
+summarise(group_by(filter(gapminder, year == 2007),
+                   continent),
+          lifeExp = median(lifeExp))
+```
+We could also write it while storing the results,
+```{r}
+tmpdata <- filter(gapminder, year == 2007)
+tmpdata <- group_by(tmpdata, continent)
+tmpdata <- summarise(tmpdata, lifeExp = median(lifeExp))
+tmpdata
+```
+Now compare those to how we would write it using `%>%`,
+```{r}
+gapminder %>%
+  filter(year == 2007) %>%
+  group_by(continent) %>%
+  summarise(lifeExp = median(lifeExp))
+```
+
+`r challenge_start()`
+
+Rewrite this code to use `%>%`:
+
+```{r results='hide'}
+summarize(group_by(gapminder, continent),
+          n_obs = n(), n_countries = n_distinct(country))
+
+
+tmp <- group_by(gapminder, continent, country)
+tmp <- select(tmp, country, year, continent, lifeExp)
+tmp <- mutate(tmp, le_delta = lifeExp - lag(lifeExp))
+tmp <- summarize(tmp, worst_le_delta = min(le_delta, na.rm = TRUE))
+tmp <- filter(tmp, min_rank(worst_le_delta) < 2)
+tmp <- arrange(tmp, worst_le_delta)
+tmp
+```
+`r challenge_end()`
+`r solution_start()`
+```{r}
+gapminder %>%
+  group_by(continent) %>%
+  summarize(n_obs = n(), n_countries = n_distinct(country))
+
+gapminder %>%
+  group_by(continent, country) %>%
+  select(country, year, continent, lifeExp) %>%
+  mutate(le_delta = lifeExp - lag(lifeExp)) %>%
+  summarize(worst_le_delta = min(le_delta, na.rm = TRUE)) %>%
+  filter(min_rank(worst_le_delta) < 2) %>%
+  arrange(worst_le_delta)
+
+```
+`r solution_end()`
+
+
+

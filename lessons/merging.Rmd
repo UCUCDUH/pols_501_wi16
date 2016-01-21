@@ -75,7 +75,7 @@ qux <- data_frame(xx = c("a", "b", "c", "d"),
                   yy = 1:4 * 10)
 ```
 
-```{r}
+```
 inner_join(foo, qux)
 ```
 The function `inner_join` and all the **dplyr** join commands will give the error message
@@ -138,5 +138,4 @@ You can also use the base R function `rbind`,
 ```{r}
 rbind(foo, corge)
 ```
-
 

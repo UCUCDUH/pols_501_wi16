@@ -1,7 +1,6 @@
 ---
 title: "Tidy Data"
 author: "Jeffrey Arnold"
-date: "January 19, 2016"
 output: html_document
 ---
 

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="author" content="Jeffrey Arnold" />
+
+<meta name="date" content="2016-01-19" />
+
+<title>Commons Errors in R and what to do about them</title>
+
+<script src="libs/jquery-1.11.0/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap-3.3.1/css/cerulean.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.1/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.1/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.1/shim/respond.min.js"></script>
+<link rel="stylesheet" type = "text/css" href="labs.css">
+
+<style type="text/css">code{white-space: pre;}</style>
+<link rel="stylesheet"
+      href="libs/highlight/textmate.css"
+      type="text/css" />
+<script src="libs/highlight/highlight.js"></script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img { 
+  max-width:100%; 
+  height: auto; 
+}
+</style>
+<div class="container-fluid main-container">
+
+<p>
+<strong>POL S/CS&amp;SS 501, University of Washington, Spring 2015</strong>
+</p>
+
+$$
+\DeclareMathOperator{\mean}{mean}
+\DeclareMathOperator{\var}{var}
+\DeclareMathOperator{\E}{E}
+\DeclareMathOperator{\argmin}{argmin}
+\DeclareMathOperator{\argmax}{argmax}
+$$
+
+<div id="header">
+<h1 class="title">Commons Errors in R and what to do about them</h1>
+<h4 class="author"><em>Jeffrey Arnold</em></h4>
+<h4 class="date"><em>January 19, 2016</em></h4>
+</div>
+
+<div id="TOC">
+<ul>
+<li><a href="#references">References</a></li>
+</ul>
+</div>
+
+<pre class="r"><code>source(&quot;init.R&quot;)</code></pre>
+<pre><code>(1 + (2 * 4)</code></pre>
+<pre><code>1 + (2 * 3))</code></pre>
+<pre><code>print(&quot;Hello, World!)</code></pre>
+<pre><code>print(Hello, World!)</code></pre>
+<pre><code>print(Hello)</code></pre>
+<pre><code>print(&quot;R is awesome!&quot;&quot;)</code></pre>
+<pre><code>blah(2)</code></pre>
+<pre><code>ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, colour = Species)) +
+  geom_point()</code></pre>
+<pre><code>2 + blah</code></pre>
+<pre><code>2 + &quot;blah&quot;</code></pre>
+<!--
+- `Could not find function`. Function does not exist, or you did not load a package with that function.
+- `Object '???' not found`
+- `Error in if` Not a logical value
+- `cannot open the connection`, `no such file or directory`: You've given R the wrong path. Check the URL or file path.
+- `no applicable method for '???' applied to an object of class "???"`, `no method for coercing ...`, `no slot of name "group" for this object of class "???"`
+- `subscript out of bounds` Access an element of a vector or list that is not there
+- `Error in ...: replacement has ...`
+- `built under R package`
+- messages in ggplot2
+-->
+<pre><code>iris
+colnames(iris)
+iris[ , &quot;Species&quot;]
+iris[ , Species]
+iris[[&quot;Species&quot;]]
+iris[[Species]]
+iris[[&quot;blahblah&quot;]]
+iris[ , &quot;blahblah&quot;]
+
+iris[[&quot;Species&quot;]] &lt;- NULL
+iris[[&quot;Species&quot;]]</code></pre>
+<pre><code>read.csv(&quot;this_file_probably_does_not_exist.csv&quot;)</code></pre>
+<p>Load <strong>dplyr</strong>, then load the package <strong>MASS</strong>.</p>
+<pre class="r"><code>library(dplyr)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;dplyr&#39;
+## 
+## The following objects are masked from &#39;package:stats&#39;:
+## 
+##     filter, lag
+## 
+## The following objects are masked from &#39;package:base&#39;:
+## 
+##     intersect, setdiff, setequal, union</code></pre>
+<pre class="r"><code>library(MASS)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;MASS&#39;
+## 
+## The following object is masked from &#39;package:dplyr&#39;:
+## 
+##     select</code></pre>
+<p>What are the messages shown when you load them? Now try consider the dataset cars in ggplot<code>``` data(mpg, package = &quot;ggplot2&quot;) ``` Select the variables</code>manufacturer<code>,</code>model<code>, and</code>year<code>from</code>mpg`.</p>
+<pre><code>select(mpg, manufacturer, model, year)</code></pre>
+<p>What’s going on?</p>
+<div class="panel panel-info">
+<div class="panel-heading">
+<h3 class="panel-title">
+<a data-toggle="collapse" href="#solution-1">Solution</a>
+</h3>
+</div>
+<div id="solution-1" class="panel-collapse collapse">
+<p>Since you loaded <code>MASS</code> second, <strong>R</strong> uses the function <code>select</code> from that package, not from <code>dplyr</code>. You can reference a specific function in a package using <code>::</code>, e.g. <code>dplyr::select</code> for the <code>select</code> function in <strong>dplyr</strong>, and <code>MASS::select</code> for the select function in <strong>MASS</strong>.</p>
+<pre><code>dplyr::select(mpg, manufacturer, model, year)</code></pre>
+</div>
+</div>
+<p>This problem can also occur if you define functions or variables that have the same names as functions and variables from packages or in base R. Define a new function called <code>ggplot</code>.</p>
+<pre><code>ggplot &lt;- function(x) print(x)</code></pre>
+<p>Try creating a plot with <code>ggplot</code></p>
+<pre><code>ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, colour = Species)) +
+  geom_point()</code></pre>
+<p>However, you can still create a plot with</p>
+<pre><code>ggplot2::ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, colour = Species)) +
+  geom_point()</code></pre>
+<div id="references" class="section level1">
+<h1>References</h1>
+<ul>
+<li><a href="http://www.burns-stat.com/documents/tutorials/impatient-r/#errors" class="uri">http://www.burns-stat.com/documents/tutorials/impatient-r/#errors</a></li>
+<li><a href="http://varianceexplained.org/pages/errors.html" class="uri">http://varianceexplained.org/pages/errors.html</a></li>
+<li><a href="http://blog.revolutionanalytics.com/2015/03/the-most-common-r-error-messages.html" class="uri">http://blog.revolutionanalytics.com/2015/03/the-most-common-r-error-messages.html</a></li>
+<li><a href="https://github.com/noamross/zero-dependency-problems/blob/master/misc/stack-overflow-common-r-errors.md" class="uri">https://github.com/noamross/zero-dependency-problems/blob/master/misc/stack-overflow-common-r-errors.md</a></li>
+</ul>
+</div>
+
+<hr>
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://licensebuttons.net/l/by-nc-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
+R code is licensed under a <a href="https://www.r-project.org/Licenses/BSD_2_clause">BSD 2-clause</a> license.
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

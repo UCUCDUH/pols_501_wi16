@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="author" content="Jeffrey Arnold" />
+
+<meta name="date" content="2016-01-20" />
+
+<title>Descriptive Statistics in R</title>
+
+<script src="libs/jquery-1.11.0/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap-3.3.1/css/cerulean.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.1/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.1/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.1/shim/respond.min.js"></script>
+<link rel="stylesheet" type = "text/css" href="labs.css">
+
+<style type="text/css">code{white-space: pre;}</style>
+<link rel="stylesheet"
+      href="libs/highlight/textmate.css"
+      type="text/css" />
+<script src="libs/highlight/highlight.js"></script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img { 
+  max-width:100%; 
+  height: auto; 
+}
+</style>
+<div class="container-fluid main-container">
+
+<p>
+<strong>POL S/CS&amp;SS 501, University of Washington, Spring 2015</strong>
+</p>
+
+$$
+\DeclareMathOperator{\mean}{mean}
+\DeclareMathOperator{\var}{var}
+\DeclareMathOperator{\E}{E}
+\DeclareMathOperator{\argmin}{argmin}
+\DeclareMathOperator{\argmax}{argmax}
+$$
+
+<div id="header">
+<h1 class="title">Descriptive Statistics in R</h1>
+<h4 class="author"><em>Jeffrey Arnold</em></h4>
+<h4 class="date"><em>January 20, 2016</em></h4>
+</div>
+
+<div id="TOC">
+<ul>
+<li><a href="#mode">Mode</a></li>
+<li><a href="#skewness-kurtosis">Skewness, Kurtosis</a></li>
+</ul>
+</div>
+
+<p>R provides functions to calculate many common descriptive statistics:</p>
+<ul>
+<li><code>mean(x)</code>: Mean</li>
+<li><code>median(x)</code>: median</li>
+<li><code>sd(x)</code> : Standard deviation</li>
+<li><code>var(x)</code> : Variance</li>
+<li><code>IQR(x)</code> : Interquartile range</li>
+<li><code>fivenumber(x)</code>: Tukey’s five number summary</li>
+<li><code>quantile(x, prob)</code> : Quantiles</li>
+<li><code>range(x)</code>: Minimum and maximum</li>
+<li><code>diff(range(x))</code> : Range</li>
+<li><code>table(x)</code> Counts of values</li>
+</ul>
+<div id="challenge-1" class="panel panel-primary">
+<div class="panel-heading">
+<h3 class="panel-title">
+Challenge
+</h3>
+</div>
+<div class="panel-body">
+<p>Using the <code>gapminder</code> data in the <strong>gapminder</strong> package,</p>
+<pre class="r"><code>library(&quot;gapminder&quot;)
+data(&quot;gapminder&quot;)</code></pre>
+</div>
+</div>
+<div class="panel panel-info">
+<div class="panel-heading">
+<h3 class="panel-title">
+<a data-toggle="collapse" href="#solution-1">Solution</a>
+</h3>
+</div>
+<div id="solution-1" class="panel-collapse collapse">
+
+</div>
+</div>
+<div id="mode" class="section level1">
+<h1>Mode</h1>
+<p>R does not have a built-in function to calculate the mode of a sample distribution. The function <code>mode</code> in R is not related to the statitics, but is a programming function related to how the object is stored in memory.</p>
+<p>To calculate the mode for discrete data, find the values with the highest count using <code>table</code>:</p>
+<pre class="r"><code>tbl &lt;- table(x)</code></pre>
+<pre><code>## Error in table(x): object &#39;x&#39; not found</code></pre>
+<pre class="r"><code>names(tbl)[tbl == max(tbl)]</code></pre>
+<pre><code>## Error in eval(expr, envir, enclos): object &#39;tbl&#39; not found</code></pre>
+<ul>
+<li><code>table(x)</code> counts the number of observations taking each value</li>
+<li><code>names(tbl)</code> In the vector returned by the table command, the values of the observations are the names, and counts are values in the vector.</li>
+<li><code>tbl == max(tbl)</code> is <code>TRUE</code> for all (possibly more than one) elements which have the largest counts</li>
+</ul>
+<p>That code only works well for discrete data. See package <strong>modeest</strong> function <code>mlv</code> for various methods to calculate the mode, including for methods to estimate the mode of continuous distributions.</p>
+</div>
+<div id="skewness-kurtosis" class="section level1">
+<h1>Skewness, Kurtosis</h1>
+<p>Generally you will not be interested in the higher moments of sample data, such as the skewness and kurtosis. If you are, the package <strong>moments</strong> provides functions for these.</p>
+</div>
+
+<hr>
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://licensebuttons.net/l/by-nc-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
+R code is licensed under a <a href="https://www.r-project.org/Licenses/BSD_2_clause">BSD 2-clause</a> license.
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

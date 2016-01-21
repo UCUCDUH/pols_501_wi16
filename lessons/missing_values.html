@@ -10,7 +10,7 @@
 
 
 
-<title>Missing Values</title>
+<title>Missing Values in R</title>
 
 <script src="libs/jquery-1.11.0/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -74,9 +74,14 @@ $$
 $$
 
 <div id="header">
-<h1 class="title">Missing Values</h1>
+<h1 class="title">Missing Values in R</h1>
 </div>
 
+<div id="TOC">
+<ul>
+<li><a href="#miscellaneous">Miscellaneous</a></li>
+</ul>
+</div>
 
 <p>In almost any set of real data, there will be missing values. All statistical software systems have some way of indicating missing values within variables. R uses the symbol <code>NA</code> to indicate a missing value.</p>
 <p>Create two vectors that include missing values,</p>
@@ -126,15 +131,115 @@ max(foo)</code></pre>
 <pre><code>## [1] NA</code></pre>
 </div>
 </div>
+<p>This means that you can’t use <code>==</code> to test whether an element of a vector is equal to <code>NA</code>. Why not? The function <code>is.na</code> is used to test whether an element of a vector is equal to <code>NA</code>.</p>
+<pre class="r"><code>is.na(foo)</code></pre>
+<pre><code>## [1] FALSE  TRUE FALSE</code></pre>
+<pre class="r"><code>is.na(bar)</code></pre>
+<pre><code>## [1] FALSE FALSE  TRUE</code></pre>
+<p>Thus, to test whether an element of a vector is <em>not</em> equal to <code>NA</code>,</p>
+<pre class="r"><code>! is.na(foo)</code></pre>
+<pre><code>## [1]  TRUE FALSE  TRUE</code></pre>
+<pre class="r"><code>! is.na(bar)</code></pre>
+<pre><code>## [1]  TRUE  TRUE FALSE</code></pre>
+<div id="challenge-2" class="panel panel-primary">
+<div class="panel-heading">
+<h3 class="panel-title">
+Challenge
+</h3>
+</div>
+<div class="panel-body">
+
+</div>
+</div>
+<p><code>NA</code> values can also occur in character vectors,</p>
+<pre class="r"><code>baz &lt;- c(&quot;A&quot;, &quot;B&quot;, NA, &quot;&quot;)</code></pre>
+<p>In a character vector, <code>NA</code> is not the same as “”.</p>
+<div id="challenge-3" class="panel panel-primary">
+<div class="panel-heading">
+<h3 class="panel-title">
+Challenge
+</h3>
+</div>
+<div class="panel-body">
+<p>Start with the vector of capital Latin letters.</p>
+<pre class="r"><code>letr &lt;- LETTERS</code></pre>
+<p>Note that the variables <code>letters</code> and <code>LETTERS</code> have the 26 Latin alphabet letters in lowercase and upppercase, respectively.</p>
+<p>Randomly set 3 elements to NA, and 3 elements to “”</p>
+<pre class="r"><code>letr[sample(1:length(ltr), 6)] &lt;- c(rep(NA, 3), rep(&quot;&quot;, 3))</code></pre>
+<pre><code>## Error in sample(1:length(ltr), 6): object &#39;ltr&#39; not found</code></pre>
+<p>Without explicitly referencing the indexes of the elements</p>
+<ol style="list-style-type: decimal">
+<li>create a new vector with all <code>NA</code> values to “”.</li>
+<li>create a new vector with all “” equal to <code>NA</code></li>
+<li>Remove all elements that are either “” or <code>NA</code></li>
+</ol>
+</div>
+</div>
+<div class="panel panel-info">
+<div class="panel-heading">
+<h3 class="panel-title">
+<a data-toggle="collapse" href="#solution-2">Solution</a>
+</h3>
+</div>
+<div id="solution-2" class="panel-collapse collapse">
+<pre class="r"><code>letr1 &lt;- letr
+letr1[is.na(letr1)] &lt;- &quot;&quot;
+letr1</code></pre>
+<pre><code>##  [1] &quot;A&quot; &quot;B&quot; &quot;C&quot; &quot;D&quot; &quot;E&quot; &quot;F&quot; &quot;G&quot; &quot;H&quot; &quot;I&quot; &quot;J&quot; &quot;K&quot; &quot;L&quot; &quot;M&quot; &quot;N&quot; &quot;O&quot; &quot;P&quot; &quot;Q&quot;
+## [18] &quot;R&quot; &quot;S&quot; &quot;T&quot; &quot;U&quot; &quot;V&quot; &quot;W&quot; &quot;X&quot; &quot;Y&quot; &quot;Z&quot;</code></pre>
+<pre class="r"><code># or
+# letr1 &lt;- ifelse(is.na(letr), &quot;&quot;, letr)
+
+letr2 &lt;- ifelse(letr == &quot;&quot;, NA, letr)
+letr2</code></pre>
+<pre><code>##  [1] &quot;A&quot; &quot;B&quot; &quot;C&quot; &quot;D&quot; &quot;E&quot; &quot;F&quot; &quot;G&quot; &quot;H&quot; &quot;I&quot; &quot;J&quot; &quot;K&quot; &quot;L&quot; &quot;M&quot; &quot;N&quot; &quot;O&quot; &quot;P&quot; &quot;Q&quot;
+## [18] &quot;R&quot; &quot;S&quot; &quot;T&quot; &quot;U&quot; &quot;V&quot; &quot;W&quot; &quot;X&quot; &quot;Y&quot; &quot;Z&quot;</code></pre>
+<pre class="r"><code>letr3 &lt;- letr[! is.na(letr) | letr != &quot;&quot;]
+letr3</code></pre>
+<pre><code>##  [1] &quot;A&quot; &quot;B&quot; &quot;C&quot; &quot;D&quot; &quot;E&quot; &quot;F&quot; &quot;G&quot; &quot;H&quot; &quot;I&quot; &quot;J&quot; &quot;K&quot; &quot;L&quot; &quot;M&quot; &quot;N&quot; &quot;O&quot; &quot;P&quot; &quot;Q&quot;
+## [18] &quot;R&quot; &quot;S&quot; &quot;T&quot; &quot;U&quot; &quot;V&quot; &quot;W&quot; &quot;X&quot; &quot;Y&quot; &quot;Z&quot;</code></pre>
+</div>
+</div>
+<div id="miscellaneous" class="section level1">
+<h1>Miscellaneous</h1>
+<p>A common convention in old datasets and survey data is to indicate missing values using unusually large or small values. For example, -66, -77, -88, or -99 in a 0-10 scale. How would you replace them with missing values?</p>
+<div id="challenge-4" class="panel panel-primary">
+<div class="panel-heading">
+<h3 class="panel-title">
+Challenge
+</h3>
+</div>
+<div class="panel-body">
+<p>Consider the following vector.</p>
+<pre class="r"><code>Q12 &lt;- c(3, -88, 8, 2, 6, 7, 1, 5, 1, 9, -99)</code></pre>
+<p>It represents the response to a question on a 0-10 scale, -88 is “Don’t know”, and -99 is “Refused to answer”. Replace “Don’t know” and refused to answer with missing values.</p>
+</div>
+</div>
+<div class="panel panel-info">
+<div class="panel-heading">
+<h3 class="panel-title">
+<a data-toggle="collapse" href="#solution-3">Solution</a>
+</h3>
+</div>
+<div id="solution-3" class="panel-collapse collapse">
+<pre class="r"><code>Q12_clean &lt;- ifelse(Q12 %in% c(-88, -99), NA, Q12)
+Q12_clean</code></pre>
+<pre><code>##  [1]  3 NA  8  2  6  7  1  5  1  9 NA</code></pre>
+</div>
+</div>
+<p>The function <code>read_csv</code> has an argument <code>na</code> which determines what cell values are converted to <code>NA</code>. What is it by default?</p>
+<p>Also see:</p>
 <ul>
-<li>how does NA work with +, -, *, /</li>
-<li>how does mean, sum, etc. work with NA. Using the na.rm</li>
-<li>the is.na() function</li>
-<li>how do ==, &gt;, &lt; work with NA</li>
-<li>Replacing NA with missing values</li>
-<li>Replacing values with NAs. The common use case is 666, 777, 999, -99, -77, -66, etc.</li>
-<li>how to change the pattern of NA when using read.csv or read_csv</li>
+<li>functions <code>fill_na</code>, <code>is_same</code>, and <code>replace_na</code> from <a href="https://github.com/UW-POLS501/r-uwpols501">pols501</a> package.</li>
+<li><a href="http://www.cookbook-r.com/Manipulating_data/" class="uri">http://www.cookbook-r.com/Manipulating_data/</a></li>
 </ul>
+<!--
+
+- Talk about NULL? 
+- Don't need to mention Inf or NaN, since those appear infrequently in what they are doing
+
+-->
+</div>
 
 <hr>
 <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://licensebuttons.net/l/by-nc-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.

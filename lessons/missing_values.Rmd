@@ -89,7 +89,7 @@ Without explicitly referencing the indexes of the elements
 
 `r challenge_end()`
 
-`r solution_begin()`
+`r solution_start()`
 ```{r}
 letr1 <- letr
 letr1[is.na(letr1)] <- ""

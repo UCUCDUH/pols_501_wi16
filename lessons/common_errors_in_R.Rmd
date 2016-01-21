@@ -5,6 +5,11 @@ date: "January 19, 2016"
 output: html_document
 ---
 
+```{r results='hide',ask=FALSE}
+source("init.R")
+```
+
+
 ```
 (1 + (2 * 4)
 ```
@@ -73,7 +78,7 @@ iris[["Species"]] <- NULL
 iris[["Species"]]
 ```
  
-```{r}
+```
 read.csv("this_file_probably_does_not_exist.csv")
 ```
 
