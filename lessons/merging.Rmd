@@ -11,3 +11,10 @@ output: html_document
 - Using `bind_rows()`
 - Using gapminder data
 
+```{r}
+foo <- data.frame(x1 = c("a", "b", "c", "d"),
+                  x2 = 1:4)
+bar <- data.frame(x1 = c("a", ""))
+
+```
+

@@ -1,4 +1,5 @@
 library("R6")
+set.seed(123415)
 
 knitr::opts_chunk$set('dev' = 'png', warning = TRUE, error = TRUE,
                       cache = TRUE, autodep = TRUE,
@@ -32,7 +33,7 @@ Counter <-
             
 challenge_start <- function() {
   .CHALLENGE_COUNTER$add()
-  challenge_id <- sprintf("challenge-%d", .CHALLENGE_COUNTER$label())
+  challenge_id <- sprintf("challenge-%s", .CHALLENGE_COUNTER$label())
   string <- paste0(sprintf('<div id="%s" class="panel panel-primary">',
                            challenge_id),
                    '<div class="panel-heading">',
@@ -50,7 +51,7 @@ challenge_end <- function() {
 
 solution_start <- function() {
   .SOLUTION_COUNTER$add()
-  solution_id <- sprintf("solution-%d", .SOLUTION_COUNTER$label())
+  solution_id <- sprintf("solution-%s", .SOLUTION_COUNTER$label())
   string <- paste0('<div class="panel panel-info">',
                    '<div class="panel-heading">',
                    '<h3 class="panel-title">',

@@ -1,5 +1,5 @@
 ---
-title: "Missing Values"
+title: "Missing Values in R"
 output: html_document
 ---
 
@@ -7,25 +7,134 @@ output: html_document
 source("init.R")
 ```
 
+In almost any set of real data, there will be missing values.
+All statistical software systems have some way of indicating missing values within variables.
+R uses the symbol `NA` to indicate a missing value. 
 
-In any set of data 
+Create two vectors that include missing values,
+```{r}
+foo <- c(1, NA, 3)
+bar <- c(4, 5, NA)
+```
 
 `r challenge_start()`
+
+Try the following commands:. How do the NA affect the results?
+
+```{r ch1,eval = FALSE}
+foo + bar
+foo - bar
+foo * bar
+foo / bar
+foo == 1
+foo > 1
+sum(foo)
+max(foo)
+```
+
 `r challenge_end()`
 
 `r solution_start()`
-Testing
+
+For the arithmetic operators, `+-*/`, any element with an `NA` produces an `NA` in the output.
+For the logical operators, comparing an element with `NA` also produces an `NA` (not `FALSE` as might be expected).
+For `sum` and `mean`, any `NA` in the vector produces `NA` for a result.
 
 ```{r}
-print("solution")
+<<ch1>>
 ```
 
 `r solution_end()`
 
-- how does NA work with +, -, *, / 
-- how does mean, sum, etc. work with NA. Using the na.rm 
-- the is.na() function
-- how do ==, >, < work with NA
-- Replacing NA with missing values
-- Replacing values with NAs. The common use case is 666, 777, 999, -99, -77, -66, etc.
-- how to change the pattern of NA when using read.csv or read_csv
+This means that you can't use `==` to test whether an element of a vector is equal to `NA`. Why not? 
+The function `is.na` is used to test whether an element of a vector is equal to `NA`.
+```{r}
+is.na(foo)
+is.na(bar)
+```
+Thus, to test whether an element of a vector is *not* equal to `NA`,
+```{r}
+! is.na(foo)
+! is.na(bar)
+```
+
+`r challenge_start()`
+
+`r challenge_end()`
+
+`NA` values can also occur in character vectors,
+```{r}
+baz <- c("A", "B", NA, "")
+```
+In a character vector, `NA` is not the same as "".
+
+`r challenge_start()`
+
+Start with the vector of capital Latin letters.
+```{r}
+letr <- LETTERS
+```
+Note that the variables `letters` and `LETTERS`
+have the 26 Latin alphabet letters in lowercase and upppercase, respectively.
+
+Randomly set 3 elements to NA, and 3 elements to ""
+```{r}
+letr[sample(1:length(ltr), 6)] <- c(rep(NA, 3), rep("", 3))
+```
+Without explicitly referencing the indexes of the elements
+
+1. create a new vector with all `NA` values to "".
+2. create a new vector with all "" equal to `NA`
+3. Remove all elements that are either "" or `NA`
+
+`r challenge_end()`
+
+`r solution_begin()`
+```{r}
+letr1 <- letr
+letr1[is.na(letr1)] <- ""
+letr1
+# or
+# letr1 <- ifelse(is.na(letr), "", letr)
+
+letr2 <- ifelse(letr == "", NA, letr)
+letr2
+
+letr3 <- letr[! is.na(letr) | letr != ""]
+letr3
+```
+
+`r solution_end()`
+
+# Miscellaneous
+
+A common convention in old datasets and survey data is to indicate missing values using
+unusually large or small values. For example, -66, -77, -88, or -99 in a 0-10 scale.
+How would you replace them with missing values?
+
+`r challenge_start()`
+Consider the following vector.
+```{r}
+Q12 <- c(3, -88, 8, 2, 6, 7, 1, 5, 1, 9, -99)
+```
+It represents the response to a question on a 0-10 scale, -88 is "Don't know", and
+-99 is "Refused to answer". Replace "Don't know" and refused to answer with missing values.
+
+`r challenge_end()`
+
+`r solution_start()`
+```{r}
+Q12_clean <- ifelse(Q12 %in% c(-88, -99), NA, Q12)
+Q12_clean
+```
+`r solution_end()`
+
+The function `read_csv` has an argument `na` which determines what cell values are converted to `NA`.
+What is it by default? 
+
+<!--
+
+- Talk about NULL? 
+- Don't need to mention Inf or NaN, since those appear infrequently in what they are doing
+
+-->
