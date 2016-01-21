@@ -12,9 +12,131 @@ output: html_document
 - Using gapminder data
 
 ```{r}
-foo <- data.frame(x1 = c("a", "b", "c", "d"),
-                  x2 = 1:4)
-bar <- data.frame(x1 = c("a", ""))
-
+library("dplyr")
+foo <- data_frame(x = c("a", "b", "c", "d"),
+                  y = 1:4)
+bar <- data_frame(x = c("a", "b", "e", "f"),
+                  z = 1:4 * 10)
 ```
+
+There are four primary types of joins:
+
+- `inner join`
+- `left join`
+- `right join`
+- `full_join`
+
+What do each of these do?
+```{r}
+inner_join(foo, bar, by = "x")
+left_join(foo, bar, by = "x")
+right_join(foo, bar, by = "x")
+full_join(foo, bar, by = "x")
+```
+
+
+
+
+# Issues with Joining?
+
+What if variables you want to join on have different names?
+
+Take the dataset bar2, in which the key is named `x2` instead of x.
+```{r}
+bar2 <- data_frame(x2 = c("a", "b", "e", "f"),
+                   z = 1:4 * 10)
+```
+You can join them by specifying it with the `by` argument,
+```{r}
+inner_join(foo, bar2, by = c(x = "x2"))
+```
+
+What if variables if variables in datasets have the same names but mean different things?
+
+```{r}
+baz <- data_frame(x = c("alpha", "bravo", "charlie", "delta"),
+                  z = 1:4 * 10)
+inner_join(foo, baz, by = "x")
+full_join(foo, baz, by = "x")
+```
+
+What if some variables which you don't join on have the same names?
+
+```{r}
+quux <- data_frame(x = c("a", "b", "e", "f"),
+                   y = 1:4 * 10)
+inner_join(foo, quux, by = "x")
+```
+
+What if there are no overlapping variables? 
+
+```{r}
+qux <- data_frame(xx = c("a", "b", "c", "d"),
+                  yy = 1:4 * 10)
+```
+
+```{r}
+inner_join(foo, qux)
+```
+The function `inner_join` and all the **dplyr** join commands will give the error message
+```
+Error: No common variables. Please specify `by` param.
+```
+and not let you join. This is in constrast with the base R function `merge` which will do bad things if you try this.
+
+
+# Merge
+
+Base R has the function `merge`. The type of join is determined by the arguments `all.x` and `all.y`.
+
+Inner join
+```{r}
+merge(foo, bar, all.x = FALSE, all.y = FALSE, by = "x")
+```
+Left join
+```{r}
+merge(foo, bar, all.x = TRUE, all.y = FALSE, by = "x")
+```
+Right join
+```{r}
+merge(foo, bar, all.x = FALSE, all.y = TRUE, by = "x")
+```
+Full join
+```{r}
+merge(foo, bar, all.x = TRUE, all.y = TRUE, by = "x")
+```
+
+What does merge do when there are no overlapping variables? 
+```{r}
+merge(foo, qux)
+```
+This is **BAD**. The new dataset is the product of the number of observaations in the two datasets, with every combination of them. If you merged two 100,000 observation dataset, your new dataset would have a billion observations.
+
+# Semi-Merge and Anti-Merge
+
+What do semi-merge and anti-merge do?
+```{r}
+semi_join(foo, bar, by = "x")
+anti_join(foo, bar, by = "x")
+```
+
+These can be useful to check joins; e.g. you can use `anti_join` to get the observations
+in a dataset that are not being matched by the other dataset. This can be useful for 
+debugging and finding problems in your data.
+
+# Combining Datasets
+
+Sometimes you have the same data, but spread across several different data frames.
+Use bind rows to combine the data frames.
+
+```{r}
+corge <- data_frame(x = c("e", "f", "g", "h"), y = 5:8)
+bind_rows(foo, corge)
+```
+
+You can also use the base R function `rbind`,
+```{r}
+rbind(foo, corge)
+```
+
 
