@@ -88,6 +88,7 @@ Useful references for data visualization
 - Edward Tufte's books are also classics: *The Visual Display of Quantitative Information*, *Visual Explanations*, *Envisioning Information*, and *Beautiful Evidence*.
 - Christopher Adolph's course [CSSS 569: Visualizing Data](http://faculty.washington.edu/cadolph/index.php?page=22).
 - Heer, Jeffrey, and Michael Bostock. 2010. "Crowdsourcing Graphical Perception: Using Mechanical Turk to Assess Visualization Design". This is a gateway to experiments which assess how effectiveness of different visual encodings of data. [[URL](http://vis.stanford.edu/files/2010-MTurk-CHI.pdf)].
+- Schwabish, Jonathan A. 2014. "An Economist's Guide to Visualizing Data." *Journal of Economic Perspectives* [[DOI](https://dx.doi.org/10.1257/jep.28.1.209)]
 
 
 <!-- All graphics are comparisons.  -->
@@ -111,6 +112,16 @@ Useful references for data visualization
 <li> <i class="fa-li fa fa-book"></i> <em>SMISS</em> Ch. 4, "Probability Theory: Basic Properties of Data-Generating Processes". Optional. This goes beyond the coverage of probability in OpenIntro.
 <li> <i class="fa-li fa fa-video-camera"></i> Hadley Wickham dplyr tutorial at useR! 2014 [Part 1](https://www.youtube.com/watch?v=8SGif63VW6E), [Part 2](https://www.youtube.com/watch?v=Ue08LVuk790). Video tutorial on the **dplyr** package.
 <li><i class="fa-li fa fa-code"></i> Data Camp <a href="https://www.datacamp.com/courses/dplyr-data-manipulation-r-tutorial">Data Manipulation in R with dplyr</a> </li> Optional. This can clarity the information in the vignette.
+</ul>
+
+# Class
+
+<ul class="fa-ul">
+<li><i class="fa-li fa fa-bar-chart"><a href="/lessons/missing_data.html">Missing values (NA)</a>
+<li><i class="fa-li fa fa-bar-chart"><a href="/lessons/pipe.html">`%>%`: The Pipe Operator </a>
+<li><i class="fa-li fa fa-bar-chart"><a href="/lessons/merging.html">Joining Datasets </a>
+<li><i class="fa-li fa fa-bar-chart"><a href="/lessons/tidy_data.html">Tidy Data</a>
+<li><i class="fa-li fa fa-bar-chart"><a href="/lessons/common_errors_in_R.html">Common Errors in R</a>
 </ul>
 
 ## Week 4

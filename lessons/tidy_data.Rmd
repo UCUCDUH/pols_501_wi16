@@ -15,7 +15,6 @@ This lesson will cover the associated **tidyr** package.
 
 
 
-
 ```{r}
 library("dplyr")
 library("tidyr")
