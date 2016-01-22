@@ -1,5 +1,7 @@
 ---
 title: "Missing Values in R"
+author: Jeffrey Arnold
+date: 2016-01-21
 output: html_document
 ---
 
@@ -59,8 +61,15 @@ Thus, to test whether an element of a vector is *not* equal to `NA`,
 ```
 
 `r challenge_start()`
-
+Drop all missing values from `foo`.
 `r challenge_end()`
+
+`r solution_start()`
+```{r}
+foo[! is.na(foo)]
+```
+
+`r solution_end()`
 
 `NA` values can also occur in character vectors,
 ```{r}
@@ -79,28 +88,38 @@ have the 26 Latin alphabet letters in lowercase and upppercase, respectively.
 
 Randomly set 3 elements to NA, and 3 elements to ""
 ```{r}
-letr[sample(1:length(ltr), 6)] <- c(rep(NA, 3), rep("", 3))
+letr[sample(1:length(letr), 6)] <- c(rep(NA, 3), rep("", 3))
 ```
 Without explicitly referencing the indexes of the elements
 
-1. create a new vector with all `NA` values to "".
+1. create a new vector named `letr` with all `NA` values to "".
 2. create a new vector with all "" equal to `NA`
 3. Remove all elements that are either "" or `NA`
 
 `r challenge_end()`
 
 `r solution_start()`
+
+To replace `NA` with "",
 ```{r}
 letr1 <- letr
 letr1[is.na(letr1)] <- ""
 letr1
-# or
-# letr1 <- ifelse(is.na(letr), "", letr)
+```
+or using `ifelse`,
+```{r}
+letr1 <- ifelse(is.na(letr), "", letr)
+```
 
+To replace "" with `NA`,
+```{r}
 letr2 <- ifelse(letr == "", NA, letr)
 letr2
+```
 
-letr3 <- letr[! is.na(letr) | letr != ""]
+To drop all observations with `NA` or "",
+```
+letr3 <- letr[! letr %in% c(NA, "")]
 letr3
 ```
 
