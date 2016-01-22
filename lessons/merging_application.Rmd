@@ -29,7 +29,7 @@ download.file(url = "https://www.dropbox.com/s/qkdcgi3yvj1ugkz/vdem.csv?dl=0&pre
 download.file(url = "https://raw.githubusercontent.com/UW-POLS501/pols_501_wi16/master/lessons/data/country.csv", destfile = "data/country.csv")
 ```
 
-```{r}
+```{r, eval=FALSE}
 vdem <- read.csv("data/vdem.csv")
 country <- read.csv("data/country.csv")
 ```
@@ -50,14 +50,14 @@ However, before we merge these 2 datasets, we should consider renaming some of t
 How do we rename these variable names of the `vdem` dataset?
 `r challenge_end()`
 
-```{r, message=FALSE}
+```{r, message=FALSE, eval=FALSE}
 # OPTION 1:
 # names(vdem)[10:length(names(vdem))] <- c("electoral","liberal","participatory",
 #                                          "deliberative","egalitarian")
 ```
 
 
-```{r}
+```{r, eval=FALSE}
 # OPTION B: Using "dplyr" and the "magrittr's" pipe operator (%>%)
 library(dplyr)
 vdem <- vdem %>%
@@ -75,7 +75,7 @@ The dataset `country` has a variable named **cow** and the dataset `vdem` has on
 
 For country-level data, a package exists to convert the format of country-identifier variables: `countrycode`. It converts to and from 12 standardized country indentifiers:"cowc", "cown", "iso3c", "iso3n", "iso2c", "imf", "fips104", "fao", "ioc", "un", "wb", "country.name". Let's explore the function `countrycode()`. 
 
-```{r, results='hide', message=FALSE}
+```{r, results='hide', message=FALSE, eval=FALSE}
 library(countrycode)
 countrycode(sourcevar = country$cow, origin =  "cowc",
             destination = "cown", warn = FALSE)
@@ -83,7 +83,9 @@ country$COWcode <- countrycode(sourcevar = country$cow, origin =  "cowc",
             destination = "cown", warn = FALSE)
 ```
 
-Using `countrycode()` to convert the variable **cowc** in `country` to "cown" format doesn't seem to work: there are 5 observations for which `countrycode()` doesn't know the "cown" value.
+`r challenge_start()`
+There are 5 observations for which `countrycode()` doesn't know the "cown" value. How could we solve this issue?
+`r challenge_start()`
 
 To merge datasets, we can use the following functions of the `dplyr` package:
 
