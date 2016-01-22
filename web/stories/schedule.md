@@ -114,7 +114,7 @@ Useful references for data visualization
 <li><i class="fa-li fa fa-code"></i> Data Camp <a href="https://www.datacamp.com/courses/dplyr-data-manipulation-r-tutorial">Data Manipulation in R with dplyr</a> </li> Optional. This can clarity the information in the vignette.
 </ul>
 
-# Class
+**Class**
 
 <ul class="fa-ul">
 <li><i class="fa-li fa fa-bar-chart"></i><a href="/lessons/missing_values.html">Missing values (NA)</a>
@@ -123,6 +123,8 @@ Useful references for data visualization
 <li><i class="fa-li fa fa-bar-chart"></i><a href="/lessons/tidy_data.html">Tidy Data</a> (<a href="/lessons/tidy_data-template.R"> R template</a>)
 <li><i class="fa-li fa fa-bar-chart"></i><a href="/lessons/common_errors_in_R.html">Common Errors in R</a> (<a href="/lessons/common_errors_in_R-template.R"> R template</a>)
 </ul>
+
+**Lab**
 
 ## Week 4
 
