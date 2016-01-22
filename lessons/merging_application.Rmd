@@ -103,7 +103,7 @@ db_inner <- inner_join(country, vdem, by = c("COWcode"))
 `r challenge_start()`
 1. How many unique countries are in `country`? And in `vdem`?
 2. Are all countries in `country` in `vdem`, and viceversa?
-3. What are the outputs of the different merging commands? For each of the resulting datasets: what are the number of rows and the unique country codes (`COWcode`)?
+3. What are the outputs of the different merging commands? For each of the resulting datasets: what are the number of rows and the unique country codes (`COWcode`)? Is there something "wrong" with any of the new datasets?
 `r challenge_end()`
 
 ```{r, eval=FALSE}
@@ -123,5 +123,4 @@ countries_not_vdem_name <- country$cow[country$COWcode %in% countries_not_vdem_i
 nrow(vdem)
 nrow(db_inner)
 length(unique(db_inner$COWcode))
-
 ```
