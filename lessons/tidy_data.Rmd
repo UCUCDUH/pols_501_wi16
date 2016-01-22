@@ -18,6 +18,8 @@ This lesson will cover the associated **tidyr** package.
 ```
 
 
+Using **tidyr** to summarize statistics easily.
+
 ```{r}
 library("dplyr")
 library("tidyr")
@@ -33,7 +35,6 @@ gapminder %>%
 
 ```
 
-
 ```{r}
 gapminder %>%
   gather(variable, value, -country, -year) %>%
@@ -43,6 +44,5 @@ gapminder %>%
   gather(stat, value, -variable, -country) %>%
   unite(varname, variable, stat) %>%
   spread(varname, value)
-
 ```
 
