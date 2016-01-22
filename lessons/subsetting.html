@@ -20,7 +20,7 @@
 <script src="libs/bootstrap-3.3.1/js/bootstrap.min.js"></script>
 <script src="libs/bootstrap-3.3.1/shim/html5shiv.min.js"></script>
 <script src="libs/bootstrap-3.3.1/shim/respond.min.js"></script>
-<link rel="stylesheet" type = "text/css" href="labs.css">
+
 
 <style type="text/css">code{white-space: pre;}</style>
 <link rel="stylesheet"
@@ -67,6 +67,14 @@ img {
 <strong>POL S/CS&amp;SS 501, University of Washington, Spring 2015</strong>
 </p>
 
+$$
+\DeclareMathOperator{\mean}{mean}
+\DeclareMathOperator{\var}{var}
+\DeclareMathOperator{\E}{E}
+\DeclareMathOperator{\argmin}{argmin}
+\DeclareMathOperator{\argmax}{argmax}
+$$
+
 <div id="header">
 <h1 class="title">Subsetting Data in R</h1>
 <h4 class="author"><em>Andreu Casas</em></h4>
@@ -97,7 +105,7 @@ img {
 <p>The replication data for the article is available in JPR’s <a href="https://www.prio.org/JPR/Datasets/">website</a>. However, since the replication material for this paper takes a while to download, and the four datasets they use are large and have numerous variables, for the purpose of this class we will use a version of one of their datasets that I put together.</p>
 <p>Download the dataset in this <a href="https://github.com/UW-POLS501/pols_501_wi16/blob/master/lessons/data/country.csv">link</a> and store it in the <strong>data</strong> subdirectory</p>
 <pre class="r"><code>download.file(&quot;https://github.com/UW-POLS501/pols_501_wi16/blob/master/lessons/data/country.csv&quot;, &quot;data/country.csv&quot;)</code></pre>
-<div class="panel panel-primary">
+<div id="challenge-1" class="panel panel-primary">
 <div class="panel-heading">
 <h3 class="panel-title">
 Challenge
@@ -133,7 +141,7 @@ Challenge
 <li><code>tail()</code></li>
 <li><code>summary()</code></li>
 </ul>
-<div class="panel panel-primary">
+<div id="challenge-2" class="panel panel-primary">
 <div class="panel-heading">
 <h3 class="panel-title">
 Challenge

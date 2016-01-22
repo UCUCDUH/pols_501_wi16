@@ -18,7 +18,7 @@
 <script src="libs/bootstrap-3.3.1/js/bootstrap.min.js"></script>
 <script src="libs/bootstrap-3.3.1/shim/html5shiv.min.js"></script>
 <script src="libs/bootstrap-3.3.1/shim/respond.min.js"></script>
-<link rel="stylesheet" type = "text/css" href="labs.css">
+
 
 <style type="text/css">code{white-space: pre;}</style>
 <link rel="stylesheet"
@@ -64,6 +64,14 @@ img {
 <p>
 <strong>POL S/CS&amp;SS 501, University of Washington, Spring 2015</strong>
 </p>
+
+$$
+\DeclareMathOperator{\mean}{mean}
+\DeclareMathOperator{\var}{var}
+\DeclareMathOperator{\E}{E}
+\DeclareMathOperator{\argmin}{argmin}
+\DeclareMathOperator{\argmax}{argmax}
+$$
 
 
 <div id="TOC">
@@ -122,7 +130,7 @@ img {
 <p>Load the <code>ggplot2</code> package</p>
 <pre class="r"><code>library(ggplot2)
 country &lt;- read.csv(&quot;data/country.csv&quot;)</code></pre>
-<div class="panel panel-primary">
+<div id="challenge-1" class="panel panel-primary">
 <div class="panel-heading">
 <h3 class="panel-title">
 Challenge
@@ -150,7 +158,7 @@ p &lt;- p + geom_point() +
     labs(x = &quot;Polity Score&quot;, y = &quot;# of Articles (Dec-2010 to Oct-2011)&quot;) +
     ggtitle(&quot;Level of Democracy and # of Articles about the Lybian Civil War&quot;)</code></pre>
 <p>On the one hand, this scatterplot supports Baum and Zhukov’s (2015) argument: as the level of democracy of a country increases, the number of articles covering the Lybian civil war also increases. However, the data also shows a pattern that they ignore in the paper: in countries with very low levels of democracy (<code>polity2</code> &lt; -1) the coverage of the Lybian civil war was larger than in countries with medium level of democracy (-1 &lt; <code>polity2</code> &lt; 6). Literature on regime types and transition theorize similar U-shaped relationships: e.g. Acemoglu and Robinson (2006) when discussing the relationship between Inequality and Democratization.</p>
-<div class="panel panel-primary">
+<div id="challenge-2" class="panel panel-primary">
 <div class="panel-heading">
 <h3 class="panel-title">
 Challenge
@@ -180,7 +188,7 @@ p2 + geom_bar(stat = &quot;summary&quot;, position = &quot;dodge&quot;, fun.y=&q
   scale_x_discrete(labels = c(&quot;Africa&quot;, &quot;Asia&quot;, &quot;E. Europe&quot;, &quot;L. America&quot;,
                               &quot;Mediterranean&quot;, &quot;N. America&quot;, &quot;W. Europe&quot;))</code></pre>
 <p><img src="ggplot-1_files/figure-html/unnamed-chunk-10-1.png" title="" alt="" width="672" /></p>
-<div class="panel panel-primary">
+<div id="challenge-3" class="panel panel-primary">
 <div class="panel-heading">
 <h3 class="panel-title">
 Challenge

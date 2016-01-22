@@ -19,7 +19,7 @@
 <script src="libs/bootstrap-3.3.1/js/bootstrap.min.js"></script>
 <script src="libs/bootstrap-3.3.1/shim/html5shiv.min.js"></script>
 <script src="libs/bootstrap-3.3.1/shim/respond.min.js"></script>
-<link rel="stylesheet" type = "text/css" href="labs.css">
+
 
 <style type="text/css">code{white-space: pre;}</style>
 <link rel="stylesheet"
@@ -65,6 +65,14 @@ img {
 <p>
 <strong>POL S/CS&amp;SS 501, University of Washington, Spring 2015</strong>
 </p>
+
+$$
+\DeclareMathOperator{\mean}{mean}
+\DeclareMathOperator{\var}{var}
+\DeclareMathOperator{\E}{E}
+\DeclareMathOperator{\argmin}{argmin}
+\DeclareMathOperator{\argmax}{argmax}
+$$
 
 <div id="header">
 <h1 class="title">Reading Data in R</h1>
@@ -116,7 +124,7 @@ img {
 <div id="reading-data-from-r-packages" class="section level2">
 <h2>1. Reading data from R packages</h2>
 <p>Some R packages have datasets that you can load if you have those packages installed and loaded. The <code>base</code> package already comes with some datasets. To view the datasets, use the function <code>data()</code>. To load a specific dataset, use the same function and add the name of the dataset as a parameter: e.g. <code>data(UCBAdmissions)</code>.</p>
-<div class="panel panel-primary">
+<div id="challenge-1" class="panel panel-primary">
 <div class="panel-heading">
 <h3 class="panel-title">
 Challenge
@@ -143,7 +151,7 @@ Challenge
 ?HistData</code></pre>
 <p>The <code>help</code> files give us a brief description of packages, functions, and its parameters. A very useful characteristic of <code>help</code> files is that they come with sample code (scroll-down to the bottom of the <code>help</code> file to find it).</p>
 <p>Let’s explore a <code>help</code> file: click to the <code>help</code> file for the <code>Snow</code> dataset in <code>HistData</code>.</p>
-<div class="panel panel-primary">
+<div id="challenge-2" class="panel panel-primary">
 <div class="panel-heading">
 <h3 class="panel-title">
 Challenge
@@ -192,7 +200,7 @@ names(wdi)
 unique(wdi$Country.Name)
 unique(wdi$Indicator.Name)
 wdi[50, ]</code></pre>
-<div class="panel panel-primary">
+<div id="challenge-3" class="panel panel-primary">
 <div class="panel-heading">
 <h3 class="panel-title">
 Challenge
@@ -232,7 +240,7 @@ phd &lt;- import(&quot;data/phd.txt&quot;)
 edu &lt;- import(&quot;data/edu_expend_1975.sav&quot;)
 salary &lt;- import(&quot;data/salary.dta&quot;)
 divorce &lt;- import(&quot;data/divorce.xlsx&quot;)</code></pre>
-<div class="panel panel-primary">
+<div id="challenge-4" class="panel panel-primary">
 <div class="panel-heading">
 <h3 class="panel-title">
 Challenge
@@ -255,7 +263,7 @@ Challenge
 <p>Replication and transparency are key components of all scientific research. However, in the past social scientists have often not been very transparent. For this reason, there are currently numerous initiatives aiming to increase transparency in social science research. One of the main objectives of this course is to learn how to produce clear guidelines when developing our research so others can easily replicate it in the future.</p>
 <p>As part of these replication efforts, authors and journals often share replication datasets and code in their websites or online repositories. One of the most used repositories is <a href="https://dataverse.harvard.edu/"><code>Dataverse</code></a>. For example, the American Journal of Political Science (AJPS) posts replication files in <a href="https://dataverse.harvard.edu/dataverse/ajps">dataverse</a> for all the articles published in the journal.</p>
 <p>For example, AJPS recently posted the replication files of an article by Broockman and Bulter (2015) ‘The Causal Effects of Elite Position-Taking on Voter Attitudes: Field Experiments with Elite Communication’. In this article the authors perform two experiments to show how opinions stated by public representatives have the potential to change the opinions of their constituents. You can access the replication files <a href="https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/YZQTAH">here</a> and the paper <a href="http://onlinelibrary.wiley.com/doi/10.1111/ajps.12243/abstract">here</a>.</p>
-<div class="panel panel-primary">
+<div id="challenge-5" class="panel panel-primary">
 <div class="panel-heading">
 <h3 class="panel-title">
 Challenge
@@ -267,7 +275,7 @@ Challenge
 <pre class="r"><code>load(&quot;data/Study1_data.Rdata&quot;)</code></pre>
 </div>
 </div>
-<div class="panel panel-primary">
+<div id="challenge-6" class="panel panel-primary">
 <div class="panel-heading">
 <h3 class="panel-title">
 Challenge
