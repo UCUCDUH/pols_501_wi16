@@ -117,7 +117,7 @@ Useful references for data visualization
 # Class
 
 <ul class="fa-ul">
-<li><i class="fa-li fa fa-bar-chart"></i><a href="/lessons/missing_data.html">Missing values (NA)</a>
+<li><i class="fa-li fa fa-bar-chart"></i><a href="/lessons/missing_values.html">Missing values (NA)</a>
 <li><i class="fa-li fa fa-bar-chart"></i><a href="/lessons/pipe.html">`%>%`: The Pipe Operator </a> (<a href="/lessons/pipe-template.R"> R template</a>)
 <li><i class="fa-li fa fa-bar-chart"></i><a href="/lessons/merging.html">Joining Datasets </a> (<a href="/lessons/merging-template.R"> R template</a>)
 <li><i class="fa-li fa fa-bar-chart"></i><a href="/lessons/tidy_data.html">Tidy Data</a> (<a href="/lessons/tidy_data-template.R"> R template</a>)
