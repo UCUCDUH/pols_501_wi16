@@ -6,10 +6,11 @@ DEPLOY_DIR = ../web/files/lessons/
 RMD_FILES = $(wildcard *.Rmd)
 HTML_FILES = $(RMD_FILES:%.Rmd=%.html)
 R_FILES = $(wildcard *-template.R)
+INCLUDES = $(wildcard _include/*.html)
 
 build: $(HTML_FILES)
 
-%.html: %.Rmd _output.yaml
+%.html: %.Rmd _output.yaml $(INCLUDES)
 	$(RSCRIPT) $(RSCRIPT_OPTS) -e "rmarkdown::render('$<', output_file='$@')"
 
 deploy:

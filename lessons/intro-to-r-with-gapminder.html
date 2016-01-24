@@ -63,7 +63,7 @@ img {
 <div class="container-fluid main-container">
 
 <p>
-<strong>POL S/CS&amp;SS 501, University of Washington, Spring 2015</strong>
+<strong>POL S/CS&amp;SS 501, University of Washington, Winter 2016</strong>
 </p>
 
 $$
@@ -161,7 +161,7 @@ $$
 <h1>Working Directory and R Projects</h1>
 <div id="r-projects" class="section level2">
 <h2>R Projects</h2>
-<p>Keeping all the files associated with a project organized together – input data, R scripts, analytic results, figures – is such a wise and common practice that RStudio has built-in support for this via its projects. Read <a href="https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects">this</a> for more information about RStudio projects.</p>
+<p>NA Read <a href="https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects">this</a> for more information about RStudio projects.</p>
 <p>You will use RStudio projects for your labs and homework, and <strong>final paper</strong>. Create a RStudio project that you will use for all this lab.</p>
 <ol style="list-style-type: decimal">
 <li><em>File -&gt; New Project</em></li>
@@ -194,12 +194,14 @@ $$
 <pre class="r"><code>help(&quot;gapminder&quot;)</code></pre>
 <p>Load the dataset into your environment using the <code>data</code> function. Note that currently <code>data</code> is not in the environment</p>
 <pre class="r"><code>ls()</code></pre>
-<pre><code>## [1] &quot;challenge_end&quot;   &quot;challenge_start&quot; &quot;foo&quot;</code></pre>
+<pre><code>## [1] &quot;Counter&quot;         &quot;challenge_end&quot;   &quot;challenge_start&quot; &quot;foo&quot;            
+## [5] &quot;solution_end&quot;    &quot;solution_start&quot;</code></pre>
 <p>Now load <code>gapminder</code> using <code>data()</code>,</p>
 <pre class="r"><code>data(&quot;gapminder&quot;)</code></pre>
 <p>You will not see a message if this is successful. However, there will be an object called <code>gapminder</code> into the environment,</p>
 <pre class="r"><code>ls()</code></pre>
-<pre><code>## [1] &quot;challenge_end&quot;   &quot;challenge_start&quot; &quot;foo&quot;             &quot;gapminder&quot;</code></pre>
+<pre><code>## [1] &quot;Counter&quot;         &quot;challenge_end&quot;   &quot;challenge_start&quot; &quot;foo&quot;            
+## [5] &quot;gapminder&quot;       &quot;solution_end&quot;    &quot;solution_start&quot;</code></pre>
 <p>The <code>gapminder</code> object is a <em>data frame</em>. A data frame is a type of R object that corresponds to what you usually think of as a dataset or a spreadsheet — rows are observations and columns are variables.</p>
 <div class="bs-callout bs-callout-default">
 <p>What happens when you do the following?</p>

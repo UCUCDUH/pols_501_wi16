@@ -63,7 +63,7 @@ img {
 <div class="container-fluid main-container">
 
 <p>
-<strong>POL S/CS&amp;SS 501, University of Washington, Spring 2015</strong>
+<strong>POL S/CS&amp;SS 501, University of Washington, Winter 2016</strong>
 </p>
 
 $$
@@ -102,7 +102,7 @@ $$
 </div>
 <div id="r-projects" class="section level2">
 <h2>R Projects</h2>
-<p>Keeping all the files associated with a project organized together – input data, R scripts, analytic results, figures – is such a wise and common practice that RStudio has built-in support for this via its projects. Read <a href="https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects">this</a> for more information about RStudio projects.</p>
+<p>Keeping all the files associated with a project organized together <U+2013> input data, R scripts, analytic results, figures <U+2013> is such a wise and common practice that RStudio has built-in support for this via its projects. Read <a href="https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects">this</a> for more information about RStudio projects.</p>
 <p>You will use RStudio projects for your labs and homework. Create a RStudio project that you will use for all your labs.</p>
 <ol style="list-style-type: decimal">
 <li><em>File -&gt; New Project</em></li>
@@ -131,6 +131,7 @@ Challenge
 </h3>
 </div>
 <div class="panel-body">
+
 <ul>
 <li>Load any dataset you like</li>
 <li>Explore it. Tell me what type of information contains, its dimensions, variables, etc.</li>
@@ -140,10 +141,11 @@ Challenge
 <li><code>names</code> shows the column names of the data frame.</li>
 <li><code>head</code> shows the first few observations</li>
 <li><code>tail</code> shows the last few observations</li>
-<li><code>summary</code> calculates summary statistics for all variables in the data frame.</li>
+<li><code>summary</code> calculates summary statistics for all variables in the data fra
+</div>
+</div>
+<p>d()`</p></li>
 </ul>
-</div>
-</div>
 <p>When we load new packages that have datasets within them, R adds them to the <code>data()</code> list. Actually some packages have no functions, only dataset/s: e.g. <code>gapminder</code> and <code>HistData</code>. Let’s load the <code>HistData</code> package and take a look at the datasets it contains using the <code>data()</code> function and also the <code>help</code> file of the package.</p>
 <pre class="r"><code>install.packages(&quot;HistData&quot;)</code></pre>
 <pre class="r"><code>library(&quot;HistData&quot;)</code></pre>
@@ -273,6 +275,9 @@ Challenge
 <p>Go to the replication site of the paper and download the replication dataset <code>Study1_data.tab</code>. You can choose the format of the dataset, choose to download it in <code>RData</code> format. Save it in the working the directory you are using for this lab.</p>
 <p>Now load it and play with it! <code>.Rdata</code> is R’s native format. To load an <code>.Rdata</code> (or <code>.rda</code>) dataset, you use the <code>load()</code> function and you don’t need to assign the dataset to any object, the <code>load()</code> function will automatically create a new dataset in your R environment (similar to what happens when we use the <code>data()</code> function to load datasets from R packages).</p>
 <pre class="r"><code>load(&quot;data/Study1_data.Rdata&quot;)</code></pre>
+<pre><code>## Warning in readChar(con, 5L, useBytes = TRUE): cannot open compressed file
+## &#39;data/Study1_data.Rdata&#39;, probable reason &#39;No such file or directory&#39;</code></pre>
+<pre><code>## Error in readChar(con, 5L, useBytes = TRUE): cannot open the connection</code></pre>
 </div>
 </div>
 <div id="challenge-6" class="panel panel-primary">
@@ -283,9 +288,12 @@ Challenge
 </div>
 <div class="panel-body">
 <p>Look at the article and explore the dataset and see if you can identify in the dataset some of the key variables they discuss in the paper.</p>
-<pre class="r"><code>names(x)
-table(x$policy_letter_treat)
-table(x$policy_letter_treat,x$movable_total)</code></pre>
+<pre class="r"><code>names(x)</code></pre>
+<pre><code>## Error in eval(expr, envir, enclos): object &#39;x&#39; not found</code></pre>
+<pre class="r"><code>table(x$policy_letter_treat)</code></pre>
+<pre><code>## Error in table(x$policy_letter_treat): object &#39;x&#39; not found</code></pre>
+<pre class="r"><code>table(x$policy_letter_treat,x$movable_total)</code></pre>
+<pre><code>## Error in table(x$policy_letter_treat, x$movable_total): object &#39;x&#39; not found</code></pre>
 </div>
 </div>
 </div>
