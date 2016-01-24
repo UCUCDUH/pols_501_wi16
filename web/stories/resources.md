@@ -5,7 +5,7 @@
 - [Descriptive statistics](/lessons/descriptive_statistics.html)
 - [Subsetting data](/lessons/subsetting.html)
 - [Plotting data with ggplot2 (1)](/lessons/ggplot-1.html)
-
+- [Miscellaneous Useful Functions](/lessons/data_manipulation_utility_functions.html)
 
 # Miscellaneous
 
