@@ -1,26 +1,140 @@
 ---
-title: "Data Cleaning Utility Functions"
+title: "Miscellaneous Useful Functions"
 output: html_document
 ---
 
-Functions to cover
+Load libraries and data that will be used in this lesson,
+```{r}
+library("gapminder")
+library("uwpols501")
+data("gapminder")
+```
 
-- `cut`
-- `plyr::mapvalues`, `plyr::revalue`
-- renaming levels of a factor http://www.cookbook-r.com/Manipulating_data/Renaming_levels_of_a_factor/
-- http://www.cookbook-r.com/Manipulating_data/Mapping_vector_values/
-- `mosaic::derivedFactor`
-- **stringr** functions: `str_c`, `str_match`, `str_replace`. 
-- **lubridate** functions: `parse_date_time`, `ymd`, 
-- lag, diff ? maybe not worth it yet
+# seq
 
-Also see http://www.cookbook-r.com/Manipulating_data/index.html
+The colon operator generates a sequence of integers b
+```{r}
+1:5
+```
+
+The function `seq` is a more flexible function to generate sequences,
+```{r}
+seq(1, 10, by = 10)
+seq(1, 10, length.out = 20)
+```
+The function `seq_along` generates a sequence of integers the same length as the vector it is given,
+```{r}
+foo <- c("a", "b", "c")
+seq_along(foo)
+```
+The function `seq_len` generates a sequence from 1 to the out,
+```{r}
+seq_len(10)
+```
+
+# which
+
+The `which` function gives the indexes of a vector that fulfill a certain condition.
+For example,
+```{r}
+which(gapminder$country == "United States")
+which(gapminder$country == "United States" & gapminder$year > 2000)
+which(gapminder$lifeExp < 32)
+```
+
+# match, %in%
+
+The function `match` and `%in%` operator can be used to check which values in a vector 
+are in another set of values.
+
+The operator `x %in% y` returns `TRUE` if a value in `x` appears in `y`, and `FALSE` otherwise.
+```{r}
+letters %in% c("a", "b", "c")
+gapminder$year %in% c(2007, 2002)
+```
+The function `match(x, table)` gives the index of the first match of `x` in `table` and `NA` otherwise.
+```{r}
+match(c("a", "b", "c", "alpha", "0"), letters)
+match(gapminder$country, c("United States", "Mexico", "Canada"))
+```
 
 
-With strings do not introduce regex, but mention that "abcd" will match anywhere
-in the string, but "^abcd$" will match the whole string.
+# cut
+
+The function `cut` can be used to split a numeric vector into categories.
+```{r, eval=FALSE}
+cut(x, breaks)
+```
+creates a new vector with categories determined by the values of `breaks`.
+If a single number is given for `breaks` it divides `x` into that number of categories:
+```{r}
+x <- 1:20
+cut(x, 2)
+cut(x, 5)
+cut(x, 7)
+```
+If multiple values are given, `cut()` uses those values to split the vector into categories:
+```{r}
+cut(x, c(2, 10, 15))
+```
+Note that  `cut` splits the vector so that the values in each category does not include the lower value, but does include the upper value.
+To reverse it so that the lower value is included, but the upper value is excluded, set the argument `right = TRUE`,
+```{r}
+cut(x, c(2, 10, 15), right = FALSE)
+```
+Also not that any elements in `x` less than the smallest break or greater than the largest break are set to `NA`.
+To always create intervals that include all values smaller or lower, add `-Inf` and `Inf` to the breaks,
+```{r}
+cut(x, c(-Inf, 2, 10, 15, Inf))
+```
+You can add labels to the categories using the `labels` argument,
+```{r}
+cut(x, c(-Inf, 2, 10, 15, Inf), labels = c("Very Low", "Low", "High", "Very High"))
+```
 
 
-References
+# mapvalues, revalue
 
-- strings: http://r4ds.had.co.nz/strings.html
+The `mapvalues` and `revalue` functions allow you to easily replace values.
+These functions are included in the `uwpols501` package (they are originally in the **plyr** package and re-exported for convenience because many functions in the **plyr** package have names that conflict with those in the **dplyr** package).
+
+```{r}
+x <- c("a", "b", "c")
+mapvalues(x, c("a", "c"), c("A", "C"))
+
+# Works on factors
+y <- factor(c("a", "b", "c", "a"))
+mapvalues(y, c("a", "c"), c("A", "C"))
+
+# Works on numeric vectors
+z <- c(1, 4, 5, 9)
+mapvalues(z, from = c(1, 5, 9), to = c(10, 50, 90))
+
+x <- c("a", "b", "c")
+revalue(x, c(a = "A", c = "C"))
+revalue(x, c("a" = "A", "c" = "C"))
+
+y <- factor(c("a", "b", "c", "a"))
+revalue(y, c(a = "A", c = "C"))
+```
+
+Using the gapminder data, replace the names of a few countries,
+```{r}
+country <- plyr::revalue(gapminder$country,
+                                   c("United States" = "USA", 
+                                     "United Kingdom" = "GBR",
+                                     "Mexico" = "MEX",
+                                     "Canada" = "CAN"))
+unique(country)
+```
+or using `mapvalues`,
+```{r}
+country <- plyr::mapvalues(gapminder$country,
+                         c("United States",
+                           "United Kingdom",
+                           "Mexico",
+                           "Canada"),
+                         c("USA", "GBR", "MEX", "CAN"))
+
+unique(country)
+```

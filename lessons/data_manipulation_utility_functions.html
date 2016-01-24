@@ -10,7 +10,7 @@
 
 
 
-<title>Data Cleaning Utility Functions</title>
+<title>Miscellaneous Useful Functions</title>
 
 <script src="libs/jquery-1.11.0/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -74,27 +74,531 @@ $$
 $$
 
 <div id="header">
-<h1 class="title">Data Cleaning Utility Functions</h1>
+<h1 class="title">Miscellaneous Useful Functions</h1>
 </div>
 
+<div id="TOC">
+<ul>
+<li><a href="#seq">seq</a></li>
+<li><a href="#which">which</a></li>
+<li><a href="#match-in">match, %in%</a></li>
+<li><a href="#cut">cut</a></li>
+<li><a href="#mapvalues-revalue">mapvalues, revalue</a></li>
+</ul>
+</div>
 
-<p>Functions to cover</p>
-<ul>
-<li><code>cut</code></li>
-<li><code>plyr::mapvalues</code>, <code>plyr::revalue</code></li>
-<li>renaming levels of a factor <a href="http://www.cookbook-r.com/Manipulating_data/Renaming_levels_of_a_factor/" class="uri">http://www.cookbook-r.com/Manipulating_data/Renaming_levels_of_a_factor/</a></li>
-<li><a href="http://www.cookbook-r.com/Manipulating_data/Mapping_vector_values/" class="uri">http://www.cookbook-r.com/Manipulating_data/Mapping_vector_values/</a></li>
-<li><code>mosaic::derivedFactor</code></li>
-<li><strong>stringr</strong> functions: <code>str_c</code>, <code>str_match</code>, <code>str_replace</code>.</li>
-<li><strong>lubridate</strong> functions: <code>parse_date_time</code>, <code>ymd</code>,</li>
-<li>lag, diff ? maybe not worth it yet</li>
-</ul>
-<p>Also see <a href="http://www.cookbook-r.com/Manipulating_data/index.html" class="uri">http://www.cookbook-r.com/Manipulating_data/index.html</a></p>
-<p>With strings do not introduce regex, but mention that “abcd” will match anywhere in the string, but “^abcd$” will match the whole string.</p>
-<p>References</p>
-<ul>
-<li>strings: <a href="http://r4ds.had.co.nz/strings.html" class="uri">http://r4ds.had.co.nz/strings.html</a></li>
-</ul>
+<p>Load libraries and data that will be used in this lesson,</p>
+<pre class="r"><code>library(&quot;gapminder&quot;)
+library(&quot;uwpols501&quot;)
+data(&quot;gapminder&quot;)</code></pre>
+<div id="seq" class="section level1">
+<h1>seq</h1>
+<p>The colon operator generates a sequence of integers b</p>
+<pre class="r"><code>1:5</code></pre>
+<pre><code>## [1] 1 2 3 4 5</code></pre>
+<p>The function <code>seq</code> is a more flexible function to generate sequences,</p>
+<pre class="r"><code>seq(1, 10, by = 10)</code></pre>
+<pre><code>## [1] 1</code></pre>
+<pre class="r"><code>seq(1, 10, length.out = 20)</code></pre>
+<pre><code>##  [1]  1.000000  1.473684  1.947368  2.421053  2.894737  3.368421  3.842105
+##  [8]  4.315789  4.789474  5.263158  5.736842  6.210526  6.684211  7.157895
+## [15]  7.631579  8.105263  8.578947  9.052632  9.526316 10.000000</code></pre>
+<p>The function <code>seq_along</code> generates a sequence of integers the same length as the vector it is given,</p>
+<pre class="r"><code>foo &lt;- c(&quot;a&quot;, &quot;b&quot;, &quot;c&quot;)
+seq_along(foo)</code></pre>
+<pre><code>## [1] 1 2 3</code></pre>
+<p>The function <code>seq_len</code> generates a sequence from 1 to the out,</p>
+<pre class="r"><code>seq_len(10)</code></pre>
+<pre><code>##  [1]  1  2  3  4  5  6  7  8  9 10</code></pre>
+</div>
+<div id="which" class="section level1">
+<h1>which</h1>
+<p>The <code>which</code> function gives the indexes of a vector that fulfill a certain condition. For example,</p>
+<pre class="r"><code>which(gapminder$country == &quot;United States&quot;)</code></pre>
+<pre><code>##  [1] 1609 1610 1611 1612 1613 1614 1615 1616 1617 1618 1619 1620</code></pre>
+<pre class="r"><code>which(gapminder$country == &quot;United States&quot; &amp; gapminder$year &gt; 2000)</code></pre>
+<pre><code>## [1] 1619 1620</code></pre>
+<pre class="r"><code>which(gapminder$lifeExp &lt; 32)</code></pre>
+<pre><code>##  [1]    1    2    3   37   38  193  222  553 1033 1293 1345 1346</code></pre>
+</div>
+<div id="match-in" class="section level1">
+<h1>match, %in%</h1>
+<p>The function <code>match</code> and <code>%in%</code> operator can be used to check which values in a vector are in another set of values.</p>
+<p>The operator <code>x %in% y</code> returns <code>TRUE</code> if a value in <code>x</code> appears in <code>y</code>, and <code>FALSE</code> otherwise.</p>
+<pre class="r"><code>letters %in% c(&quot;a&quot;, &quot;b&quot;, &quot;c&quot;)</code></pre>
+<pre><code>##  [1]  TRUE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [12] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [23] FALSE FALSE FALSE FALSE</code></pre>
+<pre class="r"><code>gapminder$year %in% c(2007, 2002)</code></pre>
+<pre><code>##    [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE
+##   [12]  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##   [23]  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##   [34] FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##   [45] FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##   [56] FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE
+##   [67] FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE
+##   [78] FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE
+##   [89] FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE
+##  [100] FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE
+##  [111] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE
+##  [122] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE
+##  [133] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE
+##  [144]  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [155]  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [166] FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [177] FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [188] FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [199] FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE
+##  [210] FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE
+##  [221] FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE
+##  [232] FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE
+##  [243] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE
+##  [254] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE
+##  [265] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE
+##  [276]  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [287]  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [298] FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [309] FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [320] FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [331] FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE
+##  [342] FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE
+##  [353] FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE
+##  [364] FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE
+##  [375] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE
+##  [386] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE
+##  [397] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE
+##  [408]  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [419]  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [430] FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [441] FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [452] FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [463] FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE
+##  [474] FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE
+##  [485] FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE
+##  [496] FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE
+##  [507] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE
+##  [518] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE
+##  [529] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE
+##  [540]  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [551]  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [562] FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [573] FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [584] FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [595] FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE
+##  [606] FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE
+##  [617] FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE
+##  [628] FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE
+##  [639] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE
+##  [650] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE
+##  [661] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE
+##  [672]  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [683]  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [694] FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [705] FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [716] FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [727] FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE
+##  [738] FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE
+##  [749] FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE
+##  [760] FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE
+##  [771] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE
+##  [782] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE
+##  [793] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE
+##  [804]  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [815]  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [826] FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [837] FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [848] FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [859] FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE
+##  [870] FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE
+##  [881] FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE
+##  [892] FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE
+##  [903] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE
+##  [914] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE
+##  [925] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE
+##  [936]  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [947]  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [958] FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [969] FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [980] FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [991] FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE
+## [1002] FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE
+## [1013] FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE
+## [1024] FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE
+## [1035] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE
+## [1046] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE
+## [1057] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE
+## [1068]  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [1079]  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [1090] FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [1101] FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [1112] FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE
+## [1123] FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE
+## [1134] FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE
+## [1145] FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE
+## [1156] FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE
+## [1167] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE
+## [1178] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE
+## [1189] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE
+## [1200]  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [1211]  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [1222] FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [1233] FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [1244] FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE
+## [1255] FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE
+## [1266] FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE
+## [1277] FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE
+## [1288] FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE
+## [1299] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE
+## [1310] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE
+## [1321] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE
+## [1332]  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [1343]  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [1354] FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [1365] FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [1376] FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE
+## [1387] FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE
+## [1398] FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE
+## [1409] FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE
+## [1420] FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE
+## [1431] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE
+## [1442] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE
+## [1453] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE
+## [1464]  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [1475]  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [1486] FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [1497] FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [1508] FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE
+## [1519] FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE
+## [1530] FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE
+## [1541] FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE
+## [1552] FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE
+## [1563] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE
+## [1574] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE
+## [1585] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE
+## [1596]  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [1607]  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [1618] FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [1629] FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [1640] FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE
+## [1651] FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE
+## [1662] FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE
+## [1673] FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE
+## [1684] FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE
+## [1695] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE</code></pre>
+<p>The function <code>match(x, table)</code> gives the index of the first match of <code>x</code> in <code>table</code> and <code>NA</code> otherwise.</p>
+<pre class="r"><code>match(c(&quot;a&quot;, &quot;b&quot;, &quot;c&quot;, &quot;alpha&quot;, &quot;0&quot;), letters)</code></pre>
+<pre><code>## [1]  1  2  3 NA NA</code></pre>
+<pre class="r"><code>match(gapminder$country, c(&quot;United States&quot;, &quot;Mexico&quot;, &quot;Canada&quot;))</code></pre>
+<pre><code>##    [1] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+##   [24] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+##   [47] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+##   [70] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+##   [93] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+##  [116] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+##  [139] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+##  [162] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+##  [185] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+##  [208] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+##  [231] NA NA NA NA NA NA NA NA NA NA  3  3  3  3  3  3  3  3  3  3  3  3 NA
+##  [254] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+##  [277] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+##  [300] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+##  [323] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+##  [346] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+##  [369] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+##  [392] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+##  [415] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+##  [438] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+##  [461] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+##  [484] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+##  [507] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+##  [530] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+##  [553] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+##  [576] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+##  [599] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+##  [622] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+##  [645] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+##  [668] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+##  [691] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+##  [714] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+##  [737] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+##  [760] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+##  [783] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+##  [806] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+##  [829] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+##  [852] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+##  [875] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+##  [898] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+##  [921] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+##  [944] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+##  [967] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA  2  2  2  2  2
+##  [990]  2  2  2  2  2  2  2 NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+## [1013] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+## [1036] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+## [1059] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+## [1082] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+## [1105] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+## [1128] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+## [1151] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+## [1174] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+## [1197] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+## [1220] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+## [1243] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+## [1266] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+## [1289] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+## [1312] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+## [1335] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+## [1358] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+## [1381] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+## [1404] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+## [1427] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+## [1450] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+## [1473] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+## [1496] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+## [1519] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+## [1542] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+## [1565] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+## [1588] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA  1  1
+## [1611]  1  1  1  1  1  1  1  1  1  1 NA NA NA NA NA NA NA NA NA NA NA NA NA
+## [1634] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+## [1657] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+## [1680] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+## [1703] NA NA</code></pre>
+</div>
+<div id="cut" class="section level1">
+<h1>cut</h1>
+<p>The function <code>cut</code> can be used to split a numeric vector into categories.</p>
+<pre class="r"><code>cut(x, breaks)</code></pre>
+<p>creates a new vector with categories determined by the values of <code>breaks</code>. If a single number is given for <code>breaks</code> it divides <code>x</code> into that number of categories:</p>
+<pre class="r"><code>x &lt;- 1:20
+cut(x, 2)</code></pre>
+<pre><code>##  [1] (0.981,10.5] (0.981,10.5] (0.981,10.5] (0.981,10.5] (0.981,10.5]
+##  [6] (0.981,10.5] (0.981,10.5] (0.981,10.5] (0.981,10.5] (0.981,10.5]
+## [11] (10.5,20]    (10.5,20]    (10.5,20]    (10.5,20]    (10.5,20]   
+## [16] (10.5,20]    (10.5,20]    (10.5,20]    (10.5,20]    (10.5,20]   
+## Levels: (0.981,10.5] (10.5,20]</code></pre>
+<pre class="r"><code>cut(x, 5)</code></pre>
+<pre><code>##  [1] (0.981,4.8] (0.981,4.8] (0.981,4.8] (0.981,4.8] (4.8,8.6]  
+##  [6] (4.8,8.6]   (4.8,8.6]   (4.8,8.6]   (8.6,12.4]  (8.6,12.4] 
+## [11] (8.6,12.4]  (8.6,12.4]  (12.4,16.2] (12.4,16.2] (12.4,16.2]
+## [16] (12.4,16.2] (16.2,20]   (16.2,20]   (16.2,20]   (16.2,20]  
+## Levels: (0.981,4.8] (4.8,8.6] (8.6,12.4] (12.4,16.2] (16.2,20]</code></pre>
+<pre class="r"><code>cut(x, 7)</code></pre>
+<pre><code>##  [1] (0.981,3.71] (0.981,3.71] (0.981,3.71] (3.71,6.43]  (3.71,6.43] 
+##  [6] (3.71,6.43]  (6.43,9.14]  (6.43,9.14]  (6.43,9.14]  (9.14,11.9] 
+## [11] (9.14,11.9]  (11.9,14.6]  (11.9,14.6]  (11.9,14.6]  (14.6,17.3] 
+## [16] (14.6,17.3]  (14.6,17.3]  (17.3,20]    (17.3,20]    (17.3,20]   
+## 7 Levels: (0.981,3.71] (3.71,6.43] (6.43,9.14] ... (17.3,20]</code></pre>
+<p>If multiple values are given, <code>cut()</code> uses those values to split the vector into categories:</p>
+<pre class="r"><code>cut(x, c(2, 10, 15))</code></pre>
+<pre><code>##  [1] &lt;NA&gt;    &lt;NA&gt;    (2,10]  (2,10]  (2,10]  (2,10]  (2,10]  (2,10] 
+##  [9] (2,10]  (2,10]  (10,15] (10,15] (10,15] (10,15] (10,15] &lt;NA&gt;   
+## [17] &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;   
+## Levels: (2,10] (10,15]</code></pre>
+<p>Note that <code>cut</code> splits the vector so that the values in each category does not include the lower value, but does include the upper value. To reverse it so that the lower value is included, but the upper value is excluded, set the argument <code>right = TRUE</code>,</p>
+<pre class="r"><code>cut(x, c(2, 10, 15), right = FALSE)</code></pre>
+<pre><code>##  [1] &lt;NA&gt;    [2,10)  [2,10)  [2,10)  [2,10)  [2,10)  [2,10)  [2,10) 
+##  [9] [2,10)  [10,15) [10,15) [10,15) [10,15) [10,15) &lt;NA&gt;    &lt;NA&gt;   
+## [17] &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;   
+## Levels: [2,10) [10,15)</code></pre>
+<p>Also not that any elements in <code>x</code> less than the smallest break or greater than the largest break are set to <code>NA</code>. To always create intervals that include all values smaller or lower, add <code>-Inf</code> and <code>Inf</code> to the breaks,</p>
+<pre class="r"><code>cut(x, c(-Inf, 2, 10, 15, Inf))</code></pre>
+<pre><code>##  [1] (-Inf,2]  (-Inf,2]  (2,10]    (2,10]    (2,10]    (2,10]    (2,10]   
+##  [8] (2,10]    (2,10]    (2,10]    (10,15]   (10,15]   (10,15]   (10,15]  
+## [15] (10,15]   (15, Inf] (15, Inf] (15, Inf] (15, Inf] (15, Inf]
+## Levels: (-Inf,2] (2,10] (10,15] (15, Inf]</code></pre>
+<p>You can add labels to the categories using the <code>labels</code> argument,</p>
+<pre class="r"><code>cut(x, c(-Inf, 2, 10, 15, Inf), labels = c(&quot;Very Low&quot;, &quot;Low&quot;, &quot;High&quot;, &quot;Very High&quot;))</code></pre>
+<pre><code>##  [1] Very Low  Very Low  Low       Low       Low       Low       Low      
+##  [8] Low       Low       Low       High      High      High      High     
+## [15] High      Very High Very High Very High Very High Very High
+## Levels: Very Low Low High Very High</code></pre>
+</div>
+<div id="mapvalues-revalue" class="section level1">
+<h1>mapvalues, revalue</h1>
+<p>The <code>mapvalues</code> and <code>revalue</code> functions allow you to easily replace values. These functions are included in the <code>uwpols501</code> package (they are originally in the <strong>plyr</strong> package and re-exported for convenience because many functions in the <strong>plyr</strong> package have names that conflict with those in the <strong>dplyr</strong> package).</p>
+<pre class="r"><code>x &lt;- c(&quot;a&quot;, &quot;b&quot;, &quot;c&quot;)
+mapvalues(x, c(&quot;a&quot;, &quot;c&quot;), c(&quot;A&quot;, &quot;C&quot;))</code></pre>
+<pre><code>## [1] &quot;A&quot; &quot;b&quot; &quot;C&quot;</code></pre>
+<pre class="r"><code># Works on factors
+y &lt;- factor(c(&quot;a&quot;, &quot;b&quot;, &quot;c&quot;, &quot;a&quot;))
+mapvalues(y, c(&quot;a&quot;, &quot;c&quot;), c(&quot;A&quot;, &quot;C&quot;))</code></pre>
+<pre><code>## [1] A b C A
+## Levels: A b C</code></pre>
+<pre class="r"><code># Works on numeric vectors
+z &lt;- c(1, 4, 5, 9)
+mapvalues(z, from = c(1, 5, 9), to = c(10, 50, 90))</code></pre>
+<pre><code>## [1] 10  4 50 90</code></pre>
+<pre class="r"><code>x &lt;- c(&quot;a&quot;, &quot;b&quot;, &quot;c&quot;)
+revalue(x, c(a = &quot;A&quot;, c = &quot;C&quot;))</code></pre>
+<pre><code>## [1] &quot;A&quot; &quot;b&quot; &quot;C&quot;</code></pre>
+<pre class="r"><code>revalue(x, c(&quot;a&quot; = &quot;A&quot;, &quot;c&quot; = &quot;C&quot;))</code></pre>
+<pre><code>## [1] &quot;A&quot; &quot;b&quot; &quot;C&quot;</code></pre>
+<pre class="r"><code>y &lt;- factor(c(&quot;a&quot;, &quot;b&quot;, &quot;c&quot;, &quot;a&quot;))
+revalue(y, c(a = &quot;A&quot;, c = &quot;C&quot;))</code></pre>
+<pre><code>## [1] A b C A
+## Levels: A b C</code></pre>
+<p>Using the gapminder data, replace the names of a few countries,</p>
+<pre class="r"><code>country &lt;- plyr::revalue(gapminder$country,
+                                   c(&quot;United States&quot; = &quot;USA&quot;, 
+                                     &quot;United Kingdom&quot; = &quot;GBR&quot;,
+                                     &quot;Mexico&quot; = &quot;MEX&quot;,
+                                     &quot;Canada&quot; = &quot;CAN&quot;))
+unique(country)</code></pre>
+<pre><code>##   [1] Afghanistan              Albania                 
+##   [3] Algeria                  Angola                  
+##   [5] Argentina                Australia               
+##   [7] Austria                  Bahrain                 
+##   [9] Bangladesh               Belgium                 
+##  [11] Benin                    Bolivia                 
+##  [13] Bosnia and Herzegovina   Botswana                
+##  [15] Brazil                   Bulgaria                
+##  [17] Burkina Faso             Burundi                 
+##  [19] Cambodia                 Cameroon                
+##  [21] CAN                      Central African Republic
+##  [23] Chad                     Chile                   
+##  [25] China                    Colombia                
+##  [27] Comoros                  Congo, Dem. Rep.        
+##  [29] Congo, Rep.              Costa Rica              
+##  [31] Cote d&#39;Ivoire            Croatia                 
+##  [33] Cuba                     Czech Republic          
+##  [35] Denmark                  Djibouti                
+##  [37] Dominican Republic       Ecuador                 
+##  [39] Egypt                    El Salvador             
+##  [41] Equatorial Guinea        Eritrea                 
+##  [43] Ethiopia                 Finland                 
+##  [45] France                   Gabon                   
+##  [47] Gambia                   Germany                 
+##  [49] Ghana                    Greece                  
+##  [51] Guatemala                Guinea                  
+##  [53] Guinea-Bissau            Haiti                   
+##  [55] Honduras                 Hong Kong, China        
+##  [57] Hungary                  Iceland                 
+##  [59] India                    Indonesia               
+##  [61] Iran                     Iraq                    
+##  [63] Ireland                  Israel                  
+##  [65] Italy                    Jamaica                 
+##  [67] Japan                    Jordan                  
+##  [69] Kenya                    Korea, Dem. Rep.        
+##  [71] Korea, Rep.              Kuwait                  
+##  [73] Lebanon                  Lesotho                 
+##  [75] Liberia                  Libya                   
+##  [77] Madagascar               Malawi                  
+##  [79] Malaysia                 Mali                    
+##  [81] Mauritania               Mauritius               
+##  [83] MEX                      Mongolia                
+##  [85] Montenegro               Morocco                 
+##  [87] Mozambique               Myanmar                 
+##  [89] Namibia                  Nepal                   
+##  [91] Netherlands              New Zealand             
+##  [93] Nicaragua                Niger                   
+##  [95] Nigeria                  Norway                  
+##  [97] Oman                     Pakistan                
+##  [99] Panama                   Paraguay                
+## [101] Peru                     Philippines             
+## [103] Poland                   Portugal                
+## [105] Puerto Rico              Reunion                 
+## [107] Romania                  Rwanda                  
+## [109] Sao Tome and Principe    Saudi Arabia            
+## [111] Senegal                  Serbia                  
+## [113] Sierra Leone             Singapore               
+## [115] Slovak Republic          Slovenia                
+## [117] Somalia                  South Africa            
+## [119] Spain                    Sri Lanka               
+## [121] Sudan                    Swaziland               
+## [123] Sweden                   Switzerland             
+## [125] Syria                    Taiwan                  
+## [127] Tanzania                 Thailand                
+## [129] Togo                     Trinidad and Tobago     
+## [131] Tunisia                  Turkey                  
+## [133] Uganda                   GBR                     
+## [135] USA                      Uruguay                 
+## [137] Venezuela                Vietnam                 
+## [139] West Bank and Gaza       Yemen, Rep.             
+## [141] Zambia                   Zimbabwe                
+## 142 Levels: Afghanistan Albania Algeria Angola Argentina ... Zimbabwe</code></pre>
+<p>or using <code>mapvalues</code>,</p>
+<pre class="r"><code>country &lt;- plyr::mapvalues(gapminder$country,
+                         c(&quot;United States&quot;,
+                           &quot;United Kingdom&quot;,
+                           &quot;Mexico&quot;,
+                           &quot;Canada&quot;),
+                         c(&quot;USA&quot;, &quot;GBR&quot;, &quot;MEX&quot;, &quot;CAN&quot;))
+
+unique(country)</code></pre>
+<pre><code>##   [1] Afghanistan              Albania                 
+##   [3] Algeria                  Angola                  
+##   [5] Argentina                Australia               
+##   [7] Austria                  Bahrain                 
+##   [9] Bangladesh               Belgium                 
+##  [11] Benin                    Bolivia                 
+##  [13] Bosnia and Herzegovina   Botswana                
+##  [15] Brazil                   Bulgaria                
+##  [17] Burkina Faso             Burundi                 
+##  [19] Cambodia                 Cameroon                
+##  [21] CAN                      Central African Republic
+##  [23] Chad                     Chile                   
+##  [25] China                    Colombia                
+##  [27] Comoros                  Congo, Dem. Rep.        
+##  [29] Congo, Rep.              Costa Rica              
+##  [31] Cote d&#39;Ivoire            Croatia                 
+##  [33] Cuba                     Czech Republic          
+##  [35] Denmark                  Djibouti                
+##  [37] Dominican Republic       Ecuador                 
+##  [39] Egypt                    El Salvador             
+##  [41] Equatorial Guinea        Eritrea                 
+##  [43] Ethiopia                 Finland                 
+##  [45] France                   Gabon                   
+##  [47] Gambia                   Germany                 
+##  [49] Ghana                    Greece                  
+##  [51] Guatemala                Guinea                  
+##  [53] Guinea-Bissau            Haiti                   
+##  [55] Honduras                 Hong Kong, China        
+##  [57] Hungary                  Iceland                 
+##  [59] India                    Indonesia               
+##  [61] Iran                     Iraq                    
+##  [63] Ireland                  Israel                  
+##  [65] Italy                    Jamaica                 
+##  [67] Japan                    Jordan                  
+##  [69] Kenya                    Korea, Dem. Rep.        
+##  [71] Korea, Rep.              Kuwait                  
+##  [73] Lebanon                  Lesotho                 
+##  [75] Liberia                  Libya                   
+##  [77] Madagascar               Malawi                  
+##  [79] Malaysia                 Mali                    
+##  [81] Mauritania               Mauritius               
+##  [83] MEX                      Mongolia                
+##  [85] Montenegro               Morocco                 
+##  [87] Mozambique               Myanmar                 
+##  [89] Namibia                  Nepal                   
+##  [91] Netherlands              New Zealand             
+##  [93] Nicaragua                Niger                   
+##  [95] Nigeria                  Norway                  
+##  [97] Oman                     Pakistan                
+##  [99] Panama                   Paraguay                
+## [101] Peru                     Philippines             
+## [103] Poland                   Portugal                
+## [105] Puerto Rico              Reunion                 
+## [107] Romania                  Rwanda                  
+## [109] Sao Tome and Principe    Saudi Arabia            
+## [111] Senegal                  Serbia                  
+## [113] Sierra Leone             Singapore               
+## [115] Slovak Republic          Slovenia                
+## [117] Somalia                  South Africa            
+## [119] Spain                    Sri Lanka               
+## [121] Sudan                    Swaziland               
+## [123] Sweden                   Switzerland             
+## [125] Syria                    Taiwan                  
+## [127] Tanzania                 Thailand                
+## [129] Togo                     Trinidad and Tobago     
+## [131] Tunisia                  Turkey                  
+## [133] Uganda                   GBR                     
+## [135] USA                      Uruguay                 
+## [137] Venezuela                Vietnam                 
+## [139] West Bank and Gaza       Yemen, Rep.             
+## [141] Zambia                   Zimbabwe                
+## 142 Levels: Afghanistan Albania Algeria Angola Argentina ... Zimbabwe</code></pre>
+</div>
 
 <hr>
 <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://licensebuttons.net/l/by-nc-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
