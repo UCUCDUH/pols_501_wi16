@@ -124,7 +124,11 @@ Useful references for data visualization
 <li><i class="fa-li fa fa-bar-chart"></i><a href="/lessons/common_errors_in_R.html">Common Errors in R</a> (<a href="/lessons/common_errors_in_R-template.R"> R template</a>)
 </ul>
 
-**Lab**-Generating Process**
+**Lab**
+
+# Week 4
+
+**Distributions; Data Generating Process**
 
 <ul class="fa-ul">
 <li> <i class="fa-li fa fa-book"></i> <em>OpenIntro</em>, Ch 3  </li>
