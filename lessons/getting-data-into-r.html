@@ -102,7 +102,7 @@ $$
 </div>
 <div id="r-projects" class="section level2">
 <h2>R Projects</h2>
-<p>Keeping all the files associated with a project organized together <U+2013> input data, R scripts, analytic results, figures <U+2013> is such a wise and common practice that RStudio has built-in support for this via its projects. Read <a href="https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects">this</a> for more information about RStudio projects.</p>
+<p>Keeping all the files associated with a project organized together – input data, R scripts, analytic results, figures – is such a wise and common practice that RStudio has built-in support for this via its projects. Read <a href="https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects">this</a> for more information about RStudio projects.</p>
 <p>You will use RStudio projects for your labs and homework. Create a RStudio project that you will use for all your labs.</p>
 <ol style="list-style-type: decimal">
 <li><em>File -&gt; New Project</em></li>
@@ -131,7 +131,6 @@ Challenge
 </h3>
 </div>
 <div class="panel-body">
-
 <ul>
 <li>Load any dataset you like</li>
 <li>Explore it. Tell me what type of information contains, its dimensions, variables, etc.</li>
@@ -141,11 +140,10 @@ Challenge
 <li><code>names</code> shows the column names of the data frame.</li>
 <li><code>head</code> shows the first few observations</li>
 <li><code>tail</code> shows the last few observations</li>
-<li><code>summary</code> calculates summary statistics for all variables in the data fra
-</div>
-</div>
-<p>d()`</p></li>
+<li><code>summary</code> calculates summary statistics for all variables in the data frame.</li>
 </ul>
+</div>
+</div>
 <p>When we load new packages that have datasets within them, R adds them to the <code>data()</code> list. Actually some packages have no functions, only dataset/s: e.g. <code>gapminder</code> and <code>HistData</code>. Let’s load the <code>HistData</code> package and take a look at the datasets it contains using the <code>data()</code> function and also the <code>help</code> file of the package.</p>
 <pre class="r"><code>install.packages(&quot;HistData&quot;)</code></pre>
 <pre class="r"><code>library(&quot;HistData&quot;)</code></pre>
@@ -280,6 +278,22 @@ Challenge
 <pre><code>## Error in readChar(con, 5L, useBytes = TRUE): cannot open the connection</code></pre>
 </div>
 </div>
+<p>One confusing feature of <code>.Rdata</code> files is that the R object that is loaded need not have the same name as the file; in fact, multiple objects can be contained and loaded from a single <code>.Rdata</code> file. However, it is good practice to only save a single object to an <code>.Rdata</code> file and to give the <code>.Rdata</code> file the same name as the object. Unfortunately, other researchers may not always follow that convention. In the case of this data, the object that is loaded from <code>Study1_data.Rdata</code> is named <code>x</code>. The <code>load</code> function returns the names of the objects that it loads, so you can find them as follows,</p>
+<pre class="r"><code>names_of_objects_loaded &lt;- load(&quot;data/Study1_data.Rdata&quot;)</code></pre>
+<pre><code>## Warning in readChar(con, 5L, useBytes = TRUE): cannot open compressed file
+## &#39;data/Study1_data.Rdata&#39;, probable reason &#39;No such file or directory&#39;</code></pre>
+<pre><code>## Error in readChar(con, 5L, useBytes = TRUE): cannot open the connection</code></pre>
+<pre class="r"><code>names_of_objects_loaded</code></pre>
+<pre><code>## Error in eval(expr, envir, enclos): object &#39;names_of_objects_loaded&#39; not found</code></pre>
+<p>Less progromatically, you can also check the objects in the global environment using either</p>
+<pre class="r"><code>ls()</code></pre>
+<pre><code>##  [1] &quot;challenge_end&quot;   &quot;challenge_start&quot; &quot;Counter&quot;        
+##  [4] &quot;divorce&quot;         &quot;edu&quot;             &quot;phd&quot;            
+##  [7] &quot;salary&quot;          &quot;Sdeaths&quot;         &quot;Snow.deaths&quot;    
+## [10] &quot;Snow.polygons&quot;   &quot;Snow.pumps&quot;      &quot;Snow.streets&quot;   
+## [13] &quot;solution_end&quot;    &quot;solution_start&quot;  &quot;Spumps&quot;         
+## [16] &quot;Sstreets&quot;        &quot;wdi&quot;</code></pre>
+<p>or the “Environment” panel in RStudio for a new variable.</p>
 <div id="challenge-6" class="panel panel-primary">
 <div class="panel-heading">
 <h3 class="panel-title">
@@ -292,7 +306,7 @@ Challenge
 <pre><code>## Error in eval(expr, envir, enclos): object &#39;x&#39; not found</code></pre>
 <pre class="r"><code>table(x$policy_letter_treat)</code></pre>
 <pre><code>## Error in table(x$policy_letter_treat): object &#39;x&#39; not found</code></pre>
-<pre class="r"><code>table(x$policy_letter_treat,x$movable_total)</code></pre>
+<pre class="r"><code>table(x$policy_letter_treat, x$movable_total)</code></pre>
 <pre><code>## Error in table(x$policy_letter_treat, x$movable_total): object &#39;x&#39; not found</code></pre>
 </div>
 </div>

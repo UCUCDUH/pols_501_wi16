@@ -225,13 +225,30 @@ load("data/Study1_data.Rdata")
 ```
 `r challenge_end()`
 
+One confusing feature of `.Rdata` files is that the R object that is loaded need not have the same name as the file; in fact, multiple objects can be contained and loaded from a single `.Rdata` file.
+However, it is good practice to only save a single object to an `.Rdata` file and to give the `.Rdata` file the same name as the object. 
+Unfortunately, other researchers may not always follow that convention.
+In the case of this data, the object that is loaded from `Study1_data.Rdata` is named `x`.
+The `load` function returns the names of the objects that it loads, so you can find them as follows,
+```{r}
+names_of_objects_loaded <- load("data/Study1_data.Rdata")
+names_of_objects_loaded
+```
+Less progromatically, you can also check the objects in the global environment using either
+```{r}
+ls()
+```
+or the "Environment" panel in RStudio for a new variable.
+
+
+
 `r challenge_start()`
 Look at the article and explore the dataset and see if you can identify in the dataset some of the key variables they discuss in the paper. 
 
 ```{r, results='hide'}
 names(x)
 table(x$policy_letter_treat)
-table(x$policy_letter_treat,x$movable_total)
+table(x$policy_letter_treat, x$movable_total)
 ```
 `r challenge_end()`
 
