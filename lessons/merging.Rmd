@@ -82,7 +82,7 @@ The function `inner_join` and all the **dplyr** join commands will give the erro
 ```
 Error: No common variables. Please specify `by` param.
 ```
-and not let you join. This is in constrast with the base R function `merge` which will do bad things if you try this.
+and not let you join. This is in contrast with the base R function `merge` which will do bad things if you try this.
 
 
 # Merge
@@ -110,7 +110,7 @@ What does merge do when there are no overlapping variables?
 ```{r}
 merge(foo, qux)
 ```
-This is **BAD**. The new dataset is the product of the number of observaations in the two datasets, with every combination of them. If you merged two 100,000 observation dataset, your new dataset would have a billion observations.
+This is **BAD**. The new dataset is the product of the number of observations in the two datasets, with every combination of them. If you merged two 100,000 observation dataset, your new dataset would have a billion observations.
 
 # Semi-Merge and Anti-Merge
 

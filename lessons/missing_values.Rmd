@@ -84,7 +84,7 @@ Start with the vector of capital Latin letters.
 letr <- LETTERS
 ```
 Note that the variables `letters` and `LETTERS`
-have the 26 Latin alphabet letters in lowercase and upppercase, respectively.
+have the 26 Latin alphabet letters in lowercase and uppercase, respectively.
 
 Randomly set 3 elements to NA, and 3 elements to ""
 ```{r}

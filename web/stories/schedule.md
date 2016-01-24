@@ -82,8 +82,8 @@ Lab
 Useful references for data visualization
 
 - Gelman, Andrew. 2002. "Let's Practice What We Preach: Turning Tables into Graphs." *The American Statistician.* [[URL](http://www.jstor.org/stable/3087382)]
-- Kastellec, Jonathan P., and Eduardo L. Leoni. "Using Graphs Insted of Tables in Political Science." *Perspectives on Politics.* [[DOI](https://dx.doi.org/10.1017/S1537592707072209)] (Also see associated website [tables2graphs.com](http://tables2graphs.com/doku.php).)
-- Stephen Few [perceptualedge.com](https://www.perceptualedge.com/library.php) and his books: *Show Me the Numbers: Designing Tables and Graphs to Enlighten* and *Now You See It: Simple Visualization Techniquest for Quantitative Analysis*. As well as many of his [articles](https://www.perceptualedge.com/library.php#Articles).
+- Kastellec, Jonathan P., and Eduardo L. Leoni. "Using Graphs Instead of Tables in Political Science." *Perspectives on Politics.* [[DOI](https://dx.doi.org/10.1017/S1537592707072209)] (Also see associated website [tables2graphs.com](http://tables2graphs.com/doku.php).)
+- Stephen Few [perceptualedge.com](https://www.perceptualedge.com/library.php) and his books: *Show Me the Numbers: Designing Tables and Graphs to Enlighten* and *Now You See It: Simple Visualization Techniques for Quantitative Analysis*. As well as many of his [articles](https://www.perceptualedge.com/library.php#Articles).
 - William S. Cleveland's books are classics: *The Elements of Graphing Data* and *Visualizing Data*
 - Edward Tufte's books are also classics: *The Visual Display of Quantitative Information*, *Visual Explanations*, *Envisioning Information*, and *Beautiful Evidence*.
 - Christopher Adolph's course [CSSS 569: Visualizing Data](http://faculty.washington.edu/cadolph/index.php?page=22).
