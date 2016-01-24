@@ -131,7 +131,7 @@ Useful references for data visualization
 Optional readings
 
 <ul class="fa-ul">
-<li><i class="fa-li fa fa-book"></i>Garrett Grolemund and Hadley Wickham. <a href="/lessons/missing_values.html">R for Data Science</a>. Chapters <a href="http://r4ds.had.co.nz/transform.html">"Data transformation"</a>, <a href="http://r4ds.had.co.nz/tidy.html">"Tidy Data"</a>, and <a href="http://r4ds.had.co.nz/relational.html">"Relational Data"</a>.
+<li><i class="fa-li fa fa-book"></i>Garrett Grolemund and Hadley Wickham. <a href="http://r4ds.had.co.nz/">R for Data Science</a>. Chapters <a href="http://r4ds.had.co.nz/transform.html">"Data transformation"</a>, <a href="http://r4ds.had.co.nz/tidy.html">"Tidy Data"</a>, and <a href="http://r4ds.had.co.nz/relational-data.html">"Relational Data"</a>.
 </ul>
 
 

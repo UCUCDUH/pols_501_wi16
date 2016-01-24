@@ -25,7 +25,7 @@ This article won the [2015 Best Visualization Award](https://www.prio.org/JPR/Vi
 
 The replication data for the article is available in JPR's [website](https://www.prio.org/JPR/Datasets/). However, since the replication material for this paper takes a while to download, and the four datasets they use are large and have numerous variables, for the purpose of this class we will use a version of one of their datasets that I put together. 
 
-Download the dataset in this [link](https://github.com/UW-POLS501/pols_501_wi16/blob/master/labs/subsetting-and-plotting/data/country.csv) and store it in the **data** subdirectory
+Download the dataset in this [link](https://github.com/UW-POLS501/pols_501_wi16/blob/master/lessons/data/country.csv) and store it in the **data** subdirectory
 
 
 ## Plot data using `ggplot2`
