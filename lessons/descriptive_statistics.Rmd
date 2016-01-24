@@ -84,8 +84,7 @@ m = \arg \min_a \sum_{i = 1}^n d(x_i, a)
 $$
 using the appropriate definition of $d$ .
 
-There are better ways to find this, but for pedagical purposes, try finding the mean with brute force way.
-Sttart with the mean.
+There are better ways to find this, but for pedagogical purposes, try finding the mean by checking many possible values, and finding the one with the smallest sum of errors.
 What we want to do is for many different values of $a$, calculate $\sum_{i = 1}^2 d(x_i, a)$.
 The mean will be the value of $a$ that has the smallest value of $\sum_{i = 1}^2 d(x_i, a)$.
 
@@ -177,7 +176,7 @@ for (i in 1:length(a)) {
   # errors[i] <- ???
 }
 ```
-Now plot the valus of `errors` to find the median.
+Now plot the values of `errors` to find the median.
 ```{r}
 ggplot() +
   geom_line(data.frame(a = a, errors = errors),

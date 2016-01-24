@@ -88,7 +88,7 @@ library(dplyr)
 library(MASS)
 ```
 What are the messages shown when you load them?
-Now try consider the dataset cars in ggplot`
+Now try using the dataset `cars` in **ggplot2**,
 ```
 data(mpg, package = "ggplot2")
 ```
@@ -108,11 +108,11 @@ dplyr::select(mpg, manufacturer, model, year)
 
 This problem can also occur if you define functions or variables that have the same
 names as functions and variables from packages or in base R.
-Define a new function called `ggplot`.
+Define a new function named `ggplot`,
 ```
 ggplot <- function(x) print(x)
 ```
-Try creating a plot with `ggplot`
+Try creating a plot with the `ggplot` function
 ```
 ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, colour = Species)) +
   geom_point()
