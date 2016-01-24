@@ -110,7 +110,7 @@ Useful references for data visualization
 <li><i class="fa-li fa fa-book"></i> Wickham, Hadley. 2014. "Tidy Data." <em>Journal of Statistical Software</em>. <a href="http://dx.doi.org/10.18637/jss.v059.i10">[URL]</a>. </li>
 <li> <i class="fa-li fa fa-book"></i> "Introduction to dplyr" [[URL](https://cran.rstudio.com/web/packages/dplyr/vignettes/introduction.html)]
 <li> <i class="fa-li fa fa-book"></i> <em>SMISS</em> Ch. 4, "Probability Theory: Basic Properties of Data-Generating Processes". Optional. This goes beyond the coverage of probability in OpenIntro.
-<li> <i class="fa-li fa fa-video-camera"></i> Hadley Wickham dplyr tutorial at useR! 2014 [Part 1](https://www.youtube.com/watch?v=8SGif63VW6E), [Part 2](https://www.youtube.com/watch?v=Ue08LVuk790). Video tutorial on the **dplyr** package.
+<li> <i class="fa-li fa fa-video-camera"></i> Hadley Wickham dplyr tutorial at useR! 2014: <a href="https://www.youtube.com/watch?v=8SGif63VW6E">Part 1</a>, <a href="https://www.youtube.com/watch?v=Ue08LVuk790">Part 2</a>.
 <li><i class="fa-li fa fa-code"></i> Data Camp <a href="https://www.datacamp.com/courses/dplyr-data-manipulation-r-tutorial">Data Manipulation in R with dplyr</a> </li> Optional. This can clarity the information in the vignette.
 </ul>
 
