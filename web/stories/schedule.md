@@ -120,18 +120,21 @@ Useful references for data visualization
 <li><i class="fa-li fa fa-bar-chart"></i><a href="/lessons/missing_values.html">Missing values (NA)</a>
 <li><i class="fa-li fa fa-bar-chart"></i><a href="/lessons/pipe.html">`%>%`: The Pipe Operator </a> (<a href="/lessons/pipe-template.R"> R template</a>)
 <li><i class="fa-li fa fa-bar-chart"></i><a href="/lessons/merging.html">Joining Datasets </a> (<a href="/lessons/merging-template.R"> R template</a>)
-<li><i class="fa-li fa fa-bar-chart"></i><a href="/lessons/tidy_data.html">Tidy Data</a> (<a href="/lessons/tidy_data-template.R"> R template</a>)
-<li><i class="fa-li fa fa-bar-chart"></i><a href="/lessons/common_errors_in_R.html">Common Errors in R</a> (<a href="/lessons/common_errors_in_R-template.R"> R template</a>)
 </ul>
 
 **Lab**
+
+<ul class="fa-ul">
+<li><i class="fa-li fa fa-bar-chart"></i><a href="/lessons/merging_application.html">Joining Datasets: An Application</a>
+</ul>
+
 
 # Week 4
 
 **Distributions; Data Generating Process**
 
 <ul class="fa-ul">
-<li> <i class="fa-li fa fa-book"></i> <em>OpenIntro</em>, Ch 3  </li>
+<li> <i class="fa-li fa fa-book"></i> <em>OpenIntro</em>, Ch 3</li>
 <li> <i class="fa-li fa fa-book"></i> <em>SMISS</em>. "Chapter 5: Expectation and Moments: Summaries of Data Generating Processes" Sections 5.1, 5.2.1. </li>
 <li> <i class="fa-li fa fa-book"></i> <em>SMISS</em>. "Chapter 6: Linking Positive Theories and Data-Generating Processes." Section 6.1&ndash;6.3, 6.5&ndash;6.6. </li>
 </ul>
