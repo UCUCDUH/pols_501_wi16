@@ -8,7 +8,7 @@
 - [Missing values (NA)](/lessons/missing_values.html)
 - [%>%: The Pipe Operator](/lessons/pipe.html) 
 - [Joining Datasets ](/lessons/merging.html)
-- [Joining Datasets: An application](/lessons/merging-application.html)
+- [Joining Datasets: An application](/lessons/merging_application.html)
 - [Miscellaneous Useful Functions](/lessons/data_manipulation_utility_functions.html)
 
 # Miscellaneous

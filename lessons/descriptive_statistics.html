@@ -168,7 +168,7 @@ Challenge
 <p>Then to find the value of the statistic find the value of <span class="math inline">\(m\)</span> that minimizes the sum of <span class="math inline">\(d(x_i, m)\)</span> for the sample, <span class="math display">\[
 m = \arg \min_a \sum_{i = 1}^n d(x_i, a)
 \]</span> using the appropriate definition of <span class="math inline">\(d\)</span> .</p>
-<p>There are better ways to find this, but for pedagical purposes, try finding the mean with brute force way. Sttart with the mean. What we want to do is for many different values of <span class="math inline">\(a\)</span>, calculate <span class="math inline">\(\sum_{i = 1}^2 d(x_i, a)\)</span>. The mean will be the value of <span class="math inline">\(a\)</span> that has the smallest value of <span class="math inline">\(\sum_{i = 1}^2 d(x_i, a)\)</span>.</p>
+<p>There are better ways to find this, but for pedagogical purposes, try finding the mean by checking many possible values, and finding the one with the smallest sum of errors. What we want to do is for many different values of <span class="math inline">\(a\)</span>, calculate <span class="math inline">\(\sum_{i = 1}^2 d(x_i, a)\)</span>. The mean will be the value of <span class="math inline">\(a\)</span> that has the smallest value of <span class="math inline">\(\sum_{i = 1}^2 d(x_i, a)\)</span>.</p>
 <p>Let’s randomly draw some values for a sample.</p>
 <pre class="r"><code>x &lt;- sample(-20:20, 10, replace = TRUE)
 x</code></pre>
@@ -234,7 +234,7 @@ for (i in 1:length(a)) {
   # Edit the line below to use the d(x_i, a) for the median
   # errors[i] &lt;- ???
 }</code></pre>
-<p>Now plot the valus of <code>errors</code> to find the median.</p>
+<p>Now plot the values of <code>errors</code> to find the median.</p>
 <pre class="r"><code>ggplot() +
   geom_line(data.frame(a = a, errors = errors),
             mapping = aes(x = a, y = errors)) +

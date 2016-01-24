@@ -204,7 +204,7 @@ inner_join(foo, quux, by = &quot;x&quot;)</code></pre>
 <pre><code>inner_join(foo, qux)</code></pre>
 <p>The function <code>inner_join</code> and all the <strong>dplyr</strong> join commands will give the error message</p>
 <pre><code>Error: No common variables. Please specify `by` param.</code></pre>
-<p>and not let you join. This is in constrast with the base R function <code>merge</code> which will do bad things if you try this.</p>
+<p>and not let you join. This is in contrast with the base R function <code>merge</code> which will do bad things if you try this.</p>
 </div>
 <div id="merge" class="section level1">
 <h1>Merge</h1>
@@ -256,7 +256,7 @@ inner_join(foo, quux, by = &quot;x&quot;)</code></pre>
 ## 14 b 2  d 40
 ## 15 c 3  d 40
 ## 16 d 4  d 40</code></pre>
-<p>This is <strong>BAD</strong>. The new dataset is the product of the number of observaations in the two datasets, with every combination of them. If you merged two 100,000 observation dataset, your new dataset would have a billion observations.</p>
+<p>This is <strong>BAD</strong>. The new dataset is the product of the number of observations in the two datasets, with every combination of them. If you merged two 100,000 observation dataset, your new dataset would have a billion observations.</p>
 </div>
 <div id="semi-merge-and-anti-merge" class="section level1">
 <h1>Semi-Merge and Anti-Merge</h1>

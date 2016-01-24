@@ -138,7 +138,9 @@ iris[[&quot;Species&quot;]]</code></pre>
 <pre><code>## The following object is masked from &#39;package:dplyr&#39;:
 ## 
 ##     select</code></pre>
-<p>What are the messages shown when you load them? Now try consider the dataset cars in ggplot<code>``` data(mpg, package = &quot;ggplot2&quot;) ``` Select the variables</code>manufacturer<code>,</code>model<code>, and</code>year<code>from</code>mpg`.</p>
+<p>What are the messages shown when you load them? Now try using the dataset <code>cars</code> in <strong>ggplot2</strong>,</p>
+<pre><code>data(mpg, package = &quot;ggplot2&quot;)</code></pre>
+<p>Select the variables <code>manufacturer</code>, <code>model</code>, and <code>year</code> from <code>mpg</code>.</p>
 <pre><code>select(mpg, manufacturer, model, year)</code></pre>
 <p>What’s going on?</p>
 <div class="panel panel-info">
@@ -152,9 +154,9 @@ iris[[&quot;Species&quot;]]</code></pre>
 <pre><code>dplyr::select(mpg, manufacturer, model, year)</code></pre>
 </div>
 </div>
-<p>This problem can also occur if you define functions or variables that have the same names as functions and variables from packages or in base R. Define a new function called <code>ggplot</code>.</p>
+<p>This problem can also occur if you define functions or variables that have the same names as functions and variables from packages or in base R. Define a new function named <code>ggplot</code>,</p>
 <pre><code>ggplot &lt;- function(x) print(x)</code></pre>
-<p>Try creating a plot with <code>ggplot</code></p>
+<p>Try creating a plot with the <code>ggplot</code> function</p>
 <pre><code>ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, colour = Species)) +
   geom_point()</code></pre>
 <p>However, you can still create a plot with</p>
