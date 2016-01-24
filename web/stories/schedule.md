@@ -128,6 +128,12 @@ Useful references for data visualization
 <li><i class="fa-li fa fa-bar-chart"></i><a href="/lessons/merging_application.html">Joining Datasets: An Application</a>
 </ul>
 
+Optional readings
+
+<ul class="fa-ul">
+<li><i class="fa-li fa fa-book"></i>Garrett Grolemund and Hadley Wickham. <a href="/lessons/missing_values.html">R for Data Science</a>. Chapters 3 <a href="http://r4ds.had.co.nz/tidy.html">"Tidy Data"</a> and 4 <a href="http://r4ds.had.co.nz/relational.html">"Relational Data"</a>
+</ul>
+
 
 # Week 4
 
