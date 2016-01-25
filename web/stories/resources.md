@@ -10,6 +10,7 @@
 - [Joining Datasets ](/lessons/merging.html)
 - [Joining Datasets: An application](/lessons/merging_application.html)
 - [Miscellaneous Useful Functions](/lessons/data_manipulation_utility_functions.html)
+- [Application: WDI cleaning with dplyr and tidyr](/lessons/wdi.html)
 
 # Miscellaneous
 
