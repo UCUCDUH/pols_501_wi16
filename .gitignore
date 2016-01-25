@@ -11,6 +11,11 @@ node_modules
 .#*
 #*#
 
+*_files
+*_cache
+
 /web/output
 /web/files/*-diff.txt
 /web/files/lessons
+/lessons/data/WDI_csv.zip
+/lessons/data/WDI/

@@ -1,0 +1,118 @@
+---
+title: "Application: Downloading and Cleaning WDI data"
+author: "Jeffrey Arnold"
+date: "January 24, 2016"
+output: html_document
+---
+
+```{r}
+library("dplyr")
+library("tidyr")
+library("ggplot2")
+library("stringr")
+```
+
+We first need to download the WDI data. This could be done manually, but I 
+will do it using R commands for maximum replicability.
+Download the zip file,
+```{r}
+download.file("http://databank.worldbank.org/data/download/WDI_csv.zip",
+              "data/WDI_csv.zip")
+```
+This may take a few minutes since it is in the tens of megabytes.
+Unzip it to `data/WDI`
+```{r}
+unzip("data/WDI_csv.zip", exdir = "data/WDI")
+```
+
+Let's see what files were included in the zip file
+```{r}
+dir("data/WDI")
+```
+The `dir` function lists the files in a directory.
+
+The files of interest for this analysis are `WDI_Country`, and
+`WDI_Data`, which has the series.
+```{r}
+wdi_country <- read.csv("data/WDI/WDI_Country.csv", stringsAsFactors = FALSE,
+                        fileEncoding = "cp1252") %>%
+  tbl_df()
+wdi_data <- read.csv("data/WDI/WDI_Data.csv", stringsAsFactors = FALSE,
+                     fileEncoding = "cp1252") %>%
+  tbl_df()
+wdi_series <- read.csv("data/WDI/WDI_Series.csv", stringsAsFactors = FALSE,
+                     fileEncoding = "cp1252") %>%
+  tbl_df()
+```
+The dataset `WDI_Country` contains country-level data, including names of the country, its income group, region, lending category, and many other technocratic details.
+Encoding is the specific method which characters are stored; the option `fileEncoding` is needed to prevent an error message.
+```{r}
+glimpse(wdi_country)
+```
+The dataset `WDI_Data` contains the WDI data,
+```{r}
+glimpse(wdi_data)
+```
+However, it is an inconvenient and hardly tidy format with each column a year, and each row a country-variable. 
+In the csv file, the columns are named "1960", "1961", ..., but in the data frame they are named "X1960", "X1961", .... This is because "1960" is an invalid name for an R variable, so R creates a valid name by prefixing it with an "X".
+
+In order to get this data in a form usable for analysis, the first step is to reshape `WDI_data` so each row is a (country, year).
+We can do that with the **tidyr** function `gather`.
+We use the `matches` function to only match the variables beginning with "X", which are the year variables,
+```{r}
+wdi_data_long <-
+  wdi_data %>%
+  select(-Indicator.Name) %>%
+  gather(year, value, matches("^X"))
+glimpse(wdi_data_long)
+```
+However, the variable `year` still has an "X" prefix.
+We will remove the "X" using the function `str_replace` from the **stringr** package,
+and convert it to an integer vector.
+```{r}
+wdi_data_long <- mutate(wdi_data_long, 
+                        year = as.integer(str_replace(year, "X", "")))
+```
+Now reshape the dataset so each variable is a column,
+```{r}
+wdi_data_long <- wdi_data_long %>%
+  spread(Indicator.Code, value)
+dim(wdi_data_long)
+```
+Now each row of the dataset is a (country, year) observation and each column is a variable.
+
+Let's merge the data with the country data to add their regions and income levels.
+The variable `Country.Code` in both data frames are their keys.
+```{r}
+wdi_data_long <-
+  wdi_data_long %>%
+  left_join(select(wdi_country, Country.Code, Region, Income.Group),
+            by = "Country.Code")
+```
+The WDI data include "country" observations that are actually aggregations of countries, for example, "OECD members", "High income", "Sub-Saharan Africa (all income levels)".
+These observations have empty values for `Region`, and we can filter them out using that.
+```{r}
+wdi_data_long <- wdi_data_long %>%
+  filter(Region != "")
+```
+
+
+Let's use this data to make a plot. For example, the
+average CO2 emissions per capita by decade by income group,
+```{r message = FALSE,warning = FALSE}
+ggplot(select(wdi_data_long, Income.Group, year,
+              Country.Code, EN.ATM.CO2E.PC) %>%
+         filter(!is.na(EN.ATM.CO2E.PC)) %>%
+         mutate(decade = year %/% 10 * 10) %>%
+         group_by(decade, Country.Code) %>%
+         summarise(EN.ATM.CO2E.PC = mean(EN.ATM.CO2E.PC),
+                   Income.Group = first(Income.Group)),
+       aes(x = factor(decade),
+           y = EN.ATM.CO2E.PC,
+           color = Income.Group)) +
+  geom_boxplot()
+```
+
+<!--
+For more on strings and regular expressions see [Introduction to stringr](https://cran.r-project.org/web/packages/stringr/vignettes/stringr.html) and the *R for Data Science* chapter [Strings](http://r4ds.had.co.nz/strings.html).
+-->
