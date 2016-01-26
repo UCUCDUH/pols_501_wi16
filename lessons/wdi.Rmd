@@ -5,22 +5,28 @@ date: "January 24, 2016"
 output: html_document
 ---
 
-```{r}
+This lesson is a practical example of using R to clean and tidy the World Bank [World Development Indicators](http://data.worldbank.org/data-catalog/world-development-indicators) data which is 
+
+   The primary World Bank collection of development indicators, compiled from officially-recognized international sources. It presents the most current and accurate global development data available, and includes national, regional and global estimates.[^1]
+
+[^1]: http://data.worldbank.org/data-catalog/world-development-indicators
+
+```{r message=FALSE}
 library("dplyr")
 library("tidyr")
 library("ggplot2")
 library("stringr")
 ```
 
-We first need to download the WDI data. This could be done manually, but I 
-will do it using R commands for maximum replicability.
+We first need to download the WDI data.
+This could be done manually  by downloading the file and unzipping it, but these steps can also be automated with R functions.
 Download the zip file,
 ```{r}
 download.file("http://databank.worldbank.org/data/download/WDI_csv.zip",
               "data/WDI_csv.zip")
 ```
 This may take a few minutes since it is in the tens of megabytes.
-Unzip it to `data/WDI`
+Unzip it to `data/WDI` using the function `unzip()`,
 ```{r}
 unzip("data/WDI_csv.zip", exdir = "data/WDI")
 ```
@@ -58,7 +64,7 @@ In the csv file, the columns are named "1960", "1961", ..., but in the data fram
 
 In order to get this data in a form usable for analysis, the first step is to reshape `WDI_data` so each row is a (country, year).
 We can do that with the **tidyr** function `gather`.
-We use the `matches` function to only match the variables beginning with "X", which are the year variables,
+We use the `matches` function to only match the variables beginning with "X", which are the year variables.[^2]
 ```{r}
 wdi_data_long <-
   wdi_data %>%
@@ -67,8 +73,8 @@ wdi_data_long <-
 glimpse(wdi_data_long)
 ```
 However, the variable `year` still has an "X" prefix.
-We will remove the "X" using the function `str_replace` from the **stringr** package,
-and convert it to an integer vector.
+We will remove the "X" using the function `str_replace` from the [stringr](https://cran.r-project.org/web/packages/stringr/vignettes/stringr.html) package,
+and convert it to an integer vector.[^3]
 ```{r}
 wdi_data_long <- mutate(wdi_data_long, 
                         year = as.integer(str_replace(year, "X", "")))
@@ -80,6 +86,10 @@ wdi_data_long <- wdi_data_long %>%
 dim(wdi_data_long)
 ```
 Now each row of the dataset is a (country, year) observation and each column is a variable.
+
+[^2]: The leading "^" means to match the start of the string. This is an example of a regular expression, which is a powerful method for pattern matching. See [R for Data Science](http://r4ds.had.co.nz/strings.html) for more.
+
+[^3]: The **stringr** package contains many functions for processing strings. See the [introduction](https://cran.r-project.org/web/packages/stringr/vignettes/stringr.html) or the *R for Data Science* chapeter on [Strings](http://r4ds.had.co.nz/strings.html) for more information on it.
 
 Let's merge the data with the country data to add their regions and income levels.
 The variable `Country.Code` in both data frames are their keys.
@@ -110,7 +120,10 @@ ggplot(select(wdi_data_long, Income.Group, year,
        aes(x = factor(decade),
            y = EN.ATM.CO2E.PC,
            color = Income.Group)) +
-  geom_boxplot()
+  geom_boxplot() +
+  scale_colour_discrete("Income Group") +
+  ylab("CO2 Emissions per capita") +
+  xlab("")
 ```
 
 <!--

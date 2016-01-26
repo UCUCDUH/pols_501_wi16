@@ -82,22 +82,16 @@ $$
 </div>
 
 
-<pre class="r"><code>library(&quot;dplyr&quot;)</code></pre>
-<pre><code>## 
-## Attaching package: &#39;dplyr&#39;</code></pre>
-<pre><code>## The following objects are masked from &#39;package:stats&#39;:
-## 
-##     filter, lag</code></pre>
-<pre><code>## The following objects are masked from &#39;package:base&#39;:
-## 
-##     intersect, setdiff, setequal, union</code></pre>
-<pre class="r"><code>library(&quot;tidyr&quot;)
+<p>This lesson is a practical example of using R to clean and tidy the World Bank <a href="http://data.worldbank.org/data-catalog/world-development-indicators">World Development Indicators</a> data which is</p>
+<p>The primary World Bank collection of development indicators, compiled from officially-recognized international sources. It presents the most current and accurate global development data available, and includes national, regional and global estimates.<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a></p>
+<pre class="r"><code>library(&quot;dplyr&quot;)
+library(&quot;tidyr&quot;)
 library(&quot;ggplot2&quot;)
 library(&quot;stringr&quot;)</code></pre>
-<p>We first need to download the WDI data. This could be done manually, but I will do it using R commands for maximum replicability. Download the zip file,</p>
+<p>We first need to download the WDI data. This could be done manually by downloading the file and unzipping it, but these steps can also be automated with R functions. Download the zip file,</p>
 <pre class="r"><code>download.file(&quot;http://databank.worldbank.org/data/download/WDI_csv.zip&quot;,
               &quot;data/WDI_csv.zip&quot;)</code></pre>
-<p>This may take a few minutes since it is in the tens of megabytes. Unzip it to <code>data/WDI</code></p>
+<p>This may take a few minutes since it is in the tens of megabytes. Unzip it to <code>data/WDI</code> using the function <code>unzip()</code>,</p>
 <pre class="r"><code>unzip(&quot;data/WDI_csv.zip&quot;, exdir = &quot;data/WDI&quot;)</code></pre>
 <p>Let’s see what files were included in the zip file</p>
 <pre class="r"><code>dir(&quot;data/WDI&quot;)</code></pre>
@@ -215,7 +209,7 @@ wdi_series &lt;- read.csv(&quot;data/WDI/WDI_Series.csv&quot;, stringsAsFactors 
 ## $ X2014          (dbl) NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,...
 ## $ X2015          (dbl) NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,...</code></pre>
 <p>However, it is an inconvenient and hardly tidy format with each column a year, and each row a country-variable. In the csv file, the columns are named “1960”, “1961”, …, but in the data frame they are named “X1960”, “X1961”, …. This is because “1960” is an invalid name for an R variable, so R creates a valid name by prefixing it with an “X”.</p>
-<p>In order to get this data in a form usable for analysis, the first step is to reshape <code>WDI_data</code> so each row is a (country, year). We can do that with the <strong>tidyr</strong> function <code>gather</code>. We use the <code>matches</code> function to only match the variables beginning with “X”, which are the year variables,</p>
+<p>In order to get this data in a form usable for analysis, the first step is to reshape <code>WDI_data</code> so each row is a (country, year). We can do that with the <strong>tidyr</strong> function <code>gather</code>. We use the <code>matches</code> function to only match the variables beginning with “X”, which are the year variables.<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a></p>
 <pre class="r"><code>wdi_data_long &lt;-
   wdi_data %&gt;%
   select(-Indicator.Name) %&gt;%
@@ -226,9 +220,9 @@ glimpse(wdi_data_long)</code></pre>
 ## $ Country.Name   (chr) &quot;Arab World&quot;, &quot;Arab World&quot;, &quot;Arab World&quot;, &quot;Arab...
 ## $ Country.Code   (chr) &quot;ARB&quot;, &quot;ARB&quot;, &quot;ARB&quot;, &quot;ARB&quot;, &quot;ARB&quot;, &quot;ARB&quot;, &quot;ARB&quot;...
 ## $ Indicator.Code (chr) &quot;PA.NUS.PPP.05&quot;, &quot;PA.NUS.PRVT.PP.05&quot;, &quot;EG.ELC.A...
-## $ year           (chr) &quot;X1960&quot;, &quot;X1960&quot;, &quot;X1960&quot;, &quot;X1960&quot;, &quot;X1960&quot;, &quot;X...
+## $ year           (fctr) X1960, X1960, X1960, X1960, X1960, X1960, X196...
 ## $ value          (dbl) NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,...</code></pre>
-<p>However, the variable <code>year</code> still has an “X” prefix. We will remove the “X” using the function <code>str_replace</code> from the <strong>stringr</strong> package, and convert it to an integer vector.</p>
+<p>However, the variable <code>year</code> still has an “X” prefix. We will remove the “X” using the function <code>str_replace</code> from the <a href="https://cran.r-project.org/web/packages/stringr/vignettes/stringr.html">stringr</a> package, and convert it to an integer vector.<a href="#fn3" class="footnoteRef" id="fnref3"><sup>3</sup></a></p>
 <pre class="r"><code>wdi_data_long &lt;- mutate(wdi_data_long, 
                         year = as.integer(str_replace(year, &quot;X&quot;, &quot;&quot;)))</code></pre>
 <p>Now reshape the dataset so each variable is a column,</p>
@@ -256,11 +250,22 @@ dim(wdi_data_long)</code></pre>
        aes(x = factor(decade),
            y = EN.ATM.CO2E.PC,
            color = Income.Group)) +
-  geom_boxplot()</code></pre>
+  geom_boxplot() +
+  scale_colour_discrete(&quot;Income Group&quot;) +
+  ylab(&quot;CO2 Emissions per capita&quot;) +
+  xlab(&quot;&quot;)</code></pre>
 <p><img src="wdi_files/figure-html/unnamed-chunk-13-1.png" title="" alt="" width="672" /></p>
 <!--
 For more on strings and regular expressions see [Introduction to stringr](https://cran.r-project.org/web/packages/stringr/vignettes/stringr.html) and the *R for Data Science* chapter [Strings](http://r4ds.had.co.nz/strings.html).
 -->
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p><a href="http://data.worldbank.org/data-catalog/world-development-indicators" class="uri">http://data.worldbank.org/data-catalog/world-development-indicators</a><a href="#fnref1">↩</a></p></li>
+<li id="fn2"><p>The leading “^” means to match the start of the string. This is an example of a regular expression, which is a powerful method for pattern matching. See <a href="http://r4ds.had.co.nz/strings.html">R for Data Science</a> for more.<a href="#fnref2">↩</a></p></li>
+<li id="fn3"><p>The <strong>stringr</strong> package contains many functions for processing strings. See the <a href="https://cran.r-project.org/web/packages/stringr/vignettes/stringr.html">introduction</a> or the <em>R for Data Science</em> chapeter on <a href="http://r4ds.had.co.nz/strings.html">Strings</a> for more information on it.<a href="#fnref3">↩</a></p></li>
+</ol>
+</div>
 
 <hr>
 <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://licensebuttons.net/l/by-nc-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
