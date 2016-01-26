@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="author" content="Andreu Casas" />
+
+<meta name="date" content="2016-01-29" />
+
+<title>Probability and Distributions in R</title>
+
+<script src="libs/jquery-1.11.0/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap-3.3.1/css/cerulean.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.1/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.1/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.1/shim/respond.min.js"></script>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<link rel="stylesheet"
+      href="libs/highlight/textmate.css"
+      type="text/css" />
+<script src="libs/highlight/highlight.js"></script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img { 
+  max-width:100%; 
+  height: auto; 
+}
+</style>
+<div class="container-fluid main-container">
+
+<p>
+<strong>POL S/CS&amp;SS 501, University of Washington, Winter 2016</strong>
+</p>
+
+$$
+\DeclareMathOperator{\mean}{mean}
+\DeclareMathOperator{\var}{var}
+\DeclareMathOperator{\E}{E}
+\DeclareMathOperator{\argmin}{argmin}
+\DeclareMathOperator{\argmax}{argmax}
+$$
+
+<div id="header">
+<h1 class="title">Probability and Distributions in R</h1>
+<h4 class="author"><em>Andreu Casas</em></h4>
+<h4 class="date"><em>January 29, 2016</em></h4>
+</div>
+
+<div id="TOC">
+<ul>
+<li><a href="#learning-objectives">Learning Objectives</a></li>
+<li><a href="#sampling-theoretical-and-fundamental-uncertainty">Sampling, Theoretical, and Fundamental Uncertainty</a></li>
+<li><a href="#probability-and-distributions-in-r">Probability and Distributions in R</a></li>
+</ul>
+</div>
+
+<div id="learning-objectives" class="section level2">
+<h2>Learning Objectives</h2>
+<ol style="list-style-type: decimal">
+<li>What is uncertainty and types of uncertainty</li>
+<li>What are probabilities and different types of distributions</li>
+<li>How to use them in R</li>
+</ol>
+</div>
+<div id="sampling-theoretical-and-fundamental-uncertainty" class="section level2">
+<h2>Sampling, Theoretical, and Fundamental Uncertainty</h2>
+<p><strong>What is sampling uncertainty?</strong></p>
+<p>SMISS (p.73): “Uncertainty about the characteristics of a wole that remains after observing a part”</p>
+<p>We will use the <strong>gapminder</strong> dataset to better understand <em>sampling uncertainty</em>:</p>
+<ul>
+<li>Subset only the observations in <strong>gapminder</strong> from 2007 (imagine this is the population: all existing countries)</li>
+<li>Calculate the mean and standard deviation of <strong>lifeExp</strong></li>
+<li>Subset 10 random countries from the 2007 dataset</li>
+<li>Calculate the mean and standard deviation of <strong>lifeExp</strong> for those 10 obs.</li>
+</ul>
+<pre class="r"><code>library(dplyr)
+library(gapminder)
+data(gapminder)
+set.seed(123)</code></pre>
+<pre class="r"><code>data2007 &lt;- gapminder %&gt;%
+  filter(year == &quot;2007&quot;)
+
+x &lt;- mean(data2007$lifeExp) 
+s &lt;- sd(data2007$lifeExp)
+
+random_10_countries &lt;- sample(gapminder$country, 10)
+data2007_10 &lt;- data2007 %&gt;%
+  filter(country %in% random_10_countries)
+
+x_hat &lt;- mean(data2007_10$lifeExp)
+s_10 &lt;- sd(data2007_10$lifeExp)</code></pre>
+<p>For a particular case (since we randomly sample 10 countries, each time we repeat the analysis we get sligthly different results) we obtain that:</p>
+<!-- html table generated in R 3.2.3 by xtable 1.8-0 package -->
+<!-- Tue Jan 26 11:42:29 2016 -->
+<table border="1">
+<tr>
+<th>
+</th>
+<th>
+Mean
+</th>
+<th>
+SD
+</th>
+</tr>
+<tr>
+<td align="right">
+Population
+</td>
+<td align="right">
+67.01
+</td>
+<td align="right">
+12.07
+</td>
+</tr>
+<tr>
+<td align="right">
+Sample
+</td>
+<td align="right">
+65.50
+</td>
+<td align="right">
+14.59
+</td>
+</tr>
+</table>
+<p></p>
+<div id="challenge-1" class="panel panel-primary">
+<div class="panel-heading">
+<h3 class="panel-title">
+Challenge
+</h3>
+</div>
+<div class="panel-body">
+<p>What are the <em>theoretical</em> and <em>fundamental</em> uncertainties?</p>
+</div>
+</div>
+</div>
+<div id="probability-and-distributions-in-r" class="section level2">
+<h2>Probability and Distributions in R</h2>
+<p>How many heads and how many tails would we get if we flip a fair coin 10 times?</p>
+<pre class="r"><code>flips_10 &lt;- sample(x = c(&#39;head&#39;,&#39;tails&#39;), size = 10, replace = TRUE)
+table(flips_10)</code></pre>
+<pre><code>## flips_10
+##  head tails 
+##     4     6</code></pre>
+<p>According to the last (Jan. 26, 2016) <em>polls-only</em> forecast of <a href="http://projects.fivethirtyeight.com/election-2016/primary-forecast/iowa-republican/#polls-only">FiveThirtyEight</a>, Donald Trump has a 55% probability of winning the Iowa caucuses.</p>
+<div id="challenge-2" class="panel panel-primary">
+<div class="panel-heading">
+<h3 class="panel-title">
+Challenge
+</h3>
+</div>
+<div class="panel-body">
+<p>How can we simulate the Iowa caucuses to make one prediction of Trumps’s victory/loss? What type of distribution represents this outcome variable?</p>
+</div>
+</div>
+<pre class="r"><code># Bernoulli Distribution: a Bernoulli Trial
+trump_result &lt;- rbinom(size = 1, # Number of trials
+                       n = 1,    # Number of observations
+                       p = .55)  # Probability of succes on each trial
+print(c(&quot;Trump Loses :(&quot;, &quot;Trump Wins! :)&quot;)[trump_result + 1])</code></pre>
+<pre><code>## [1] &quot;Trump Loses :(&quot;</code></pre>
+<div id="challenge-3" class="panel panel-primary">
+<div class="panel-heading">
+<h3 class="panel-title">
+Challenge
+</h3>
+</div>
+<div class="panel-body">
+<p>How can we simulate Trump’s victory or loss in Iowa 10 times using R? What type of distribution represents this outcome variable?</p>
+</div>
+</div>
+<pre class="r"><code># Binomial Distribution: N draws from a Bernoulli distribution
+trump_result_10 &lt;- rbinom(size = 10, # Number of trials/draws
+                       n = 1,    # Number of observations (e.g. 0-1)
+                       p = .55)  # Probability of succes on each trial
+print(paste(&quot;Trump wins the election in&quot;,trump_result_10,&quot;of the simulations&quot;))</code></pre>
+<pre><code>## [1] &quot;Trump wins the election in 5 of the simulations&quot;</code></pre>
+<p>Now we will use the <strong>country.csv</strong> dataset we used in previous labs.</p>
+<pre class="r"><code>library(ggplot2)
+country &lt;- read.csv(&quot;data/country.csv&quot;)</code></pre>
+<p>Remember that this is a simplified datset for the Baum and Zhukov’s (2015) <em>JPR</em> article where the variable <strong>n_articles</strong> is the number of news stories that newspapers from these countries dedicated to talk about the Lybian Civil Crisis.</p>
+<p>Lets plot the distribution of the variable <strong>n_articles</strong> using a density plot.</p>
+<pre class="r"><code>ggplot(country, aes(x = n_articles)) + 
+  geom_density()</code></pre>
+<p><img src="probability_distributions_files/figure-html/unnamed-chunk-7-1.png" title="" alt="" width="672" /></p>
+<div id="challenge-4" class="panel panel-primary">
+<div class="panel-heading">
+<h3 class="panel-title">
+Challenge
+</h3>
+</div>
+<div class="panel-body">
+<p>What type of distribution does the variable <strong>n_articles</strong> have? (Hint: distribution for a variable of nonnegative integers)</p>
+</div>
+</div>
+<p><em>Poisson Distribution:</em> Poisson(<span class="math inline">\(\lambda\)</span>) = E(Y) = Var(Y) = <span class="math inline">\(\lambda\)</span></p>
+<p>Let’s plot a Probability Mass Function (PMF) of a Poisson distribution with the mean of <strong>n_articles</strong>. Do you think this PMF is similar to the distribution of <strong>n_articles</strong> we previously plot?</p>
+<pre class="r"><code>n_articles_mean &lt;- mean(country$n_articles)
+y_articles &lt;- 1:max(country$n_articles)
+pmf &lt;- dpois(y_articles, lambda = n_articles_mean) 
+pmf &lt;- data.frame(pmf)
+ggplot(pmf, aes(x = y_articles, y = pmf)) + geom_line()</code></pre>
+<p><img src="probability_distributions_files/figure-html/unnamed-chunk-8-1.png" title="" alt="" width="672" /></p>
+</div>
+
+<hr>
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://licensebuttons.net/l/by-nc-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
+R code is licensed under a <a href="https://www.r-project.org/Licenses/BSD_2_clause">BSD 2-clause</a> license.
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
