@@ -311,7 +311,7 @@ gapminder_by_variable %>%
   group_by(variable, country) %>%
   summarise(mean = mean(value),
             sd = sd(value)) %>%
-  gather(stat, value, -country) %>%
+  gather(stat, value, -country, -variable) %>%
   unite(varstat, variable, stat) %>%
   spread(varstat, value)
 ```
