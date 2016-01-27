@@ -17,7 +17,7 @@ source("init.R")
 
 **What is sampling uncertainty?**
 
-SMISS (p.73): "Uncertainty about the characteristics of a wole that remains after observing a part"
+SMISS (p.73): "Uncertainty about the characteristics of a whole that remains after observing a part"
 
 We will use the **gapminder** dataset to better understand *sampling uncertainty*:
 
@@ -48,7 +48,7 @@ x_hat <- mean(data2007_10$lifeExp)
 s_10 <- sd(data2007_10$lifeExp)
 ```
 
-For a particular case (since we randomly sample 10 countries, each time we repeat the analysis we get sligthly different results) we obtain that:
+For a particular case (since we randomly sample 10 countries, each time we repeat the analysis we get slightly different results) we obtain that:
 
 ```{r xtable, results='asis', echo=FALSE}
 library(xtable)
@@ -108,7 +108,7 @@ library(ggplot2)
 country <- read.csv("data/country.csv")
 ```
 
-Remember that this is a simplified datset for the Baum and Zhukov's (2015) *JPR* article where the variable **n_articles** is the number of news stories that newspapers from these countries dedicated to talk about the Lybian Civil Crisis.
+Remember that this is a simplified dataset for the Baum and Zhukov's (2015) *JPR* article where the variable **n_articles** is the number of news stories that newspapers from these countries dedicated to talk about the Lybian Civil Crisis.
 
 Lets plot the distribution of the variable **n_articles** using a density plot.
 ```{r}

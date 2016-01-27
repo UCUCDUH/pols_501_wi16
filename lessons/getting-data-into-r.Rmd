@@ -234,12 +234,11 @@ The `load` function returns the names of the objects that it loads, so you can f
 names_of_objects_loaded <- load("data/Study1_data.Rdata")
 names_of_objects_loaded
 ```
-Less progromatically, you can also check the objects in the global environment using either
+You can also check the objects in the global environment using either
 ```{r}
 ls()
 ```
-or the "Environment" panel in RStudio for a new variable.
-
+or check the "Environment" panel in RStudio for a new variable.
 
 
 `r challenge_start()`

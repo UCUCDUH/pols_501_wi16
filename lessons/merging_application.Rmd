@@ -10,7 +10,7 @@ source("init.R")
 
 ## Learning Objectives
 
-Merging datsasets
+Merging datasets
 
 ## Initial Set up
 
@@ -36,7 +36,7 @@ country <- read.csv("data/country.csv")
 
 ## Merging Datasets
 
-Often the data we need is in different datsets and, to facilitate the analysis, we want to have it all in only one dataset. For example, in this case we have two datasets with country-level data: `country` and `vdem`. 
+Often the data we need is in different datasets and, to facilitate the analysis, we want to have it all in only one dataset. For example, in this case we have two datasets with country-level data: `country` and `vdem`. 
 
 However, before we merge these 2 datasets, we should consider renaming some of the variables of `vdem`:
 
@@ -68,12 +68,12 @@ vdem <- vdem %>%
 To merge datasets we need at least **1 common variable** in both datasets. 
 
 `r challenge_start()`
-Which variable both datsets (`country` and `vdem`) have in common?
+Which variable both datasets (`country` and `vdem`) have in common?
 `r challenge_end()`
 
 The dataset `country` has a variable named **cow** and the dataset `vdem` has one named **COWcode**. What about the variables **cow** in `country` and **country_text_id** in `vdem`? In these case these last 2 variables seem to be the same.
 
-For country-level data, a package exists to convert the format of country-identifier variables: `countrycode`. It converts to and from 12 standardized country indentifiers:"cowc", "cown", "iso3c", "iso3n", "iso2c", "imf", "fips104", "fao", "ioc", "un", "wb", "country.name". Let's explore the function `countrycode()`. 
+For country-level data, a package exists to convert the format of country-identifier variables: `countrycode`. It converts to and from 12 standardized country identifiers:"cowc", "cown", "iso3c", "iso3n", "iso2c", "imf", "fips104", "fao", "ioc", "un", "wb", "country.name". Let's explore the function `countrycode()`. 
 
 ```{r, results='hide', message=FALSE, eval=FALSE}
 library(countrycode)
@@ -84,7 +84,7 @@ country$COWcode <- countrycode(sourcevar = country$cow, origin =  "cowc",
 ```
 
 `r challenge_start()`
-There are 5 observations for which `countrycode()` doesn't know the "cown" value. How could we solve this issue?
+There are 5 observations for which `countrycode()` does not know the "cown" value. How could we solve this issue?
 `r challenge_start()`
 
 To merge datasets, we can use the following functions of the `dplyr` package:

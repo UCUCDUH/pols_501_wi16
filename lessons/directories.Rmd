@@ -48,7 +48,7 @@ setwd("/main_dir/folder1")
 
 ## Reading files in R
 
-When reading data into R (e.g. a CSV file), if you only give the file name, R is going to look for that file in the current working directory. If the file is not there but it's in a subdirectory of the working directory, you need to provide a partial path to the file indicating the subdirectory strucutre to get to that file. For example, imagine that R is being executed in the `main_dir` of the previous diagram and you want to read the **file112.txt**. You would provide the path from `main_dir` to **file112.txt**:
+When reading data into R (e.g. a CSV file), if you only give the file name, R is going to look for that file in the current working directory. If the file is not there but it's in a subdirectory of the working directory, you need to provide a partial path to the file indicating the subdirectory structure to get to that file. For example, imagine that R is being executed in the `main_dir` of the previous diagram and you want to read the **file112.txt**. You would provide the path from `main_dir` to **file112.txt**:
 
 ```{r, eval=FALSE}
 data <- read.table(file = "folder1/subfolder1/file112.txt")
