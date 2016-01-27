@@ -2,23 +2,25 @@
 title: "Dplyr and tidyr tutorial with gapminder"
 author: "Jeffrey Arnold"
 date: "January 26, 2016"
-output: html_document
 ---
 
+```{r echo=FALSE,results='hide'}
+knitr::opts_chunk$set(results="hide", error=TRUE)
+```
+
+This is an introduction to the **dplyr** and **tidyr** pacakges for data wrangling using the `gapminder` data from the **gapminder** package. For other introductions see the vignettes for [dplyr](https://cran.r-project.org/web/packages/dplyr/index.html) and [tidyr](https://cran.r-project.org/web/packages/tidyr/index.html), and the [R for Data Science](http://r4ds.had.co.nz/) chapters [Relational Data](http://r4ds.had.co.nz/relational-data.html), [Tidy Data](http://r4ds.had.co.nz/tidy.html), and [Data Transformation](http://r4ds.had.co.nz/transform.html).
+
+Load the relevant packages and data,
 ```{r message=FALSE}
 library("gapminder")
 library("dplyr")
 library("tidyr")
 library("ggplot2")
 ```
-
 ```{r}
 data("gapminder")
 ```
 
-```{r echo=FALSE,results='hide'}
-knitr::opts_chunk$set(results="hide", error=TRUE)
-```
 
 
 # `data_frame`
@@ -315,5 +317,3 @@ gapminder_by_variable %>%
   unite(varstat, variable, stat) %>%
   spread(varstat, value)
 ```
-
-
