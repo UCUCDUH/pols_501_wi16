@@ -9,15 +9,9 @@ source("init.R")
 ```
 
 ## Learning Objectives
-1. What is uncertainty and types of uncertainty
+
 2. What are probabilities and different types of distributions
 3. How to use them in R
-
-## Sampling, Theoretical, and Fundamental Uncertainty
-
-**What is sampling uncertainty?**
-
-SMISS (p.73): "Uncertainty about the characteristics of a whole that remains after observing a part"
 
 We will use the **gapminder** dataset to better understand *sampling uncertainty*:
 
@@ -25,6 +19,9 @@ We will use the **gapminder** dataset to better understand *sampling uncertainty
 - Calculate the mean and standard deviation of **lifeExp**
 - Subset 10 random countries from the 2007 dataset
 - Calculate the mean and standard deviation of **lifeExp** for those 10 obs.
+
+NOTE: need to discuss what `set.seed` does. A brief note on how computers (for statistics) 
+use pseudo-random numbers.
 
 ```{r results='hide', message=FALSE, warning=FALSE}
 library(dplyr)
@@ -59,11 +56,14 @@ rownames(table1) <- c('Population','Sample')
 print(xtable(table1), type='html')
 ```
 
-\n 
 
-`r challenge_start()`
-What are the *theoretical* and *fundamental* uncertainties?
-`r challenge_end()`
+Need to start with the basics. All R distribution functions have 4 functions.
+E.g. for the normal distribution?
+
+- rnorm: draw random numbers
+- dnorm: density P(X)
+- pnorm: cdf P(X \leq x)
+- qnorm: qunatile function x s.t. P(X \leq x) = q.
 
 ## Probability and Distributions in R
 
