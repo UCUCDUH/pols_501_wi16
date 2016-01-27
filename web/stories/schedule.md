@@ -107,6 +107,8 @@ Useful references for data visualization
 <li><i class="fa-li fa fa-book"></i> <em>OpenIntro</em>, Ch 2.
 <li><i class="fa-li fa fa-book"></i> <em>SMISS</em> Ch. 3, "Observable Data and Data-Generating Processes". This reading provides the context for the use of probability within political science research.
 <li><i class="fa-li fa fa-book"></i> <em>SMISS</em> Ch. 4.1.3, "Ontological Interpretations of Probability".
+<li> <i class="fa-li fa fa-book"></i> <a href="http://blog.vctr.me/monty-hall/">The Monty Hall Problem</a>. Setosa.io. An interactive visualization.
+<li> <i class="fa-li fa fa-book"></i> <a href="http://setosa.io/conditional/">Conditional Probability</a>. Setosa.io. An interactive visualization.
 <li><i class="fa-li fa fa-book"></i> Wickham, Hadley. 2014. "Tidy Data." <em>Journal of Statistical Software</em>. <a href="http://dx.doi.org/10.18637/jss.v059.i10">[URL]</a>. </li>
 <li> <i class="fa-li fa fa-book"></i> "Introduction to dplyr" [[URL](https://cran.rstudio.com/web/packages/dplyr/vignettes/introduction.html)]
 <li> <i class="fa-li fa fa-book"></i> <em>SMISS</em> Ch. 4, "Probability Theory: Basic Properties of Data-Generating Processes". Optional. This goes beyond the coverage of probability in OpenIntro.
@@ -154,6 +156,9 @@ Optional readings
 <li> <i class="fa-li fa fa-book"></i> <em>SMISS</em>. 7.1&ndash;7.4,   </li>
 <li><i class="fa-li fa fa-book"></i> Wickham, Hadley. 2010. "Graphical Inference for Infovis." <em>IEEE Transactions on Visualization and Computer Graphics</em>. <http://dx.doi.org/10.1109/TVCG.2010.161>.
 <li><i class="fa-li fa fa-code"></i> Data Camp <a href="https://www.datacamp.com/courses/reporting-with-r-markdown">Reporting with R Markdown</a></li>
+<li><i class="fa-li fa fa-book"></i> <a href="http://blog.vctr.me/posts/central-limit-theorem.html">Central Limit Theorem Visualized in D3"</a>. Setosa.io. An interactive visualizaiton.
+<li><i class="fa-li fa fa-book"></i> OpenIntro Shiny apps for <a href="https://gallery.shinyapps.io/CLT_mean/">Central Limit Theorem for Means</a>, <a href="https://gallery.shinyapps.io/CLT_prop/">Central Limit for Proportions</a>.
+
 </ul>
 
 ## Week 6
