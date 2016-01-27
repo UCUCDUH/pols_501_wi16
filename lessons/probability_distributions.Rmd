@@ -1,0 +1,137 @@
+---
+title: "Probability and Distributions in R"
+date: January 29, 2016
+author: Andreu Casas
+---
+
+```{r init,results='hide',echo=FALSE}
+source("init.R")
+```
+
+## Learning Objectives
+1. What is uncertainty and types of uncertainty
+2. What are probabilities and different types of distributions
+3. How to use them in R
+
+## Sampling, Theoretical, and Fundamental Uncertainty
+
+**What is sampling uncertainty?**
+
+SMISS (p.73): "Uncertainty about the characteristics of a wole that remains after observing a part"
+
+We will use the **gapminder** dataset to better understand *sampling uncertainty*:
+
+- Subset only the observations in **gapminder** from 2007 (imagine this is the population: all existing countries)
+- Calculate the mean and standard deviation of **lifeExp**
+- Subset 10 random countries from the 2007 dataset
+- Calculate the mean and standard deviation of **lifeExp** for those 10 obs.
+
+```{r results='hide', message=FALSE, warning=FALSE}
+library(dplyr)
+library(gapminder)
+data(gapminder)
+set.seed(123)
+```
+
+```{r, results = 'hide'}
+data2007 <- gapminder %>%
+  filter(year == "2007")
+
+x <- mean(data2007$lifeExp) 
+s <- sd(data2007$lifeExp)
+
+random_10_countries <- sample(gapminder$country, 10)
+data2007_10 <- data2007 %>%
+  filter(country %in% random_10_countries)
+
+x_hat <- mean(data2007_10$lifeExp)
+s_10 <- sd(data2007_10$lifeExp)
+```
+
+For a particular case (since we randomly sample 10 countries, each time we repeat the analysis we get sligthly different results) we obtain that:
+
+```{r xtable, results='asis', echo=FALSE}
+library(xtable)
+table1 <- cbind(x , s)
+table1 <- rbind(table1, cbind(x_hat, s_10))
+colnames(table1) <- c('Mean', 'SD')
+rownames(table1) <- c('Population','Sample')
+print(xtable(table1), type='html')
+```
+
+\n 
+
+`r challenge_start()`
+What are the *theoretical* and *fundamental* uncertainties?
+`r challenge_end()`
+
+## Probability and Distributions in R
+
+How many heads and how many tails would we get if we flip a fair coin 10 times?
+ 
+```{r}
+flips_10 <- sample(x = c('head','tails'), size = 10, replace = TRUE)
+table(flips_10)
+```
+
+According to the last (Jan. 26, 2016) *polls-only* forecast of [FiveThirtyEight](http://projects.fivethirtyeight.com/election-2016/primary-forecast/iowa-republican/#polls-only), Donald Trump has a 55% probability of winning the Iowa caucuses. 
+
+`r challenge_start()`
+How can we simulate the Iowa caucuses to make one prediction of Trumps's victory/loss? What type of distribution represents this outcome variable? 
+`r challenge_end()`
+
+```{r}
+# Bernoulli Distribution: a Bernoulli Trial
+trump_result <- rbinom(size = 1, # Number of trials
+                       n = 1,    # Number of observations
+                       p = .55)  # Probability of succes on each trial
+print(c("Trump Loses :(", "Trump Wins! :)")[trump_result + 1])
+```
+
+`r challenge_start()`
+How can we simulate Trump's victory or loss in Iowa 10 times using R? What type of distribution represents this outcome variable? 
+`r challenge_end()`
+
+```{r}
+# Binomial Distribution: N draws from a Bernoulli distribution
+trump_result_10 <- rbinom(size = 10, # Number of trials/draws
+                       n = 1,    # Number of observations (e.g. 0-1)
+                       p = .55)  # Probability of succes on each trial
+print(paste("Trump wins the election in",trump_result_10,"of the simulations"))
+```
+
+
+Now we will use the **country.csv** dataset we used in previous labs. 
+
+```{r}
+library(ggplot2)
+country <- read.csv("data/country.csv")
+```
+
+Remember that this is a simplified datset for the Baum and Zhukov's (2015) *JPR* article where the variable **n_articles** is the number of news stories that newspapers from these countries dedicated to talk about the Lybian Civil Crisis.
+
+Lets plot the distribution of the variable **n_articles** using a density plot.
+```{r}
+ggplot(country, aes(x = n_articles)) + 
+  geom_density()
+```
+
+`r challenge_start()`
+What type of distribution does the variable **n_articles** have? (Hint: distribution for a variable of nonnegative integers)
+`r challenge_end()`
+
+*Poisson Distribution:* Poisson($\lambda$) = E(Y) = Var(Y) = $\lambda$
+
+Let's plot a Probability Mass Function (PMF) of a Poisson distribution with the mean of **n_articles**. Do you think this PMF is similar to the distribution of **n_articles** we previously plot?
+
+```{r}
+n_articles_mean <- mean(country$n_articles)
+y_articles <- 1:max(country$n_articles)
+pmf <- dpois(y_articles, lambda = n_articles_mean) 
+pmf <- data.frame(pmf)
+ggplot(pmf, aes(x = y_articles, y = pmf)) + geom_line()
+```
+
+
+
+
