@@ -11,7 +11,7 @@
 - [Joining Datasets: An application](/lessons/merging_application.html)
 - [Miscellaneous Useful Functions](/lessons/data_manipulation_utility_functions.html)
 - [Application: WDI cleaning with dplyr and tidyr](/lessons/wdi.html)
-- [Intro to dlpyr and tidyr using WDI](/lessons/wdi_intro_to_dplyr_tidyr.html)
+- [Intro to dlpyr and tidyr using gapminder](/lessons/gapminder_intro_to_dplyr_tidyr.html)
 
 # Miscellaneous
 
