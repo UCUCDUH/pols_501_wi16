@@ -13,6 +13,8 @@ In almost any set of real data, there will be missing values.
 All statistical software systems have some way of indicating missing values within variables.
 R uses the symbol `NA` to indicate a missing value. 
 
+# Behavior of NA
+
 Create two vectors that include missing values,
 ```{r}
 foo <- c(1, NA, 3)
@@ -48,7 +50,10 @@ For `sum` and `mean`, any `NA` in the vector produces `NA` for a result.
 
 `r solution_end()`
 
-This means that you can't use `==` to test whether an element of a vector is equal to `NA`. Why not? 
+# Testing for `NA` with `is.na`
+
+Since comparing any value to `NA` produces an `NA`, you can't easily use `==` to test whether an element of a vector is equal to `NA`. Why not? 
+
 The function `is.na` is used to test whether an element of a vector is equal to `NA`.
 ```{r}
 is.na(foo)
@@ -56,26 +61,92 @@ is.na(bar)
 ```
 Thus, to test whether an element of a vector is *not* equal to `NA`,
 ```{r}
-! is.na(foo)
-! is.na(bar)
+!is.na(foo)
+!is.na(bar)
 ```
 
 `r challenge_start()`
-Drop all missing values from `foo`.
+Using `is.na` and `[` drop all missing values from `foo`.
 `r challenge_end()`
 
 `r solution_start()`
 ```{r}
-foo[! is.na(foo)]
+foo[!is.na(foo)]
 ```
 
+To check whether there are any missing values in a vector,
+```{r}
+any(is.na(foo))
+```
+To check whether all values in a vector are missing,
+```{r}
+all(is.na(foo))
+```
+To count the number of missing values in a vector,
+```{r}
+sum(is.na(foo))
+```
+or calculate the fraction of missing values,
+```{r}
+sum(is.na(foo)) / length(foo)
+```
+
+
 `r solution_end()`
+
+# Replace missing values
+
+There are several ways to replace missing values in a vector,
+```{r}
+alpha <- c(1, 2, NA)
+alpha[is.na(alpha)] <- 0
+alpha
+```
+or
+```{r}
+beta <- c(1, 2, NA)
+beta <- ifelse(is.na(beta), 0, beta)
+```
+
+# Set values to missing
+
+Sometimes you need to set common
+
+A common convention in old datasets and survey data is to indicate missing values using
+unusually large or small values. For example, -66, -77, -88, or -99 in a 0-10 scale.
+How would you replace them with missing values?
+
+Consider the following vector.
+```{r}
+Q1 <- c(3, -88, 8, 2, 6, 7, 1, 5, 1, 9, -99)
+```
+Suppose, it represents the response to a question on a 0-10 scale, -88 is "Don't know", and
+-99 is "Refused to answer".
+For your analysis, it makes sense to to "Don't know" and "Refused to answer"" with missing values.
+
+There are a few ways to do this: using `[`, using `is.na`, and using `ifelse`.
+
+```{r}
+Q1_clean1 <- ifelse(Q1 %in% c(-88, -99), NA, Q1)
+Q1_clean1
+
+Q1_clean2 <- Q1
+Q1_clean2[Q1_clean2 %in% c(-88, -99)] <- NA
+Q1_clean2
+
+Q1_clean3 <- Q1
+is.na(Q1_clean3) <- Q1_clean3 %in% c(-88, -99)
+Q1_clean3
+```
+
+
+# Missing values in character vectors
 
 `NA` values can also occur in character vectors,
 ```{r}
 baz <- c("A", "B", NA, "")
 ```
-In a character vector, `NA` is not the same as "".
+In a character vector, `NA` is **not** the same as "".
 
 `r challenge_start()`
 
@@ -99,7 +170,6 @@ Without explicitly referencing the indexes of the elements
 `r challenge_end()`
 
 `r solution_start()`
-
 To replace `NA` with "",
 ```{r}
 letr1 <- letr
@@ -108,7 +178,13 @@ letr1
 ```
 or using `ifelse`,
 ```{r}
-letr1 <- ifelse(is.na(letr), "", letr)
+letr2 <- ifelse(is.na(letr), "", letr)
+letr2
+```
+or using `is.na`,
+```{r}
+letr2 <- letr
+is.na(letr2) <- letr2 == ""
 ```
 
 To replace "" with `NA`,
@@ -122,38 +198,65 @@ To drop all observations with `NA` or "",
 letr3 <- letr[! letr %in% c(NA, "")]
 letr3
 ```
-
 `r solution_end()`
 
-# Miscellaneous
 
-A common convention in old datasets and survey data is to indicate missing values using
-unusually large or small values. For example, -66, -77, -88, or -99 in a 0-10 scale.
-How would you replace them with missing values?
+# Reading text files (csv)
 
-`r challenge_start()`
-Consider the following vector.
-```{r}
-Q12 <- c(3, -88, 8, 2, 6, 7, 1, 5, 1, 9, -99)
+The function `read_csv` has an argument `na.strings` which determines what cell values are converted to `NA`. By default it only reads cells with "NA" as missing values.
+However, often you will want to treat any blank cells, e.g. `""` as missing. 
+To do that,
+```{r eval=FALSE}
+read.csv(file, na.strings = "")
 ```
-It represents the response to a question on a 0-10 scale, -88 is "Don't know", and
--99 is "Refused to answer". Replace "Don't know" and refused to answer with missing values.
 
-`r challenge_end()`
 
-`r solution_start()`
+# Other functions
+
+**tidyr** has a function `replace_na` which fills in missing values in multiple columns of a data frame,
 ```{r}
-Q12_clean <- ifelse(Q12 %in% c(-88, -99), NA, Q12)
-Q12_clean
+library("tidyr")
+library("dplyr")
+data_frame(x = c(1, 2, NA), y = c("a", NA, "b")) %>%
+  replace_na(list(x = 0, y = "unknown"))
 ```
-`r solution_end()`
 
-The function `read_csv` has an argument `na` which determines what cell values are converted to `NA`.
-What is it by default? 
+**stringr** has a function `str_replace_na` to replace `NA` values in a character vector,
+```{r}
+library("stringr")
+str_replace_na(c("a", "b", NA), "")
+```
 
-Also see: 
+# Listwise deletion of rows with missing values in data frames
 
-- functions `fill_na`, `is_same`, and `replace_na` from [pols501](https://github.com/UW-POLS501/r-uwpols501) package.
+To drop any row in a data frame with any missing values use `na.omit`,
+```{r}
+na.omit(data.frame(a = c(NA, 1, 2, 3), b = c("a", "b", NA, "d")))
+```
+
+
+# Imputing or filling missing values
+
+The package *zoo* contains several functions to fill in missing values in time series data.
+`na.locf` fills in missing values with the last non-missing value,
+```{r}
+library("zoo")
+na.locf(c(1, NA, NA, 2, NA, NA, NA, 3, 4, 5))
+```
+`na.approx` fills in missing values with a linear interpolation, while `na.spline` fills in missing observations with a spline (smooth) interpolation,
+```{r}
+plot(na.spline(c(1, NA, NA, 2, NA, 4, NA, NA, NA, NA, 3, NA, 1)), type = "l")
+plot(na.approx(c(1, NA, NA, 2, NA, 4, NA, NA, NA, NA, 3, NA, 1)), type = "l")
+```
+
+
+See packages:
+
+- [mice](https://cran.r-project.org/web/packages/mice/index.html)
+- [Amelia](https://cran.r-project.org/web/packages/Amelia/index.html)
+
+
+
 - http://www.cookbook-r.com/Manipulating_data/
 
 <!--
