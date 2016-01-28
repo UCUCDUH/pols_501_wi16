@@ -82,6 +82,46 @@ iris[["Species"]]
 read.csv("this_file_probably_does_not_exist.csv")
 ```
 
+```
+ggplot(iris, aes(x = Sepal.Width)) + geom_histogram()
+```
+
+```
+ggplot(iris, aes(x = Sepal.Width)) + geom_bar()
+```
+
+```
+ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length)) + geom_bar()
+```
+`r solution_start()`
+```
+ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length)) + 
+  geom_bar(stat = "summary", position = "dodge", fun.y="mean")
+
+ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length)) + 
+  geom_bar(stat = "summary", position = "dodge", fun.y="sum")
+  
+```
+`r solution_end()`
+
+```
+iris[10,2] <- NA
+ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length)) + 
+  geom_point()
+```
+
+`r solution_start()`
+```
+library(dplyr)
+iris2 <- na.omit(iris)
+ggplot(iris2, aes(x = Sepal.Width, y = Sepal.Length)) + 
+  geom_point()
+```
+`r solution_end()`
+
+
+
+
 Load **dplyr**, then load the package **MASS**.
 ```{r}
 library(dplyr)
