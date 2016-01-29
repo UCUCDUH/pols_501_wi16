@@ -147,6 +147,14 @@ Optional readings
 <li> <i class="fa-li fa fa-book"></i> <em>SMISS</em>. "Chapter 6: Linking Positive Theories and Data-Generating Processes." Section 6.1&ndash;6.3, 6.5&ndash;6.6. </li>
 </ul>
 
+Class
+
+Lab
+
+- Gentzkow, Matthew, and Jesse M. Shapiro. 2014. "Code and Data for the Social Sciences: A Practioner's Guide." [[link](http://web.stanford.edu/~gentzkow/research/CodeAndData.pdf)]
+- Jenny Bryan, Karen Cranston, Justin Kitzes, Lex Nederbragt, Tracy Teal, and Greg Wilson. 2015. [Good Enough Practices in Scientific Computing](http://swcarpentry.github.io/good-enough-practices-in-scientific-computing/)
+
+
 ## Week 5
 
 **Foundations of Inference: Sampling distributions, confidence intervals, hypothesis testing**

@@ -1,0 +1,371 @@
+---
+title: "Distributions in R"
+author: "Jeffrey Arnold"
+date: "January 28, 2016"
+output: html_document
+---
+
+```{r}
+
+```
+
+
+# Sampling
+
+
+
+# Seed
+
+# Distributions
+
+- `r*` draw samples from a distribution
+- `q*` the quantile function of a distribution: for a given $p$, the $x$ such that $P(X < x) = p$.
+- `p*` the cumulative probability function of a distribution: for a given $x$, $P(X < x)$.
+- `d*` the probability density (or mass) function of a distribution: $P(x)$.
+
+## Normal
+
+
+```{r echo=FALSE,results='hide'}
+opts_chunk$set(tidy=FALSE,fig.height=3,fig.width=4,dev='cairo_pdf',message=FALSE)
+set.seed(1235)
+normal_prob_area_plot <- function(lb=-Inf, ub=Inf, mean = 0, sd = 1, limits = c(mean - 3 * sd, mean + 3 * sd)) {
+    x <- seq(limits[1], limits[2], length.out = 100)
+    xmin <- max(lb, limits[1])
+    xmax <- min(ub, limits[2])
+    areax <- seq(xmin, xmax, length.out = 100)
+    area <- data.frame(x = areax, ymin = 0, ymax = dnorm(areax, mean = mean, sd = sd))
+    (ggplot()
+     + geom_line(data.frame(x = x, y = dnorm(x, mean = mean, sd = sd)),
+                 mapping = aes(x = x, y = y))
+     + geom_ribbon(data = area, mapping = aes(x = x, ymin = ymin, ymax = ymax))
+     + scale_x_continuous("x", limits = limits)
+     + scale_y_continuous("p(x)"))
+}
+```
+
+
+# Normal distribution
+
+This lab will focus on two functions associated with the normal distribution.
+
+- ``pnorm`` Find the probability that the random variable is less than (or greater than) a given value.
+- ``qnorm`` For a given probability, find the associated value of the random variable. This is called the quantile.
+
+There are two other R functions that are less critical for the purposes of answering homework questions but are useful for understanding the frequency definition of probability.
+
+- ``rnorm`` Draw random values from a distribution of the normal distribution.
+- ``dnorm`` Find the density of a normal distribution at a given value. This is what is used to draw density plots.
+
+This lab will use ggplot for plotting so load that package now.
+
+```{r }
+library("ggplot2")
+```
+
+
+## Probability Function
+
+The function pnorm returns $p(X \leq x)$ for a normal variable $X$ and a value $x$.
+This function used to find the tail probabilities for the standard normal distribution ($z$-scores), or more generally, for the values of any normal distribution.
+
+Consider a standard normal distribution ($X \sim N(0, 1)$).
+To find $P(X \leq 1.96)$,
+
+```{r }
+pnorm(1.96)
+```
+
+
+Visually, ``pnorm(1.96)`` returns the value of the shaded area in the following:
+
+
+```{r fig.cap="The area $P(X \\leq 1.96)$ is about 0.975",echo=FALSE}
+normal_prob_area_plot(-Inf, 1.96)
+```
+
+\clearpage
+
+To find $P(X > 1.96)$ you can either use rules of probability, $P(X > 1.96) = 1 - P(X \leq 1.96)$,
+
+```{r }
+1 - pnorm(1.96)
+```
+
+or set the option ``lower.tail`` to ``FALSE``,
+
+```{r }
+pnorm(1.96, lower.tail = FALSE)
+```
+
+\clearpage
+
+Visually, ``pnorm(1.96, lower.tail=FALSE)`` returns the value of the shaded area in the following plot
+
+```{r fig.cap="The area $P(X \\geq 1.96)$ is about 0.025",echo=FALSE}
+normal_prob_area_plot(1.96)
+```
+
+For an arbitrary normal distribution (one in which the mean does not equal 0 or the standard deviation does not equal 1), you can either (1) convert the value to a z-score and then use ``pnorm`` as shown above, or (2) use ``pnorm`` with the ``mean`` and ``sd`` options.
+
+Consider a normal distribution with mean 2 and standard deviation 4.
+Find $P(X \leq 8)$.
+The first method is to convert to a z-score and then use ``pnorm``.
+
+```{r }
+z <- (8 - 2) / 4
+pnorm(z)
+```
+
+The second method is to use the ``mean`` and ``sd`` options in ``pnorm``
+
+```{r }
+pnorm(8, 2, 4)
+```
+
+As expected, they produce the same answer.
+
+
+## Quantile Function
+
+If you are given a probability and asked to find a value or a z-score, use ``qnorm``.
+
+Consider a standard normal distribution ($X \sim N(0, 1)$).
+Suppose you want to know the value at the 97.5 percentile.
+Slightly more formally, you want to find the z-score such that $P(X \leq z) = 0.975$.
+
+```{r }
+qnorm(0.975)
+```
+
+
+Notice that ``qnorm`` produces the inverse (opposite) of ``pnorm``.
+Given a value in the distribution, ``pnorm`` gives you a probability.
+Given a probability, ``qnorm`` gives you a value.
+
+One way of seeing this is by taking the ``qnorm`` of the value returned by ``pnorm``.
+It will be exactly the probability that was first given as an argument to ``pnorm``.
+For example, in the following code, ``qnorm(0.975)`` finds the z-score such that $P(X \leq z) = 0.975$ which is 1.959964.
+Then ``pnorm`` finds the probability that $X$ is less than the $z$-score of 1.959964, which is 0.975.
+
+```{r }
+pnorm(qnorm(0.975))
+```
+
+
+
+To find a z-score such that a given fraction of the distribution is above it, you can either use rules of probability, $P(X > x) = 1 - P(X \leq x)$, or, as in ``pnorm``, set the option ``lower.tail=FALSE``.
+For example, find the value such that 0.025 of the distribution is greater than it.
+This can be done by,
+
+```{r }
+qnorm(1 - 0.025)
+```
+
+or
+
+```{r }
+qnorm(0.025, lower.tail = FALSE)
+```
+
+
+Now consider the random variable $Y$ distributed with mean 2 and standard deviation 4.
+What is the value of $Y$ greater than 93.3 percent of the distribution?
+This can be calculated in two ways.
+First, by calculating the z-score and then transforming it.
+
+```{r }
+z <- qnorm(0.933)
+2 + z * 4
+```
+
+
+Second, by using the ``mean`` and ``sd`` options in ``qnorm``,
+
+
+```{r }
+qnorm(0.933, 2, 4)
+```
+
+
+## Sampling and Density
+
+You can use the ``rnorm`` function to draw a sample from a normal distribution.
+
+```{r }
+rnorm(5)
+```
+
+This draws a sample of size 5 from a normal distribution with mean 1 and standard deviation 2.
+
+```{r }
+rnorm(5, 1, 2)
+```
+
+The following code compares the kernel density of a sample drawn from the normal distribution with the density function of the normal distribution.
+
+```{r }
+library("ggplot2")
+```
+
+
+This draws as sample of size ``nsample`` with mean ``mu``, with standard deviation ``sigma``.
+
+```{r }
+mu <- 1 ## mean
+sigma <- 2 ## standard deviation
+nsample <- 50 ## sample size
+smpl <- rnorm(nsample, mu, sigma)
+```
+
+
+This code will plot the kernel density of the normal distribution sample with the density function of the normal distribution.
+You don't need to worry about exactly how this code works.
+The lines below the density plot are called a "rug" and show the location of the values used in the density plot.
+
+
+```{r normal_density,fig.cap = "Kernel Density of a Sample from the Normal Distribution and the Density Function of the Normal Distribution"}
+x <- seq(mu - 3 * sigma, mu + 3 * sigma, length.out=100)
+y <- dnorm(x, mu, sigma)
+(qplot(smpl, geom = c("density", "rug"), sides = "b",
+       xlab = "x")
+ + geom_line(data = data.frame(x = x, y = y),
+             mapping = aes(x = x, y = y),
+             color = "red"))
+```
+
+
+How does the kernel density plot of the sample compare with the density function of the normal distribution as the sample size increases?
+Change the value of ``nsample`` and rerun the code.
+Try values of 10, 50, 100, 500, 1000, 10000.
+You will see that the kernel density of the sample approaches the density function of the normal distribution as the sample size gets large.
+This is what is meant by the frequency definition of probability in Agresti and Finlay.
+
+
+
+## Bernoulli and Binomial
+
+`dbinom` calculates the density of a binomial distribution.
+```{r}
+.data <- 
+  data_frame(x = 0:10,
+             y = dbinom(x, size = max(x), prob = 0.3))
+ggplot(.data, aes(x = x, y = y)) +
+  geom_bar(stat = "identity")
+```
+
+```{r}
+p <- 0.3
+size <- 10
+pmf <- 
+  data_frame(x = 0:size,
+             y = dbinom(x, size = size, prob = p))
+smpl <-
+  data_frame(x = rbinom(100, size = size, prob = p)) %>%
+  group_by(x) %>%
+  tally() %>%
+  mutate(freq = n / sum(n))
+ggplot() +
+  geom_bar(data = pmf, mapping = aes(x = x, y = y),
+           stat = "identity", alpha = 0.3, fill = "red") +
+  geom_bar(data = smpl, mapping = aes(x = x, y = freq),
+           stat = "identity", alpha = 0.3)
+```
+
+- What happens as `prob` changes?
+- What happens as `size` changes?
+
+
+## Geometric
+
+Function `dgeom`
+
+```{r}
+p <- 0.3
+smpl <-
+  data_frame(x = rgeom(100, prob = p)) %>%
+  group_by(x) %>%
+  tally() %>%
+  mutate(freq = n / sum(n))
+pmf <- 
+  data_frame(x = 0:max(smpl$x),
+             y = dgeom(x, prob = p))
+ggplot() +
+  geom_bar(data = pmf, mapping = aes(x = x, y = y),
+           stat = "identity", alpha = 0.3, fill = "red") +
+  geom_bar(data = smpl, mapping = aes(x = x, y = freq),
+           stat = "identity", alpha = 0.3) +
+  xlim(0, qgeom(0.995, prob = 0.3))
+```
+
+## Negative Binomial
+
+Function `dnbinom`
+
+```{r}
+p <- 0.3
+size <- 5
+xmax <- qnbinom(0.995, size = size, prob = p)
+smpl <-
+  data_frame(x = rnbinom(1000000, size = size, prob = p)) %>%
+  group_by(x) %>%
+  tally() %>%
+  mutate(freq = n / sum(n))
+pmf <- 
+  data_frame(x = 0:xmax,
+             y = dnbinom(x, size = size, prob = p))
+ggplot() +
+  geom_bar(data = pmf, mapping = aes(x = x, y = y),
+           stat = "identity", alpha = 0.3, fill = "red") +
+  geom_bar(data = smpl, mapping = aes(x = x, y = freq),
+           stat = "identity", alpha = 0.3) +
+  xlim(0, xmax)
+```
+
+- what happens when change size? when change 
+- if size = 1, it is the geometric distribution
+
+## Poisson
+
+Function `dpois`
+
+```{r}
+lambda <- 3
+xmax <- qpois(0.995, lambda = lambda)
+smpl <-
+  data_frame(x = rpois(100, lambda = lambda)) %>%
+  group_by(x) %>%
+  tally() %>%
+  mutate(freq = n / sum(n))
+pmf <- 
+  data_frame(x = 0:xmax,
+             y = dpois(x, lambda = lambda))
+ggplot() +
+  geom_bar(data = pmf, mapping = aes(x = x, y = y),
+           stat = "identity", alpha = 0.3, fill = "red") +
+  geom_bar(data = smpl, mapping = aes(x = x, y = freq),
+           stat = "identity", alpha = 0.3) +
+  xlim(0, xmax)
+```
+
+- What happens as `lambda` increases?
+- Compare `rbinom` with small `prob` and large `size` to a Poisson with `lambda = prob * size`.
+
+
+# Quantile-Quantile Plot
+
+In `ggplot2`, compare the quantiles of a sample to the quantile function of a distribution (often the normal distribution).
+
+```{r}
+ggplot(mtcars) +
+  geom_qq(aes(sample = mpg)) +
+  geom_abline(slope = 1, intercept = 0)
+```
+
+```{r}
+ggplot(mtcars) +
+  stat_qq(aes(sample = mpg, colour = factor(cyl)))
+
+```
+
+

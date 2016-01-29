@@ -167,6 +167,18 @@ mutate(gapminder,
        na_eu = continent %in% c("United States", "Mexico", "Canada"))
 ```
 
+It is tedious to mutate mutiple columns. To apply one or more functions to one or more columns, use `mutate_each`,
+```{r}
+mutate_each(gapminder, funs(log), pop, gdpPercap, lifeExp)
+```
+Note that you need to enclose the list of functions in the `funs` function.
+If you apply one function, the columns keep their same name.
+If you apply multiple functions, the columns have the name of the variable combined with the name of the function.
+```{r}
+mutate_each(gapminder, funs(log, sqrt), pop, gdpPercap, lifeExp)
+```
+
+
 # Rename columns with `rename()`
 
 Rename columns with the `rename()` variable.
@@ -195,13 +207,13 @@ Sample all rows with replacement (bootstrap),
 sample_frac(gapminder, replace = TRUE)
 ```
 
-# Summarize values with `summarise()`
+# Summarize values with `summarize()`
 
-The function `summarise` (or `summarize`) collapses a data frame to a single row, summarized by functions.
+The function `summarize` collapses a data frame to a single row, summarized by functions.
 
 Create a data frame with the minimum and maximum years, the minimum, maximum, and median life expectancy, the average population, and the average GDP per capita, total number of observations, number of unique years, and number of unique countries,
 ```{r}
-summarise(gapminder,
+summarize(gapminder,
           year_min = min(year),
           year_max = max(year),
           life_exp_min = min(lifeExp),
@@ -213,6 +225,15 @@ summarise(gapminder,
           n_years = length(unique(year)),
           n_country = length(unique(continent)))
 ```
+
+It is inconvenient if you need to summarize multiple columns with multiple functions.
+The function `summarize_each` simplifies that by applying one or more functions to one or more columns,
+```{r}
+summarize_each(gapminder, funs(min, max, mean),
+               year, lifeExp, gdpPercap, pop)
+```
+Note that the functions need to be enclosed within the function `funs`.
+
 
 # Grouped Functions
 
