@@ -32,7 +32,13 @@ Any R output included in the writeup should be formatted with a monospace font (
 - `jrnold-project-03-code.R` contains the R code used to generate the results of your analysis.
 - Datasets should go in the `data` directory.
 - Plots (.png, .pdf) go in the `figure` directory.
+- **Important** So that others can run your code
 
-Zip the directory and submit the zip file to canvas.
+   - Do not include absolute paths
+   - Load packages that you use in your code with `library()`.
+   - Do **not** include `install.packages()` in your script.
+
+Zip the directory and submit the zip file to canvas. 
 When you zip the directory file ensure that the top-level directory is included.
 In other words, when you unzip the file, it should produce the directory `jrnold-project-03` and not multiple files.
+To do this you can use the funtion `zip_assignment` in the **uwpols501** package.
