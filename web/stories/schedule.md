@@ -149,6 +149,12 @@ Optional readings
 
 Class
 
+
+<ul class="fa-ul">
+<li><i class="fa-li fa fa-bar-chart"></i><a href="/slides/statistical-modeling.pdf">Slides on Statistical Modeling</a>
+<li><i class="fa-li fa fa-bar-chart"></i><a href="/docs/Bayes.pdf">Examples of Bayes' Theorem</a>
+</ul>
+
 Lab
 
 - Gentzkow, Matthew, and Jesse M. Shapiro. 2014. "Code and Data for the Social Sciences: A Practioner's Guide." [[link](http://web.stanford.edu/~gentzkow/research/CodeAndData.pdf)]
