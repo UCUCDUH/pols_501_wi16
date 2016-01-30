@@ -122,6 +122,40 @@ iris[ , &quot;blahblah&quot;]
 iris[[&quot;Species&quot;]] &lt;- NULL
 iris[[&quot;Species&quot;]]</code></pre>
 <pre><code>read.csv(&quot;this_file_probably_does_not_exist.csv&quot;)</code></pre>
+<pre><code>ggplot(iris, aes(x = Sepal.Width)) + geom_histogram()</code></pre>
+<pre><code>ggplot(iris, aes(x = Sepal.Width)) + geom_bar()</code></pre>
+<pre><code>ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length)) + geom_bar()</code></pre>
+<div class="panel panel-info">
+<div class="panel-heading">
+<h3 class="panel-title">
+<a data-toggle="collapse" href="#solution-1">Solution</a>
+</h3>
+</div>
+<div id="solution-1" class="panel-collapse collapse">
+<pre><code>ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length)) + 
+  geom_bar(stat = &quot;summary&quot;, position = &quot;dodge&quot;, fun.y=&quot;mean&quot;)
+
+ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length)) + 
+  geom_bar(stat = &quot;summary&quot;, position = &quot;dodge&quot;, fun.y=&quot;sum&quot;)
+  </code></pre>
+</div>
+</div>
+<pre><code>iris[10,2] &lt;- NA
+ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length)) + 
+  geom_point()</code></pre>
+<div class="panel panel-info">
+<div class="panel-heading">
+<h3 class="panel-title">
+<a data-toggle="collapse" href="#solution-2">Solution</a>
+</h3>
+</div>
+<div id="solution-2" class="panel-collapse collapse">
+<pre><code>library(dplyr)
+iris2 &lt;- na.omit(iris)
+ggplot(iris2, aes(x = Sepal.Width, y = Sepal.Length)) + 
+  geom_point()</code></pre>
+</div>
+</div>
 <p>Load <strong>dplyr</strong>, then load the package <strong>MASS</strong>.</p>
 <pre class="r"><code>library(dplyr)</code></pre>
 <pre><code>## 
@@ -149,10 +183,10 @@ iris[[&quot;Species&quot;]]</code></pre>
 <div class="panel panel-info">
 <div class="panel-heading">
 <h3 class="panel-title">
-<a data-toggle="collapse" href="#solution-1">Solution</a>
+<a data-toggle="collapse" href="#solution-3">Solution</a>
 </h3>
 </div>
-<div id="solution-1" class="panel-collapse collapse">
+<div id="solution-3" class="panel-collapse collapse">
 <p>Since you loaded <code>MASS</code> second, <strong>R</strong> uses the function <code>select</code> from that package, not from <code>dplyr</code>. You can reference a specific function in a package using <code>::</code>, e.g. <code>dplyr::select</code> for the <code>select</code> function in <strong>dplyr</strong>, and <code>MASS::select</code> for the select function in <strong>MASS</strong>.</p>
 <pre><code>dplyr::select(mpg, manufacturer, model, year)</code></pre>
 </div>
