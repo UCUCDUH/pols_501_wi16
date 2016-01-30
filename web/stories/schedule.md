@@ -162,7 +162,7 @@ Lab
 
 <ul class="fa-ul">
 <li><i class="fa-li fa fa-bar-chart"></i><a href="/lessons/common_errors_in_R.html">Common Errors in R</a>
-<li><i class="fa-li fa fa-bar-chart"></i><a href="/lessons/common_errors_in_R.html">Common Errors in R</a>
+<li><i class="fa-li fa fa-bar-chart"></i><a href="/lessons/reordering-labels-plot.html">Reordering Axis Labels</a>
 </ul>
 
 
