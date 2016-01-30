@@ -16,7 +16,9 @@ Research projects do not progress linearly, and your data may turn out to be mes
 
 # Organization
 
-Organize your assignment as an RStudio Project.
+Your assignment should be in an RStudio project directory, with the followind directory structure. 
+Create the Rproject directory using `File > New Project > New Directory > Empty Project` in RStudio.
+Replace `jrnold` with your `netid`; your netid is the same as your UW email address: `netid@uw.edu`.
 
 ```
 jrnold-project-03
@@ -32,7 +34,7 @@ Any R output included in the writeup should be formatted with a monospace font (
 - `jrnold-project-03-code.R` contains the R code used to generate the results of your analysis.
 - Datasets should go in the `data` directory.
 - Plots (.png, .pdf) go in the `figure` directory.
-- **Important** So that others can run your code
+- **Important** So that others can run your code,
 
    - Do not include absolute paths
    - Load packages that you use in your code with `library()`.
