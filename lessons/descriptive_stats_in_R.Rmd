@@ -162,7 +162,12 @@ names(continent_counts)[continent_counts == max(continent_counts)]
 - `continent_counts == max(continent_counts)` is `TRUE` for all (possibly more than one) elements which have the largest counts
 
 That code only works well for discrete data. 
+The basic method used to find a mode of continuous is to find the maximum value of the kernel density function.
 See package **modeest** function `mlv` for various methods to calculate the mode, including for methods to estimate the mode of continuous distributions.
+```{r}
+library("modeest")
+mlv(lifeExp, method = "shorth")
+```
 
 [^mode]: R does not have a built-in function to calculate the mode of a sample distribution.
          The function `mode` in R is not related to the statistics, but is a programming function related to how the object is stored in memory.
@@ -170,6 +175,12 @@ See package **modeest** function `mlv` for various methods to calculate the mode
 # Skewness, Kurtosis
 
 Generally you will not be interested in the higher moments of sample data, such as the skewness and kurtosis. If you are, the package **moments** provides functions for these.
+```{r}
+library("moments")
+skewness(lifeExp)
+kurtosis(lifeExp)
+```
+
 
 
 # Plots
