@@ -46,7 +46,7 @@ R provides functions to calculate many common descriptive statistics:
 - `median(x)`: median
 - `sd(x)` : Standard deviation
 - `var(x)` : Variance
-- `IQR(x)` : Interquartile range
+- `IQR(x)` : Inter-quartile range
 - `fivenumber(x)`: Tukey's five number summary
 - `quantile(x, prob)` : Quantiles
 - `range(x)`: Minimum and maximum
@@ -78,7 +78,7 @@ minimum and maximum,
 min(lifeExp)
 max(lifeExp)
 ```
-the min (0%), 1st quartile (25%), mediam (50%), 3rd quartile (75%), and maximum (100%),
+the min (0%), 1st quartile (25%), median (50%), 3rd quartile (75%), and maximum (100%),
 ```{r}
 quantile(lifeExp)
 ```
