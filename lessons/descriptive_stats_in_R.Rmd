@@ -7,8 +7,38 @@ output: html_document
 
 ```{r results='hide',echo=FALSE}
 source("init.R")
+
 ```
 
+This lesson provides examples of functions to calculate summary statistics in R.
+It will use the gapminder. 
+
+This lesson will also use the following packages,
+```{r message=FALSE}
+library("dplyr")
+library("tidyr")
+library("ggplot2")
+```
+
+
+# Gapminder Data
+
+For this lesson, we will use the `gapminder` data in the **gapminder** package,
+```{r}
+library("gapminder")
+data("gapminder")
+```
+For simplicity, we will focus on only the 2007 data,
+```{r}
+gapminder2007 <- gapminder[gapminder$year == 2007, ]
+```
+and save life expectancy and continent to their own vectors,
+```{r}
+lifeExp <- gapminder2007$lifeExp
+continent <- gapminder2007$continent
+```
+
+# Miscellaneous Functions
 
 R provides functions to calculate many common descriptive statistics:
 
@@ -21,44 +51,308 @@ R provides functions to calculate many common descriptive statistics:
 - `quantile(x, prob)` : Quantiles
 - `range(x)`: Minimum and maximum
 - `diff(range(x))` : Range
-- `table(x)` Counts of values
 
-`r challenge_start()`
-
-Using the `gapminder` data in the **gapminder** package,
+For life expectancy calculate the mean,
 ```{r}
-library("gapminder")
-data("gapminder")
+mean(lifeExp)
+```
+median,
+```{r}
+median(lifeExp)
+```
+five number summary (minimum, lower-hinge, median, upper-hinge, maximum)
+```{r}
+fivenum(lifeExp)
+```
+standard deviation and variance,
+```{r}
+sd(lifeExp)
+var(lifeExp)
+```
+inter-quartile range,
+```{r}
+IQR(lifeExp)
+```
+minimum and maximum,
+```{r}
+min(lifeExp)
+max(lifeExp)
+```
+the min (0%), 1st quartile (25%), mediam (50%), 3rd quartile (75%), and maximum (100%),
+```{r}
+quantile(lifeExp)
+```
+arbitrary quantiles,
+```{r}
+quantile(lifeExp, prob = c(.33, .54, .86))
 ```
 
-`r challenge_end()`
-
-`r solution_start()`
-
-
-
-`r solution_end()`
-
-
-# Mode
-
-R does not have a built-in function to calculate the mode of a sample distribution.
-The function `mode` in R is not related to the statistics, but is a programming function related to how the object is stored in memory.
-
-To calculate the mode for discrete data, find the values with the highest count
-using `table`:
+The `range` function returns the minimum and maximum, so take the difference of the range to calculate the range (maximum - minimum),
 ```{r}
-tbl <- table(x)
-names(tbl)[tbl == max(tbl)]
+range(lifeExp)
+diff(range(lifeExp))
 ```
 
-- `table(x)` counts the number of observations taking each value
-- `names(tbl)` In the vector returned by the table command, the values of the observations are the names, and counts are values in the vector.
-- `tbl == max(tbl)` is `TRUE` for all (possibly more than one) elements which have the largest counts
+# Descriptive statistics by groups
+
+The easiest way to calculate descriptive statistics by groups is to use **dplyr** `summarize()` with `group_by()`,
+```{r}
+gapminder %>%
+  group_by(year) %>%
+  summarize(lifeExp_mean = mean(lifeExp),
+            lifeExp_median = median(lifeExp),
+            gdpPercap_mean = mean(gdpPercap),
+            gdpPercap_sd = sd(gdpPercap))
+```
+Alternatively, grouping by continent and year,
+```{r}
+gapminder %>%
+  group_by(continent, year) %>%
+  summarize(lifeExp_mean = mean(lifeExp),
+            lifeExp_median = median(lifeExp),
+            gdpPercap_mean = mean(gdpPercap),
+            gdpPercap_sd = sd(gdpPercap))
+```
+
+To calculate several descriptive statistics for several variables, the function
+`summarize_each` is useful,
+```{r}
+gapminder %>%
+  group_by(year) %>%
+  summarize_each(funs(mean, median), lifeExp, gdpPercap)
+```
+
+Alternatively, if you want more control, you can combine `summarize` with `gather` and `spread`,
+```{r}
+gapminder_by_year <-
+  gapminder %>%
+    gather(variable, value, -year, -country, -continent) %>%
+    group_by(year, variable) %>%
+    summarize(mean = mean(value),
+              sd = sd(value),
+              median = median(value),
+              max = max(value),
+              min = min(value))
+gapminder_by_year
+```
+If you need to convert back to a dataset where observations are years,
+```{r}
+gapminder_by_year %>%
+  gather(stat, value, -year, -variable) %>%
+  unite(varname, variable, stat) %>%
+  spread(varname, value) %>%
+  glimpse()
+```
+
+
+# Table and Mode
+
+The `table` function counts the number of observations equal to a value,
+```{r}
+table(continent)
+```
+This can be used to find the `mode` for a discrete variable [^mode],
+```{r}
+continent_counts <- table(continent)
+names(continent_counts)[continent_counts == max(continent_counts)]
+```
+
+- `table(continent)` counts the number of observations taking each value
+- `names(continent_counts)` In the vector returned by the table command, the values of the observations are the names, and counts are values in the vector.
+- `continent_counts == max(continent_counts)` is `TRUE` for all (possibly more than one) elements which have the largest counts
 
 That code only works well for discrete data. 
 See package **modeest** function `mlv` for various methods to calculate the mode, including for methods to estimate the mode of continuous distributions.
 
+[^mode]: R does not have a built-in function to calculate the mode of a sample distribution.
+         The function `mode` in R is not related to the statistics, but is a programming function related to how the object is stored in memory.
+
 # Skewness, Kurtosis
 
 Generally you will not be interested in the higher moments of sample data, such as the skewness and kurtosis. If you are, the package **moments** provides functions for these.
+
+
+# Plots
+
+Several plots are useful for descriptive statistics: boxplots, bar plots, histograms, density plots, and quantile plots.
+
+## Bar-plot
+
+A bar plot describes the distribution of a discrete-variable,
+```{r}
+ggplot(gapminder2007, aes(x = continent)) +
+  geom_bar()
+```
+This could be faceted in order to compare across different categories,
+```{r}
+ggplot(gapminder, aes(x = cut(lifeExp, c(0, 40, 50, 60, 70, 80, Inf)))) +
+  geom_bar() +
+  facet_wrap(~ year, ncol = 1) +
+  xlab("Life Expectancy categories")
+```
+
+## Histograms, Density
+
+A histogram shows the distribution
+
+```{r message = FALSE}
+ggplot(gapminder2007, aes(x = lifeExp)) +
+  geom_histogram()
+```
+By default, `geom_histogram` gives the message, if you do not choose the widths of the bins,
+```
+`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+```
+You can manually choose a binwidth to remove that message. 
+In this case, 5 years sounds reasonable,
+```{r}
+ggplot(gapminder2007, aes(x = lifeExp)) +
+  geom_histogram(binwidth = 5)
+```
+
+We can compare across groups using faceting.
+To compare the distributions across continents,
+```{r}
+ggplot(gapminder2007, aes(x = lifeExp)) +
+  geom_histogram(binwidth = 5) +
+  facet_wrap(~continent, ncol = 1)
+```
+or continents and years,
+```{r}
+ggplot(gapminder, aes(x = lifeExp)) +
+  geom_histogram(binwidth = 5) +
+  facet_grid(year ~ continent)
+```
+Another way to compare groups is to use color and transparency to overlap histograms, although this will not work for black and white publications,
+```{r}
+ggplot(gapminder2007, aes(x = lifeExp, fill = continent)) +
+  geom_histogram(binwidth = 5, alpha = 0.3)
+```
+```{r}
+ggplot(gapminder, aes(x = lifeExp, fill = continent)) +
+  geom_histogram(alpha = 0.3, binwidth = 5) +
+  facet_wrap(~year, ncol = 1)
+```
+
+Density plots are a continuous alternative to histograms.
+```{r}
+ggplot(gapminder2007, aes(x = lifeExp)) +
+  geom_density()
+```
+It is often useful to combine a density plot with a rug plot, which shows a tick mark
+for every value in the data,
+```{r}
+ggplot(gapminder2007, aes(x = lifeExp)) +
+  geom_density() + 
+  geom_rug()
+```
+
+We can compare across groups using faceting.
+To compare the distributions across continents,
+```{r}
+ggplot(gapminder2007, aes(x = lifeExp)) +
+  geom_density() +
+  geom_rug() +
+  facet_wrap(~continent, ncol = 1)
+```
+or continents and years,
+```{r}
+ggplot(gapminder, aes(x = lifeExp)) +
+  geom_density() +
+  geom_rug() +
+  facet_grid(year ~ continent)
+```
+Another way to compare groups is to use color, although this will not work well for black and white publications,
+```{r}
+ggplot(gapminder2007, aes(x = lifeExp, color  = continent)) +
+  geom_density()
+```
+```{r}
+ggplot(gapminder, aes(x = lifeExp, color = continent)) +
+  geom_density() +
+  facet_wrap(~year, ncol = 1)
+```
+
+To calculate histograms for multiple variables, it is easiest to use `gather()` to make the dataset long, with one row per (country, variable),
+```{r message = FALSE}
+gapminder2007_long <- gather(gapminder2007, variable, value,
+                             -country, -year, -continent)
+ggplot(gapminder2007_long, aes(x = value)) +
+  geom_histogram() +
+  facet_wrap(~variable, ncol = 1, scales = "free")
+```
+
+
+## Boxplot
+
+Boxplots summarizes the distribution into five values and indicates outliers,
+
+- median: middle line
+- 1st quartile: bottom of box
+- 3rd quartile: top of box
+- lowest datum within 1.5 IQR of the lower quartile: end of lower whisker
+- highest datum within 1.5 IQR of the upper quartile: end of upper whisker
+
+Boxplots are best used for comparing the distributions of several groups.
+```{r}
+ggplot(gapminder2007, aes(x = continent, y = lifeExp)) +
+  geom_boxplot()
+```
+Note that `geom_boxplot` requires an `x` aesthetic. 
+If you need to make a boxplot for only one group (which may not be a good idea),
+```{r}
+ggplot(gapminder2007, aes(x = 1, y = lifeExp)) +
+  geom_boxplot() +
+  xlab("")
+```
+
+More comparisons can be made by faceting over other categories,
+```{r}
+ggplot(gapminder, aes(x = continent, y = lifeExp)) +
+  geom_boxplot() +
+  facet_wrap(~year, ncol = 1)
+```
+
+A continuous alternative to a boxplot is a violin plot, which can be thought of as a cross between a boxplot and a density plot,
+```{r}
+ggplot(gapminder2007, aes(x = continent, y = lifeExp)) +
+  geom_violin()
+```
+```{r}
+ggplot(gapminder, aes(x = continent, y = lifeExp)) +
+  geom_violin() +
+  facet_wrap(~year, ncol = 1)
+```
+
+
+## QQ Plot
+
+Quantile plots compare the empirical cumulative distribution function of a sample to a theoretical distribution (usually the normal).
+These are often used to check the normality of sample data.
+```{r}
+ggplot(gapminder2007, aes(sample = lifeExp)) +
+  geom_qq()
+```
+This plots the qq-plots of several variables in the gapminder data,
+```{r}
+ggplot(gather(gapminder2007, variable, value, -year, -continent, -country),
+       aes(sample = value)) +
+  geom_qq() +
+  facet_wrap(~variable, ncol = 1, scales = "free_y")
+```
+None of these distributions are particularly normal.
+However, transforming `gdpPercap` and `pop` makes them closer to normal,
+```{r}
+ggplot(mutate(gapminder2007, 
+              gdpPercap = log(gdpPercap),
+              pop = log(pop)) %>%
+              gather(variable, value,
+                     -year, -continent, -country),
+       aes(sample = value)) +
+  geom_qq() +
+  facet_wrap(~variable, ncol = 1, scales = "free_y")
+```
+
+
+
+
