@@ -87,7 +87,6 @@ $$
 <li><a href="#miscellaneous-functions">Miscellaneous Functions</a></li>
 <li><a href="#descriptive-statistics-by-groups">Descriptive statistics by groups</a></li>
 <li><a href="#table-and-mode">Table and Mode</a></li>
-<li><a href="#skewness-kurtosis">Skewness, Kurtosis</a></li>
 <li><a href="#plots">Plots</a><ul>
 <li><a href="#bar-plot">Bar-plot</a></li>
 <li><a href="#histograms-density">Histograms, Density</a></li>
@@ -310,20 +309,6 @@ names(continent_counts)[continent_counts == max(continent_counts)]</code></pre>
 ## Bickel&#39;s modal skewness: -0.4647887 
 ## Call: mlv.default(x = lifeExp, method = &quot;shorth&quot;)</code></pre>
 </div>
-<div id="skewness-kurtosis" class="section level1">
-<h1>Skewness, Kurtosis</h1>
-<p>Generally you will not be interested in the higher moments of sample data, such as the skewness and kurtosis. If you are, the package <strong>moments</strong> provides functions for these.</p>
-<pre class="r"><code>library(&quot;moments&quot;)</code></pre>
-<pre><code>## 
-## Attaching package: &#39;moments&#39;</code></pre>
-<pre><code>## The following object is masked from &#39;package:modeest&#39;:
-## 
-##     skewness</code></pre>
-<pre class="r"><code>skewness(lifeExp)</code></pre>
-<pre><code>## [1] -0.6814798</code></pre>
-<pre class="r"><code>kurtosis(lifeExp)</code></pre>
-<pre><code>## [1] 2.157154</code></pre>
-</div>
 <div id="plots" class="section level1">
 <h1>Plots</h1>
 <p>Several plots are useful for descriptive statistics: boxplots, bar plots, histograms, density plots, and quantile plots.</p>
@@ -332,73 +317,73 @@ names(continent_counts)[continent_counts == max(continent_counts)]</code></pre>
 <p>A bar plot describes the distribution of a discrete-variable,</p>
 <pre class="r"><code>ggplot(gapminder2007, aes(x = continent)) +
   geom_bar()</code></pre>
-<p><img src="descriptive_stats_in_R_files/figure-html/unnamed-chunk-24-1.png" title="" alt="" width="672" /> This could be faceted in order to compare across different categories,</p>
+<p><img src="descriptive_stats_in_R_files/figure-html/unnamed-chunk-23-1.png" title="" alt="" width="672" /> This could be faceted in order to compare across different categories,</p>
 <pre class="r"><code>ggplot(gapminder, aes(x = cut(lifeExp, c(0, 40, 50, 60, 70, 80, Inf)))) +
   geom_bar() +
   facet_wrap(~ year, ncol = 1) +
   xlab(&quot;Life Expectancy categories&quot;)</code></pre>
-<p><img src="descriptive_stats_in_R_files/figure-html/unnamed-chunk-25-1.png" title="" alt="" width="672" /></p>
+<p><img src="descriptive_stats_in_R_files/figure-html/unnamed-chunk-24-1.png" title="" alt="" width="672" /></p>
 </div>
 <div id="histograms-density" class="section level2">
 <h2>Histograms, Density</h2>
 <p>A histogram shows the distribution</p>
 <pre class="r"><code>ggplot(gapminder2007, aes(x = lifeExp)) +
   geom_histogram()</code></pre>
-<p><img src="descriptive_stats_in_R_files/figure-html/unnamed-chunk-26-1.png" title="" alt="" width="672" /> By default, <code>geom_histogram</code> gives the message, if you do not choose the widths of the bins,</p>
+<p><img src="descriptive_stats_in_R_files/figure-html/unnamed-chunk-25-1.png" title="" alt="" width="672" /> By default, <code>geom_histogram</code> gives the message, if you do not choose the widths of the bins,</p>
 <pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
 <p>You can manually choose a binwidth to remove that message. In this case, 5 years sounds reasonable,</p>
 <pre class="r"><code>ggplot(gapminder2007, aes(x = lifeExp)) +
   geom_histogram(binwidth = 5)</code></pre>
-<p><img src="descriptive_stats_in_R_files/figure-html/unnamed-chunk-27-1.png" title="" alt="" width="672" /></p>
+<p><img src="descriptive_stats_in_R_files/figure-html/unnamed-chunk-26-1.png" title="" alt="" width="672" /></p>
 <p>We can compare across groups using faceting. To compare the distributions across continents,</p>
 <pre class="r"><code>ggplot(gapminder2007, aes(x = lifeExp)) +
   geom_histogram(binwidth = 5) +
   facet_wrap(~continent, ncol = 1)</code></pre>
-<p><img src="descriptive_stats_in_R_files/figure-html/unnamed-chunk-28-1.png" title="" alt="" width="672" /> or continents and years,</p>
+<p><img src="descriptive_stats_in_R_files/figure-html/unnamed-chunk-27-1.png" title="" alt="" width="672" /> or continents and years,</p>
 <pre class="r"><code>ggplot(gapminder, aes(x = lifeExp)) +
   geom_histogram(binwidth = 5) +
   facet_grid(year ~ continent)</code></pre>
-<p><img src="descriptive_stats_in_R_files/figure-html/unnamed-chunk-29-1.png" title="" alt="" width="672" /> Another way to compare groups is to use color and transparency to overlap histograms, although this will not work for black and white publications,</p>
+<p><img src="descriptive_stats_in_R_files/figure-html/unnamed-chunk-28-1.png" title="" alt="" width="672" /> Another way to compare groups is to use color and transparency to overlap histograms, although this will not work for black and white publications,</p>
 <pre class="r"><code>ggplot(gapminder2007, aes(x = lifeExp, fill = continent)) +
   geom_histogram(binwidth = 5, alpha = 0.3)</code></pre>
-<p><img src="descriptive_stats_in_R_files/figure-html/unnamed-chunk-30-1.png" title="" alt="" width="672" /></p>
+<p><img src="descriptive_stats_in_R_files/figure-html/unnamed-chunk-29-1.png" title="" alt="" width="672" /></p>
 <pre class="r"><code>ggplot(gapminder, aes(x = lifeExp, fill = continent)) +
   geom_histogram(alpha = 0.3, binwidth = 5) +
   facet_wrap(~year, ncol = 1)</code></pre>
-<p><img src="descriptive_stats_in_R_files/figure-html/unnamed-chunk-31-1.png" title="" alt="" width="672" /></p>
+<p><img src="descriptive_stats_in_R_files/figure-html/unnamed-chunk-30-1.png" title="" alt="" width="672" /></p>
 <p>Density plots are a continuous alternative to histograms.</p>
 <pre class="r"><code>ggplot(gapminder2007, aes(x = lifeExp)) +
   geom_density()</code></pre>
-<p><img src="descriptive_stats_in_R_files/figure-html/unnamed-chunk-32-1.png" title="" alt="" width="672" /> It is often useful to combine a density plot with a rug plot, which shows a tick mark for every value in the data,</p>
+<p><img src="descriptive_stats_in_R_files/figure-html/unnamed-chunk-31-1.png" title="" alt="" width="672" /> It is often useful to combine a density plot with a rug plot, which shows a tick mark for every value in the data,</p>
 <pre class="r"><code>ggplot(gapminder2007, aes(x = lifeExp)) +
   geom_density() + 
   geom_rug()</code></pre>
-<p><img src="descriptive_stats_in_R_files/figure-html/unnamed-chunk-33-1.png" title="" alt="" width="672" /></p>
+<p><img src="descriptive_stats_in_R_files/figure-html/unnamed-chunk-32-1.png" title="" alt="" width="672" /></p>
 <p>We can compare across groups using faceting. To compare the distributions across continents,</p>
 <pre class="r"><code>ggplot(gapminder2007, aes(x = lifeExp)) +
   geom_density() +
   geom_rug() +
   facet_wrap(~continent, ncol = 1)</code></pre>
-<p><img src="descriptive_stats_in_R_files/figure-html/unnamed-chunk-34-1.png" title="" alt="" width="672" /> or continents and years,</p>
+<p><img src="descriptive_stats_in_R_files/figure-html/unnamed-chunk-33-1.png" title="" alt="" width="672" /> or continents and years,</p>
 <pre class="r"><code>ggplot(gapminder, aes(x = lifeExp)) +
   geom_density() +
   geom_rug() +
   facet_grid(year ~ continent)</code></pre>
-<p><img src="descriptive_stats_in_R_files/figure-html/unnamed-chunk-35-1.png" title="" alt="" width="672" /> Another way to compare groups is to use color, although this will not work well for black and white publications,</p>
+<p><img src="descriptive_stats_in_R_files/figure-html/unnamed-chunk-34-1.png" title="" alt="" width="672" /> Another way to compare groups is to use color, although this will not work well for black and white publications,</p>
 <pre class="r"><code>ggplot(gapminder2007, aes(x = lifeExp, color  = continent)) +
   geom_density()</code></pre>
-<p><img src="descriptive_stats_in_R_files/figure-html/unnamed-chunk-36-1.png" title="" alt="" width="672" /></p>
+<p><img src="descriptive_stats_in_R_files/figure-html/unnamed-chunk-35-1.png" title="" alt="" width="672" /></p>
 <pre class="r"><code>ggplot(gapminder, aes(x = lifeExp, color = continent)) +
   geom_density() +
   facet_wrap(~year, ncol = 1)</code></pre>
-<p><img src="descriptive_stats_in_R_files/figure-html/unnamed-chunk-37-1.png" title="" alt="" width="672" /></p>
+<p><img src="descriptive_stats_in_R_files/figure-html/unnamed-chunk-36-1.png" title="" alt="" width="672" /></p>
 <p>To calculate histograms for multiple variables, it is easiest to use <code>gather()</code> to make the dataset long, with one row per (country, variable),</p>
 <pre class="r"><code>gapminder2007_long &lt;- gather(gapminder2007, variable, value,
                              -country, -year, -continent)
 ggplot(gapminder2007_long, aes(x = value)) +
   geom_histogram() +
   facet_wrap(~variable, ncol = 1, scales = &quot;free&quot;)</code></pre>
-<p><img src="descriptive_stats_in_R_files/figure-html/unnamed-chunk-38-1.png" title="" alt="" width="672" /></p>
+<p><img src="descriptive_stats_in_R_files/figure-html/unnamed-chunk-37-1.png" title="" alt="" width="672" /></p>
 </div>
 <div id="boxplot" class="section level2">
 <h2>Boxplot</h2>
@@ -413,36 +398,36 @@ ggplot(gapminder2007_long, aes(x = value)) +
 <p>Boxplots are best used for comparing the distributions of several groups.</p>
 <pre class="r"><code>ggplot(gapminder2007, aes(x = continent, y = lifeExp)) +
   geom_boxplot()</code></pre>
-<p><img src="descriptive_stats_in_R_files/figure-html/unnamed-chunk-39-1.png" title="" alt="" width="672" /> Note that <code>geom_boxplot</code> requires an <code>x</code> aesthetic. If you need to make a boxplot for only one group (which may not be a good idea),</p>
+<p><img src="descriptive_stats_in_R_files/figure-html/unnamed-chunk-38-1.png" title="" alt="" width="672" /> Note that <code>geom_boxplot</code> requires an <code>x</code> aesthetic. If you need to make a boxplot for only one group (which may not be a good idea),</p>
 <pre class="r"><code>ggplot(gapminder2007, aes(x = 1, y = lifeExp)) +
   geom_boxplot() +
   xlab(&quot;&quot;)</code></pre>
-<p><img src="descriptive_stats_in_R_files/figure-html/unnamed-chunk-40-1.png" title="" alt="" width="672" /></p>
+<p><img src="descriptive_stats_in_R_files/figure-html/unnamed-chunk-39-1.png" title="" alt="" width="672" /></p>
 <p>More comparisons can be made by faceting over other categories,</p>
 <pre class="r"><code>ggplot(gapminder, aes(x = continent, y = lifeExp)) +
   geom_boxplot() +
   facet_wrap(~year, ncol = 1)</code></pre>
-<p><img src="descriptive_stats_in_R_files/figure-html/unnamed-chunk-41-1.png" title="" alt="" width="672" /></p>
+<p><img src="descriptive_stats_in_R_files/figure-html/unnamed-chunk-40-1.png" title="" alt="" width="672" /></p>
 <p>A continuous alternative to a boxplot is a violin plot, which can be thought of as a cross between a boxplot and a density plot,</p>
 <pre class="r"><code>ggplot(gapminder2007, aes(x = continent, y = lifeExp)) +
   geom_violin()</code></pre>
-<p><img src="descriptive_stats_in_R_files/figure-html/unnamed-chunk-42-1.png" title="" alt="" width="672" /></p>
+<p><img src="descriptive_stats_in_R_files/figure-html/unnamed-chunk-41-1.png" title="" alt="" width="672" /></p>
 <pre class="r"><code>ggplot(gapminder, aes(x = continent, y = lifeExp)) +
   geom_violin() +
   facet_wrap(~year, ncol = 1)</code></pre>
-<p><img src="descriptive_stats_in_R_files/figure-html/unnamed-chunk-43-1.png" title="" alt="" width="672" /></p>
+<p><img src="descriptive_stats_in_R_files/figure-html/unnamed-chunk-42-1.png" title="" alt="" width="672" /></p>
 </div>
 <div id="qq-plot" class="section level2">
 <h2>QQ Plot</h2>
 <p>Quantile plots compare the empirical cumulative distribution function of a sample to a theoretical distribution (usually the normal). These are often used to check the normality of sample data.</p>
 <pre class="r"><code>ggplot(gapminder2007, aes(sample = lifeExp)) +
   geom_qq()</code></pre>
-<p><img src="descriptive_stats_in_R_files/figure-html/unnamed-chunk-44-1.png" title="" alt="" width="672" /> This plots the qq-plots of several variables in the gapminder data,</p>
+<p><img src="descriptive_stats_in_R_files/figure-html/unnamed-chunk-43-1.png" title="" alt="" width="672" /> This plots the qq-plots of several variables in the gapminder data,</p>
 <pre class="r"><code>ggplot(gather(gapminder2007, variable, value, -year, -continent, -country),
        aes(sample = value)) +
   geom_qq() +
   facet_wrap(~variable, ncol = 1, scales = &quot;free_y&quot;)</code></pre>
-<p><img src="descriptive_stats_in_R_files/figure-html/unnamed-chunk-45-1.png" title="" alt="" width="672" /> None of these distributions are particularly normal. However, transforming <code>gdpPercap</code> and <code>pop</code> makes them closer to normal,</p>
+<p><img src="descriptive_stats_in_R_files/figure-html/unnamed-chunk-44-1.png" title="" alt="" width="672" /> None of these distributions are particularly normal. However, transforming <code>gdpPercap</code> and <code>pop</code> makes them closer to normal,</p>
 <pre class="r"><code>ggplot(mutate(gapminder2007, 
               gdpPercap = log(gdpPercap),
               pop = log(pop)) %&gt;%
@@ -451,7 +436,7 @@ ggplot(gapminder2007_long, aes(x = value)) +
        aes(sample = value)) +
   geom_qq() +
   facet_wrap(~variable, ncol = 1, scales = &quot;free_y&quot;)</code></pre>
-<p><img src="descriptive_stats_in_R_files/figure-html/unnamed-chunk-46-1.png" title="" alt="" width="672" /></p>
+<p><img src="descriptive_stats_in_R_files/figure-html/unnamed-chunk-45-1.png" title="" alt="" width="672" /></p>
 </div>
 </div>
 <div class="footnotes">

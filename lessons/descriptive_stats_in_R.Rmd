@@ -172,15 +172,6 @@ mlv(lifeExp, method = "shorth")
 [^mode]: R does not have a built-in function to calculate the mode of a sample distribution.
          The function `mode` in R is not related to the statistics, but is a programming function related to how the object is stored in memory.
 
-# Skewness, Kurtosis
-
-Generally you will not be interested in the higher moments of sample data, such as the skewness and kurtosis. If you are, the package **moments** provides functions for these.
-```{r}
-library("moments")
-skewness(lifeExp)
-kurtosis(lifeExp)
-```
-
 
 
 # Plots
