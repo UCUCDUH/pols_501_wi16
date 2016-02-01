@@ -70,6 +70,7 @@ Class
 
 <ul class="fa-ul">
 <li><i class="fa-li fa fa-bar-chart"></i><a href="/lessons/descriptive_statistics.html">Descriptive Statistics</a>
+<li><i class="fa-li fa fa-bar-chart"></i><a href="/lessons/descriptive_statistics_in_R.html">Descriptive Statistics Functions in R</a>
 </ul>
 
 Lab
@@ -153,6 +154,7 @@ Class
 <ul class="fa-ul">
 <li><i class="fa-li fa fa-bar-chart"></i><a href="/slides/statistical-modeling.pdf">Slides on Statistical Modeling</a>
 <li><i class="fa-li fa fa-bar-chart"></i><a href="/docs/Bayes.pdf">Examples of Bayes' Theorem</a>
+<li><i class="fa-li fa fa-bar-chart"></i><a href="/lessons/distributions.html">Distribution Functions in R</a>
 </ul>
 
 Lab

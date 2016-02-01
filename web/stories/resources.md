@@ -3,15 +3,17 @@
 - [Introduction to R and RStudio with Gapminder data](/lessons/intro-to-r-with-gapminder.html)
 - [Getting data into R](/lessons/getting-data-into-r.html) reading csv, Stata, SPSS, Excel files
 - [Descriptive statistics](/lessons/descriptive_statistics.html)
+- [R functions for descriptive statistics](/lessons/descriptive_stats_in_R.html)
 - [Subsetting data](/lessons/subsetting.html)
 - [Plotting data with ggplot2 (1)](/lessons/ggplot-1.html)
 - [Missing values (NA)](/lessons/missing_values.html)
-- [%>%: The Pipe Operator](/lessons/pipe.html) 
+- [%>%: The Pipe Operator](/lessons/pipe.html)
 - [Joining Datasets ](/lessons/merging.html)
 - [Joining Datasets: An application](/lessons/merging_application.html)
 - [Miscellaneous Useful Functions](/lessons/data_manipulation_utility_functions.html)
 - [Application: WDI cleaning with dplyr and tidyr](/lessons/wdi.html)
 - [Intro to dlpyr and tidyr using gapminder](/lessons/gapminder_intro_to_dplyr_tidyr.html)
+- [Distributions in R](/lessons/distributions.html)
 
 # Miscellaneous
 
