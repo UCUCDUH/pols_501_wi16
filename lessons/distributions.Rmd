@@ -1,5 +1,5 @@
 ---
-title: "Distributions in R"
+title: "Random Sampling and Distributions in R"
 author: "Jeffrey Arnold"
 date: "January 28, 2016"
 ---
