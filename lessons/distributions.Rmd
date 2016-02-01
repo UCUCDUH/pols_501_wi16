@@ -12,7 +12,7 @@ knitr::opts_chunk$set(cache = FALSE)
 ```
 
 This lesson covers sampling and distributions in R. Although all the functions
-for the distributions are included in base R, several packges are used for
+for the distributions are included in base R, several packages are used for
 plotting and data wrangling,
 ```{r message = FALSE}
 library("ggplot2")
@@ -61,7 +61,7 @@ $P(X = 3) = 0.3$, $P(X = 4) = 0.1$,
 sample(1:4, 20, replace = TRUE, prob = c(0.2, 0.4, 0.3, 0.1))
 ```
 
-Plotting the frequencies of samples without and with the `prob` argument shows 
+Plotting the frequencies of samples without and with the `prob` argument shows
 how the weighting affects the sampling,
 ```{r}
 x_sample_unwt <-
@@ -69,7 +69,7 @@ x_sample_unwt <-
   group_by(x) %>%
   tally() %>%
   mutate(prob = n / sum(n))
-  
+
 ggplot(x_sample_unwt, aes(x = x, y = prob)) +
   geom_bar(stat = "identity")
 ```
@@ -80,7 +80,7 @@ x_sample_wt <-
   group_by(x) %>%
   tally() %>%
   mutate(prob = n / sum(n))
-  
+
 ggplot(x_sample_wt, aes(x = x, y = prob)) +
   geom_bar(stat = "identity")
 ```
@@ -89,7 +89,7 @@ ggplot(x_sample_wt, aes(x = x, y = prob)) +
 
 # Distributions
 
-R includes 
+R includes
 
 - `r*` draw samples from a distribution
 - `q*` the quantile function of a distribution: for a given $p$, the $x$ such that $P(X < x) = p$.
@@ -174,7 +174,7 @@ z <- (x - mu) / sigma
 pnorm(z)
 ```
 To calculate the values of the complementary cumulative distribution function, $\bar{F}(x) = \Pr(X > x)$, use the argument `lower.tail = FALSE` with `pnorm()`.
-For example, the probabiilty that a standard normal random variable $X$ is greater than -1.96 is,
+For example, the probability that a standard normal random variable $X$ is greater than -1.96 is,
 ```{r}
 pnorm(-1.96, lower.tail = FALSE)
 ```
@@ -182,8 +182,8 @@ This is equivalent to
 ```{r}
 1 - pnorm(-1.96)
 ```
-You can calculate areas using `pnorm` as well. 
-For example, to calculate the probability $\Pr(-1.96 \leq X \leq 1.96)$, 
+You can calculate areas using `pnorm` as well.
+For example, to calculate the probability $\Pr(-1.96 \leq X \leq 1.96)$,
 ```{r}
 pnorm(1.96) - pnorm(-1.96)
 ```
@@ -257,7 +257,7 @@ binom_densities <-
   group_by(size, prob) %>%
   do(data_frame(x = 0:20,
                 density = dbinom(x, size = .$size, prob = .$prob)))
-  
+
 ggplot(binom_densities, aes(x = x, y = density, colour = factor(size))) +
   geom_point() +
   geom_line()
@@ -271,7 +271,7 @@ binom_densities <-
   group_by(size, prob) %>%
   do(data_frame(x = 0:20,
                 density = dbinom(x, size = .$size, prob = .$prob)))
-  
+
 ggplot(binom_densities, aes(x = x, y = density, colour = factor(prob))) +
   geom_point() +
   geom_line()
@@ -290,13 +290,13 @@ use the argument `lower.tail = FALSE`,
 ```{r}
 pbinom(0:5, size = 5, prob = 0.5, lower.tail = FALSE)
 ```
-This is eqivalent to 1 minus the CDF,
+This is equivalent to 1 minus the CDF,
 ```{r}
 1 - pbinom(0:5, size = 5, prob = 0.5)
 ```
 
 
-This plots the Binomial cumulative distribution function for $p = 0.5$, 
+This plots the Binomial cumulative distribution function for $p = 0.5$,
 and $n \in \{5, 10, 15, 20\}$,
 ```{r}
 expand.grid(size = c(5, 10, 15, 20),
@@ -328,7 +328,7 @@ $P(X \leq x) = 0.75$ is
 qbinom(0.75, size = 5, prob = 0.25)
 ```
 
-This plots the Binomial quantile function for $p = 0.5$, 
+This plots the Binomial quantile function for $p = 0.5$,
 and $n \in \{5, 10, 15, 20\}$,
 ```{r}
 expand.grid(size = c(5, 10, 15, 20),
@@ -369,8 +369,8 @@ Function is `dpois`.
 # Seed
 
 When R generates random numbers it is not actually, random, but a type of algorithm
-known as a pseudo-randome number generator. In short, these are algorithms that 
-are deterministic, but procude a sequence of numbers that have properties similar to 
+known as a pseudo-random number generator. In short, these are algorithms that
+are deterministic, but produce a sequence of numbers that have properties similar to
 those if they were actually generated randomly. This also means that you can
 exactly replicate random number results in R, as long as you set an object called
 the "seed" using a function called `set.seed`.

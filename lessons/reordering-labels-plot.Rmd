@@ -9,7 +9,7 @@ source("init.R")
 ```
 
 ## Learning Objectives
-How to sort the values ploted in a graph by a specific variable
+How to sort the values plotted in a graph by a specific variable
 
 ## Sorting Labels of a Plot
 We start by creating a simulated dataset with data about:
@@ -19,38 +19,38 @@ We start by creating a simulated dataset with data about:
 - `women_per` The percentage of party candidates that are women
 
 ```{r}
-parties <- paste0("party",1:10)
+parties <- paste0("party", 1:10)
 ideology <- sample(x = 1:10, size = 10, replace = FALSE)
 women_per <- rnorm(n = 10, mean = 0.5, sd = 0.2)
-dataset <- data.frame(parties = parties, ideology = ideology, women_per = women_per)
+dataset <-
+  data.frame(parties = parties,
+             ideology = ideology,
+             women_per = women_per)
 ```
 
-We use `ggplot2` to create a barplot showing the percentage of women candidate by political party. However, in the x-axis, the parties are sorted alphabetically. 
+We use `ggplot2` to create a barplot showing the percentage of women candidate by political party. However, in the x-axis, the parties are sorted alphabetically.
 ```{r}
 library(ggplot2)
-ggplot(dataset, aes(x = parties, y = women_per)) + 
+ggplot(dataset, aes(x = parties, y = women_per)) +
   geom_bar(stat = "summary", position = "dodge", fun.y="sum")
 ```
 
-If we want to sort them by another variable (e.g. `ideology`), we need to specify so in the ggplot comand using `reorder()`.
+If we want to sort them by another variable (e.g. `ideology`), we need to specify so in the `ggplot` command using `reorder()`.
 ```{r}
-ggplot(dataset, aes(x = reorder(parties,ideology), y = women_per)) + 
+ggplot(dataset, aes(x = reorder(parties, ideology), y = women_per)) +
   geom_bar(stat = "summary", position = "dodge", fun.y="sum")
 ```
 
 Make sure the variable you are using to sort the axis is numeric, otherwise you will get an error and it won't work.
 ```{r, eval = FALSE}
 dataset$ideology <- as.factor(dataset$ideology)
-ggplot(dataset, aes(x = reorder(parties,ideology), y = women_per)) + 
-  geom_bar(stat = "summary", position = "dodge", fun.y="sum")
+ggplot(dataset, aes(x = reorder(parties, ideology), y = women_per)) +
+  geom_bar(stat = "summary", position = "dodge", fun.y = "sum")
 ```
 
-If it's not a numerical variable, change it so it is. 
+If it's not a numerical variable, change it so it is.
 ```{r}
 dataset$ideo_numeric <- as.numeric(dataset$ideology)
-ggplot(dataset, aes(x = reorder(parties,ideo_numeric), y = women_per)) + 
-  geom_bar(stat = "summary", position = "dodge", fun.y="sum")
+ggplot(dataset, aes(x = reorder(parties, ideo_numeric), y = women_per)) +
+  geom_bar(stat = "summary", position = "dodge", fun.y = "sum")
 ```
-
-
-

@@ -8,7 +8,7 @@ date: "January 26, 2016"
 knitr::opts_chunk$set(results="hide", error=TRUE)
 ```
 
-This is an introduction to the **dplyr** and **tidyr** pacakges for data wrangling using the `gapminder` data from the **gapminder** package. For other introductions see the vignettes for [dplyr](https://cran.r-project.org/web/packages/dplyr/index.html) and [tidyr](https://cran.r-project.org/web/packages/tidyr/index.html), and the [R for Data Science](http://r4ds.had.co.nz/) chapters [Relational Data](http://r4ds.had.co.nz/relational-data.html), [Tidy Data](http://r4ds.had.co.nz/tidy.html), and [Data Transformation](http://r4ds.had.co.nz/transform.html).
+This is an introduction to the **dplyr** and **tidyr** packages for data wrangling using the `gapminder` data from the **gapminder** package. For other introductions see the vignettes for [dplyr](https://cran.r-project.org/web/packages/dplyr/index.html) and [tidyr](https://cran.r-project.org/web/packages/tidyr/index.html), and the [R for Data Science](http://r4ds.had.co.nz/) chapters [Relational Data](http://r4ds.had.co.nz/relational-data.html), [Tidy Data](http://r4ds.had.co.nz/tidy.html), and [Data Transformation](http://r4ds.had.co.nz/transform.html).
 
 Load the relevant packages and data,
 ```{r message=FALSE}
@@ -30,7 +30,7 @@ The `gapminder` data is special type of data frame created by the **dplyr** pack
 class(gapminder)
 ```
 You can tell this because it has class "tbl_df" in addition to "data.frame".
-`tbl_df` objects are mostly compatible with `data.frame` objects; 
+`tbl_df` objects are mostly compatible with `data.frame` objects;
 you can use `[`, `[[`, `$`, and all the functions compatible with data frames.
 The most noticeable way that they differ from `data.frame` objects is that they have prettier printing.
 Instead of printing the whole object, it will only print the first few lines and columns,
@@ -157,7 +157,7 @@ distinct(select(gapminder, country))
 # Add new columns with `mutate()`
 
 Add the columns GDP, log GDP per capita, log population, and log GDP,
-and a dummy variable for North America, 
+and a dummy variable for North America,
 ```{r mutate1}
 mutate(gapminder,
        GDP = pop * gdpPercap,
@@ -167,7 +167,7 @@ mutate(gapminder,
        na_eu = continent %in% c("United States", "Mexico", "Canada"))
 ```
 
-It is tedious to mutate mutiple columns. To apply one or more functions to one or more columns, use `mutate_each`,
+It is tedious to mutate multiple columns. To apply one or more functions to one or more columns, use `mutate_each`,
 ```{r}
 mutate_each(gapminder, funs(log), pop, gdpPercap, lifeExp)
 ```
@@ -238,7 +238,7 @@ Note that the functions need to be enclosed within the function `funs`.
 # Grouped Functions
 
 Use the `group_by` function to group the data frame.
-This allows for calculating variables and 
+This allows for calculating variables and
 
 For each country, calculate its average, median, and maximum GDP per capita, and median life expectancy,
 ```{r grouped1}
@@ -307,7 +307,7 @@ gapminder_by_variable
 
 Now we can plot histograms of all the variables in a single plot,
 ```{r message = FALSE}
-ggplot(gapminder_by_variable, 
+ggplot(gapminder_by_variable,
        aes(x = value)) +
   geom_histogram() +
   facet_wrap(~variable, ncol = 1, scales = "free")

@@ -19,7 +19,7 @@ Merging datasets
 
 Today we will use 2 different datasets:
 
-1. `country.csv`: A simplified dataset of the replication data for Baum and Zhukov's (2015) *JPR* article. 
+1. `country.csv`: A simplified dataset of the replication data for Baum and Zhukov's (2015) *JPR* article.
 2. `vdem.csv`: The *Varieties of Democracy project* evaluates to what extent countries fit certain normative types of democracy (electoral, liberal, majoritarian, consensual, participatory, deliberative, and/or egalitarian) and provide numerous country-level data. Check their [website](https://v-dem.net/en/) for more information or to download the whole dataset.
 
 Download these datasets straight from the Internet using the R function `download.file()`. Save them in the `data` subdirectory.
@@ -36,7 +36,7 @@ country <- read.csv("data/country.csv")
 
 ## Merging Datasets
 
-Often the data we need is in different datasets and, to facilitate the analysis, we want to have it all in only one dataset. For example, in this case we have two datasets with country-level data: `country` and `vdem`. 
+Often the data we need is in different datasets and, to facilitate the analysis, we want to have it all in only one dataset. For example, in this case we have two datasets with country-level data: `country` and `vdem`.
 
 However, before we merge these 2 datasets, we should consider renaming some of the variables of `vdem`:
 
@@ -65,7 +65,7 @@ vdem <- vdem %>%
          deliberative = v2x_delibdem, egalitarian = v2x_egaldem)
 ```
 
-To merge datasets we need at least **1 common variable** in both datasets. 
+To merge datasets we need at least **1 common variable** in both datasets.
 
 `r challenge_start()`
 Which variable both datasets (`country` and `vdem`) have in common?
@@ -73,7 +73,7 @@ Which variable both datasets (`country` and `vdem`) have in common?
 
 The dataset `country` has a variable named **cow** and the dataset `vdem` has one named **COWcode**. What about the variables **cow** in `country` and **country_text_id** in `vdem`? In these case these last 2 variables seem to be the same.
 
-For country-level data, a package exists to convert the format of country-identifier variables: `countrycode`. It converts to and from 12 standardized country identifiers:"cowc", "cown", "iso3c", "iso3n", "iso2c", "imf", "fips104", "fao", "ioc", "un", "wb", "country.name". Let's explore the function `countrycode()`. 
+For country-level data, a package exists to convert the format of country-identifier variables: `countrycode`. It converts to and from 12 standardized country identifiers:"cowc", "cown", "iso3c", "iso3n", "iso2c", "imf", "fips104", "fao", "ioc", "un", "wb", "country.name". Let's explore the function `countrycode()`.
 
 ```{r, results='hide', message=FALSE, eval=FALSE}
 library(countrycode)
@@ -94,7 +94,7 @@ To merge datasets, we can use the following functions of the `dplyr` package:
 - `inner_join()`
 - outer join: `union(left_join(x, y), right_join(x, y))`
 
-Let's explore them. 
+Let's explore them.
 
 ```{r, eval=FALSE}
 db_left <- left_join(country, vdem, by = c("COWcode"))
@@ -104,7 +104,7 @@ db_inner <- inner_join(country, vdem, by = c("COWcode"))
 
 `r challenge_start()`
 1. How many unique countries are in `country`? And in `vdem`?
-2. Are all countries in `country` in `vdem`, and viceversa?
+2. Are all countries in `country` in `vdem`, and vice-versa?
 3. What are the outputs of the different merging commands? For each of the resulting datasets: what are the number of rows and the unique country codes (`COWcode`)? Is there something "wrong" with any of the new datasets?
 `r challenge_end()`
 
@@ -115,7 +115,7 @@ summary(country$COWcode)
 length(unique(vdem$COWcode))
 summary(vdem$COWcode)
 
-# 2. 
+# 2.
 length(which(unique(country$COWcode) %in% unique(vdem$COWcode)))
 not_in_vdem <- which(!(unique(country$COWcode) %in% unique(vdem$COWcode)))
 countries_not_vdem_id <- unique(country$COWcode)[not_in_vdem]

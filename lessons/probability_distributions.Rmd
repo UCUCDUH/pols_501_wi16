@@ -20,7 +20,7 @@ We will use the **gapminder** dataset to better understand *sampling uncertainty
 - Subset 10 random countries from the 2007 dataset
 - Calculate the mean and standard deviation of **lifeExp** for those 10 obs.
 
-NOTE: need to discuss what `set.seed` does. A brief note on how computers (for statistics) 
+NOTE: need to discuss what `set.seed` does. A brief note on how computers (for statistics)
 use pseudo-random numbers.
 
 ```{r results='hide', message=FALSE, warning=FALSE}
@@ -34,7 +34,7 @@ set.seed(123)
 data2007 <- gapminder %>%
   filter(year == "2007")
 
-x <- mean(data2007$lifeExp) 
+x <- mean(data2007$lifeExp)
 s <- sd(data2007$lifeExp)
 
 random_10_countries <- sample(gapminder$country, 10)
@@ -63,21 +63,21 @@ E.g. for the normal distribution?
 - rnorm: draw random numbers
 - dnorm: density P(X)
 - pnorm: cdf P(X \leq x)
-- qnorm: qunatile function x s.t. P(X \leq x) = q.
+- qnorm: quantile function x s.t. P(X \leq x) = q.
 
 ## Probability and Distributions in R
 
 How many heads and how many tails would we get if we flip a fair coin 10 times?
- 
+
 ```{r}
 flips_10 <- sample(x = c('head','tails'), size = 10, replace = TRUE)
 table(flips_10)
 ```
 
-According to the last (Jan. 26, 2016) *polls-only* forecast of [FiveThirtyEight](http://projects.fivethirtyeight.com/election-2016/primary-forecast/iowa-republican/#polls-only), Donald Trump has a 55% probability of winning the Iowa caucuses. 
+According to the last (Jan. 26, 2016) *polls-only* forecast of [FiveThirtyEight](http://projects.fivethirtyeight.com/election-2016/primary-forecast/iowa-republican/#polls-only), Donald Trump has a 55% probability of winning the Iowa caucuses.
 
 `r challenge_start()`
-How can we simulate the Iowa caucuses to make one prediction of Trumps's victory/loss? What type of distribution represents this outcome variable? 
+How can we simulate the Iowa caucuses to make one prediction of Trumps's victory/loss? What type of distribution represents this outcome variable?
 `r challenge_end()`
 
 ```{r}
@@ -89,7 +89,7 @@ print(c("Trump Loses :(", "Trump Wins! :)")[trump_result + 1])
 ```
 
 `r challenge_start()`
-How can we simulate Trump's victory or loss in Iowa 10 times using R? What type of distribution represents this outcome variable? 
+How can we simulate Trump's victory or loss in Iowa 10 times using R? What type of distribution represents this outcome variable?
 `r challenge_end()`
 
 ```{r}
@@ -101,7 +101,7 @@ print(paste("Trump wins the election in",trump_result_10,"of the simulations"))
 ```
 
 
-Now we will use the **country.csv** dataset we used in previous labs. 
+Now we will use the **country.csv** dataset we used in previous labs.
 
 ```{r}
 library(ggplot2)
@@ -112,7 +112,7 @@ Remember that this is a simplified dataset for the Baum and Zhukov's (2015) *JPR
 
 Lets plot the distribution of the variable **n_articles** using a density plot.
 ```{r}
-ggplot(country, aes(x = n_articles)) + 
+ggplot(country, aes(x = n_articles)) +
   geom_density()
 ```
 
@@ -127,11 +127,7 @@ Let's plot a Probability Mass Function (PMF) of a Poisson distribution with the 
 ```{r}
 n_articles_mean <- mean(country$n_articles)
 y_articles <- 1:max(country$n_articles)
-pmf <- dpois(y_articles, lambda = n_articles_mean) 
+pmf <- dpois(y_articles, lambda = n_articles_mean)
 pmf <- data.frame(pmf)
 ggplot(pmf, aes(x = y_articles, y = pmf)) + geom_line()
 ```
-
-
-
-
