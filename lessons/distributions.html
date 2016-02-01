@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="author" content="Jeffrey Arnold" />
+
+<meta name="date" content="2016-01-28" />
+
+<title>Distributions in R</title>
+
+<script src="libs/jquery-1.11.0/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap-3.3.1/css/cerulean.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.1/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.1/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.1/shim/respond.min.js"></script>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<link rel="stylesheet"
+      href="libs/highlight/textmate.css"
+      type="text/css" />
+<script src="libs/highlight/highlight.js"></script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img { 
+  max-width:100%; 
+  height: auto; 
+}
+</style>
+<div class="container-fluid main-container">
+
+<p>
+<strong>POL S/CS&amp;SS 501, University of Washington, Winter 2016</strong>
+</p>
+
+$$
+\DeclareMathOperator{\mean}{mean}
+\DeclareMathOperator{\var}{var}
+\DeclareMathOperator{\E}{E}
+\DeclareMathOperator{\argmin}{argmin}
+\DeclareMathOperator{\argmax}{argmax}
+$$
+
+<div id="header">
+<h1 class="title">Distributions in R</h1>
+<h4 class="author"><em>Jeffrey Arnold</em></h4>
+<h4 class="date"><em>January 28, 2016</em></h4>
+</div>
+
+<div id="TOC">
+<ul>
+<li><a href="#simple-random-samples">Simple Random Samples</a></li>
+<li><a href="#distributions">Distributions</a><ul>
+<li><a href="#normal-distribution">Normal Distribution</a></li>
+</ul></li>
+<li><a href="#bernoulli-binomial">Bernoulli, Binomial</a><ul>
+<li><a href="#geometric">Geometric</a></li>
+<li><a href="#poisson">Poisson</a></li>
+</ul></li>
+<li><a href="#seed">Seed</a></li>
+</ul>
+</div>
+
+<p>This lesson covers sampling and distributions in R. Although all the functions for the distributions are included in base R, several packges are used for plotting and data wrangling,</p>
+<pre class="r"><code>library(&quot;ggplot2&quot;)
+library(&quot;tidyr&quot;)
+library(&quot;dplyr&quot;)</code></pre>
+<div id="simple-random-samples" class="section level1">
+<h1>Simple Random Samples</h1>
+<p>The <code>sample</code> function draws a simple random sample.</p>
+<pre class="r"><code>sample(x, size, replace = FALSE, prob = NULL)</code></pre>
+<p>The function <code>sample</code> draws a sample of size <code>size</code> from the set in <code>x</code>. If <code>replace = TRUE</code>, then it samples with replacement, otherwise, it samples without replacement. The samples are drawn with equal probability, unless values are provided to <code>prob</code>.</p>
+<p>To draw a sample of size 5 from the integers 1 to 10, without replacement.</p>
+<pre class="r"><code>sample(1:10, 5)</code></pre>
+<pre><code>## [1] 2 9 8 6 7</code></pre>
+<p>If no size is given, it draws a sample of the same size as <code>x</code>. Since by default, it samples without replacement, this is equivalent to randomly reordering the vector.</p>
+<pre class="r"><code>sample(1:10)</code></pre>
+<pre><code>##  [1]  8  6  5  3  1  7  9  2 10  4</code></pre>
+<p>To sample with replacement, add the argument <code>replace = TRUE</code>,</p>
+<pre class="r"><code>sample(1:10, 5)</code></pre>
+<pre><code>## [1] 8 4 1 5 3</code></pre>
+<p>If <code>replace = TRUE</code>, you can draw samples with sizes larger than the vector of choices,</p>
+<pre class="r"><code>sample(1:10, 20, replace = TRUE)</code></pre>
+<pre><code>##  [1]  8  4  1  1  3  8  8 10  6 10 10  8  8  6  9  7  4  1  4  3</code></pre>
+<p>By default, <code>sample()</code> samples from the elements in <code>x</code> with equal probability. To sample from the elements in <code>x</code> with unequal probability, provide those probabilities with the <code>prob</code> argument. For example, to sample from a Bernoulli distribution where the probability of 1 is 0.7 and the probability of 0 is 0.3,</p>
+<pre class="r"><code>sample(1:0, 10, replace = TRUE, prob = c(0.7, 0.3))</code></pre>
+<pre><code>##  [1] 0 1 1 0 1 0 1 1 0 1</code></pre>
+<p>Or to sample from a discrete distribution where <span class="math inline">\(P(X = 1) = 0.2\)</span>, <span class="math inline">\(P(X = 2) = 0.4\)</span>, <span class="math inline">\(P(X = 3) = 0.3\)</span>, <span class="math inline">\(P(X = 4) = 0.1\)</span>,</p>
+<pre class="r"><code>sample(1:4, 20, replace = TRUE, prob = c(0.2, 0.4, 0.3, 0.1))</code></pre>
+<pre><code>##  [1] 1 2 4 1 4 3 2 3 2 3 3 4 1 2 2 2 1 2 2 2</code></pre>
+<p>Plotting the frequencies of samples without and with the <code>prob</code> argument shows how the weighting affects the sampling,</p>
+<pre class="r"><code>x_sample_unwt &lt;-
+  data_frame(x = sample(1:4, 10000, replace = TRUE)) %&gt;%
+  group_by(x) %&gt;%
+  tally() %&gt;%
+  mutate(prob = n / sum(n))
+  
+ggplot(x_sample_unwt, aes(x = x, y = prob)) +
+  geom_bar(stat = &quot;identity&quot;)</code></pre>
+<p><img src="distributions_files/figure-html/unnamed-chunk-10-1.png" title="" alt="" width="672" /></p>
+<pre class="r"><code>x_sample_wt &lt;-
+  data_frame(x = sample(1:4, 10000, replace = TRUE,
+                        prob = c(0.2, 0.4, 0.3, 0.1))) %&gt;%
+  group_by(x) %&gt;%
+  tally() %&gt;%
+  mutate(prob = n / sum(n))
+  
+ggplot(x_sample_wt, aes(x = x, y = prob)) +
+  geom_bar(stat = &quot;identity&quot;)</code></pre>
+<p><img src="distributions_files/figure-html/unnamed-chunk-11-1.png" title="" alt="" width="672" /></p>
+</div>
+<div id="distributions" class="section level1">
+<h1>Distributions</h1>
+<p>R includes</p>
+<ul>
+<li><code>r*</code> draw samples from a distribution</li>
+<li><code>q*</code> the quantile function of a distribution: for a given <span class="math inline">\(p\)</span>, the <span class="math inline">\(x\)</span> such that <span class="math inline">\(P(X &lt; x) = p\)</span>.</li>
+<li><code>p*</code> the cumulative probability function of a distribution: for a given <span class="math inline">\(x\)</span>, <span class="math inline">\(P(X &lt; x)\)</span>.</li>
+<li><code>d*</code> the probability density (or mass) function of a distribution: <span class="math inline">\(P(x)\)</span>.</li>
+</ul>
+<p>For example, the functions for the normal distribution are <code>rnorm</code>, <code>qnorm</code>, <code>pnorm</code>, and <code>dnorm</code>.</p>
+<p>For the full list of distributions included in R see the help page for <a href="https://stat.ethz.ch/R-manual/R-devel/library/stats/html/Distributions.html">Distributions</a>. For even more distributions, see the CRAN task view <a href="https://cran.r-project.org/web/views/Distributions.html">Distributions</a>.</p>
+<div id="normal-distribution" class="section level2">
+<h2>Normal Distribution</h2>
+<p>The functions for the normal distributions are</p>
+<ul>
+<li><code>dnorm</code>: density function</li>
+<li><code>pnorm</code>: probability function</li>
+<li><code>qnorm</code>: quantile function</li>
+<li><code>rnorm</code>: sampling function</li>
+</ul>
+<p>The function <code>dnorm</code> calculates the density of the normal distribution at a point. This can be used to draw the “bell-shaped” normal distribution curves. For example,</p>
+<pre class="r"><code>norm_density &lt;- data_frame(x = seq(-3, 3, length.out = 100),
+                           y = dnorm(x))
+ggplot(norm_density, aes(x = x, y = y)) +
+  geom_line()</code></pre>
+<p><img src="distributions_files/figure-html/unnamed-chunk-12-1.png" title="" alt="" width="672" /> By default, <code>dnorm</code> calculates the density for a standard normal distribution, <span class="math inline">\(\mu = 0\)</span> and <span class="math inline">\(\sigma = 1\)</span>. Use the arguments, <code>mean</code> and <code>sd</code>, to specify different means or standard deviations. For example, to calculate the density function of a normal distribution with mean 2 and standard deviation 3,</p>
+<pre class="r"><code>norm_density &lt;- data_frame(x = seq(-7, 11, length.out = 100),
+                           y = dnorm(x, mean = 2, sd = 3))
+ggplot(norm_density, aes(x = x, y = y)) +
+  geom_line()</code></pre>
+<p><img src="distributions_files/figure-html/unnamed-chunk-13-1.png" title="" alt="" width="672" /></p>
+<p>This draws the PDF of several normal distributions with <span class="math inline">\(\mu = 0\)</span>, and <span class="math inline">\(\sigma \in \{1/3, 1/2, 0, 2, 3\}\)</span></p>
+<pre class="r"><code>expand.grid(mu = 0,
+            sigma = c(1/2, 1, 2)) %&gt;%
+  group_by(mu, sigma) %&gt;%
+  do(data_frame(x = seq(-6, 6, length.out = 500),
+                density = dnorm(x, mean = .$mu, sd = .$sigma))) %&gt;%
+  ggplot(aes(x = x, y = density, color = factor(sigma))) +
+  geom_line()</code></pre>
+<p><img src="distributions_files/figure-html/unnamed-chunk-14-1.png" title="" alt="" width="672" /> This draws the PDF of several normal distributions with different means, <span class="math inline">\(\mu \in \{-1, 0, 1\}\)</span>, and the same standard deviation, <span class="math inline">\(\sigma = 1\)</span>,</p>
+<pre class="r"><code>expand.grid(mu = c(-1, 0, 1),
+            sigma = 1) %&gt;%
+  group_by(mu, sigma) %&gt;%
+  do(data_frame(x = seq(-6, 6, length.out = 500),
+                density = dnorm(x, mean = .$mu, sd = .$sigma))) %&gt;%
+  ggplot(aes(x = x, y = density, color = factor(mu))) +
+  geom_line()</code></pre>
+<p><img src="distributions_files/figure-html/unnamed-chunk-15-1.png" title="" alt="" width="672" /></p>
+<p>The function <code>pnorm</code> calculates the cumulative distribution function for the normal distribution, <span class="math inline">\(F(x) = \Pr(X \leq x)\)</span>. For example, the probability that a normally distributed <span class="math inline">\(X\)</span> is less than -1.96 is about 0.025.</p>
+<pre class="r"><code>pnorm(-1.96)</code></pre>
+<pre><code>## [1] 0.0249979</code></pre>
+<p>It can be given several values,</p>
+<pre class="r"><code>round(pnorm(-3:3), 3)</code></pre>
+<pre><code>## [1] 0.001 0.023 0.159 0.500 0.841 0.977 0.999</code></pre>
+<p>Use the arguments <code>mean</code> and <code>sd</code> to set the the mean and standard deviation of the normal distribution. E.g. the CDF of a normal distribution with <span class="math inline">\(\mu = 1\)</span> and <span class="math inline">\(\sd = 2\)</span>,</p>
+<pre class="r"><code>x &lt;- -5:7
+pnorm(seq(-5, 7, by = 2), mean = 1, sd = 2)</code></pre>
+<pre><code>## [1] 0.001349898 0.022750132 0.158655254 0.500000000 0.841344746 0.977249868
+## [7] 0.998650102</code></pre>
+<p>This is equivalent to using <code>pnorm</code> on the z-scores,</p>
+<pre class="r"><code>mu &lt;- 1
+sigma &lt;- 2
+x &lt;- -5:7
+z &lt;- (x - mu) / sigma
+pnorm(z)</code></pre>
+<pre><code>##  [1] 0.001349898 0.006209665 0.022750132 0.066807201 0.158655254
+##  [6] 0.308537539 0.500000000 0.691462461 0.841344746 0.933192799
+## [11] 0.977249868 0.993790335 0.998650102</code></pre>
+<p>To calculate the values of the complementary cumulative distribution function, <span class="math inline">\(\bar{F}(x) = \Pr(X &gt; x)\)</span>, use the argument <code>lower.tail = FALSE</code> with <code>pnorm()</code>. For example, the probabiilty that a standard normal random variable <span class="math inline">\(X\)</span> is greater than -1.96 is,</p>
+<pre class="r"><code>pnorm(-1.96, lower.tail = FALSE)</code></pre>
+<pre><code>## [1] 0.9750021</code></pre>
+<p>This is equivalent to</p>
+<pre class="r"><code>1 - pnorm(-1.96)</code></pre>
+<pre><code>## [1] 0.9750021</code></pre>
+<p>You can calculate areas using <code>pnorm</code> as well. For example, to calculate the probability <span class="math inline">\(\Pr(-1.96 \leq X \leq 1.96)\)</span>,</p>
+<pre class="r"><code>pnorm(1.96) - pnorm(-1.96)</code></pre>
+<pre><code>## [1] 0.9500042</code></pre>
+<p>As expected, this is approximately 95%.</p>
+<p>The quantile function of the normal distribution gives for a given probability <span class="math inline">\(p\)</span>, the value <span class="math inline">\(x\)</span> of the distribution such that the the probability that <span class="math inline">\(\Pr(X \leq x) = p\)</span>. The function <code>qnorm</code> calculates the normal distribution quantile function. For example, the value of the normal distribution such that <span class="math inline">\(\Pr(X &lt; x) = .975\)</span>,</p>
+<pre class="r"><code>qnorm(0.975)</code></pre>
+<pre><code>## [1] 1.959964</code></pre>
+<p>As expected, this is approximately 97.5%.</p>
+<pre class="r"><code>round(qnorm(c(0.0015, 0.025, 0.16, 0.5, 0.84, 0.975, 0.9985)), 2)</code></pre>
+<pre><code>## [1] -2.97 -1.96 -0.99  0.00  0.99  1.96  2.97</code></pre>
+<p>To sample from a normal distribution, use <code>rnorm()</code>,</p>
+<pre class="r"><code>smpl &lt;- rnorm(500)
+ggplot(data_frame(x = smpl), aes(x = x)) +
+  geom_density() +
+  geom_rug() +
+  stat_function(color = &quot;red&quot;, fun = &quot;dnorm&quot;)</code></pre>
+<p><img src="distributions_files/figure-html/unnamed-chunk-25-1.png" title="" alt="" width="672" /> Like the other normal distribution functions, it has <code>sd</code> and <code>mean</code> arguments,</p>
+<pre class="r"><code>mu &lt;- 2
+sigma &lt;- 4
+smpl &lt;- rnorm(500, mean = mu, sd = sigma)
+ggplot(data_frame(x = smpl), aes(x = x)) +
+  geom_density() +
+  geom_rug() +
+  stat_function(color = &quot;red&quot;, fun = &quot;dnorm&quot;, args = list(sd = sigma,
+                                                          mean = mu))</code></pre>
+<p><img src="distributions_files/figure-html/unnamed-chunk-26-1.png" title="" alt="" width="672" /></p>
+</div>
+</div>
+<div id="bernoulli-binomial" class="section level1">
+<h1>Bernoulli, Binomial</h1>
+<p>The binomial distribution is a discrete distribution with the density function, <span class="math display">\[
+p(x | n, p) = \choose{n}{x} p^x (1 - p)^{n - x}
+\]</span> for <span class="math inline">\(x \in 1, \dots, n\)</span>, and where <span class="math inline">\(n\)</span> is an integer <span class="math inline">\(1, \dots\)</span>, and <span class="math inline">\(p \in [0, 1\)</span>. A Bernoulli distribution is a binomial distribution where <span class="math inline">\(n = 1\)</span>, <span class="math display">\[
+p(x | p) = p^x (1 - p)^{1 - x}
+\]</span> for <span class="math inline">\(x \in \{0, 1\}\)</span>.</p>
+<p>The functions for the Binomial distributions are</p>
+<ul>
+<li><code>dbinom</code>: density function</li>
+<li><code>pbinom</code>: probability function</li>
+<li><code>qbinom</code>: quantile function</li>
+<li><code>rbinom</code>: sampling function</li>
+</ul>
+<p>To calculate the Binomial probability density function use <code>dbinom</code>. For example, this calculates the density for a binomial distribution with <span class="math inline">\(p = 0.5\)</span> and <span class="math inline">\(n = 10\)</span>,</p>
+<pre class="r"><code>dbinom(0:10, size = 10, prob = 0.5)</code></pre>
+<pre><code>##  [1] 0.0009765625 0.0097656250 0.0439453125 0.1171875000 0.2050781250
+##  [6] 0.2460937500 0.2050781250 0.1171875000 0.0439453125 0.0097656250
+## [11] 0.0009765625</code></pre>
+<p>This plots the Binomial probability density function for <span class="math inline">\(p = 0.5\)</span> and <span class="math inline">\(n \in \{5, 10, 15, 20\}\)</span>,</p>
+<pre class="r"><code>binom_densities &lt;-
+  expand.grid(size = c(5, 10, 15, 20),
+              prob = 0.5) %&gt;%
+  group_by(size, prob) %&gt;%
+  do(data_frame(x = 0:20,
+                density = dbinom(x, size = .$size, prob = .$prob)))
+  
+ggplot(binom_densities, aes(x = x, y = density, colour = factor(size))) +
+  geom_point() +
+  geom_line()</code></pre>
+<p><img src="distributions_files/figure-html/unnamed-chunk-28-1.png" title="" alt="" width="672" /></p>
+<p>This plots the Binomial probability density function for <span class="math inline">\(p \in \{0.125, 0.25, 0.5, 0.75\}\)</span> and <span class="math inline">\(n = 20\)</span>,</p>
+<pre class="r"><code>binom_densities &lt;-
+  expand.grid(size = 20,
+              prob = c(0.125, 0.25, 0.5, 0.75)) %&gt;%
+  group_by(size, prob) %&gt;%
+  do(data_frame(x = 0:20,
+                density = dbinom(x, size = .$size, prob = .$prob)))
+  
+ggplot(binom_densities, aes(x = x, y = density, colour = factor(prob))) +
+  geom_point() +
+  geom_line()</code></pre>
+<p><img src="distributions_files/figure-html/unnamed-chunk-29-1.png" title="" alt="" width="672" /></p>
+<p>The function <code>pnorm()</code> calculates the Binomial cumulative probability function, <span class="math inline">\(F(x) = \Pr(X \leq x)\)</span>,</p>
+<pre class="r"><code>pbinom(0:5, size = 5, prob = 0.5)</code></pre>
+<pre><code>## [1] 0.03125 0.18750 0.50000 0.81250 0.96875 1.00000</code></pre>
+<p>which is equivalent to cumulatively summing the density function,</p>
+<pre class="r"><code>cumsum(dbinom(0:5, size = 5, prob = 0.5))</code></pre>
+<pre><code>## [1] 0.03125 0.18750 0.50000 0.81250 0.96875 1.00000</code></pre>
+<p>To calculate the complementary cumulative probability function (CCDF), <span class="math inline">\(\bar{F}(x) = \Pr(X &gt; x)\)</span>, use the argument <code>lower.tail = FALSE</code>,</p>
+<pre class="r"><code>pbinom(0:5, size = 5, prob = 0.5, lower.tail = FALSE)</code></pre>
+<pre><code>## [1] 0.96875 0.81250 0.50000 0.18750 0.03125 0.00000</code></pre>
+<p>This is eqivalent to 1 minus the CDF,</p>
+<pre class="r"><code>1 - pbinom(0:5, size = 5, prob = 0.5)</code></pre>
+<pre><code>## [1] 0.96875 0.81250 0.50000 0.18750 0.03125 0.00000</code></pre>
+<p>This plots the Binomial cumulative distribution function for <span class="math inline">\(p = 0.5\)</span>, and <span class="math inline">\(n \in \{5, 10, 15, 20\}\)</span>,</p>
+<pre class="r"><code>expand.grid(size = c(5, 10, 15, 20),
+            prob = 0.5) %&gt;%
+  group_by(size, prob) %&gt;%
+  do(data_frame(x = 0:20,
+                density = pbinom(x, size = .$size, prob = .$prob))) %&gt;%
+  ggplot(aes(x = x, y = density, colour = factor(size))) +
+    geom_point() +
+    geom_line()</code></pre>
+<p><img src="distributions_files/figure-html/unnamed-chunk-34-1.png" title="" alt="" width="672" /></p>
+<p>This plots the Binomial cumulative distribution function for <span class="math inline">\(p = 0.5\)</span>, <span class="math inline">\(p \in \{0.125, 0.25, 0.5, 0.75\}\)</span> and <span class="math inline">\(n = 20\)</span>,</p>
+<pre class="r"><code>expand.grid(size = 20,
+            prob = c(0.125, 0.25, 0.5, 0.75)) %&gt;%
+  group_by(size, prob) %&gt;%
+  do(data_frame(x = 0:20,
+                density = pbinom(x, size = .$size, prob = .$prob))) %&gt;%
+  ggplot(aes(x = x, y = density, colour = factor(prob))) +
+  geom_point() +
+  geom_line()</code></pre>
+<p><img src="distributions_files/figure-html/unnamed-chunk-35-1.png" title="" alt="" width="672" /></p>
+<p>The quantile function is the inverse of the cumulative density function. For a given probability, <span class="math inline">\(p\)</span>, it returns the value <span class="math inline">\(x\)</span> such that <span class="math inline">\(P(X \leq x) = p\)</span>. For example, for the Binomial distribution with <span class="math inline">\(n = 5\)</span>, and <span class="math inline">\(p = 0.25\)</span>, the value where <span class="math inline">\(P(X \leq x) = 0.75\)</span> is</p>
+<pre class="r"><code>qbinom(0.75, size = 5, prob = 0.25)</code></pre>
+<pre><code>## [1] 2</code></pre>
+<p>This plots the Binomial quantile function for <span class="math inline">\(p = 0.5\)</span>, and <span class="math inline">\(n \in \{5, 10, 15, 20\}\)</span>,</p>
+<pre class="r"><code>expand.grid(size = c(5, 10, 15, 20),
+            prob = 0.5) %&gt;%
+  group_by(size, prob) %&gt;%
+  do(data_frame(x = seq(0, 1, length.out = 101),
+                density = qbinom(x, size = .$size, prob = .$prob))) %&gt;%
+  ggplot(aes(x = x, y = density, colour = factor(size))) +
+    geom_point() +
+    geom_line()</code></pre>
+<p><img src="distributions_files/figure-html/unnamed-chunk-37-1.png" title="" alt="" width="672" /></p>
+<p>This plots the Binomial quantile function for <span class="math inline">\(p = 0.5\)</span>, <span class="math inline">\(p \in \{0.125, 0.25, 0.5, 0.75\}\)</span> and <span class="math inline">\(n = 20\)</span>,</p>
+<pre class="r"><code>expand.grid(size = 20,
+            prob = c(0.125, 0.25, 0.5, 0.75)) %&gt;%
+  group_by(size, prob) %&gt;%
+  do(data_frame(x = seq(0, 1, length.out = 101),
+                density = qbinom(x, size = .$size, prob = .$prob))) %&gt;%
+  ggplot(aes(x = x, y = density, colour = factor(prob))) +
+  geom_point() +
+  geom_line()</code></pre>
+<p><img src="distributions_files/figure-html/unnamed-chunk-38-1.png" title="" alt="" width="672" /></p>
+<div id="geometric" class="section level2">
+<h2>Geometric</h2>
+<p>TODO</p>
+<p>Function is <code>dgeom</code>.</p>
+</div>
+<div id="poisson" class="section level2">
+<h2>Poisson</h2>
+<p>TODO</p>
+<p>Function is <code>dpois</code>.</p>
+</div>
+</div>
+<div id="seed" class="section level1">
+<h1>Seed</h1>
+<p>When R generates random numbers it is not actually, random, but a type of algorithm known as a pseudo-randome number generator. In short, these are algorithms that are deterministic, but procude a sequence of numbers that have properties similar to those if they were actually generated randomly. This also means that you can exactly replicate random number results in R, as long as you set an object called the “seed” using a function called <code>set.seed</code>.</p>
+<pre class="r"><code>set.seed(12345)
+sample(1:10, 3)</code></pre>
+<pre><code>## [1]  8 10  7</code></pre>
+<pre class="r"><code>sample(1:10, 3)</code></pre>
+<pre><code>## [1] 9 5 2</code></pre>
+<pre class="r"><code>set.seed(12345)
+sample(1:10, 3)</code></pre>
+<pre><code>## [1]  8 10  7</code></pre>
+<pre class="r"><code>sample(1:10, 3)</code></pre>
+<pre><code>## [1] 9 5 2</code></pre>
+<pre class="r"><code>set.seed(12345)
+sample(1:10, 3)</code></pre>
+<pre><code>## [1]  8 10  7</code></pre>
+<pre class="r"><code>sample(1:10, 3)</code></pre>
+<pre><code>## [1] 9 5 2</code></pre>
+<p>In scripts where you randomly sample (or to be safe, all scripts), you should set a seed so that others can exactly replicate your results.</p>
+</div>
+
+<hr>
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://licensebuttons.net/l/by-nc-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
+R code is licensed under a <a href="https://www.r-project.org/Licenses/BSD_2_clause">BSD 2-clause</a> license.
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
