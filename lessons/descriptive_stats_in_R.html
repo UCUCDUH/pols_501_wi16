@@ -83,64 +83,367 @@ $$
 
 <div id="TOC">
 <ul>
-<li><a href="#mode">Mode</a></li>
-<li><a href="#skewness-kurtosis">Skewness, Kurtosis</a></li>
+<li><a href="#gapminder-data">Gapminder Data</a></li>
+<li><a href="#miscellaneous-functions">Miscellaneous Functions</a></li>
+<li><a href="#descriptive-statistics-by-groups">Descriptive statistics by groups</a></li>
+<li><a href="#table-and-mode">Table and Mode</a></li>
+<li><a href="#plots">Plots</a><ul>
+<li><a href="#bar-plot">Bar-plot</a></li>
+<li><a href="#histograms-density">Histograms, Density</a></li>
+<li><a href="#boxplot">Boxplot</a></li>
+<li><a href="#qq-plot">QQ Plot</a></li>
+</ul></li>
 </ul>
 </div>
 
+<p>This lesson provides examples of functions to calculate summary statistics in R. It will use the gapminder.</p>
+<p>This lesson will also use the following packages,</p>
+<pre class="r"><code>library(&quot;dplyr&quot;)
+library(&quot;tidyr&quot;)
+library(&quot;ggplot2&quot;)</code></pre>
+<div id="gapminder-data" class="section level1">
+<h1>Gapminder Data</h1>
+<p>For this lesson, we will use the <code>gapminder</code> data in the <strong>gapminder</strong> package,</p>
+<pre class="r"><code>library(&quot;gapminder&quot;)
+data(&quot;gapminder&quot;)</code></pre>
+<p>For simplicity, we will focus on only the 2007 data,</p>
+<pre class="r"><code>gapminder2007 &lt;- gapminder[gapminder$year == 2007, ]</code></pre>
+<p>and save life expectancy and continent to their own vectors,</p>
+<pre class="r"><code>lifeExp &lt;- gapminder2007$lifeExp
+continent &lt;- gapminder2007$continent</code></pre>
+</div>
+<div id="miscellaneous-functions" class="section level1">
+<h1>Miscellaneous Functions</h1>
 <p>R provides functions to calculate many common descriptive statistics:</p>
 <ul>
 <li><code>mean(x)</code>: Mean</li>
 <li><code>median(x)</code>: median</li>
 <li><code>sd(x)</code> : Standard deviation</li>
 <li><code>var(x)</code> : Variance</li>
-<li><code>IQR(x)</code> : Interquartile range</li>
+<li><code>IQR(x)</code> : Inter-quartile range</li>
 <li><code>fivenumber(x)</code>: Tukey’s five number summary</li>
 <li><code>quantile(x, prob)</code> : Quantiles</li>
 <li><code>range(x)</code>: Minimum and maximum</li>
 <li><code>diff(range(x))</code> : Range</li>
-<li><code>table(x)</code> Counts of values</li>
 </ul>
-<div id="challenge-1" class="panel panel-primary">
-<div class="panel-heading">
-<h3 class="panel-title">
-Challenge
-</h3>
+<p>For life expectancy calculate the mean,</p>
+<pre class="r"><code>mean(lifeExp)</code></pre>
+<pre><code>## [1] 67.00742</code></pre>
+<p>median,</p>
+<pre class="r"><code>median(lifeExp)</code></pre>
+<pre><code>## [1] 71.9355</code></pre>
+<p>five number summary (minimum, lower-hinge, median, upper-hinge, maximum)</p>
+<pre class="r"><code>fivenum(lifeExp)</code></pre>
+<pre><code>## [1] 39.6130 56.8670 71.9355 76.4230 82.6030</code></pre>
+<p>standard deviation and variance,</p>
+<pre class="r"><code>sd(lifeExp)</code></pre>
+<pre><code>## [1] 12.07302</code></pre>
+<pre class="r"><code>var(lifeExp)</code></pre>
+<pre><code>## [1] 145.7578</code></pre>
+<p>inter-quartile range,</p>
+<pre class="r"><code>IQR(lifeExp)</code></pre>
+<pre><code>## [1] 19.253</code></pre>
+<p>minimum and maximum,</p>
+<pre class="r"><code>min(lifeExp)</code></pre>
+<pre><code>## [1] 39.613</code></pre>
+<pre class="r"><code>max(lifeExp)</code></pre>
+<pre><code>## [1] 82.603</code></pre>
+<p>the min (0%), 1st quartile (25%), median (50%), 3rd quartile (75%), and maximum (100%),</p>
+<pre class="r"><code>quantile(lifeExp)</code></pre>
+<pre><code>##       0%      25%      50%      75%     100% 
+## 39.61300 57.16025 71.93550 76.41325 82.60300</code></pre>
+<p>arbitrary quantiles,</p>
+<pre class="r"><code>quantile(lifeExp, prob = c(.33, .54, .86))</code></pre>
+<pre><code>##      33%      54%      86% 
+## 62.89092 72.48426 79.33718</code></pre>
+<p>The <code>range</code> function returns the minimum and maximum, so take the difference of the range to calculate the range (maximum - minimum),</p>
+<pre class="r"><code>range(lifeExp)</code></pre>
+<pre><code>## [1] 39.613 82.603</code></pre>
+<pre class="r"><code>diff(range(lifeExp))</code></pre>
+<pre><code>## [1] 42.99</code></pre>
 </div>
-<div class="panel-body">
-<p>Using the <code>gapminder</code> data in the <strong>gapminder</strong> package,</p>
-<pre class="r"><code>library(&quot;gapminder&quot;)
-data(&quot;gapminder&quot;)</code></pre>
+<div id="descriptive-statistics-by-groups" class="section level1">
+<h1>Descriptive statistics by groups</h1>
+<p>The easiest way to calculate descriptive statistics by groups is to use <strong>dplyr</strong> <code>summarize()</code> with <code>group_by()</code>,</p>
+<pre class="r"><code>gapminder %&gt;%
+  group_by(year) %&gt;%
+  summarize(lifeExp_mean = mean(lifeExp),
+            lifeExp_median = median(lifeExp),
+            gdpPercap_mean = mean(gdpPercap),
+            gdpPercap_sd = sd(gdpPercap))</code></pre>
+<pre><code>## Source: local data frame [12 x 5]
+## 
+##     year lifeExp_mean lifeExp_median gdpPercap_mean gdpPercap_sd
+##    (int)        (dbl)          (dbl)          (dbl)        (dbl)
+## 1   1952     49.05762        45.1355       3725.276     9321.065
+## 2   1957     51.50740        48.3605       4299.408     9869.662
+## 3   1962     53.60925        50.8810       4725.812     8667.363
+## 4   1967     55.67829        53.8250       5483.653     8095.315
+## 5   1972     57.64739        56.5300       6770.083    10614.383
+## 6   1977     59.57016        59.6720       7313.166     8362.489
+## 7   1982     61.53320        62.4415       7518.902     7733.845
+## 8   1987     63.21261        65.8340       7900.920     8288.281
+## 9   1992     64.16034        67.7030       8158.609     9031.846
+## 10  1997     65.01468        69.3940       9090.175    10171.493
+## 11  2002     65.69492        70.8255       9917.848    11154.115
+## 12  2007     67.00742        71.9355      11680.072    12859.937</code></pre>
+<p>Alternatively, grouping by continent and year,</p>
+<pre class="r"><code>gapminder %&gt;%
+  group_by(continent, year) %&gt;%
+  summarize(lifeExp_mean = mean(lifeExp),
+            lifeExp_median = median(lifeExp),
+            gdpPercap_mean = mean(gdpPercap),
+            gdpPercap_sd = sd(gdpPercap))</code></pre>
+<pre><code>## Source: local data frame [60 x 6]
+## Groups: continent [?]
+## 
+##    continent  year lifeExp_mean lifeExp_median gdpPercap_mean gdpPercap_sd
+##       (fctr) (int)        (dbl)          (dbl)          (dbl)        (dbl)
+## 1     Africa  1952     39.13550        38.8330       1252.572     982.9521
+## 2     Africa  1957     41.26635        40.5925       1385.236    1134.5089
+## 3     Africa  1962     43.31944        42.6305       1598.079    1461.8392
+## 4     Africa  1967     45.33454        44.6985       2050.364    2847.7176
+## 5     Africa  1972     47.45094        47.0315       2339.616    3286.8539
+## 6     Africa  1977     49.58042        49.2725       2585.939    4142.3987
+## 7     Africa  1982     51.59287        50.7560       2481.593    3242.6328
+## 8     Africa  1987     53.34479        51.6395       2282.669    2566.5319
+## 9     Africa  1992     53.62958        52.4290       2281.810    2644.0756
+## 10    Africa  1997     53.59827        52.7590       2378.760    2820.7281
+## ..       ...   ...          ...            ...            ...          ...</code></pre>
+<p>To calculate several descriptive statistics for several variables, the function <code>summarize_each</code> is useful,</p>
+<pre class="r"><code>gapminder %&gt;%
+  group_by(year) %&gt;%
+  summarize_each(funs(mean, median), lifeExp, gdpPercap)</code></pre>
+<pre><code>## Source: local data frame [12 x 5]
+## 
+##     year lifeExp_mean gdpPercap_mean lifeExp_median gdpPercap_median
+##    (int)        (dbl)          (dbl)          (dbl)            (dbl)
+## 1   1952     49.05762       3725.276        45.1355         1968.528
+## 2   1957     51.50740       4299.408        48.3605         2173.220
+## 3   1962     53.60925       4725.812        50.8810         2335.440
+## 4   1967     55.67829       5483.653        53.8250         2678.335
+## 5   1972     57.64739       6770.083        56.5300         3339.129
+## 6   1977     59.57016       7313.166        59.6720         3798.609
+## 7   1982     61.53320       7518.902        62.4415         4216.228
+## 8   1987     63.21261       7900.920        65.8340         4280.300
+## 9   1992     64.16034       8158.609        67.7030         4386.086
+## 10  1997     65.01468       9090.175        69.3940         4781.825
+## 11  2002     65.69492       9917.848        70.8255         5319.805
+## 12  2007     67.00742      11680.072        71.9355         6124.371</code></pre>
+<p>Alternatively, if you want more control, you can combine <code>summarize</code> with <code>gather</code> and <code>spread</code>,</p>
+<pre class="r"><code>gapminder_by_year &lt;-
+  gapminder %&gt;%
+    gather(variable, value, -year, -country, -continent) %&gt;%
+    group_by(year, variable) %&gt;%
+    summarize(mean = mean(value),
+              sd = sd(value),
+              median = median(value),
+              max = max(value),
+              min = min(value))
+gapminder_by_year</code></pre>
+<pre><code>## Source: local data frame [36 x 7]
+## Groups: year [?]
+## 
+##     year  variable         mean           sd       median          max
+##    (int)     (chr)        (dbl)        (dbl)        (dbl)        (dbl)
+## 1   1952 gdpPercap 3.725276e+03 9.321065e+03    1968.5283    108382.35
+## 2   1952   lifeExp 4.905762e+01 1.222596e+01      45.1355        72.67
+## 3   1952       pop 1.695040e+07 5.810086e+07 3943953.0000 556263527.00
+## 4   1957 gdpPercap 4.299408e+03 9.869662e+03    2173.2203    113523.13
+## 5   1957   lifeExp 5.150740e+01 1.223129e+01      48.3605        73.47
+## 6   1957       pop 1.876341e+07 6.550429e+07 4282942.0000 637408000.00
+## 7   1962 gdpPercap 4.725812e+03 8.667363e+03    2335.4395     95458.11
+## 8   1962   lifeExp 5.360925e+01 1.209725e+01      50.8810        73.68
+## 9   1962       pop 2.042101e+07 6.978865e+07 4686039.5000 665770000.00
+## 10  1967 gdpPercap 5.483653e+03 8.095315e+03    2678.3347     80894.88
+## ..   ...       ...          ...          ...          ...          ...
+## Variables not shown: min (dbl)</code></pre>
+<p>If you need to convert back to a dataset where observations are years,</p>
+<pre class="r"><code>gapminder_by_year %&gt;%
+  gather(stat, value, -year, -variable) %&gt;%
+  unite(varname, variable, stat) %&gt;%
+  spread(varname, value) %&gt;%
+  glimpse()</code></pre>
+<pre><code>## Observations: 12
+## Variables: 16
+## $ year             (int) 1952, 1957, 1962, 1967, 1972, 1977, 1982, 198...
+## $ gdpPercap_max    (dbl) 108382.35, 113523.13, 95458.11, 80894.88, 109...
+## $ gdpPercap_mean   (dbl) 3725.276, 4299.408, 4725.812, 5483.653, 6770....
+## $ gdpPercap_median (dbl) 1968.528, 2173.220, 2335.440, 2678.335, 3339....
+## $ gdpPercap_min    (dbl) 298.8462, 335.9971, 355.2032, 349.0000, 357.0...
+## $ gdpPercap_sd     (dbl) 9321.065, 9869.662, 8667.363, 8095.315, 10614...
+## $ lifeExp_max      (dbl) 72.670, 73.470, 73.680, 74.160, 74.720, 76.11...
+## $ lifeExp_mean     (dbl) 49.05762, 51.50740, 53.60925, 55.67829, 57.64...
+## $ lifeExp_median   (dbl) 45.1355, 48.3605, 50.8810, 53.8250, 56.5300, ...
+## $ lifeExp_min      (dbl) 28.801, 30.332, 31.997, 34.020, 35.400, 31.22...
+## $ lifeExp_sd       (dbl) 12.22596, 12.23129, 12.09725, 11.71886, 11.38...
+## $ pop_max          (dbl) 556263527, 637408000, 665770000, 754550000, 8...
+## $ pop_mean         (dbl) 16950402, 18763413, 20421007, 22658298, 25189...
+## $ pop_median       (dbl) 3943953, 4282942, 4686040, 5170176, 5877996, ...
+## $ pop_min          (dbl) 60011, 61325, 65345, 70787, 76595, 86796, 985...
+## $ pop_sd           (dbl) 58100863, 65504285, 69788650, 78375481, 88646...</code></pre>
 </div>
-</div>
-<div class="panel panel-info">
-<div class="panel-heading">
-<h3 class="panel-title">
-<a data-toggle="collapse" href="#solution-1">Solution</a>
-</h3>
-</div>
-<div id="solution-1" class="panel-collapse collapse">
-
-</div>
-</div>
-<div id="mode" class="section level1">
-<h1>Mode</h1>
-<p>R does not have a built-in function to calculate the mode of a sample distribution. The function <code>mode</code> in R is not related to the statistics, but is a programming function related to how the object is stored in memory.</p>
-<p>To calculate the mode for discrete data, find the values with the highest count using <code>table</code>:</p>
-<pre class="r"><code>tbl &lt;- table(x)</code></pre>
-<pre><code>## Error in table(x): object &#39;x&#39; not found</code></pre>
-<pre class="r"><code>names(tbl)[tbl == max(tbl)]</code></pre>
-<pre><code>## Error in eval(expr, envir, enclos): object &#39;tbl&#39; not found</code></pre>
+<div id="table-and-mode" class="section level1">
+<h1>Table and Mode</h1>
+<p>The <code>table</code> function counts the number of observations equal to a value,</p>
+<pre class="r"><code>table(continent)</code></pre>
+<pre><code>## continent
+##   Africa Americas     Asia   Europe  Oceania 
+##       52       25       33       30        2</code></pre>
+<p>This can be used to find the <code>mode</code> for a discrete variable <a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>,</p>
+<pre class="r"><code>continent_counts &lt;- table(continent)
+names(continent_counts)[continent_counts == max(continent_counts)]</code></pre>
+<pre><code>## [1] &quot;Africa&quot;</code></pre>
 <ul>
-<li><code>table(x)</code> counts the number of observations taking each value</li>
-<li><code>names(tbl)</code> In the vector returned by the table command, the values of the observations are the names, and counts are values in the vector.</li>
-<li><code>tbl == max(tbl)</code> is <code>TRUE</code> for all (possibly more than one) elements which have the largest counts</li>
+<li><code>table(continent)</code> counts the number of observations taking each value</li>
+<li><code>names(continent_counts)</code> In the vector returned by the table command, the values of the observations are the names, and counts are values in the vector.</li>
+<li><code>continent_counts == max(continent_counts)</code> is <code>TRUE</code> for all (possibly more than one) elements which have the largest counts</li>
 </ul>
-<p>That code only works well for discrete data. See package <strong>modeest</strong> function <code>mlv</code> for various methods to calculate the mode, including for methods to estimate the mode of continuous distributions.</p>
+<p>That code only works well for discrete data. The basic method used to find a mode of continuous is to find the maximum value of the kernel density function. See package <strong>modeest</strong> function <code>mlv</code> for various methods to calculate the mode, including for methods to estimate the mode of continuous distributions.</p>
+<pre class="r"><code>library(&quot;modeest&quot;)</code></pre>
+<pre><code>## 
+## This is package &#39;modeest&#39; written by P. PONCET.
+## For a complete list of functions, use &#39;library(help = &quot;modeest&quot;)&#39; or &#39;help.start()&#39;.</code></pre>
+<pre class="r"><code>mlv(lifeExp, method = &quot;shorth&quot;)</code></pre>
+<pre><code>## Mode (most likely value): 76.00124 
+## Bickel&#39;s modal skewness: -0.4647887 
+## Call: mlv.default(x = lifeExp, method = &quot;shorth&quot;)</code></pre>
 </div>
-<div id="skewness-kurtosis" class="section level1">
-<h1>Skewness, Kurtosis</h1>
-<p>Generally you will not be interested in the higher moments of sample data, such as the skewness and kurtosis. If you are, the package <strong>moments</strong> provides functions for these.</p>
+<div id="plots" class="section level1">
+<h1>Plots</h1>
+<p>Several plots are useful for descriptive statistics: boxplots, bar plots, histograms, density plots, and quantile plots.</p>
+<div id="bar-plot" class="section level2">
+<h2>Bar-plot</h2>
+<p>A bar plot describes the distribution of a discrete-variable,</p>
+<pre class="r"><code>ggplot(gapminder2007, aes(x = continent)) +
+  geom_bar()</code></pre>
+<p><img src="descriptive_stats_in_R_files/figure-html/unnamed-chunk-23-1.png" title="" alt="" width="672" /> This could be faceted in order to compare across different categories,</p>
+<pre class="r"><code>ggplot(gapminder, aes(x = cut(lifeExp, c(0, 40, 50, 60, 70, 80, Inf)))) +
+  geom_bar() +
+  facet_wrap(~ year, ncol = 1) +
+  xlab(&quot;Life Expectancy categories&quot;)</code></pre>
+<p><img src="descriptive_stats_in_R_files/figure-html/unnamed-chunk-24-1.png" title="" alt="" width="672" /></p>
+</div>
+<div id="histograms-density" class="section level2">
+<h2>Histograms, Density</h2>
+<p>A histogram shows the distribution</p>
+<pre class="r"><code>ggplot(gapminder2007, aes(x = lifeExp)) +
+  geom_histogram()</code></pre>
+<p><img src="descriptive_stats_in_R_files/figure-html/unnamed-chunk-25-1.png" title="" alt="" width="672" /> By default, <code>geom_histogram</code> gives the message, if you do not choose the widths of the bins,</p>
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p>You can manually choose a binwidth to remove that message. In this case, 5 years sounds reasonable,</p>
+<pre class="r"><code>ggplot(gapminder2007, aes(x = lifeExp)) +
+  geom_histogram(binwidth = 5)</code></pre>
+<p><img src="descriptive_stats_in_R_files/figure-html/unnamed-chunk-26-1.png" title="" alt="" width="672" /></p>
+<p>We can compare across groups using faceting. To compare the distributions across continents,</p>
+<pre class="r"><code>ggplot(gapminder2007, aes(x = lifeExp)) +
+  geom_histogram(binwidth = 5) +
+  facet_wrap(~continent, ncol = 1)</code></pre>
+<p><img src="descriptive_stats_in_R_files/figure-html/unnamed-chunk-27-1.png" title="" alt="" width="672" /> or continents and years,</p>
+<pre class="r"><code>ggplot(gapminder, aes(x = lifeExp)) +
+  geom_histogram(binwidth = 5) +
+  facet_grid(year ~ continent)</code></pre>
+<p><img src="descriptive_stats_in_R_files/figure-html/unnamed-chunk-28-1.png" title="" alt="" width="672" /> Another way to compare groups is to use color and transparency to overlap histograms, although this will not work for black and white publications,</p>
+<pre class="r"><code>ggplot(gapminder2007, aes(x = lifeExp, fill = continent)) +
+  geom_histogram(binwidth = 5, alpha = 0.3)</code></pre>
+<p><img src="descriptive_stats_in_R_files/figure-html/unnamed-chunk-29-1.png" title="" alt="" width="672" /></p>
+<pre class="r"><code>ggplot(gapminder, aes(x = lifeExp, fill = continent)) +
+  geom_histogram(alpha = 0.3, binwidth = 5) +
+  facet_wrap(~year, ncol = 1)</code></pre>
+<p><img src="descriptive_stats_in_R_files/figure-html/unnamed-chunk-30-1.png" title="" alt="" width="672" /></p>
+<p>Density plots are a continuous alternative to histograms.</p>
+<pre class="r"><code>ggplot(gapminder2007, aes(x = lifeExp)) +
+  geom_density()</code></pre>
+<p><img src="descriptive_stats_in_R_files/figure-html/unnamed-chunk-31-1.png" title="" alt="" width="672" /> It is often useful to combine a density plot with a rug plot, which shows a tick mark for every value in the data,</p>
+<pre class="r"><code>ggplot(gapminder2007, aes(x = lifeExp)) +
+  geom_density() + 
+  geom_rug()</code></pre>
+<p><img src="descriptive_stats_in_R_files/figure-html/unnamed-chunk-32-1.png" title="" alt="" width="672" /></p>
+<p>We can compare across groups using faceting. To compare the distributions across continents,</p>
+<pre class="r"><code>ggplot(gapminder2007, aes(x = lifeExp)) +
+  geom_density() +
+  geom_rug() +
+  facet_wrap(~continent, ncol = 1)</code></pre>
+<p><img src="descriptive_stats_in_R_files/figure-html/unnamed-chunk-33-1.png" title="" alt="" width="672" /> or continents and years,</p>
+<pre class="r"><code>ggplot(gapminder, aes(x = lifeExp)) +
+  geom_density() +
+  geom_rug() +
+  facet_grid(year ~ continent)</code></pre>
+<p><img src="descriptive_stats_in_R_files/figure-html/unnamed-chunk-34-1.png" title="" alt="" width="672" /> Another way to compare groups is to use color, although this will not work well for black and white publications,</p>
+<pre class="r"><code>ggplot(gapminder2007, aes(x = lifeExp, color  = continent)) +
+  geom_density()</code></pre>
+<p><img src="descriptive_stats_in_R_files/figure-html/unnamed-chunk-35-1.png" title="" alt="" width="672" /></p>
+<pre class="r"><code>ggplot(gapminder, aes(x = lifeExp, color = continent)) +
+  geom_density() +
+  facet_wrap(~year, ncol = 1)</code></pre>
+<p><img src="descriptive_stats_in_R_files/figure-html/unnamed-chunk-36-1.png" title="" alt="" width="672" /></p>
+<p>To calculate histograms for multiple variables, it is easiest to use <code>gather()</code> to make the dataset long, with one row per (country, variable),</p>
+<pre class="r"><code>gapminder2007_long &lt;- gather(gapminder2007, variable, value,
+                             -country, -year, -continent)
+ggplot(gapminder2007_long, aes(x = value)) +
+  geom_histogram() +
+  facet_wrap(~variable, ncol = 1, scales = &quot;free&quot;)</code></pre>
+<p><img src="descriptive_stats_in_R_files/figure-html/unnamed-chunk-37-1.png" title="" alt="" width="672" /></p>
+</div>
+<div id="boxplot" class="section level2">
+<h2>Boxplot</h2>
+<p>Boxplots summarizes the distribution into five values and indicates outliers,</p>
+<ul>
+<li>median: middle line</li>
+<li>1st quartile: bottom of box</li>
+<li>3rd quartile: top of box</li>
+<li>lowest datum within 1.5 IQR of the lower quartile: end of lower whisker</li>
+<li>highest datum within 1.5 IQR of the upper quartile: end of upper whisker</li>
+</ul>
+<p>Boxplots are best used for comparing the distributions of several groups.</p>
+<pre class="r"><code>ggplot(gapminder2007, aes(x = continent, y = lifeExp)) +
+  geom_boxplot()</code></pre>
+<p><img src="descriptive_stats_in_R_files/figure-html/unnamed-chunk-38-1.png" title="" alt="" width="672" /> Note that <code>geom_boxplot</code> requires an <code>x</code> aesthetic. If you need to make a boxplot for only one group (which may not be a good idea),</p>
+<pre class="r"><code>ggplot(gapminder2007, aes(x = 1, y = lifeExp)) +
+  geom_boxplot() +
+  xlab(&quot;&quot;)</code></pre>
+<p><img src="descriptive_stats_in_R_files/figure-html/unnamed-chunk-39-1.png" title="" alt="" width="672" /></p>
+<p>More comparisons can be made by faceting over other categories,</p>
+<pre class="r"><code>ggplot(gapminder, aes(x = continent, y = lifeExp)) +
+  geom_boxplot() +
+  facet_wrap(~year, ncol = 1)</code></pre>
+<p><img src="descriptive_stats_in_R_files/figure-html/unnamed-chunk-40-1.png" title="" alt="" width="672" /></p>
+<p>A continuous alternative to a boxplot is a violin plot, which can be thought of as a cross between a boxplot and a density plot,</p>
+<pre class="r"><code>ggplot(gapminder2007, aes(x = continent, y = lifeExp)) +
+  geom_violin()</code></pre>
+<p><img src="descriptive_stats_in_R_files/figure-html/unnamed-chunk-41-1.png" title="" alt="" width="672" /></p>
+<pre class="r"><code>ggplot(gapminder, aes(x = continent, y = lifeExp)) +
+  geom_violin() +
+  facet_wrap(~year, ncol = 1)</code></pre>
+<p><img src="descriptive_stats_in_R_files/figure-html/unnamed-chunk-42-1.png" title="" alt="" width="672" /></p>
+</div>
+<div id="qq-plot" class="section level2">
+<h2>QQ Plot</h2>
+<p>Quantile plots compare the empirical cumulative distribution function of a sample to a theoretical distribution (usually the normal). These are often used to check the normality of sample data.</p>
+<pre class="r"><code>ggplot(gapminder2007, aes(sample = lifeExp)) +
+  geom_qq()</code></pre>
+<p><img src="descriptive_stats_in_R_files/figure-html/unnamed-chunk-43-1.png" title="" alt="" width="672" /> This plots the qq-plots of several variables in the gapminder data,</p>
+<pre class="r"><code>ggplot(gather(gapminder2007, variable, value, -year, -continent, -country),
+       aes(sample = value)) +
+  geom_qq() +
+  facet_wrap(~variable, ncol = 1, scales = &quot;free_y&quot;)</code></pre>
+<p><img src="descriptive_stats_in_R_files/figure-html/unnamed-chunk-44-1.png" title="" alt="" width="672" /> None of these distributions are particularly normal. However, transforming <code>gdpPercap</code> and <code>pop</code> makes them closer to normal,</p>
+<pre class="r"><code>ggplot(mutate(gapminder2007, 
+              gdpPercap = log(gdpPercap),
+              pop = log(pop)) %&gt;%
+              gather(variable, value,
+                     -year, -continent, -country),
+       aes(sample = value)) +
+  geom_qq() +
+  facet_wrap(~variable, ncol = 1, scales = &quot;free_y&quot;)</code></pre>
+<p><img src="descriptive_stats_in_R_files/figure-html/unnamed-chunk-45-1.png" title="" alt="" width="672" /></p>
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>R does not have a built-in function to calculate the mode of a sample distribution. The function <code>mode</code> in R is not related to the statistics, but is a programming function related to how the object is stored in memory.<a href="#fnref1">↩</a></p></li>
+</ol>
 </div>
 
 <hr>

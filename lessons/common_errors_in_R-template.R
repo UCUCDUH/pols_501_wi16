@@ -30,7 +30,7 @@ ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, colour = Species)) +
 
 2 + "blah"
 
-#' Various attempts to extract columsn from a data frame
+#' Various attempts to extract columns from a data frame
 #' Which work? Which don't? Which give errors? 
 
 iris
@@ -46,6 +46,18 @@ iris[["Species"]] <- NULL
 iris[["Species"]]
 
 read.csv("this_file_probably_does_not_exist.csv")
+
+#' Some other issues with ggplot
+
+ggplot(iris, aes(x = Sepal.Width)) + geom_histogram()
+
+ggplot(iris, aes(x = Sepal.Width)) + geom_bar()
+
+ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length)) + geom_bar()
+
+iris[10,2] <- NA
+ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length)) + 
+  geom_point()
 
 #' Load the package dplyr, then MASS
 #' What messages do you see?

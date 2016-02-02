@@ -84,23 +84,16 @@ $$
 <div id="TOC">
 <ul>
 <li><a href="#learning-objectives">Learning Objectives</a></li>
-<li><a href="#sampling-theoretical-and-fundamental-uncertainty">Sampling, Theoretical, and Fundamental Uncertainty</a></li>
 <li><a href="#probability-and-distributions-in-r">Probability and Distributions in R</a></li>
 </ul>
 </div>
 
 <div id="learning-objectives" class="section level2">
 <h2>Learning Objectives</h2>
-<ol style="list-style-type: decimal">
-<li>What is uncertainty and types of uncertainty</li>
+<ol start="2" style="list-style-type: decimal">
 <li>What are probabilities and different types of distributions</li>
 <li>How to use them in R</li>
 </ol>
-</div>
-<div id="sampling-theoretical-and-fundamental-uncertainty" class="section level2">
-<h2>Sampling, Theoretical, and Fundamental Uncertainty</h2>
-<p><strong>What is sampling uncertainty?</strong></p>
-<p>SMISS (p.73): “Uncertainty about the characteristics of a wole that remains after observing a part”</p>
 <p>We will use the <strong>gapminder</strong> dataset to better understand <em>sampling uncertainty</em>:</p>
 <ul>
 <li>Subset only the observations in <strong>gapminder</strong> from 2007 (imagine this is the population: all existing countries)</li>
@@ -108,6 +101,7 @@ $$
 <li>Subset 10 random countries from the 2007 dataset</li>
 <li>Calculate the mean and standard deviation of <strong>lifeExp</strong> for those 10 obs.</li>
 </ul>
+<p>NOTE: need to discuss what <code>set.seed</code> does. A brief note on how computers (for statistics) use pseudo-random numbers.</p>
 <pre class="r"><code>library(dplyr)
 library(gapminder)
 data(gapminder)
@@ -124,9 +118,9 @@ data2007_10 &lt;- data2007 %&gt;%
 
 x_hat &lt;- mean(data2007_10$lifeExp)
 s_10 &lt;- sd(data2007_10$lifeExp)</code></pre>
-<p>For a particular case (since we randomly sample 10 countries, each time we repeat the analysis we get sligthly different results) we obtain that:</p>
+<p>For a particular case (since we randomly sample 10 countries, each time we repeat the analysis we get slightly different results) we obtain that:</p>
 <!-- html table generated in R 3.2.3 by xtable 1.8-0 package -->
-<!-- Tue Jan 26 11:42:29 2016 -->
+<!-- Sun Jan 31 19:10:53 2016 -->
 <table border="1">
 <tr>
 <th>
@@ -161,17 +155,13 @@ Sample
 </td>
 </tr>
 </table>
-<p></p>
-<div id="challenge-1" class="panel panel-primary">
-<div class="panel-heading">
-<h3 class="panel-title">
-Challenge
-</h3>
-</div>
-<div class="panel-body">
-<p>What are the <em>theoretical</em> and <em>fundamental</em> uncertainties?</p>
-</div>
-</div>
+<p>Need to start with the basics. All R distribution functions have 4 functions. E.g. for the normal distribution?</p>
+<ul>
+<li>rnorm: draw random numbers</li>
+<li>dnorm: density P(X)</li>
+<li>pnorm: cdf P(X x)</li>
+<li>qnorm: qunatile function x s.t. P(X x) = q.</li>
+</ul>
 </div>
 <div id="probability-and-distributions-in-r" class="section level2">
 <h2>Probability and Distributions in R</h2>
@@ -180,9 +170,9 @@ Challenge
 table(flips_10)</code></pre>
 <pre><code>## flips_10
 ##  head tails 
-##     4     6</code></pre>
+##     5     5</code></pre>
 <p>According to the last (Jan. 26, 2016) <em>polls-only</em> forecast of <a href="http://projects.fivethirtyeight.com/election-2016/primary-forecast/iowa-republican/#polls-only">FiveThirtyEight</a>, Donald Trump has a 55% probability of winning the Iowa caucuses.</p>
-<div id="challenge-2" class="panel panel-primary">
+<div id="challenge-1" class="panel panel-primary">
 <div class="panel-heading">
 <h3 class="panel-title">
 Challenge
@@ -198,7 +188,7 @@ trump_result &lt;- rbinom(size = 1, # Number of trials
                        p = .55)  # Probability of succes on each trial
 print(c(&quot;Trump Loses :(&quot;, &quot;Trump Wins! :)&quot;)[trump_result + 1])</code></pre>
 <pre><code>## [1] &quot;Trump Loses :(&quot;</code></pre>
-<div id="challenge-3" class="panel panel-primary">
+<div id="challenge-2" class="panel panel-primary">
 <div class="panel-heading">
 <h3 class="panel-title">
 Challenge
@@ -217,12 +207,12 @@ print(paste(&quot;Trump wins the election in&quot;,trump_result_10,&quot;of the 
 <p>Now we will use the <strong>country.csv</strong> dataset we used in previous labs.</p>
 <pre class="r"><code>library(ggplot2)
 country &lt;- read.csv(&quot;data/country.csv&quot;)</code></pre>
-<p>Remember that this is a simplified datset for the Baum and Zhukov’s (2015) <em>JPR</em> article where the variable <strong>n_articles</strong> is the number of news stories that newspapers from these countries dedicated to talk about the Lybian Civil Crisis.</p>
+<p>Remember that this is a simplified dataset for the Baum and Zhukov’s (2015) <em>JPR</em> article where the variable <strong>n_articles</strong> is the number of news stories that newspapers from these countries dedicated to talk about the Lybian Civil Crisis.</p>
 <p>Lets plot the distribution of the variable <strong>n_articles</strong> using a density plot.</p>
 <pre class="r"><code>ggplot(country, aes(x = n_articles)) + 
   geom_density()</code></pre>
 <p><img src="probability_distributions_files/figure-html/unnamed-chunk-7-1.png" title="" alt="" width="672" /></p>
-<div id="challenge-4" class="panel panel-primary">
+<div id="challenge-3" class="panel panel-primary">
 <div class="panel-heading">
 <h3 class="panel-title">
 Challenge

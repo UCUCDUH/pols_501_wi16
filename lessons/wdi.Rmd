@@ -5,7 +5,7 @@ date: "January 24, 2016"
 output: html_document
 ---
 
-This lesson is a practical example of using R to clean and tidy the World Bank [World Development Indicators](http://data.worldbank.org/data-catalog/world-development-indicators) data which is 
+This lesson is a practical example of using R to clean and tidy the World Bank [World Development Indicators](http://data.worldbank.org/data-catalog/world-development-indicators) data which is
 
    The primary World Bank collection of development indicators, compiled from officially-recognized international sources. It presents the most current and accurate global development data available, and includes national, regional and global estimates.[^1]
 
@@ -59,7 +59,7 @@ The dataset `WDI_Data` contains the WDI data,
 ```{r}
 glimpse(wdi_data)
 ```
-However, it is an inconvenient and hardly tidy format with each column a year, and each row a country-variable. 
+However, it is an inconvenient and hardly tidy format with each column a year, and each row a country-variable.
 In the csv file, the columns are named "1960", "1961", ..., but in the data frame they are named "X1960", "X1961", .... This is because "1960" is an invalid name for an R variable, so R creates a valid name by prefixing it with an "X".
 
 In order to get this data in a form usable for analysis, the first step is to reshape `WDI_data` so each row is a (country, year).
@@ -76,7 +76,7 @@ However, the variable `year` still has an "X" prefix.
 We will remove the "X" using the function `str_replace` from the [stringr](https://cran.r-project.org/web/packages/stringr/vignettes/stringr.html) package,
 and convert it to an integer vector.[^3]
 ```{r}
-wdi_data_long <- mutate(wdi_data_long, 
+wdi_data_long <- mutate(wdi_data_long,
                         year = as.integer(str_replace(year, "X", "")))
 ```
 Now reshape the dataset so each variable is a column,
@@ -89,7 +89,7 @@ Now each row of the dataset is a (country, year) observation and each column is 
 
 [^2]: The leading "^" means to match the start of the string. This is an example of a regular expression, which is a powerful method for pattern matching. See [R for Data Science](http://r4ds.had.co.nz/strings.html) for more.
 
-[^3]: The **stringr** package contains many functions for processing strings. See the [introduction](https://cran.r-project.org/web/packages/stringr/vignettes/stringr.html) or the *R for Data Science* chapeter on [Strings](http://r4ds.had.co.nz/strings.html) for more information on it.
+[^3]: The **stringr** package contains many functions for processing strings. See the [introduction](https://cran.r-project.org/web/packages/stringr/vignettes/stringr.html) or the *R for Data Science* chapter on [Strings](http://r4ds.had.co.nz/strings.html) for more information on it.
 
 Let's merge the data with the country data to add their regions and income levels.
 The variable `Country.Code` in both data frames are their keys.

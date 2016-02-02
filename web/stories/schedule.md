@@ -70,6 +70,7 @@ Class
 
 <ul class="fa-ul">
 <li><i class="fa-li fa fa-bar-chart"></i><a href="/lessons/descriptive_statistics.html">Descriptive Statistics</a>
+<li><i class="fa-li fa fa-bar-chart"></i><a href="/lessons/descriptive_stats_in_R.html">Descriptive Statistics Functions in R</a>
 </ul>
 
 Lab
@@ -151,14 +152,20 @@ Class
 
 
 <ul class="fa-ul">
-<li><i class="fa-li fa fa-bar-chart"></i><a href="/slides/statistical-modeling.pdf">Slides on Statistical Modeling</a>
+<li><i class="fa-li fa fa-bar-chart"></i><a href="/docs/statistical-modeling.pdf">Slides on Statistical Modeling</a>
 <li><i class="fa-li fa fa-bar-chart"></i><a href="/docs/Bayes.pdf">Examples of Bayes' Theorem</a>
+<li><i class="fa-li fa fa-bar-chart"></i><a href="/lessons/distributions.html">Distribution Functions in R</a>
 </ul>
 
 Lab
 
-- Gentzkow, Matthew, and Jesse M. Shapiro. 2014. "Code and Data for the Social Sciences: A Practioner's Guide." [[link](http://web.stanford.edu/~gentzkow/research/CodeAndData.pdf)]
+- Gentzkow, Matthew, and Jesse M. Shapiro. 2014. "Code and Data for the Social Sciences: A Practitioner's Guide." [[link](http://web.stanford.edu/~gentzkow/research/CodeAndData.pdf)]
 - Jenny Bryan, Karen Cranston, Justin Kitzes, Lex Nederbragt, Tracy Teal, and Greg Wilson. 2015. [Good Enough Practices in Scientific Computing](http://swcarpentry.github.io/good-enough-practices-in-scientific-computing/)
+
+<ul class="fa-ul">
+<li><i class="fa-li fa fa-bar-chart"></i><a href="/lessons/common_errors_in_R.html">Common Errors in R</a>
+<li><i class="fa-li fa fa-bar-chart"></i><a href="/lessons/reordering-labels-plot.html">Reordering Axis Labels</a>
+</ul>
 
 
 ## Week 5
@@ -170,7 +177,7 @@ Lab
 <li> <i class="fa-li fa fa-book"></i> <em>SMISS</em>. 7.1&ndash;7.4,   </li>
 <li><i class="fa-li fa fa-book"></i> Wickham, Hadley. 2010. "Graphical Inference for Infovis." <em>IEEE Transactions on Visualization and Computer Graphics</em>. <http://dx.doi.org/10.1109/TVCG.2010.161>.
 <li><i class="fa-li fa fa-code"></i> Data Camp <a href="https://www.datacamp.com/courses/reporting-with-r-markdown">Reporting with R Markdown</a></li>
-<li><i class="fa-li fa fa-book"></i> <a href="http://blog.vctr.me/posts/central-limit-theorem.html">Central Limit Theorem Visualized in D3"</a>. Setosa.io. An interactive visualizaiton.
+<li><i class="fa-li fa fa-book"></i> <a href="http://blog.vctr.me/posts/central-limit-theorem.html">Central Limit Theorem Visualized in D3"</a>. Setosa.io. An interactive visualization.
 <li><i class="fa-li fa fa-book"></i> OpenIntro Shiny apps for <a href="https://gallery.shinyapps.io/CLT_mean/">Central Limit Theorem for Means</a>, <a href="https://gallery.shinyapps.io/CLT_prop/">Central Limit for Proportions</a>.
 
 </ul>

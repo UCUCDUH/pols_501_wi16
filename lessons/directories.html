@@ -104,16 +104,16 @@ $$
 <li>Directories are hierarchically organized</li>
 </ul>
 <pre><code>main_dir
-NA
-NA
-NA
-NA
-NA
-NA
-NA
-NA
-NA
-NA</code></pre>
+│   README.md
+│   file1.txt    
+│
+└───folder1
+    │   file11.txt
+    │   file12.txt
+    │
+    ├───subfolder1
+    │   │   file111.txt
+    │   │   file112.txt</code></pre>
 <ul>
 <li><p>All directories and files have a <code>path</code> that allows us to access that directory or file</p>
 <pre><code>&quot;main_dir/folder1/subfolder1/file111.txt&quot;</code></pre></li>
@@ -127,7 +127,7 @@ NA</code></pre>
 </div>
 <div id="reading-files-in-r" class="section level2">
 <h2>Reading files in R</h2>
-<p>When reading data into R (e.g. a CSV file), if you only give the file name, R is going to look for that file in the current working directory. If the file is not there but it’s in a subdirectory of the working directory, you need to provide a partial path to the file indicating the subdirectory strucutre to get to that file. For example, imagine that R is being executed in the <code>main_dir</code> of the previous diagram and you want to read the <strong>file112.txt</strong>. You would provide the path from <code>main_dir</code> to <strong>file112.txt</strong>:</p>
+<p>When reading data into R (e.g. a CSV file), if you only give the file name, R is going to look for that file in the current working directory. If the file is not there but it’s in a subdirectory of the working directory, you need to provide a partial path to the file indicating the subdirectory structure to get to that file. For example, imagine that R is being executed in the <code>main_dir</code> of the previous diagram and you want to read the <strong>file112.txt</strong>. You would provide the path from <code>main_dir</code> to <strong>file112.txt</strong>:</p>
 <pre class="r"><code>data &lt;- read.table(file = &quot;folder1/subfolder1/file112.txt&quot;)</code></pre>
 <p>If the file is neither in the working directory or in a subdirectory of the working directory, you need to provide the full path to that file. For example, imagine that in this case R is being executed in the <code>subfolder1</code> directory and you want to read the <strong>file1.txt</strong>. You would do the following:</p>
 <pre class="r"><code>data &lt;- read.table(file = &quot;main_dir/file1.txt&quot;)</code></pre>

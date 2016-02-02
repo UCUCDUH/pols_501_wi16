@@ -92,7 +92,7 @@ $$
 <li><a href="#add-new-columns-with-mutate">Add new columns with <code>mutate()</code></a></li>
 <li><a href="#rename-columns-with-rename">Rename columns with <code>rename()</code></a></li>
 <li><a href="#randomly-sample-rows-with-sample_n-and-sample_frac">Randomly sample rows with <code>sample_n()</code> and <code>sample_frac()</code></a></li>
-<li><a href="#summarize-values-with-summarise">Summarize values with <code>summarise()</code></a></li>
+<li><a href="#summarize-values-with-summarize">Summarize values with <code>summarize()</code></a></li>
 <li><a href="#grouped-functions">Grouped Functions</a></li>
 <li><a href="#plotting">Plotting</a></li>
 </ul>
@@ -183,6 +183,10 @@ library(&quot;ggplot2&quot;)</code></pre>
        log_gdpPercap = log(gdpPercap),
        log_gdp = log_pop + log_gdpPercap,
        na_eu = continent %in% c(&quot;United States&quot;, &quot;Mexico&quot;, &quot;Canada&quot;))</code></pre>
+<p>It is tedious to mutate mutiple columns. To apply one or more functions to one or more columns, use <code>mutate_each</code>,</p>
+<pre class="r"><code>mutate_each(gapminder, funs(log), pop, gdpPercap, lifeExp)</code></pre>
+<p>Note that you need to enclose the list of functions in the <code>funs</code> function. If you apply one function, the columns keep their same name. If you apply multiple functions, the columns have the name of the variable combined with the name of the function.</p>
+<pre class="r"><code>mutate_each(gapminder, funs(log, sqrt), pop, gdpPercap, lifeExp)</code></pre>
 </div>
 <div id="rename-columns-with-rename" class="section level1">
 <h1>Rename columns with <code>rename()</code></h1>
@@ -201,11 +205,11 @@ library(&quot;ggplot2&quot;)</code></pre>
 <p>Sample all rows with replacement (bootstrap),</p>
 <pre class="r"><code>sample_frac(gapminder, replace = TRUE)</code></pre>
 </div>
-<div id="summarize-values-with-summarise" class="section level1">
-<h1>Summarize values with <code>summarise()</code></h1>
-<p>The function <code>summarise</code> (or <code>summarize</code>) collapses a data frame to a single row, summarized by functions.</p>
+<div id="summarize-values-with-summarize" class="section level1">
+<h1>Summarize values with <code>summarize()</code></h1>
+<p>The function <code>summarize</code> collapses a data frame to a single row, summarized by functions.</p>
 <p>Create a data frame with the minimum and maximum years, the minimum, maximum, and median life expectancy, the average population, and the average GDP per capita, total number of observations, number of unique years, and number of unique countries,</p>
-<pre class="r"><code>summarise(gapminder,
+<pre class="r"><code>summarize(gapminder,
           year_min = min(year),
           year_max = max(year),
           life_exp_min = min(lifeExp),
@@ -216,6 +220,10 @@ library(&quot;ggplot2&quot;)</code></pre>
           nobs = length(country),
           n_years = length(unique(year)),
           n_country = length(unique(continent)))</code></pre>
+<p>It is inconvenient if you need to summarize multiple columns with multiple functions. The function <code>summarize_each</code> simplifies that by applying one or more functions to one or more columns,</p>
+<pre class="r"><code>summarize_each(gapminder, funs(min, max, mean),
+               year, lifeExp, gdpPercap, pop)</code></pre>
+<p>Note that the functions need to be enclosed within the function <code>funs</code>.</p>
 </div>
 <div id="grouped-functions" class="section level1">
 <h1>Grouped Functions</h1>
@@ -269,7 +277,7 @@ gapminder_by_variable</code></pre>
        aes(x = value)) +
   geom_histogram() +
   facet_wrap(~variable, ncol = 1, scales = &quot;free&quot;)</code></pre>
-<p><img src="gapminder_intro_to_dplyr_tidyr_files/figure-html/unnamed-chunk-36-1.png" title="" alt="" width="672" /></p>
+<p><img src="gapminder_intro_to_dplyr_tidyr_files/figure-html/unnamed-chunk-39-1.png" title="" alt="" width="672" /></p>
 <p>With a column of variables, we can group by that variable, and easily calculate averages,</p>
 <pre class="r"><code>gapminder_by_variable %&gt;%
   group_by(variable, country) %&gt;%
