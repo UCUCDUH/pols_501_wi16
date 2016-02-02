@@ -1,0 +1,100 @@
+Notes on Estimators
+
+
+# Evaluating Estimators
+
+Estimand
+
+: Parameter to be estimated. E.g. population mean, population variance.
+
+Estimator
+
+: A rule for calculating an estimate given data. E.g. sample mean, sample variance.
+
+Estimate
+
+: A particular value of the estimator applied to data. E.g. 4.
+
+We evaluate estimators, not particular estimates.
+We want to judge methods based on how well they work in repeated samples.
+
+# How can we evaluate estimators?
+
+Need to see how well they do in repeated samples
+
+Mean squared error
+
+$$
+MSE(\hat\theta) = \E(\theta(X) - \theta)^2
+$$
+
+Bias
+
+$$
+B(\theta) = \E(\hat\theta) - \theta
+$$
+
+$$
+MSE(\hat\theta) = \var(\hat\theta) + (B(\hat\theta))^2
+$$
+
+Consistency:
+
+As the sample size increases ($n \to infty$) the estimator gets arbitrarily close to the true value of the estimand.
+
+Efficiency:
+
+For unbiased estimators of an estimand, the estimator with the lowest variance.
+
+Robustness:
+
+Performs well for data coming from a wide range of distributions.
+Resistant to errors in the results produced by errors in the assumptions.
+
+PLOT OF THESE THINGS
+
+# Sampling Distributions
+
+- sample mean
+- sample variance
+- sample standard deviation
+- median
+
+# Sampling distribution of the Mean
+
+
+# Confidence Interval
+
+- What is coverage?
+
+
+# Significance Tests
+
+p-value vs. significance level
+
+- Type I error
+- Type II error
+- Power
+- Type M error
+- Type S error
+
+- There is a tradeoff of Type I and Type II error for a given sample size
+- Type I error is independent of sample size, but more things become statistically significant
+- Type II decreases with sample size
+
+
+# Frequentist vs. Bayesian Interpretations
+
+$p(D | H)$, and $p(H | D) \propto p(D | H) p(H)$
+
+# Ways that the estimate can break
+
+- finite population
+- correlated errors
+
+    - serial correlation
+    - cluster correlation
+
+- skewed distribution
+
+In each case, what does it do to correlation? What does it do to
