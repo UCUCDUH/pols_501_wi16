@@ -6,6 +6,7 @@ addons:
 python:
 - '3.5'
 install:
+- pip install --upgrade setuptools
 - pip install Nikola[extras]
 - git config --global user.name "Travis CI"
 - git config --global user.email "jeffrey.arnold@gmail.com"
