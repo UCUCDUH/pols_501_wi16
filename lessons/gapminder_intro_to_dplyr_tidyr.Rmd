@@ -235,7 +235,7 @@ summarize_each(gapminder, funs(min, max, mean),
 Note that the functions need to be enclosed within the function `funs`.
 
 
-# Grouped Functions
+# Group By
 
 Use the `group_by` function to group the data frame.
 This allows for calculating variables and
@@ -294,6 +294,50 @@ gapminder %>%
          gr_gdpPercap = (gdpPercap - lag(gdpPercap)) / lag(gdpPercap))
 ```
 
+
+## `ungroup()`
+
+As long as a data frame is grouped by a column, you cannot delete or alter that column.
+For example, this will give an error message,
+```{r error = TRUE}
+gapminder %>%
+  group_by(country) %>%
+  mutate(country = stringr::str_to_upper(country))
+```
+This tries to delete the column `country`. The function `select` does not
+give an error message, but instead silently does nothing.
+```{r}
+gapminder %>%
+  group_by(country) %>%
+  select(-country)
+```
+You can remove any existing groupings of a data frame with `ungroup()`.
+```{r}
+gapminder %>%
+  group_by(country) %>%
+  ungroup() %>%
+  mutate(country = stringr::str_to_upper(country))
+gapminder %>%
+  group_by(country) %>%
+  ungroup() %>%
+  select(-country)
+```
+
+## `tally` and `count`
+
+To count the number of observations by group, use `tally()`.
+```{r}
+gapminder %>%
+  group_by(continent) %>%
+  tally()
+```
+The function `count` is similar, but also does the `group_by` so you don't have to,
+```{r}
+gapminder %>%
+  count(continent)
+```
+
+
 # Plotting
 
 It can be useful to gather the data so that there is only one column with values in order to plot multiple variables or to summarize.
@@ -335,6 +379,9 @@ gapminder_by_variable %>%
   summarise(mean = mean(value),
             sd = sd(value)) %>%
   gather(stat, value, -country, -variable) %>%
-  unite(varstat, variable, stat) %>%
-  spread(varstat, value)
+  ungroup() %>%
+  unite(variable_stat, variable, stat) %>%
+  spread(variable_stat, value)
 ```
+Note that I needed to use `ungroup()` before `unite`. That is because if a data frame is grouped by a column it that column cannot be altered or deleted. In this case, the data frame was grouped by `variable`, and `unite` attempted to delete `variable`.
+

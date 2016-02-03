@@ -93,12 +93,15 @@ $$
 <li><a href="#rename-columns-with-rename">Rename columns with <code>rename()</code></a></li>
 <li><a href="#randomly-sample-rows-with-sample_n-and-sample_frac">Randomly sample rows with <code>sample_n()</code> and <code>sample_frac()</code></a></li>
 <li><a href="#summarize-values-with-summarize">Summarize values with <code>summarize()</code></a></li>
-<li><a href="#grouped-functions">Grouped Functions</a></li>
+<li><a href="#group-by">Group By</a><ul>
+<li><a href="#ungroup"><code>ungroup()</code></a></li>
+<li><a href="#tally-and-count"><code>tally</code> and <code>count</code></a></li>
+</ul></li>
 <li><a href="#plotting">Plotting</a></li>
 </ul>
 </div>
 
-<p>This is an introduction to the <strong>dplyr</strong> and <strong>tidyr</strong> pacakges for data wrangling using the <code>gapminder</code> data from the <strong>gapminder</strong> package. For other introductions see the vignettes for <a href="https://cran.r-project.org/web/packages/dplyr/index.html">dplyr</a> and <a href="https://cran.r-project.org/web/packages/tidyr/index.html">tidyr</a>, and the <a href="http://r4ds.had.co.nz/">R for Data Science</a> chapters <a href="http://r4ds.had.co.nz/relational-data.html">Relational Data</a>, <a href="http://r4ds.had.co.nz/tidy.html">Tidy Data</a>, and <a href="http://r4ds.had.co.nz/transform.html">Data Transformation</a>.</p>
+<p>This is an introduction to the <strong>dplyr</strong> and <strong>tidyr</strong> packages for data wrangling using the <code>gapminder</code> data from the <strong>gapminder</strong> package. For other introductions see the vignettes for <a href="https://cran.r-project.org/web/packages/dplyr/index.html">dplyr</a> and <a href="https://cran.r-project.org/web/packages/tidyr/index.html">tidyr</a>, and the <a href="http://r4ds.had.co.nz/">R for Data Science</a> chapters <a href="http://r4ds.had.co.nz/relational-data.html">Relational Data</a>, <a href="http://r4ds.had.co.nz/tidy.html">Tidy Data</a>, and <a href="http://r4ds.had.co.nz/transform.html">Data Transformation</a>.</p>
 <p>Load the relevant packages and data,</p>
 <pre class="r"><code>library(&quot;gapminder&quot;)
 library(&quot;dplyr&quot;)
@@ -183,7 +186,7 @@ library(&quot;ggplot2&quot;)</code></pre>
        log_gdpPercap = log(gdpPercap),
        log_gdp = log_pop + log_gdpPercap,
        na_eu = continent %in% c(&quot;United States&quot;, &quot;Mexico&quot;, &quot;Canada&quot;))</code></pre>
-<p>It is tedious to mutate mutiple columns. To apply one or more functions to one or more columns, use <code>mutate_each</code>,</p>
+<p>It is tedious to mutate multiple columns. To apply one or more functions to one or more columns, use <code>mutate_each</code>,</p>
 <pre class="r"><code>mutate_each(gapminder, funs(log), pop, gdpPercap, lifeExp)</code></pre>
 <p>Note that you need to enclose the list of functions in the <code>funs</code> function. If you apply one function, the columns keep their same name. If you apply multiple functions, the columns have the name of the variable combined with the name of the function.</p>
 <pre class="r"><code>mutate_each(gapminder, funs(log, sqrt), pop, gdpPercap, lifeExp)</code></pre>
@@ -225,8 +228,8 @@ library(&quot;ggplot2&quot;)</code></pre>
                year, lifeExp, gdpPercap, pop)</code></pre>
 <p>Note that the functions need to be enclosed within the function <code>funs</code>.</p>
 </div>
-<div id="grouped-functions" class="section level1">
-<h1>Grouped Functions</h1>
+<div id="group-by" class="section level1">
+<h1>Group By</h1>
 <p>Use the <code>group_by</code> function to group the data frame. This allows for calculating variables and</p>
 <p>For each country, calculate its average, median, and maximum GDP per capita, and median life expectancy,</p>
 <pre class="r"><code>gapminder %&gt;%
@@ -264,6 +267,37 @@ library(&quot;ggplot2&quot;)</code></pre>
   select(country, year, gdpPercap) %&gt;%
   mutate(diff_log_gdpPercap = log(gdpPercap) - lag(log(gdpPercap)),
          gr_gdpPercap = (gdpPercap - lag(gdpPercap)) / lag(gdpPercap))</code></pre>
+<div id="ungroup" class="section level2">
+<h2><code>ungroup()</code></h2>
+<p>As long as a data frame is grouped by a column, you cannot delete or alter that column. For example, this will give an error message,</p>
+<pre class="r"><code>gapminder %&gt;%
+  group_by(country) %&gt;%
+  mutate(country = stringr::str_to_upper(country))</code></pre>
+<pre><code>## Error in eval(expr, envir, enclos): cannot modify grouping variable</code></pre>
+<p>This tries to delete the column <code>country</code>. The function <code>select</code> does not give an error message, but instead silently does nothing.</p>
+<pre class="r"><code>gapminder %&gt;%
+  group_by(country) %&gt;%
+  select(-country)</code></pre>
+<p>You can remove any existing groupings of a data frame with <code>ungroup()</code>.</p>
+<pre class="r"><code>gapminder %&gt;%
+  group_by(country) %&gt;%
+  ungroup() %&gt;%
+  mutate(country = stringr::str_to_upper(country))
+gapminder %&gt;%
+  group_by(country) %&gt;%
+  ungroup() %&gt;%
+  select(-country)</code></pre>
+</div>
+<div id="tally-and-count" class="section level2">
+<h2><code>tally</code> and <code>count</code></h2>
+<p>To count the number of observations by group, use <code>tally()</code>.</p>
+<pre class="r"><code>gapminder %&gt;%
+  group_by(continent) %&gt;%
+  tally()</code></pre>
+<p>The function <code>count</code> is similar, but also does the <code>group_by</code> so you don’t have to,</p>
+<pre class="r"><code>gapminder %&gt;%
+  count(continent)</code></pre>
+</div>
 </div>
 <div id="plotting" class="section level1">
 <h1>Plotting</h1>
@@ -273,11 +307,11 @@ library(&quot;ggplot2&quot;)</code></pre>
   gather(variable, value, -country, -year, -continent)
 gapminder_by_variable</code></pre>
 <p>Now we can plot histograms of all the variables in a single plot,</p>
-<pre class="r"><code>ggplot(gapminder_by_variable, 
+<pre class="r"><code>ggplot(gapminder_by_variable,
        aes(x = value)) +
   geom_histogram() +
   facet_wrap(~variable, ncol = 1, scales = &quot;free&quot;)</code></pre>
-<p><img src="gapminder_intro_to_dplyr_tidyr_files/figure-html/unnamed-chunk-39-1.png" title="" alt="" width="672" /></p>
+<p><img src="gapminder_intro_to_dplyr_tidyr_files/figure-html/unnamed-chunk-44-1.png" title="" alt="" width="672" /></p>
 <p>With a column of variables, we can group by that variable, and easily calculate averages,</p>
 <pre class="r"><code>gapminder_by_variable %&gt;%
   group_by(variable, country) %&gt;%
@@ -295,9 +329,10 @@ gapminder_by_variable</code></pre>
   summarise(mean = mean(value),
             sd = sd(value)) %&gt;%
   gather(stat, value, -country, -variable) %&gt;%
-  unite(varstat, variable, stat) %&gt;%
-  spread(varstat, value)</code></pre>
-<pre><code>## Error in eval(expr, envir, enclos): unknown column &#39;variable&#39;</code></pre>
+  ungroup() %&gt;%
+  unite(variable_stat, variable, stat) %&gt;%
+  spread(variable_stat, value)</code></pre>
+<p>Note that I needed to use <code>ungroup()</code> before <code>unite</code>. That is because if a data frame is grouped by a column it that column cannot be altered or deleted. In this case, the data frame was grouped by <code>variable</code>, and <code>unite</code> attempted to delete <code>variable</code>.</p>
 </div>
 
 <hr>

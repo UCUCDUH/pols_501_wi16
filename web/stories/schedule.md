@@ -174,12 +174,10 @@ Lab
 
 <ul class="fa-ul">
 <li> <i class="fa-li fa fa-book"></i> <em>OpenIntro</em>, Ch 4 </li>
-<li> <i class="fa-li fa fa-book"></i> <em>SMISS</em>. 7.1&ndash;7.4,   </li>
-<li><i class="fa-li fa fa-book"></i> Wickham, Hadley. 2010. "Graphical Inference for Infovis." <em>IEEE Transactions on Visualization and Computer Graphics</em>. <http://dx.doi.org/10.1109/TVCG.2010.161>.
-<li><i class="fa-li fa fa-code"></i> Data Camp <a href="https://www.datacamp.com/courses/reporting-with-r-markdown">Reporting with R Markdown</a></li>
+<li> <i class="fa-li fa fa-book"></i> <em>SMISS</em>. 7.1&ndash;7.4,   </li> (skim)
 <li><i class="fa-li fa fa-book"></i> <a href="http://blog.vctr.me/posts/central-limit-theorem.html">Central Limit Theorem Visualized in D3"</a>. Setosa.io. An interactive visualization.
 <li><i class="fa-li fa fa-book"></i> OpenIntro Shiny apps for <a href="https://gallery.shinyapps.io/CLT_mean/">Central Limit Theorem for Means</a>, <a href="https://gallery.shinyapps.io/CLT_prop/">Central Limit for Proportions</a>.
-
+<li><i class="fa-li fa fa-book"></i> Wickham, Hadley. 2010. "Graphical Inference for Infovis." <em>IEEE Transactions on Visualization and Computer Graphics</em>. <a href="http://dx.doi.org/10.1109/TVCG.2010.161">DOI</a>
 </ul>
 
 ## Week 6
@@ -187,8 +185,10 @@ Lab
 **Inference for Numerical Data (t-tests, ANOVA); Bootstrap.**
 
 <ul class="fa-ul">
-<li> <i class="fa-li fa fa-book"></i> <em>OpenIntro</em>, Ch 5 </li>
-<li> <i class="fa-li fa fa-book"></i> <em>SMISS</em> Parts of Chapter 7&ndash;9 </li>
+<li><i class="fa-li fa fa-book"></i> <em>OpenIntro</em>, Ch 5 </li>
+<li><i class="fa-li fa fa-book"></i> Cowles, Michael, and Caroline David. 1982. "On the Origins of the .05 Level of Statistical Significance"<em>American Psychologist</em>. <a href="https://dx.doi.org/10.1037/0003-066X.37.5.553">DOI</a>
+<li><i class="fa-li fa fa-code"></i> Data Camp <a href="https://www.datacamp.com/courses/reporting-with-r-markdown">Reporting with R Markdown</a></li>
+<li><i class="fa-li fa fa-code"></i><em>The Basic Practice of Statistics.</em>7th ed. Chapter 16. "Bootstrap Methods and Permutation Tests"<a href"http://content.bfwpub.com/webroot_pubcontent/Content/BCS_4/IPS7e/Student/Companion%20Chapters/ips_chap16.pdf">URL</a>.
 </ul>
 
 
@@ -197,8 +197,7 @@ Lab
 **Inference for Categorical data (proportion tests, Chi-squared tests)**
 
 <ul class="fa-ul">
-<li> <i class="fa-li fa fa-book"></i> <em>OpenIntro</em>, CH 6 </li>
-<li> <i class="fa-li fa fa-book"></i> <em>SMISS</em>. Parts of Chapters 7&ndash;9 </li>
+<li> <i class="fa-li fa fa-book"></i> <em>OpenIntro</em>. Ch 6: "Inference for Categorical Data" </li>
 </ul>
 
 ## Week 8
@@ -206,8 +205,7 @@ Lab
 **Introduction to Linear Regression**
 
 <ul class="fa-ul">
-<li> <i class="fa-li fa fa-book"></i> <em>OpenIntro</em>, Ch 7 </li>
-<li> <i class="fa-li fa fa-book"></i> <em>SMISS</em>, Parts of Chapters 7&ndash;9 (7.5) </li>
+<li> <i class="fa-li fa fa-book"></i> <em>OpenIntro</em>. Ch 7: "Introduction to Linear Regression" </li>
 </ul>
 
 ## Week 9
@@ -215,8 +213,9 @@ Lab
 **Multiple regression**
 
 <ul class="fa-ul">
-<li> <i class="fa-li fa fa-book"></i> <em>OpenIntro</em>, Ch 8 </li>
-<li> <i class="fa-li fa fa-book"></i> <em>SMISS</em>, Parts of Chapters 7&ndash;9 </li>
+<li> <i class="fa-li fa fa-book"></i> <em>OpenIntro</em>. Ch 8: "Multiple and Logistic Regression" </li>
+<li> <i class="fa-li fa fa-book"></li> <em>OpenIntro</em> Supplement "Interaction Terms" </li> <a href="https://www.openintro.org/download.php?file=os2_extra_interaction_effects&referrer=/stat/textbook.php">URL</a>
+<li> <i class="fa-li fa fa-book"></li> <em>OpenIntro</em> Supplement "Regression for nonlinear relationships" </li> <a href="https://www.openintro.org/download.php?file=os2_extra_nonlinear_relationships&referrer=/stat/textbook.php">URL</a>
 </ul>
 
 ## Week 10
