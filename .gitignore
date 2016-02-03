@@ -19,3 +19,4 @@ node_modules
 /lessons/data/WDI_csv.zip
 /lessons/data/WDI/
 web/files/docs
+*.pyc
