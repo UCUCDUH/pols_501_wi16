@@ -10,9 +10,6 @@ install:
 - pip install Nikola[extras]
 - git config --global user.name "Travis CI"
 - git config --global user.email "jeffrey.arnold@gmail.com"
-before_script:
-- npm install markdown-spellcheck
-- PATH="node_modules/.bin:$PATH"
 script:
 - make -C docs deploy  
 - make -C slides deploy
