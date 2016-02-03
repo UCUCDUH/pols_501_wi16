@@ -143,6 +143,7 @@ Optional readings
 **Distributions; Data Generating Process**
 
 <ul class="fa-ul">
+<li><i class="fa-li fa fa-puzzle-piece"></i><a href="/assignments/reading-03/">Reading assignment 3 due</a></li>
 <li> <i class="fa-li fa fa-book"></i> <em>OpenIntro</em>, Ch 3</li>
 <li> <i class="fa-li fa fa-book"></i> <em>SMISS</em>. "Chapter 5: Expectation and Moments: Summaries of Data Generating Processes" Sections 5.1, 5.2.1. </li>
 <li> <i class="fa-li fa fa-book"></i> <em>SMISS</em>. "Chapter 6: Linking Positive Theories and Data-Generating Processes." Section 6.1&ndash;6.3, 6.5&ndash;6.6. </li>
@@ -173,6 +174,8 @@ Lab
 **Foundations of Inference: Sampling distributions, confidence intervals, hypothesis testing**
 
 <ul class="fa-ul">
+<li><i class="fa-li fa fa-puzzle-piece"></i><a href="/assignments/project-03/">Research project assignment 3 due</a></li>
+<li><i class="fa-li fa fa-puzzle-piece"></i><a href="/assignments/reading-04/">Reading assignment 4 due</a></li>
 <li> <i class="fa-li fa fa-book"></i> <em>OpenIntro</em>, Ch 4 </li>
 <li> <i class="fa-li fa fa-book"></i> <em>SMISS</em>. 7.1&ndash;7.4,   </li> (skim)
 <li><i class="fa-li fa fa-book"></i> <a href="http://blog.vctr.me/posts/central-limit-theorem.html">Central Limit Theorem Visualized in D3"</a>. Setosa.io. An interactive visualization.
@@ -185,6 +188,7 @@ Lab
 **Inference for Numerical Data (t-tests, ANOVA); Bootstrap.**
 
 <ul class="fa-ul">
+<li><i class="fa-li fa fa-puzzle-piece"></i><a href="/assignments/reading-05/">Reading assignment 5 due</a></li>
 <li><i class="fa-li fa fa-book"></i> <em>OpenIntro</em>, Ch 5 </li>
 <li><i class="fa-li fa fa-book"></i> Cowles, Michael, and Caroline David. 1982. "On the Origins of the .05 Level of Statistical Significance"<em>American Psychologist</em>. <a href="https://dx.doi.org/10.1037/0003-066X.37.5.553">DOI</a>
 <li><i class="fa-li fa fa-code"></i> Data Camp <a href="https://www.datacamp.com/courses/reporting-with-r-markdown">Reporting with R Markdown</a></li>
