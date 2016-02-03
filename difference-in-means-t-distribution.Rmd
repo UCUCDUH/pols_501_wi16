@@ -1,0 +1,29 @@
+---
+title: Difference in Means: T-Distribution and Hypothesis Testing
+date: January , 2016
+author: Andreu Casas
+---
+
+```{r init,results='hide',echo=FALSE}
+source("init.R")
+```
+
+Read data in:
+```{r}
+library(rio)
+data <- import('/Users/andreucasas/Dropbox/UW/TEACHING/POLS_501_WINTER16/labs_data/data/table1.dta')
+```
+
+Take a look at the data:
+
+  - Are there any missing values?
+  - 
+  
+```{r}
+summary(data$extmort4)
+```
+
+
+
+
+

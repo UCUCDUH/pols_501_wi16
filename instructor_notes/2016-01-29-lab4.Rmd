@@ -1,0 +1,14 @@
+# Lab 4 Summary (January 29, 2016) 
+
+1. `common errors` [module](https://uw-pols501.github.io/pols_501_wi16/lessons/common_errors_in_R.html)
+2. `reordering axis lables` [module](https://uw-pols501.github.io/pols_501_wi16/lessons/reordering-labels-plot.html)
+
+# Self-Assessment
+
+- Some other `common errors` or questions that came up during the lab:
+
+    - How to have a string with quotation marks in it: e.g Regime type in "africa" and Levels of foreign aid. How to use the `\` to indicate when certain characters are not `R` symbols with specific meaning but just simple characters. 
+
+- Did not have time to go through the `reordering axis labels` module but I don't think it was a problem, since it's a pretty easy module they can go over on their own if they need to reorder the labels in one of their graphs. I simply added the module to the resources part in the website.
+
+- Instead, in the last 30 minutes of class they worked in groups of 2-3 people in running and peer-reviewing each other's code. This was a perfect opportunity to clean their code and learn how they should be formatting it so that it's easier for others to follow and run it. 
