@@ -18,7 +18,7 @@ Key:
 <i class="fa fa-code"></i> Data Camp courses;
 <i class="fa fa-gears"></i> Actions to take;
 <i class="fa fa-bar-chart"></i> R lessons;
-<i class="fa fa-puzzle-piece"></i> Final paper.
+<i class="fa fa-puzzle-piece"></i> Assignments.
 
 A list of changes is available [here](/schedule-diff.txt).
 
