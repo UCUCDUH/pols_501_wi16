@@ -10,7 +10,8 @@ knitr::opts_chunk$set(cache = TRUE, autodep = TRUE)
 
 This lesson uses simulation to understand properties of sampling distributions and confidence intervals.
 
-```{r}
+This lesson uses these **R** packages.
+```{r message=FALSE}
 library("dplyr")
 library("ggplot2")
 library("tidyr")
@@ -230,8 +231,8 @@ ggplot(results_summary, aes(x = size,
   scale_x_log10()
 ```
 
-Plot of the distribution of the sampling distribution of the mean as it increases.
-```{r}
+Plot of the distribution of the sampling distribution of the mean as the sample size increases.
+```{r fig.height = 8}
 ggplot(mutate(results,
               normal = dnorm(stat, mean = mu, sd = sigma / sqrt(size))),
        aes(x = stat)) +
@@ -309,7 +310,7 @@ Note that while $\theta$ is fixed, $\hat\theta$ is a random variable.
 
 The bias of an estimator is the difference between the expected value of its sampling distribution and the true value of the parameter,
 $$
-Bias(\theta) = \E(\hat\theta) - \theta .
+\Bias(\theta) = \E(\hat\theta) - \theta .
 $$
 
 ## Variance
@@ -323,15 +324,15 @@ $$
 
 The mean squared error evaluates the distribution on its squared error relative to the true value of the parameter,
 $$
-MSE(\hat\theta) &= \E\left[\left(\theta(X) - \theta\right)^2 \right] .
+\MSE(\hat\theta) = \E\left[\left(\hat\theta - \theta\right)^2 \right] .
 $$
 The MSE incorporates both the bias of the estimator and the variance, and can be rewritten as the sum of the variance and bias squared of the estimator,
 $$
-MSE(\hat\theta) = \var(\hat\theta) + \left(Bias(\hat\theta)\right)^2
+\MSE(\hat\theta) = \var(\hat\theta) + \left(\Bias(\hat\theta)\right)^2
 $$
 One implication of this is that biased esimators may have a better MSE than a unbiased estimator, if their variance is sufficiently lower,
 $$
-\var(\hat\theta_{\text{unbiased}}) - var(\hat\theta_{\text{biased}}) > {Bias(\hat\theta)}^2 .
+\var(\hat\theta_{\text{unbiased}}) - var(\hat\theta_{\text{biased}}) > {\Bias(\hat\theta)}^2 .
 $$
 
 *What are the bias, variance, and MSE of the sample mean as an estimator of the population mean?*
@@ -340,7 +341,7 @@ Its bias is 0, since $E(\bar{X}) = \mu$.
 Its variance is $\sigma^2 / n$.
 Since the sample mean is unbiased, its MSE is the same as its variance
 $$
-MSE(\bar{X}) = \var(\bar{X}) + \left(Bias(\bar{X})\right)^2 = \var(\bar{X}) + 0 = \var(\bar{X})
+\MSE(\bar{X}) = \var(\bar{X}) + \left(\Bias(\bar{X})\right)^2 = \var(\bar{X}) + 0 = \var(\bar{X})
 $$
 
 
@@ -396,7 +397,7 @@ How many of these intervals contain the population mean, $\mu$?
 ```{r}
 summarize(results, prop_contain_mu = sum(contains_mu) / n())
 ```
-```{r}
+```{r fig.height = 7}
 ggplot(results, aes(y = x_mean, ymin = lb, ymax = ub, x = i, color = contains_mu)) +
   geom_hline(yintercept = 0) + 
   geom_pointrange(size = rel(0.25)) +
@@ -419,7 +420,6 @@ For a 95% confidnence interval the proportion of confidence intervals containing
 contains_x_mean <- rep(NA, nrow(results))
 for (i in 1:nrow(results)) {
   x_mean_i <- results[i, ][["x_mean"]]
-  print(x_mean_i)
   contains_x_mean[i] <- 
     (sum(results$lb < x_mean_i & results$ub > x_mean_i) - 1) / (nrow(results) - 1)
 }
@@ -464,7 +464,7 @@ How many of these intervals contain the population mean, $\mu$?
 ```{r}
 summarize(results, prop_contain_mu = sum(contains_mu) / n())
 ```
-```{r}
+```{r fig.height = 8}
 ggplot(results, aes(y = x_mean, ymin = lb, ymax = ub, x = i, color = contains_mu)) +
   geom_hline(yintercept = 0) + 
   geom_pointrange(size = rel(0.25)) +
