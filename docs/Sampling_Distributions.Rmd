@@ -1,87 +1,380 @@
-Notes on Estimators
+```{r results='hide',echo=FALSE}
+knitr::opts_chunk$set(cache = TRUE, autodep = TRUE)
+```
 
+
+```{r}
+library("dplyr")
+library("ggplot2")
+```
+
+
+
+# Inference
+
+If we knew the population distribution, we can calculate the probability of observing a sample statistic using the sampling distribution.
+
+- Known population: distribution and parameters. e.g. $N(\mu, \sigma)$
+- Draw samples. $X \sim N(\mu, \sigma)$
+- Calculate sample statistics which have a sampling distribution, $\bar{X} \sim N(\mu, \sigma / \sqrt{n})$
+
+However, in inference we only know the sample or sample statistic, and want to know some parameter(s) of the population distribution.
+
+- Known sample or at least a known statistic of a sample. E.g. $\bar{x}$.
+- ?
+- Population parameter: E.g. $\mu$.
+
+The obvious way to do this would be to use Bayes' Theorem,
+$$
+p(\mu | \bar{x}) = \frac{\Pr(\bar{x}| \mu) \Pr(\mu)}{\Pr(\bar{x})}
+$$
+There are at least two problems with this approach
+
+1. Practically, this can be computationally difficult
+2. Theoretically, we need to assign a probability to the population parameter, prior to observing the data, $\Pr(\mu)$.
+   This may be objectionable to people.
+3. In the frequentist definition of probability, there is no probability of $\mu$. Parameters are not random variables, they are fixed, though unknown, values. Only samples are random variables, and can have probabilities. Therefore, we can calculate the probability of observing a sample mean, $\bar{x}$, in repeated samples given a population mean, $\mu$. However, there is no non-degenerate probability for the population parameter $\mu$.
+
+There are two main frequentist approaches to the inferential problem:
+
+ 1. Confidence intervals
+ 2. Hypothesis Testing: Calculate the sampling distribution of the sample statistic given a null hypothesis, $H_a$, and calculate how unusual the data we observe is.
+
+     1. P-value
+     2. Significance test
+
+These methods represent distinct and separate methods of inference, although in practice they are used in a hybrid, and somewhat incoherent, manner. 
+
+# Sampling distribution
+
+The sampling distribution of a sample statistic depends is the distribution of a sampling statistic in repeated samples.
+In general the sampling distribution depends on three things
+
+- the population distribution
+- the sample size
+- the sample statistic
+
+```{r}
+library("dplyr")
+library("ggplot2")
+mu <- 0
+sigma <- 1
+n <- 32
+confidence <- 95
+iter <- 1000
+
+# Investigate
+results <- list()
+for (i in 1:iter) {
+  x <- rnorm(n, mean = mu, sd = sigma)
+  stat <- mean(x)
+  results[[i]] <- data_frame(i = i,
+                             stat = mean(x))
+}
+results <- bind_rows(results)
+# try n = 2, 8, 16, 32, 512, 1024
+
+iter <- 4096
+sample_sizes <- 2 ^ (0:10)
+results <- list()
+for (k in seq_along(sample_sizes))  {
+  cat("sample size:", sample_sizes[k], "\n")
+  sampling_dist <- list()
+  n <- sample_sizes[k]
+  for (i in 1:iter) {
+    # Normal distribution. mean = 0, sd = 1. mean = 0
+    x <- rnorm(n)
+    # Uniform distribution: min = 0, max = 1. mean = 0.5
+    # x <- runif(n)
+    # Geometric distribution: prob = 0.25. mean = 4
+    # x <- rgeom(n, prob = 0.25)
+    # Beta distribution. Bimodal. mean = 0.5.
+    # x <- rbeta(n, shape1 = 0.25, shape2 = 0.25)
+
+    # Statistics
+    stat <- mean(x)
+    #     stat <- median(x)
+    #     stat <- max(x)
+    #     stat <- var(x)
+    sampling_dist[[i]] <- data_frame(size = n,
+                                     stat = stat)
+  }
+  results[[k]] <- bind_rows(sampling_dist)
+}
+results <- bind_rows(results) %>% mutate(size = factor(size))
+
+ggplot(results, aes(x = stat, colour = size)) + geom_density()
+
+ggplot(results, aes(sample = stat)) +
+  facet_wrap(~size, ncol = 2, scales = "free_y") +
+  stat_qq()
+
+
+```
+
+
+
+
+# Sampling Distribution of the Sample Mean
+
+The sampling distribution of the sample mean has the following properties
+
+- Mean: $\mu$
+- Standard deviation: $\sigma / \sqrt{n}$
+- As $n \to \infty$, the distribution approaches a normal distribution (regardless of the population distribution[^1]).
+
+```{r}
+## Comparing mean and sample distributions of multiple samples
+iter <- 4096
+sample_sizes <- 2 ^ (0:12)
+results <- list()
+for (k in seq_along(sample_sizes))  {
+  cat("sample size:", 2 ^ k, "\n")
+  stat <- rep(NA, iter)
+  for (i in 1:iter) {
+    x <- rnorm(sample_sizes[k], mean = mu, sd = sigma)
+    # Edit this
+    stat[i] <- mean(x)
+  }
+  results[[k]] <- data_frame(size = sample_sizes[k],
+                             x_mean = mean(stat),
+                             s = sd(stat),
+                             x_mean_se = s / sqrt(iter),
+                             s_se = s / sqrt(2 * (iter - 1)))
+}
+results <- bind_rows(results)
+```
+
+
+[^1]: There are a few technical conditions for the CLT, but that's not our concern here.
 
 # Evaluating Estimators
 
 Estimand
 
-: Parameter to be estimated. E.g. population mean, population variance.
+:   Parameter to be estimated. E.g. population mean, population variance.
 
 Estimator
 
-: A rule for calculating an estimate given data. E.g. sample mean, sample variance.
+:   A rule for calculating an estimate given data. E.g. sample mean, sample variance.
 
 Estimate
 
-: A particular value of the estimator applied to data. E.g. 4.
+:   A particular value of the estimator applied to data. E.g. 4.
 
 We evaluate estimators, not particular estimates.
 We want to judge methods based on how well they work in repeated samples.
 
 # How can we evaluate estimators?
 
-Need to see how well they do in repeated samples
+We need to see how well they do in repeated samples, e.g. their sampling distribution.
+Let $\theta$ be the true value of the parameter, and $\hat\theta$ be an estimator for that parameter.
+Note that while $\theta$ is fixed, $\hat\theta$ is a random variable.
 
-Mean squared error
+## Bias
 
+The bias of an estimator is the difference between the expected value of its sampling distribution and the true value of the parameter,
 $$
-MSE(\hat\theta) = \E(\theta(X) - \theta)^2
-$$
-
-Bias
-
-$$
-B(\theta) = \E(\hat\theta) - \theta
+Bias(\theta) = \E(\hat\theta) - \theta .
 $$
 
+## Variance
+
+The variance of an estimator is the variance of its sampling distribution,
 $$
-MSE(\hat\theta) = \var(\hat\theta) + (B(\hat\theta))^2
+\var(\hat\theta)  = \E\left( (\hat\theta - \E(\hat\theta))^2 \right) .
 $$
 
-Consistency:
+## MSE
 
-As the sample size increases ($n \to infty$) the estimator gets arbitrarily close to the true value of the estimand.
+The mean squared error evaluates the distribution on its squared error relative to the true value of the parameter,
+$$
+MSE(\hat\theta) &= \E\left[\left(\theta(X) - \theta\right)^2 \right] .
+$$
+The MSE incorporates both the bias of the estimator and the variance, and can be rewritten as the sum of the variance and bias squared of the estimator,
+$$
+MSE(\hat\theta) = \var(\hat\theta) + \left(Bias(\hat\theta)\right)^2
+$$
+One implication of this is that biased esimators may have a better MSE than a unbiased estimator, if their variance is sufficiently lower,
+$$
+\var(\hat\theta_{\text{unbiased}}) - var(\hat\theta_{\text{biased}}) > {Bias(\hat\theta)}^2 .
+$$
 
-Efficiency:
+*What are the bias, variance, and MSE of the sample mean as an estimator of the population mean?*
 
-For unbiased estimators of an estimand, the estimator with the lowest variance.
+Its bias is 0, since $E(\bar{X}) = \mu$.
+Its variance is $\sigma^2 / n$.
+Since the sample mean is unbiased, its MSE is the same as its variance
+$$
+MSE(\bar{X}) = \var(\bar{X}) + \left(Bias(\bar{X})\right)^2 = \var(\bar{X}) + 0 = \var(\bar{X})
+$$
+
+
+## Other criteria
+
+Estimators can be evaluated according to other criteria. A few common ones are:
+
+Consistency
+
+:   As the sample size increases ($n \to infty$) the estimator $\hat\theta$ gets arbitrarily close to the true value of the estimand $\theta$.
+
+Efficiency
+
+:   For unbiased estimators of an estimand, the estimator with the lowest variance.
 
 Robustness:
 
-Performs well for data coming from a wide range of distributions.
-Resistant to errors in the results produced by errors in the assumptions.
-
-PLOT OF THESE THINGS
-
-# Sampling Distributions
-
-- sample mean
-- sample variance
-- sample standard deviation
-- median
-
-# Sampling distribution of the Mean
+:   The estimate is not affected much by departures from the assumptions, or the estimator requires few assumptions.
 
 
-# Confidence Interval
+# Confidence Intervals
 
-- What is coverage?
+
+
+```{r}
+# calculate z critical value
+alpha <- 1 - (confidence / 100)
+z <- -qnorm(alpha / 2)
+results <- list()
+for (i in 1:iter) {
+  x <- rnorm(n, mu, sigma)
+  x_mean <- mean(x)
+  s <- sd(x)
+  se <- sd(x) / sqrt(n)
+  lb <- x_mean - z * se
+  ub <- x_mean + z * se
+  contains <- (mu > lb) & (mu < ub)
+  results[[i]] <- data_frame(x_mean = x_mean,
+                             s = s,
+                             se = se,
+                             lb = lb,
+                             ub = ub,
+                             contains = contains)
+}
+results <- bind_rows(results)
+```
+
+
 
 
 # Significance Tests
 
 p-value vs. significance level
 
-- Type I error
-- Type II error
-- Power
-- Type M error
-- Type S error
+ 
+| Hypothesis | True | False | 
+| True | | Type I |
+| False | Type II | |
 
-- There is a tradeoff of Type I and Type II error for a given sample size
-- Type I error is independent of sample size, but more things become statistically significant
+
+```{r}
+
+null_hypothesis <- 0
+mu_values <- c(0, 0.125, 0.25, 0.5, 1, 2)
+sigma <- 1
+sample_sizes <- c(8, 16, 32, 64, 128, 256)
+iter <- 4096
+
+results <- vector(mode = "list",
+                  length = length(sample_sizes) *
+                  length(mu_values) *
+                    iter)
+result_num <- 1
+for (i in seq_along(mu_values)) {
+  mu <- mu_values[i]
+  for (j in seq_along(sample_sizes)) {
+    size <- sample_sizes[j]
+    cat("mu:", mu, ", size:", size, "\n")
+    for (k in 1:iter) {
+      x <- rnorm(size, mean = mu, sd = sigma)
+      x_mean <- mean(x)
+      s <- sd(x)
+      # s <- sigma
+      se <- s / sqrt(size)
+      z <- (x_mean - null_hypothesis) / se
+      p_value <- 2 * pnorm(-abs(z))
+      results[[result_num]] <-
+        data_frame(size = size,
+                   mu = mu,
+                   x_mean = x_mean,
+                   s = s,
+                   se = se,
+                   z = z,
+                   p_value = p_value,
+                   same_sign = sign(x_mean) == sign(mu),
+                   effect = x_mean - mu
+                   )
+       result_num <- result_num + 1
+    }
+  }
+}
+results <- bind_rows(results)
+
+errors <- 
+  results %>%
+    group_by(mu, size) %>%
+    mutate(decision_error = ifelse(mu == null_hypothesis, p_value < 0.05, p_value > 0.05),
+           magnitude_error = ifelse(p_value < 0.05, abs(x_mean - mu), NA),
+           sign_error = sign(x_mean) != sign(mu)) %>%
+    summarize(decision_error = sum(decision_error) / length(decision_error),
+              magnitude_error = mean(magnitude_error, na.rm = TRUE),
+              sign_error = sum(sign_error) / length(sign_error)) %>%
+  ungroup()
+
+ggplot(errors %>% mutate(mu = factor(mu)),
+       aes(x = sqrt(size), y = decision_error)) +
+  geom_point() +
+  geom_line() +
+  scale_y_continuous(limits = c(0, 1)) +
+  facet_wrap(~mu, ncol = 1)
+
+ggplot(errors %>% mutate(mu = factor(mu)),
+       aes(x = sqrt(size), y = sign_error)) +
+  geom_point() +
+  geom_line() +
+  scale_y_continuous(limits = c(0, 1)) +
+  facet_wrap(~mu, ncol = 1)
+  
+ggplot(errors %>% mutate(mu = factor(mu)),
+       aes(x = sqrt(size), y = magnitude_error)) +
+  geom_point() +
+  geom_line() +
+  facet_wrap(~mu, ncol = 1)
+  
+res <- mutate(results,
+              size = factor(size,
+                            levels = c("8", "16", "32", "64",
+                                       "128", "256", "512", "1024", "2048")),
+              mu = as.character(mu))
+ggplot(res,
+       aes(x = p_value)) +
+  geom_histogram(binwidth = 0.05, mapping = aes(y = ..ndensity..)) +
+  facet_grid(size ~ mu, scale = "free_y")
+
+ggplot(filter(res, p_value < 0.05),
+       aes(x = x_mean)) +
+  geom_density(mapping = aes(y = ..scaled..), fill = "black") +
+  facet_grid(size ~ mu, scale = "free_y")
+
+ggplot(mutate(res, sig = p_value < 0.05),
+       aes(x = x_mean, fill = sig, color = sig)) +
+  geom_histogram(binwidth = 0.1, alpha = 0.5) +
+  geom_rug() +
+  facet_grid(size ~ mu, scale = "free_y")
+
+```
+
+
+Some notes on Type I and Type II errors:
+
+- For a given test, there is is tradeoff of Type I and Type II error. The fewer false positives, the more false negatives. E.g. in trial a judge could minimize any innocent defendents being declared guilty by ruling not guilty on all trials. However, then all guilty defendents would be declared not guilty.
+- Tests generally focus on Type I error, and then for a given Type I error, more powerful tests are preferred. One reason to focus on Type I error, is that Type II error requires specifying a value of the alternative hypothesis, but there is often not just one value.
+- Type I error is independent of sample size
 - Type II decreases with sample size
 
+
+- For a fixed sample mean and standard deviation: How would the significance change with the sample size?
+- For a fixed sample mean and sample size: How would the significance change with the sample standard deviation?
 
 # Frequentist vs. Bayesian Interpretations
 
@@ -96,5 +389,3 @@ $p(D | H)$, and $p(H | D) \propto p(D | H) p(H)$
     - cluster correlation
 
 - skewed distribution
-
-In each case, what does it do to correlation? What does it do to
