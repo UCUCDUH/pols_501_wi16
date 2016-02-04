@@ -256,12 +256,10 @@ results <- bind_rows(results)
 
 
 
-
 # Significance Tests
 
 p-value vs. significance level
 
- 
 | Hypothesis | True | False | 
 | True | | Type I |
 | False | Type II | |
