@@ -1,14 +1,20 @@
+---
+title: Sampling Distributions and Confidence Intervals
+author: Jeffrey Arnold
+date: 2016-02-04
+---
+
 ```{r results='hide',echo=FALSE}
 knitr::opts_chunk$set(cache = TRUE, autodep = TRUE)
 ```
 
+This lesson uses simulation to understand properties of sampling distributions and confidence intervals.
 
 ```{r}
 library("dplyr")
 library("ggplot2")
+library("tidyr")
 ```
-
-
 
 # Inference
 
@@ -49,7 +55,6 @@ These methods represent distinct and separate methods of inference, although in 
 
 The sampling distribution of a sample statistic depends is the distribution of a sampling statistic in repeated samples.
 
-
 We'll illustrate the sampling distribution of the mean from a population distributed standard normal.
 To draw a single sample of size 8 and calculate the mean,
 ```{r}
@@ -63,7 +68,7 @@ iter <- 2048
 # Investigate
 results <- list()
 for (i in 1:iter) {
-  x <- rnorm(n, mean = mu, sd = sigma)
+  x <- rnorm(n)
   stat <- mean(x)
   results[[i]] <- data_frame(i = i, stat = mean(x))
 }
@@ -105,7 +110,7 @@ for (k in seq_along(sample_sizes))  {
 
     # Statistics
     # # Mean
-    # stat <- mean(x)
+    stat <- mean(x)
     # # Median
     # stat <- median(x)
     # # Maximum
@@ -162,7 +167,7 @@ for (k in seq_along(sample_sizes))  {
   for (i in 1:iter) {
     # # Normal distribution.
     # # mean = 0, sd = 1
-    #x <- rnorm(n)
+    x <- rnorm(n)
     
     # # Uniform distribution:
     # # min = 0, max = 1, mean = 0.5, sd = 0.2887
@@ -180,7 +185,7 @@ for (k in seq_along(sample_sizes))  {
 
     # # Bernoulli distribution.
     # # mean = 0.2. sd = sqrt(0.2 * 0.8)
-    x <- rbinom(n, size = 1, prob = 0.2)
+    # x <- rbinom(n, size = 1, prob = 0.2)
     
     stat[i] <- mean(x)
   }
@@ -233,7 +238,7 @@ ggplot(mutate(results,
   geom_density() +
   geom_rug() +
   geom_line(mapping = aes(y = normal), col = "red") +
-  facet_wrap(~size, ncol = 2, scale = "free")
+  facet_wrap(~size, ncol = 2, scales = "free")
 ```
 
 [^1]: There are a few technical conditions for the CLT, but that's not our concern here.
@@ -358,161 +363,249 @@ Robustness:
 
 # Confidence Intervals
 
-
+Choose a confidence level of the confidence interval
+```{r}
+confidence <- 95
+mu <- 0
+sigma <- 1
+```
 
 ```{r}
+iter = 500
 # calculate z critical value
 alpha <- 1 - (confidence / 100)
 z <- -qnorm(alpha / 2)
 results <- list()
 for (i in 1:iter) {
-  x <- rnorm(n, mu, sigma)
+  x <- rnorm(n, mean = mu, sd = sigma)
   x_mean <- mean(x)
-  s <- sd(x)
-  se <- sd(x) / sqrt(n)
+  se <- sigma / sqrt(n)
   lb <- x_mean - z * se
   ub <- x_mean + z * se
-  contains <- (mu > lb) & (mu < ub)
+  contains_mu <- (mu > lb) & (mu < ub)
+  results[[i]] <- data_frame(x_mean = x_mean,
+                             se = se,
+                             lb = lb,
+                             ub = ub,
+                             contains_mu = contains_mu,
+                             i = i)
+}
+results <- bind_rows(results)
+```
+How many of these intervals contain the population mean, $\mu$?
+```{r}
+summarize(results, prop_contain_mu = sum(contains_mu) / n())
+```
+```{r}
+ggplot(results, aes(y = x_mean, ymin = lb, ymax = ub, x = i, color = contains_mu)) +
+  geom_hline(yintercept = 0) + 
+  geom_pointrange(size = rel(0.25)) +
+  coord_flip() +
+  scale_color_manual(values = c("TRUE" = alpha("black", 0.67), "FALSE" = "red")) +
+  theme_bw() +
+  theme(axis.text.y = element_blank(),
+        axis.ticks.y = element_blank(),
+        axis.title.y = element_blank())
+
+```
+
+
+Note that the confidence intervals ($\bar{x}$) are different in each sample. 
+
+The "confidence" in the confidence interval is not the probability that future samples have confidence intervals contain sample mean of the current probability interval.
+If we calculate this for all the confidence intervals we can check this. 
+For a 95% confidnence interval the proportion of confidence intervals containing the sample mean of the current sample will vary by sample, but on average will be somewhere around 88%.
+```{r}
+contains_x_mean <- rep(NA, nrow(results))
+for (i in 1:nrow(results)) {
+  x_mean_i <- results[i, ][["x_mean"]]
+  print(x_mean_i)
+  contains_x_mean[i] <- 
+    (sum(results$lb < x_mean_i & results$ub > x_mean_i) - 1) / (nrow(results) - 1)
+}
+summary(contains_x_mean)
+```
+
+## Unknown standard deviation
+
+Choose a confidence level of the confidence interval
+```{r}
+confidence <- 95
+n <- 30
+mu <- 0
+sigma <- 1
+iter = 500
+```
+```{r}
+# calculate z critical value
+alpha <- 1 - (confidence / 100)
+# crit_val <- -qnorm(alpha / 2)
+crit_val <- -qt(alpha / 2, df = n - 1)
+results <- list()
+for (i in 1:iter) {
+  x <- rnorm(n, mean = mu, sd = sigma)
+  x_mean <- mean(x)
+  s <- sd(x)
+  se <- s / sqrt(n)
+  lb <- x_mean - z * se
+  ub <- x_mean + z * se
+  contains_mu <- (mu > lb) & (mu < ub)
   results[[i]] <- data_frame(x_mean = x_mean,
                              s = s,
                              se = se,
                              lb = lb,
                              ub = ub,
-                             contains = contains)
+                             contains_mu = contains_mu,
+                             i = i)
 }
 results <- bind_rows(results)
 ```
+How many of these intervals contain the population mean, $\mu$?
+```{r}
+summarize(results, prop_contain_mu = sum(contains_mu) / n())
+```
+```{r}
+ggplot(results, aes(y = x_mean, ymin = lb, ymax = ub, x = i, color = contains_mu)) +
+  geom_hline(yintercept = 0) + 
+  geom_pointrange(size = rel(0.25)) +
+  coord_flip() +
+  scale_color_manual(values = c("TRUE" = alpha("black", 0.67), "FALSE" = "red")) +
+  theme_bw() +
+  theme(axis.text.y = element_blank(),
+        axis.ticks.y = element_blank(),
+        axis.title.y = element_blank())
 
+```
+The sample standard deviations themselves have a sampling distribution,
+and the Student's t-distribution accounts for that,
+```{r}
+ggplot(results, aes(x = s)) +
+  geom_density() +
+  geom_rug()
+```
 
-
-# Significance Tests
-
-p-value vs. significance level
-
-| Hypothesis | True | False | 
-| True | | Type I |
-| False | Type II | |
-
+One recommendation is to only use normal distribution quantiles for the critical values for sample sizes over 30 and if the distribution is not too skewed. 
 
 ```{r}
-
-null_hypothesis <- 0
-mu_values <- c(0, 0.125, 0.25, 0.5, 1, 2)
+confidence <- 95
+mu <- 0
 sigma <- 1
-sample_sizes <- c(8, 16, 32, 64, 128, 256)
-iter <- 4096
+iter = 2048
+sample_sizes <- 3:100
+# calculate z critical value
+alpha <- 1 - (confidence / 100)
 
-results <- vector(mode = "list",
-                  length = length(sample_sizes) *
-                  length(mu_values) *
-                    iter)
-result_num <- 1
-for (i in seq_along(mu_values)) {
-  mu <- mu_values[i]
-  for (j in seq_along(sample_sizes)) {
-    size <- sample_sizes[j]
-    cat("mu:", mu, ", size:", size, "\n")
-    for (k in 1:iter) {
-      x <- rnorm(size, mean = mu, sd = sigma)
-      x_mean <- mean(x)
-      s <- sd(x)
-      # s <- sigma
-      se <- s / sqrt(size)
-      z <- (x_mean - null_hypothesis) / se
-      p_value <- 2 * pnorm(-abs(z))
-      results[[result_num]] <-
-        data_frame(size = size,
-                   mu = mu,
-                   x_mean = x_mean,
-                   s = s,
-                   se = se,
-                   z = z,
-                   p_value = p_value,
-                   same_sign = sign(x_mean) == sign(mu),
-                   effect = x_mean - mu
-                   )
-       result_num <- result_num + 1
-    }
+results <- list()
+for (i in seq_along(sample_sizes)) {
+  n <- sample_sizes[i]
+  norm_critical_value <- -qnorm(alpha / 2)
+  t_critical_value <- -qt(alpha / 2, df = n - 1)
+  norm_contains_mu <- rep(NA, iter)
+  t_contains_mu <- rep(NA, iter)
+  for (j in 1:iter) {
+    
+    # Sample from the normal distribution 
+    x <- rnorm(n, mean = mu, sd = sigma)
+    x_mean <- mean(x)
+    s <- sd(x)
+    se <- s / sqrt(n)
+    z <- (x_mean - mu) / se
+    norm_contains_mu[j] <- abs(z) < norm_critical_value
+    t_contains_mu[j] <- abs(z) < t_critical_value
   }
+  results[[i]] <-
+    data_frame(n = n, 
+               `Normal` = sum(norm_contains_mu) / iter,
+               `Student's t` = sum(t_contains_mu) / iter)
 }
-results <- bind_rows(results)
-
-errors <- 
-  results %>%
-    group_by(mu, size) %>%
-    mutate(decision_error = ifelse(mu == null_hypothesis, p_value < 0.05, p_value > 0.05),
-           magnitude_error = ifelse(p_value < 0.05, abs(x_mean - mu), NA),
-           sign_error = sign(x_mean) != sign(mu)) %>%
-    summarize(decision_error = sum(decision_error) / length(decision_error),
-              magnitude_error = mean(magnitude_error, na.rm = TRUE),
-              sign_error = sum(sign_error) / length(sign_error)) %>%
-  ungroup()
-
-ggplot(errors %>% mutate(mu = factor(mu)),
-       aes(x = sqrt(size), y = decision_error)) +
-  geom_point() +
-  geom_line() +
-  scale_y_continuous(limits = c(0, 1)) +
-  facet_wrap(~mu, ncol = 1)
-
-ggplot(errors %>% mutate(mu = factor(mu)),
-       aes(x = sqrt(size), y = sign_error)) +
-  geom_point() +
-  geom_line() +
-  scale_y_continuous(limits = c(0, 1)) +
-  facet_wrap(~mu, ncol = 1)
-  
-ggplot(errors %>% mutate(mu = factor(mu)),
-       aes(x = sqrt(size), y = magnitude_error)) +
-  geom_point() +
-  geom_line() +
-  facet_wrap(~mu, ncol = 1)
-  
-res <- mutate(results,
-              size = factor(size,
-                            levels = c("8", "16", "32", "64",
-                                       "128", "256", "512", "1024", "2048")),
-              mu = as.character(mu))
-ggplot(res,
-       aes(x = p_value)) +
-  geom_histogram(binwidth = 0.05, mapping = aes(y = ..ndensity..)) +
-  facet_grid(size ~ mu, scale = "free_y")
-
-ggplot(filter(res, p_value < 0.05),
-       aes(x = x_mean)) +
-  geom_density(mapping = aes(y = ..scaled..), fill = "black") +
-  facet_grid(size ~ mu, scale = "free_y")
-
-ggplot(mutate(res, sig = p_value < 0.05),
-       aes(x = x_mean, fill = sig, color = sig)) +
-  geom_histogram(binwidth = 0.1, alpha = 0.5) +
-  geom_rug() +
-  facet_grid(size ~ mu, scale = "free_y")
+results <- bind_rows(results) %>%
+  gather(se_type, contains_mu, -n)
 
 ```
+```{r}
+ggplot(results, aes(x = n, y = contains_mu, color = se_type)) +
+  geom_point() +
+  geom_line() + 
+  geom_hline(yintercept = 1 - alpha) +
+  xlab("Sample size") +
+  ylab(expression(paste("Prop intervals containing ", mu))) +
+  scale_color_discrete("")
+```
 
+## Skewed distribution
 
-Some notes on Type I and Type II errors:
+What if we sample from a skewed distribution such as the geometric distribution? 
+```{r}
+confidence <- 95
+prob <- 0.1
+iter = 2048
+sample_sizes <- 3:100
 
-- For a given test, there is is tradeoff of Type I and Type II error. The fewer false positives, the more false negatives. E.g. in trial a judge could minimize any innocent defendents being declared guilty by ruling not guilty on all trials. However, then all guilty defendents would be declared not guilty.
-- Tests generally focus on Type I error, and then for a given Type I error, more powerful tests are preferred. One reason to focus on Type I error, is that Type II error requires specifying a value of the alternative hypothesis, but there is often not just one value.
-- Type I error is independent of sample size
-- Type II decreases with sample size
+# mean of geom is (1 - p) / p
+mu <- (1 - prob) / prob
+alpha <- 1 - (confidence / 100)
+results <- list()
+for (i in seq_along(sample_sizes)) {
+  n <- sample_sizes[i]
+  norm_critical_value <- -qnorm(alpha / 2)
+  t_critical_value <- -qt(alpha / 2, df = n - 1)
+  norm_contains_mu <- rep(NA, iter)
+  t_contains_mu <- rep(NA, iter)
+  for (j in 1:iter) {
+    x <- rgeom(n, prob = prob)
+    x_mean <- mean(x)
+    s <- sd(x)
+    se <- s / sqrt(n)
+    z <- (x_mean - mu) / se
+    norm_contains_mu[j] <- abs(z) < norm_critical_value
+    t_contains_mu[j] <- abs(z) < t_critical_value
+  }
+  results[[i]] <-
+    data_frame(n = n, 
+               `Normal` = sum(norm_contains_mu) / iter,
+               `Student's t` = sum(t_contains_mu) / iter)
+}
+results <- bind_rows(results) %>%
+  gather(se_type, contains_mu, -n)
 
+```
+```{r}
+ggplot(results, aes(x = n, y = contains_mu, color = se_type)) +
+  geom_point() +
+  geom_line() + 
+  geom_hline(yintercept = 1 - alpha) +
+  xlab("Sample size") +
+  ylab(expression(paste("Prop intervals containing ", mu))) +
+  scale_color_discrete("")
+```
 
-- For a fixed sample mean and standard deviation: How would the significance change with the sample size?
-- For a fixed sample mean and sample size: How would the significance change with the sample standard deviation?
+If a less than C% of a C% confidence interval contain the true value of the parameter, are the confidence intervals too narrow or too wide?
 
-# Frequentist vs. Bayesian Interpretations
+## Miscellaneous
 
-$p(D | H)$, and $p(H | D) \propto p(D | H) p(H)$
+- What if the population is finite? How does that affect confidence intervals and standard errors?
+- What if observations are not independent? Consider examples with clustering or autoregression.
 
-# Ways that the estimate can break
+## Common misinterpretations of confidence intervals
 
-- finite population
-- correlated errors
+Suppose you have a treatment that you suspect may alter
+performance on a certain task. You compare the means of your
+control and experimental groups (say 20 subjects in each
+sample). Further, suppose you use a simple independent
+means t-test and your result is significant (t = 2.7, d.f. = 18,
+p = 0.01). Please mark each of the statements below as “true”
+or “false.” “False” means that the statement does not follow
+logically from the above premises. Also note that several or
+none of the statements may be correct (between the population
+means) (From Hoekstra et al. 2014. "Robust Misinterpretation of Confidence Intervals." *Psychological Bulletin Review*)
 
-    - serial correlation
-    - cluster correlation
+1. The probability that the true mean is greater than 0 is at least 95%
+2. The probability that the true mean equals 0 is smaller than 5%.
+3. The "null hypothesis" that the true mean equals 0 is likely to be incorrect
+4. There is a 95% probability that the true mean lies between 0.1 and 0.4
+5. If we were to repeat the experiment over and over, then 95% of the time the true mean falls between 0.1 and 0.4.
+6. If we were to repeat the experiment over and over then 95% of the confidence intervals would contain the sample mean of 0.25.
 
-- skewed distribution
+All of these are false. The correct interpretation is:
+
+  The confidence interval was generated using a method so that in  repeated samples, 95% of the samples the confidence interval will contain the true mean.
