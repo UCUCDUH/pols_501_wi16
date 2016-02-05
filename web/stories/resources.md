@@ -14,10 +14,10 @@
 - [Application: WDI cleaning with dplyr and tidyr](/lessons/wdi.html)
 - [Intro to dplyr and tidyr using gapminder](/lessons/gapminder_intro_to_dplyr_tidyr.html)
 - [Distributions in R](/lessons/distributions.html)
-- [Loops in R](lessons/loops.html)
-- [Sampling Distributions and Confidence Intervals](lessons/Sampling_Distributions.html)
-- [Confidence Intervals of the Mean through Simulation in R](lessons/Confidence_Intervals.html)
-- [Hypothesis Testings of the Mean through Simulation in R](lessons/Hypothesis_Tests.html)
+- [Loops in R](/lessons/loops.html)
+- [Sampling Distributions and Confidence Intervals](/lessons/Sampling_Distributions.html)
+- [Confidence Intervals of the Mean through Simulation in R](/lessons/Confidence_Intervals.html)
+- [Hypothesis Testings of the Mean through Simulation in R](/lessons/Hypothesis_Tests.html)
 
 # Miscellaneous
 
