@@ -183,6 +183,13 @@ Lab
 <li><i class="fa-li fa fa-book"></i> Wickham, Hadley. 2010. "Graphical Inference for Infovis." <em>IEEE Transactions on Visualization and Computer Graphics</em>. <a href="http://dx.doi.org/10.1109/TVCG.2010.161">DOI</a>
 </ul>
 
+Class
+
+<ul class="fa-ul">
+<li><i class="fa-li fa fa-bar-chart"></i><a href="/lessons/loops.html">Loops in R</a>
+<li><i class="fa-li fa fa-bar-chart"></i><a href="/lessons/Sampling_Distributions.html">Sampling Distributions and Confidence Intervals</a>
+</ul>
+
 ## Week 6
 
 **Inference for Numerical Data (t-tests, ANOVA); Bootstrap.**

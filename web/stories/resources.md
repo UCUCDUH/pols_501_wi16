@@ -14,6 +14,8 @@
 - [Application: WDI cleaning with dplyr and tidyr](/lessons/wdi.html)
 - [Intro to dplyr and tidyr using gapminder](/lessons/gapminder_intro_to_dplyr_tidyr.html)
 - [Distributions in R](/lessons/distributions.html)
+- [Loops in R](lessons/loops.html)
+- [Sampling Distributions and Confidence Intervals](lessons/Sampling_Distributions.html)
 
 # Miscellaneous
 
