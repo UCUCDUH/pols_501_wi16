@@ -134,7 +134,7 @@ for (word in best_practice) {
 <pre class="r"><code>for (variable in collection) {
   do things with variable
 }</code></pre>
-<p>We can name the <a href="reference.html#loop-variable">loop variable</a> anything we like (with a few <a href="http://cran.r-project.org/doc/manuals/R-intro.html#R-commands_003b-case-sensitivity-etc">restrictions</a>, e.g. the name of the variable cannot start with a digit). <code>in</code> is part of the <code>for</code> syntax. Note that the body of the loop is enclosed in curly braces <code>{ }</code>. For a single-line loop body, as here, the braces aren’t needed, but it is good practice to include them as we did.</p>
+<p>We can name the loop variable anything we like (with a few restrictions, e.g. the name of the variable cannot start with a digit). <code>in</code> is part of the <code>for</code> syntax. Note that the body of the loop is enclosed in curly braces <code>{ }</code>. For a single-line loop body, as here, the braces aren’t needed, but it is good practice to include them as we did.</p>
 <p>Here’s another loop that repeatedly updates a variable:</p>
 <pre class="r"><code>len &lt;- 0
 vowels &lt;- c(&quot;a&quot;, &quot;e&quot;, &quot;i&quot;, &quot;o&quot;, &quot;u&quot;)
@@ -159,33 +159,8 @@ letter</code></pre>
 <p>Note also that finding the length of a vector is such a common operation that R actually has a built-in function to do it called <code>length</code>:</p>
 <pre class="r"><code>length(vowels)</code></pre>
 <pre><code>## [1] 5</code></pre>
-<p><code>length</code> is much faster than any R function we could write ourselves, and much easier to read than a two-line loop; it will also give us the length of many other things that we haven’t met yet, so we should always use it when we can (see this <a href="01-supp-data-structures.html">lesson</a> to learn more about the different ways to store data in R).</p>
-<p>We can name the <a href="reference.html#loop-variable">loop variable</a> anything we like (with a few <a href="http://cran.r-project.org/doc/manuals/R-intro.html#R-commands_003b-case-sensitivity-etc">restrictions</a>, e.g. the name of the variable cannot start with a digit). <code>in</code> is part of the <code>for</code> syntax. Note that the body of the loop is enclosed in curly braces <code>{ }</code>. For a single-line loop body, as here, the braces aren’t needed, but it is good practice to include them as we did.</p>
-<p>Here’s another loop that repeatedly updates a variable:</p>
-<pre class="r"><code>len &lt;- 0
-vowels &lt;- c(&quot;a&quot;, &quot;e&quot;, &quot;i&quot;, &quot;o&quot;, &quot;u&quot;)
-for (v in vowels) {
-  len &lt;- len + 1
-}
-# Number of vowels
-len</code></pre>
-<pre><code>## [1] 5</code></pre>
-<p>It’s worth tracing the execution of this little program step by step. Since there are five elements in the vector <code>vowels</code>, the statement inside the loop will be executed five times. The first time around, <code>len</code> is zero (the value assigned to it on line 1) and <code>v</code> is <code>&quot;a&quot;</code>. The statement adds 1 to the old value of <code>len</code>, producing 1, and updates <code>len</code> to refer to that new value. The next time around, <code>v</code> is <code>&quot;e&quot;</code> and <code>len</code> is 1, so <code>len</code> is updated to be 2. After three more updates, <code>len</code> is 5; since there is nothing left in the vector <code>vowels</code> for R to process, the loop finishes.</p>
-<p>Note that a loop variable is just a variable that’s being used to record progress in a loop. It still exists after the loop is over, and we can re-use variables previously defined as loop variables as well:</p>
-<pre class="r"><code>letter &lt;- &quot;z&quot;
-for (letter in c(&quot;a&quot;, &quot;b&quot;, &quot;c&quot;)) {
-  print(letter)
-}</code></pre>
-<pre><code>## [1] &quot;a&quot;
-## [1] &quot;b&quot;
-## [1] &quot;c&quot;</code></pre>
-<pre class="r"><code># after the loop, letter is
-letter</code></pre>
-<pre><code>## [1] &quot;c&quot;</code></pre>
-<p>Note also that finding the length of a vector is such a common operation that R actually has a built-in function to do it called <code>length</code>:</p>
-<pre class="r"><code>length(vowels)</code></pre>
-<pre><code>## [1] 5</code></pre>
-<p><code>length</code> is much faster than any R function we could write ourselves, and much easier to read than a two-line loop; it will also give us the length of many other things that we haven’t met yet, so we should always use it when we can.</p>
+<p><code>length</code> is much faster than any R function we could write ourselves, and much easier to read than a two-line loop; it will also give us the length of many other things that we haven’t met yet, so we should always use it when we can</p>
+<p>We can name the loop variable anything we like (with a few restrictions, e.g. the name of the variable cannot start with a digit). <code>in</code> is part of the <code>for</code> syntax. Note that the body of the loop is enclosed in curly braces <code>{ }</code>. For a single-line loop body, as here, the braces aren’t needed, but it is good practice to include them as we did.</p>
 <div id="challenge-1" class="panel panel-primary">
 <div class="panel-heading">
 <h3 class="panel-title">
@@ -228,57 +203,49 @@ for (i in 1:length(means)) {
 <pre class="r"><code>results</code></pre>
 <pre><code>## [[1]]
 ##           x mu
-## 1 -4.273027 -5
-## 2 -4.569822 -5
-## 3 -4.879905 -5
-## 4 -6.025465 -5
-## 5 -2.709215 -5
+## 1 -4.665213 -5
+## 2 -5.856571 -5
+## 3 -4.491212 -5
+## 4 -5.535252 -5
+## 5 -6.471639 -5
 ## 
 ## [[2]]
 ##            x mu
-## 1 -0.6423875  0
-## 2  0.3593181  0
-## 3  0.6674809  0
-## 4  0.6660397  0
-## 5 -1.4042585  0
+## 1  0.8667312  0
+## 2 -0.5047840  0
+## 3 -0.7141557  0
+## 4 -0.4889523  0
+## 5 -0.2283431  0
 ## 
 ## [[3]]
 ##          x mu
-## 1 4.449745  4
-## 2 4.376704  4
-## 3 5.048747  4
-## 4 3.767673  4
-## 5 4.833390  4</code></pre>
+## 1 3.781701  4
+## 2 5.241824  4
+## 3 4.645585  4
+## 4 4.121302  4
+## 5 3.458472  4</code></pre>
 <p>We can stack these data frames into a single data frame using the <strong>dplyr</strong> function <code>bind_rows</code>,</p>
-<pre class="r"><code>library(&quot;dplyr&quot;)</code></pre>
-<pre><code>## 
-## Attaching package: &#39;dplyr&#39;</code></pre>
-<pre><code>## The following objects are masked from &#39;package:stats&#39;:
-## 
-##     filter, lag</code></pre>
-<pre><code>## The following objects are masked from &#39;package:base&#39;:
-## 
-##     intersect, setdiff, setequal, union</code></pre>
-<pre class="r"><code>bind_rows(results)</code></pre>
+<pre class="r"><code>library(&quot;dplyr&quot;)
+bind_rows(results)</code></pre>
 <pre><code>## Source: local data frame [15 x 2]
 ## 
 ##             x    mu
 ##         (dbl) (dbl)
-## 1  -4.2730271    -5
-## 2  -4.5698225    -5
-## 3  -4.8799048    -5
-## 4  -6.0254647    -5
-## 5  -2.7092149    -5
-## 6  -0.6423875     0
-## 7   0.3593181     0
-## 8   0.6674809     0
-## 9   0.6660397     0
-## 10 -1.4042585     0
-## 11  4.4497453     4
-## 12  4.3767041     4
-## 13  5.0487471     4
-## 14  3.7676734     4
-## 15  4.8333903     4</code></pre>
+## 1  -4.6652134    -5
+## 2  -5.8565714    -5
+## 3  -4.4912124    -5
+## 4  -5.5352525    -5
+## 5  -6.4716391    -5
+## 6   0.8667312     0
+## 7  -0.5047840     0
+## 8  -0.7141557     0
+## 9  -0.4889523     0
+## 10 -0.2283431     0
+## 11  3.7817015     4
+## 12  5.2418242     4
+## 13  4.6455853     4
+## 14  4.1213017     4
+## 15  3.4584715     4</code></pre>
 <hr />
 <p>This is derived from the Software Carpentry lesson, <a href="http://swcarpentry.github.io/r-novice-inflammation/">Programming in R</a>, <a href="http://software-carpentry.org/license/">CC-BY</a>.</p>
 </div>

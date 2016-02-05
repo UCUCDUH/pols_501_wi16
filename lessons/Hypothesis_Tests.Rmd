@@ -17,7 +17,7 @@ library("tidyr")
 
 p-value vs. significance level
 
-| Hypothesis | True | False | 
+| Hypothesis | True | False |
 | True | | Type I |
 | False | Type II | |
 
@@ -62,7 +62,7 @@ for (i in seq_along(mu_values)) {
 }
 results <- bind_rows(results)
 
-errors <- 
+errors <-
   results %>%
     group_by(mu, size) %>%
     mutate(decision_error = ifelse(mu == null_hypothesis, p_value < 0.05, p_value > 0.05),
@@ -127,7 +127,7 @@ ggplot(mutate(res, sig = p_value < 0.05),
 
 Some notes on Type I and Type II errors:
 
-- For a given test, there is is tradeoff of Type I and Type II error. The fewer false positives, the more false negatives. E.g. in trial a judge could minimize any innocent defendents being declared guilty by ruling not guilty on all trials. However, then all guilty defendents would be declared not guilty.
+- For a given test, there is is trade-off of Type I and Type II error. The fewer false positives, the more false negatives. E.g. in trial a judge could minimize any innocent defendants being declared guilty by ruling not guilty on all trials. However, then all guilty defendants would be declared not guilty.
 - Tests generally focus on Type I error, and then for a given Type I error, more powerful tests are preferred. One reason to focus on Type I error, is that Type II error requires specifying a value of the alternative hypothesis, but there is often not just one value.
 - Type I error is independent of sample size
 - Type II decreases with sample size

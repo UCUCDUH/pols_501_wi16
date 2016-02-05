@@ -61,9 +61,9 @@ Need to start with the basics. All R distribution functions have 4 functions.
 E.g. for the normal distribution?
 
 - rnorm: draw random numbers
-- dnorm: density P(X)
-- pnorm: cdf P(X \leq x)
-- qnorm: quantile function x s.t. P(X \leq x) = q.
+- dnorm: density $P(X)$
+- pnorm: CDF $P(X \leq x)$
+- qnorm: quantile function x s.t. $P(X \leq x) = q$
 
 ## Probability and Distributions in R
 

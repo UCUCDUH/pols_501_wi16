@@ -39,7 +39,7 @@ University of Washington, Winter 2016
     <td>Class </td>
     <td>Th </td>
     <td> 4:30&ndash;7:20 pm </td>
-    <td><a href="https://www.washington.edu/maps/?sav">SAV 157</a></td>	
+    <td><a href="https://www.washington.edu/maps/?sav">SAV 157</a></td>
   </tr>
   <tr>
     <td>Lab </td>
@@ -67,7 +67,7 @@ University of Washington, Winter 2016
     <td>Jeff</td>
     <td>Tuesday</td>
     <td>2:30&ndash;3:30 pm</td>
-	<td><a href="https://www.washington.edu/maps/?smi">SMI 221B</a></td>	
+	<td><a href="https://www.washington.edu/maps/?smi">SMI 221B</a></td>
   </tr>
   <tr>
     <td>Jeff</td>
@@ -77,7 +77,7 @@ University of Washington, Winter 2016
   </tr>
 </table>
 
-Instructions for Jeff's office hours: 
+Instructions for Jeff's office hours:
 
 - Sign up for a slot on Canvas using the Scheduler tab in the Calendar.
 - Email me 24 hours prior to your appointment with what you would like to discuss
@@ -106,7 +106,7 @@ The learning objectives for this course are:
 
 # Prerequisites
 
-The course is suitable for students with a large range of prior exposure to statistics and mathematics. 
+The course is suitable for students with a large range of prior exposure to statistics and mathematics.
 No prior statistical, mathematical, or programming experience is necessary beyond arithmetic, algebra, and elementary calculus.
 
 
@@ -120,11 +120,11 @@ The results of this analysis will be presented as a paper due at the end of the 
 
 The purpose of this paper is for the students to apply the quantitative methods used in this course to the real-world research problems that they will encounter in their research careers.
 However, due to the limited time in this course, it is not necessary for this paper to address an important research problem or a novel contribution to the literature.
-While those will not be criteria for the evaluation of this paper, the author is encouraged to pursue those, as they are what leads to publications. 
+While those will not be criteria for the evaluation of this paper, the author is encouraged to pursue those, as they are what leads to publications.
 The paper will be evaluated on the appropriateness of the statistical methods applied to the data and question, and not the novelty or contribution of the question itself.
 
 If you developed a research design for POLS 500, you may be able to use it in 501.
-However you need to confirm that you will be able to assemble a dataset to test a specific research hypothesis within the time constraints of this course, because you will be using it throughout the course. If that seems unlikely, you will need to choose a different project. 
+However you need to confirm that you will be able to assemble a dataset to test a specific research hypothesis within the time constraints of this course, because you will be using it throughout the course. If that seems unlikely, you will need to choose a different project.
 
 The guidelines for the data analysis project paper are [here](resources/data_analysis_project_paper_guidelines/).
 
@@ -143,7 +143,7 @@ indicate where mistakes were made and that demonstrate an understanding of those
 # Materials
 
 
-## Textbooks 
+## Textbooks
 
 - Gailmard, Sean. 2014. *Statistical Modeling and Inference for Social Science*. [amazon](http://www.amazon.com/Statistical-Modeling-Inference-Analytical-Research/dp/1107003148/).
 - Diez, David M., Christopher D Barr, and Mine Çetinkaya-Rundel. *OpenIntro Statistics*. 3rd ed. <https://www.openintro.org/stat/textbook.php>. (This textbook is free)
@@ -153,7 +153,7 @@ indicate where mistakes were made and that demonstrate an understanding of those
 
 This course will use [R](https://www.r-project.org/), which is a free and open-source programming language primarily used for statistics and data analysis. We will also use [RStudio](https://www.rstudio.com/), which is an easy-to-use interface to R. Instructions to install them are [here](/resources/install/).
 
-Additionally, [Data Camp](https://www.datacamp.com/), a website which provides online interactive R tutorials, will be used to teach R. 
+Additionally, [Data Camp](https://www.datacamp.com/), a website which provides online interactive R tutorials, will be used to teach R.
 Although it is not free, there is a [student subscription rate](https://www.datacamp.com/enroll-student).
 
 Students should have a laptop that they can bring to both class and lab as we will integrate computing with learning data analysis and statistics throughout the course.
@@ -167,8 +167,6 @@ Beyond what the teaching team can providing, there are several resources on camp
 -  Center for Social Science Computing and Research ([CSSCR](http://julius.csscr.washington.edu/about/consulting.html)) has a drop-in statistical consulting center in Savery 119. They provide consulting on statistical software, e.g. R. Go there for software or data related questions.
 - [CSSS Statistical Consulting](https://www.csss.washington.edu/consulting) provides general statistical consulting. Go there for questions about statistical methods.
 - [eScience Data Science Office Hours](http://escience.washington.edu/office-hours/)
-- UW Library: [Data](http://guides.lib.uw.edu/friendly.php?s=research/data), [Political Science](http://guides.lib.uw.edu/friendly.php?s=research/polisci)
-
 
 
 # License

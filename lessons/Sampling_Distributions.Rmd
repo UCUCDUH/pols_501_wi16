@@ -41,9 +41,9 @@ There are at least two problems with this approach
 1. Practically, this can be computationally difficult
 2. Theoretically, we need to assign a probability to the population parameter, prior to observing the data, $\Pr(\mu)$.
    This may be objectionable to people.
-3. In the frequentist definition of probability, there is no probability of $\mu$. Parameters are not random variables, they are fixed, though unknown, values. Only samples are random variables, and can have probabilities. Therefore, we can calculate the probability of observing a sample mean, $\bar{x}$, in repeated samples given a population mean, $\mu$. However, there is no non-degenerate probability for the population parameter $\mu$.
+3. In the Frequentist definition of probability, there is no probability of $\mu$. Parameters are not random variables, they are fixed, though unknown, values. Only samples are random variables, and can have probabilities. Therefore, we can calculate the probability of observing a sample mean, $\bar{x}$, in repeated samples given a population mean, $\mu$. However, there is no non-degenerate probability for the population parameter $\mu$.
 
-There are two main frequentist approaches to the inferential problem:
+There are two main Frequentist approaches to the inferential problem:
 
  1. Confidence intervals
  2. Hypothesis Testing: Calculate the sampling distribution of the sample statistic given a null hypothesis, $H_a$, and calculate how unusual the data we observe is.
@@ -51,7 +51,7 @@ There are two main frequentist approaches to the inferential problem:
      1. P-value
      2. Significance test
 
-These methods represent distinct and separate methods of inference, although in practice they are used in a hybrid, and somewhat incoherent, manner. 
+These methods represent distinct and separate methods of inference, although in practice they are used in a hybrid, and somewhat incoherent, manner.
 
 # Sampling distribution
 
@@ -140,7 +140,7 @@ In general the sampling distribution depends on three things:
 2. the sample size
 3. the sample statistic
 
-In the code there are alternative statistics and distributions, uncomment 
+In the code there are alternative statistics and distributions, uncomment
 the code to try different combinations and see how the affect the shape of the
 sampling distribution.
 
@@ -151,7 +151,7 @@ The sampling distribution of the sample mean has the following properties
 
 - Mean: $\mu$
 - Standard deviation: $\sigma / \sqrt{n}$
-- As $n \to \infty$, the distribution approaches a normal distribution (regardless of the population distribution[^1]). 
+- As $n \to \infty$, the distribution approaches a normal distribution (regardless of the population distribution[^1]).
 
 The first two properties are known as the Law of Large Number (LLN), and the final property is called the Central Limit Theorem (CLT).
 
@@ -170,17 +170,17 @@ for (k in seq_along(sample_sizes))  {
     # # Normal distribution.
     # # mean = 0, sd = 1
     x <- rnorm(n)
-    
+
     # # Uniform distribution:
     # # min = 0, max = 1, mean = 0.5, sd = 0.2887
     # x <- runif(n)
-    
+
     # # Geometric distribution: prob = 0.25.
     # # mean = (1 - p) / p = 3
     # # var = (1 - p) / p ^ 2 = 12
     # # sd = sqrt(12)
     # x <- rgeom(n, prob = 0.25)
-    
+
     # # Beta distribution. Bimodal.
     # # mean = 0.5. sd = 0.4082
     # x <- rbeta(n, shape1 = 0.5, shape2 = 0.5)
@@ -188,7 +188,7 @@ for (k in seq_along(sample_sizes))  {
     # # Bernoulli distribution.
     # # mean = 0.2. sd = sqrt(0.2 * 0.8)
     # x <- rbinom(n, size = 1, prob = 0.2)
-    
+
     stat[i] <- mean(x)
   }
   results[[k]] <- data_frame(stat = stat, size = n)
@@ -213,7 +213,7 @@ sigma <- 1
 
 Plot the mean for different sample sizes. The mean of the sampling distribution is equal to the population mean, $\mu$.
 ```{r}
-ggplot(results_summary, aes(x = size, y = x_mean, 
+ggplot(results_summary, aes(x = size, y = x_mean,
                     ymin = x_mean - 2 * x_mean_se,
                     ymax = x_mean + 2 * x_mean_se)) +
   geom_pointrange() +
@@ -224,7 +224,7 @@ ggplot(results_summary, aes(x = size, y = x_mean,
 Plot of the standard error for different sample sizes. The standard error of the sample mean is $\sigma / \sqrt{n}$.
 ```{r}
 ggplot(results_summary, aes(x = size,
-                    y = s, 
+                    y = s,
                     ymin = s - 2 * s_se,
                     ymax = s + 2 * s_se)) +
   geom_pointrange() +
@@ -269,7 +269,7 @@ for (i in seq_along(sizes)) {
   normal_mean <- n * prob
   normal_sd <- sqrt(n * prob * (1 - prob))
   normal[[i]] <- data_frame(x = seq(normal_mean - 3 * normal_sd,
-                                    normal_mean + 3 * normal_sd, 
+                                    normal_mean + 3 * normal_sd,
                                     length.out = 101),
                             y = dnorm(x, mean = normal_mean, sd = normal_sd),
                             size = n)
@@ -329,7 +329,7 @@ The MSE incorporates both the bias of the estimator and the variance, and can be
 $$
 \MSE(\hat\theta) = \var(\hat\theta) + \left(\Bias(\hat\theta)\right)^2
 $$
-One implication of this is that biased esimators may have a better MSE than a unbiased estimator, if their variance is sufficiently lower,
+One implication of this is that biased estimators may have a better MSE than a unbiased estimator, if their variance is sufficiently lower,
 $$
 \var(\hat\theta_{\text{unbiased}}) - var(\hat\theta_{\text{biased}}) > {\Bias(\hat\theta)}^2 .
 $$
@@ -398,7 +398,7 @@ summarize(results, prop_contain_mu = sum(contains_mu) / n())
 ```
 ```{r fig.height = 7}
 ggplot(results, aes(y = x_mean, ymin = lb, ymax = ub, x = i, color = contains_mu)) +
-  geom_hline(yintercept = 0) + 
+  geom_hline(yintercept = 0) +
   geom_pointrange(size = rel(0.25)) +
   coord_flip() +
   scale_color_manual(values = c("TRUE" = alpha("black", 0.67), "FALSE" = "red")) +
@@ -410,16 +410,16 @@ ggplot(results, aes(y = x_mean, ymin = lb, ymax = ub, x = i, color = contains_mu
 ```
 
 
-Note that the confidence intervals ($\bar{x}$) are different in each sample. 
+Note that the confidence intervals ($\bar{x}$) are different in each sample.
 
 The "confidence" in the confidence interval is not the probability that future samples have confidence intervals contain sample mean of the current probability interval.
-If we calculate this for all the confidence intervals we can check this. 
+If we calculate this for all the confidence intervals we can check this.
 For a 95% confidnence interval the proportion of confidence intervals containing the sample mean of the current sample will vary by sample, but on average will be somewhere around 88%.
 ```{r}
 contains_x_mean <- rep(NA, nrow(results))
 for (i in 1:nrow(results)) {
   x_mean_i <- results[i, ][["x_mean"]]
-  contains_x_mean[i] <- 
+  contains_x_mean[i] <-
     (sum(results$lb < x_mean_i & results$ub > x_mean_i) - 1) / (nrow(results) - 1)
 }
 summary(contains_x_mean)
@@ -465,7 +465,7 @@ summarize(results, prop_contain_mu = sum(contains_mu) / n())
 ```
 ```{r fig.height = 8}
 ggplot(results, aes(y = x_mean, ymin = lb, ymax = ub, x = i, color = contains_mu)) +
-  geom_hline(yintercept = 0) + 
+  geom_hline(yintercept = 0) +
   geom_pointrange(size = rel(0.25)) +
   coord_flip() +
   scale_color_manual(values = c("TRUE" = alpha("black", 0.67), "FALSE" = "red")) +
@@ -485,7 +485,7 @@ ggplot(results, aes(x = s)) +
 
 The Student's t distribution is used for hypothesis testing and confidence intervals instead of the normal distribution in order to account for the uncertainty due to estimating the population standard deviation from the sample standard deviation.
 
-One recommendation is to only use normal distribution quantiles for the critical values for sample sizes over 30 and if the distribution is not too skewed. 
+One recommendation is to only use normal distribution quantiles for the critical values for sample sizes over 30 and if the distribution is not too skewed.
 
 ```{r}
 confidence <- 95
@@ -504,8 +504,8 @@ for (i in seq_along(sample_sizes)) {
   norm_contains_mu <- rep(NA, iter)
   t_contains_mu <- rep(NA, iter)
   for (j in 1:iter) {
-    
-    # Sample from the normal distribution 
+
+    # Sample from the normal distribution
     x <- rnorm(n, mean = mu, sd = sigma)
     x_mean <- mean(x)
     s <- sd(x)
@@ -515,7 +515,7 @@ for (i in seq_along(sample_sizes)) {
     t_contains_mu[j] <- abs(z) < t_critical_value
   }
   results[[i]] <-
-    data_frame(n = n, 
+    data_frame(n = n,
                `Normal` = sum(norm_contains_mu) / iter,
                `Student's t` = sum(t_contains_mu) / iter)
 }
@@ -526,7 +526,7 @@ results <- bind_rows(results) %>%
 ```{r}
 ggplot(results, aes(x = n, y = contains_mu, color = se_type)) +
   geom_point() +
-  geom_line() + 
+  geom_line() +
   geom_hline(yintercept = 1 - alpha) +
   xlab("Sample size") +
   ylab(expression(paste("Prop intervals containing ", mu))) +
@@ -568,7 +568,7 @@ for (i in seq_along(sample_sizes)) {
     t_contains_mu[j] <- abs(z) < t_critical_value
   }
   results[[i]] <-
-    data_frame(n = n, 
+    data_frame(n = n,
                `Normal` = sum(norm_contains_mu) / iter,
                `Student's t` = sum(t_contains_mu) / iter)
 }
@@ -579,7 +579,7 @@ results <- bind_rows(results) %>%
 ```{r}
 ggplot(results, aes(x = n, y = contains_mu, color = se_type)) +
   geom_point() +
-  geom_line() + 
+  geom_line() +
   geom_hline(yintercept = 1 - alpha) +
   xlab("Sample size") +
   ylab(expression(paste("Prop intervals containing ", mu))) +

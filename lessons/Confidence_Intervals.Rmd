@@ -55,7 +55,7 @@ summarize(results, prop_contain_mu = sum(contains_mu) / n())
 ```
 ```{r fig.height = 7}
 ggplot(results, aes(y = x_mean, ymin = lb, ymax = ub, x = i, color = contains_mu)) +
-  geom_hline(yintercept = 0) + 
+  geom_hline(yintercept = 0) +
   geom_pointrange(size = rel(0.25)) +
   coord_flip() +
   scale_color_manual(values = c("TRUE" = alpha("black", 0.67), "FALSE" = "red")) +
@@ -67,16 +67,16 @@ ggplot(results, aes(y = x_mean, ymin = lb, ymax = ub, x = i, color = contains_mu
 ```
 
 
-Note that the confidence intervals ($\bar{x}$) are different in each sample. 
+Note that the confidence intervals ($\bar{x}$) are different in each sample.
 
 The "confidence" in the confidence interval is not the probability that future samples have confidence intervals contain sample mean of the current probability interval.
-If we calculate this for all the confidence intervals we can check this. 
-For a 95% confidnence interval the proportion of confidence intervals containing the sample mean of the current sample will vary by sample, but on average will be somewhere around 88%.
+If we calculate this for all the confidence intervals we can check this.
+For a 95% confidence interval the proportion of confidence intervals containing the sample mean of the current sample will vary by sample, but on average will be somewhere around 88%.
 ```{r}
 contains_x_mean <- rep(NA, nrow(results))
 for (i in 1:nrow(results)) {
   x_mean_i <- results[i, ][["x_mean"]]
-  contains_x_mean[i] <- 
+  contains_x_mean[i] <-
     (sum(results$lb < x_mean_i & results$ub > x_mean_i) - 1) / (nrow(results) - 1)
 }
 summary(contains_x_mean)
@@ -122,7 +122,7 @@ summarize(results, prop_contain_mu = sum(contains_mu) / n())
 ```
 ```{r fig.height = 8}
 ggplot(results, aes(y = x_mean, ymin = lb, ymax = ub, x = i, color = contains_mu)) +
-  geom_hline(yintercept = 0) + 
+  geom_hline(yintercept = 0) +
   geom_pointrange(size = rel(0.25)) +
   coord_flip() +
   scale_color_manual(values = c("TRUE" = alpha("black", 0.67), "FALSE" = "red")) +
@@ -133,7 +133,7 @@ ggplot(results, aes(y = x_mean, ymin = lb, ymax = ub, x = i, color = contains_mu
 
 ```
 
-The sample standard deviations themselves have a sampling distribution.[^chisq]
+The sample standard deviations themselves have a sampling distribution.
 ```{r}
 ggplot(results, aes(x = s)) +
   geom_density() +
@@ -142,7 +142,7 @@ ggplot(results, aes(x = s)) +
 
 The Student's t distribution is used for hypothesis testing and confidence intervals instead of the normal distribution in order to account for the uncertainty due to estimating the population standard deviation from the sample standard deviation.
 
-One recommendation is to only use normal distribution quantiles for the critical values for sample sizes over 30 and if the distribution is not too skewed. 
+One recommendation is to only use normal distribution quantiles for the critical values for sample sizes over 30 and if the distribution is not too skewed.
 
 ```{r}
 confidence <- 95
@@ -161,8 +161,8 @@ for (i in seq_along(sample_sizes)) {
   norm_contains_mu <- rep(NA, iter)
   t_contains_mu <- rep(NA, iter)
   for (j in 1:iter) {
-    
-    # Sample from the normal distribution 
+
+    # Sample from the normal distribution
     x <- rnorm(n, mean = mu, sd = sigma)
     x_mean <- mean(x)
     s <- sd(x)
@@ -172,7 +172,7 @@ for (i in seq_along(sample_sizes)) {
     t_contains_mu[j] <- abs(z) < t_critical_value
   }
   results[[i]] <-
-    data_frame(n = n, 
+    data_frame(n = n,
                `Normal` = sum(norm_contains_mu) / iter,
                `Student's t` = sum(t_contains_mu) / iter)
 }
@@ -183,7 +183,7 @@ results <- bind_rows(results) %>%
 ```{r}
 ggplot(results, aes(x = n, y = contains_mu, color = se_type)) +
   geom_point() +
-  geom_line() + 
+  geom_line() +
   geom_hline(yintercept = 1 - alpha) +
   xlab("Sample size") +
   ylab(expression(paste("Prop intervals containing ", mu))) +
@@ -225,7 +225,7 @@ for (i in seq_along(sample_sizes)) {
     t_contains_mu[j] <- abs(z) < t_critical_value
   }
   results[[i]] <-
-    data_frame(n = n, 
+    data_frame(n = n,
                `Normal` = sum(norm_contains_mu) / iter,
                `Student's t` = sum(t_contains_mu) / iter)
 }
@@ -236,7 +236,7 @@ results <- bind_rows(results) %>%
 ```{r}
 ggplot(results, aes(x = n, y = contains_mu, color = se_type)) +
   geom_point() +
-  geom_line() + 
+  geom_line() +
   geom_hline(yintercept = 1 - alpha) +
   xlab("Sample size") +
   ylab(expression(paste("Prop intervals containing ", mu))) +

@@ -201,7 +201,7 @@ Class and Lab
 <li><i class="fa-li fa fa-book"></i> <em>OpenIntro</em>, Ch 5 </li>
 <li><i class="fa-li fa fa-book"></i> Cowles, Michael, and Caroline David. 1982. "On the Origins of the .05 Level of Statistical Significance"<em>American Psychologist</em>. <a href="https://dx.doi.org/10.1037/0003-066X.37.5.553">DOI</a>
 <li><i class="fa-li fa fa-book"></i><em>The Basic Practice of Statistics.</em>7th ed. Chapter 16. "Bootstrap Methods and Permutation Tests"<a href"http://content.bfwpub.com/webroot_pubcontent/Content/BCS_4/IPS7e/Student/Companion%20Chapters/ips_chap16.pdf">URL</a>.
-<li><i class="fa-li fa fa-book"></i>Gelman, Andrew, and Hal Stern. 2006. "The Difference Between 'Significant' and 'Not Significance' is not Itself Statitically Significant"<em>The American Statician</em>. <a href="https://dx.doi.org/10.1198/000313006X152649">DOI</a>
+<li><i class="fa-li fa fa-book"></i>Gelman, Andrew, and Hal Stern. 2006. &lsquo;The Difference Between &lsquo;Significant&rsquo; and &lsquo;Not Significance&rsquo; is not Itself Statistically Significant&rsquo;<em>The American Statician</em>. <a href="https://dx.doi.org/10.1198/000313006X152649">DOI</a>
 <li><i class="fa-li fa fa-book"></i>Reinhart, Alex. 2012. <em>Statistics Done Wrong: The Woefully Complete Guide</em>. Chapters 1, 2, 4, and 5.
 </ul>
 
@@ -228,9 +228,9 @@ Class and Lab
 **Multiple regression**
 
 <ul class="fa-ul">
-<li> <i class="fa-li fa fa-book"></i> <em>OpenIntro</em>. Ch 8: "Multiple and Logistic Regression" </li>
-<li> <i class="fa-li fa fa-book"></li> <em>OpenIntro</em> Supplement "Interaction Terms" </li> <a href="https://www.openintro.org/download.php?file=os2_extra_interaction_effects&referrer=/stat/textbook.php">URL</a>
-<li> <i class="fa-li fa fa-book"></li> <em>OpenIntro</em> Supplement "Regression for nonlinear relationships" </li> <a href="https://www.openintro.org/download.php?file=os2_extra_nonlinear_relationships&referrer=/stat/textbook.php">URL</a>
+<li> <i class="fa-li fa fa-book"></i> <em>OpenIntro</em>. Ch 8: &ldquo;Multiple and Logistic Regression&rdquo; </li>
+<li> <i class="fa-li fa fa-book"></li> <em>OpenIntro</em> Supplement: &ldquo;Interaction Terms&rdquo; </li> <a href="https://www.openintro.org/download.php?file=os2_extra_interaction_effects&referrer=/stat/textbook.php">URL</a>
+<li> <i class="fa-li fa fa-book"></li> <em>OpenIntro</em> Supplement: &ldquo;Regression for nonlinear relationships&rdquo; </li> <a href="https://www.openintro.org/download.php?file=os2_extra_nonlinear_relationships&referrer=/stat/textbook.php">URL</a>
 <li> <i class="fa-li fa fa-book"></li> Brambor, Thomas, William Roberts Clark, and Matt Golder. 2005. "Understanding Interaction Models: Improving Empirical Analysis." <em>Political Analysis</em>. <a href="https://dx.doi.org/10.1093/pan/mpi014">DOI</a>
 </ul>
 
