@@ -71,6 +71,10 @@ $$
 \DeclareMathOperator{\mean}{mean}
 \DeclareMathOperator{\var}{var}
 \DeclareMathOperator{\E}{E}
+\DeclareMathOperator{\MSE}{MSE}
+\DeclareMathOperator{\Bias}{Bias}
+\DeclareMathOperator{\SE}{se}
+\DeclareMathOperator{\SD}{sd}
 \DeclareMathOperator{\argmin}{argmin}
 \DeclareMathOperator{\argmax}{argmax}
 $$
@@ -109,7 +113,7 @@ set.seed(123)</code></pre>
 <pre class="r"><code>data2007 &lt;- gapminder %&gt;%
   filter(year == &quot;2007&quot;)
 
-x &lt;- mean(data2007$lifeExp) 
+x &lt;- mean(data2007$lifeExp)
 s &lt;- sd(data2007$lifeExp)
 
 random_10_countries &lt;- sample(gapminder$country, 10)
@@ -120,7 +124,7 @@ x_hat &lt;- mean(data2007_10$lifeExp)
 s_10 &lt;- sd(data2007_10$lifeExp)</code></pre>
 <p>For a particular case (since we randomly sample 10 countries, each time we repeat the analysis we get slightly different results) we obtain that:</p>
 <!-- html table generated in R 3.2.3 by xtable 1.8-0 package -->
-<!-- Sun Jan 31 19:10:53 2016 -->
+<!-- Thu Feb  4 20:07:27 2016 -->
 <table border="1">
 <tr>
 <th>
@@ -160,7 +164,7 @@ Sample
 <li>rnorm: draw random numbers</li>
 <li>dnorm: density P(X)</li>
 <li>pnorm: cdf P(X x)</li>
-<li>qnorm: qunatile function x s.t. P(X x) = q.</li>
+<li>qnorm: quantile function x s.t. P(X x) = q.</li>
 </ul>
 </div>
 <div id="probability-and-distributions-in-r" class="section level2">
@@ -209,7 +213,7 @@ print(paste(&quot;Trump wins the election in&quot;,trump_result_10,&quot;of the 
 country &lt;- read.csv(&quot;data/country.csv&quot;)</code></pre>
 <p>Remember that this is a simplified dataset for the Baum and Zhukov’s (2015) <em>JPR</em> article where the variable <strong>n_articles</strong> is the number of news stories that newspapers from these countries dedicated to talk about the Lybian Civil Crisis.</p>
 <p>Lets plot the distribution of the variable <strong>n_articles</strong> using a density plot.</p>
-<pre class="r"><code>ggplot(country, aes(x = n_articles)) + 
+<pre class="r"><code>ggplot(country, aes(x = n_articles)) +
   geom_density()</code></pre>
 <p><img src="probability_distributions_files/figure-html/unnamed-chunk-7-1.png" title="" alt="" width="672" /></p>
 <div id="challenge-3" class="panel panel-primary">
@@ -226,7 +230,7 @@ Challenge
 <p>Let’s plot a Probability Mass Function (PMF) of a Poisson distribution with the mean of <strong>n_articles</strong>. Do you think this PMF is similar to the distribution of <strong>n_articles</strong> we previously plot?</p>
 <pre class="r"><code>n_articles_mean &lt;- mean(country$n_articles)
 y_articles &lt;- 1:max(country$n_articles)
-pmf &lt;- dpois(y_articles, lambda = n_articles_mean) 
+pmf &lt;- dpois(y_articles, lambda = n_articles_mean)
 pmf &lt;- data.frame(pmf)
 ggplot(pmf, aes(x = y_articles, y = pmf)) + geom_line()</code></pre>
 <p><img src="probability_distributions_files/figure-html/unnamed-chunk-8-1.png" title="" alt="" width="672" /></p>

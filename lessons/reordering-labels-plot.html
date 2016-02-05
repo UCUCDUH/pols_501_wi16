@@ -71,6 +71,10 @@ $$
 \DeclareMathOperator{\mean}{mean}
 \DeclareMathOperator{\var}{var}
 \DeclareMathOperator{\E}{E}
+\DeclareMathOperator{\MSE}{MSE}
+\DeclareMathOperator{\Bias}{Bias}
+\DeclareMathOperator{\SE}{se}
+\DeclareMathOperator{\SD}{sd}
 \DeclareMathOperator{\argmin}{argmin}
 \DeclareMathOperator{\argmax}{argmax}
 $$
@@ -90,7 +94,7 @@ $$
 
 <div id="learning-objectives" class="section level2">
 <h2>Learning Objectives</h2>
-<p>How to sort the values ploted in a graph by a specific variable</p>
+<p>How to sort the values plotted in a graph by a specific variable</p>
 </div>
 <div id="sorting-labels-of-a-plot" class="section level2">
 <h2>Sorting Labels of a Plot</h2>
@@ -100,27 +104,30 @@ $$
 <li><code>ideology</code> An ideology score for that party</li>
 <li><code>women_per</code> The percentage of party candidates that are women</li>
 </ul>
-<pre class="r"><code>parties &lt;- paste0(&quot;party&quot;,1:10)
+<pre class="r"><code>parties &lt;- paste0(&quot;party&quot;, 1:10)
 ideology &lt;- sample(x = 1:10, size = 10, replace = FALSE)
 women_per &lt;- rnorm(n = 10, mean = 0.5, sd = 0.2)
-dataset &lt;- data.frame(parties = parties, ideology = ideology, women_per = women_per)</code></pre>
+dataset &lt;-
+  data.frame(parties = parties,
+             ideology = ideology,
+             women_per = women_per)</code></pre>
 <p>We use <code>ggplot2</code> to create a barplot showing the percentage of women candidate by political party. However, in the x-axis, the parties are sorted alphabetically.</p>
 <pre class="r"><code>library(ggplot2)
-ggplot(dataset, aes(x = parties, y = women_per)) + 
+ggplot(dataset, aes(x = parties, y = women_per)) +
   geom_bar(stat = &quot;summary&quot;, position = &quot;dodge&quot;, fun.y=&quot;sum&quot;)</code></pre>
 <p><img src="reordering-labels-plot_files/figure-html/unnamed-chunk-2-1.png" title="" alt="" width="672" /></p>
-<p>If we want to sort them by another variable (e.g. <code>ideology</code>), we need to specify so in the ggplot comand using <code>reorder()</code>.</p>
-<pre class="r"><code>ggplot(dataset, aes(x = reorder(parties,ideology), y = women_per)) + 
+<p>If we want to sort them by another variable (e.g. <code>ideology</code>), we need to specify so in the <code>ggplot</code> command using <code>reorder()</code>.</p>
+<pre class="r"><code>ggplot(dataset, aes(x = reorder(parties, ideology), y = women_per)) +
   geom_bar(stat = &quot;summary&quot;, position = &quot;dodge&quot;, fun.y=&quot;sum&quot;)</code></pre>
 <p><img src="reordering-labels-plot_files/figure-html/unnamed-chunk-3-1.png" title="" alt="" width="672" /></p>
 <p>Make sure the variable you are using to sort the axis is numeric, otherwise you will get an error and it won’t work.</p>
 <pre class="r"><code>dataset$ideology &lt;- as.factor(dataset$ideology)
-ggplot(dataset, aes(x = reorder(parties,ideology), y = women_per)) + 
-  geom_bar(stat = &quot;summary&quot;, position = &quot;dodge&quot;, fun.y=&quot;sum&quot;)</code></pre>
+ggplot(dataset, aes(x = reorder(parties, ideology), y = women_per)) +
+  geom_bar(stat = &quot;summary&quot;, position = &quot;dodge&quot;, fun.y = &quot;sum&quot;)</code></pre>
 <p>If it’s not a numerical variable, change it so it is.</p>
 <pre class="r"><code>dataset$ideo_numeric &lt;- as.numeric(dataset$ideology)
-ggplot(dataset, aes(x = reorder(parties,ideo_numeric), y = women_per)) + 
-  geom_bar(stat = &quot;summary&quot;, position = &quot;dodge&quot;, fun.y=&quot;sum&quot;)</code></pre>
+ggplot(dataset, aes(x = reorder(parties, ideo_numeric), y = women_per)) +
+  geom_bar(stat = &quot;summary&quot;, position = &quot;dodge&quot;, fun.y = &quot;sum&quot;)</code></pre>
 <p><img src="reordering-labels-plot_files/figure-html/unnamed-chunk-5-1.png" title="" alt="" width="672" /></p>
 </div>
 

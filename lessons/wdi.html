@@ -71,6 +71,10 @@ $$
 \DeclareMathOperator{\mean}{mean}
 \DeclareMathOperator{\var}{var}
 \DeclareMathOperator{\E}{E}
+\DeclareMathOperator{\MSE}{MSE}
+\DeclareMathOperator{\Bias}{Bias}
+\DeclareMathOperator{\SE}{se}
+\DeclareMathOperator{\SD}{sd}
 \DeclareMathOperator{\argmin}{argmin}
 \DeclareMathOperator{\argmax}{argmax}
 $$
@@ -220,10 +224,10 @@ glimpse(wdi_data_long)</code></pre>
 ## $ Country.Name   (chr) &quot;Arab World&quot;, &quot;Arab World&quot;, &quot;Arab World&quot;, &quot;Arab...
 ## $ Country.Code   (chr) &quot;ARB&quot;, &quot;ARB&quot;, &quot;ARB&quot;, &quot;ARB&quot;, &quot;ARB&quot;, &quot;ARB&quot;, &quot;ARB&quot;...
 ## $ Indicator.Code (chr) &quot;PA.NUS.PPP.05&quot;, &quot;PA.NUS.PRVT.PP.05&quot;, &quot;EG.ELC.A...
-## $ year           (fctr) X1960, X1960, X1960, X1960, X1960, X1960, X196...
+## $ year           (chr) &quot;X1960&quot;, &quot;X1960&quot;, &quot;X1960&quot;, &quot;X1960&quot;, &quot;X1960&quot;, &quot;X...
 ## $ value          (dbl) NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,...</code></pre>
 <p>However, the variable <code>year</code> still has an “X” prefix. We will remove the “X” using the function <code>str_replace</code> from the <a href="https://cran.r-project.org/web/packages/stringr/vignettes/stringr.html">stringr</a> package, and convert it to an integer vector.<a href="#fn3" class="footnoteRef" id="fnref3"><sup>3</sup></a></p>
-<pre class="r"><code>wdi_data_long &lt;- mutate(wdi_data_long, 
+<pre class="r"><code>wdi_data_long &lt;- mutate(wdi_data_long,
                         year = as.integer(str_replace(year, &quot;X&quot;, &quot;&quot;)))</code></pre>
 <p>Now reshape the dataset so each variable is a column,</p>
 <pre class="r"><code>wdi_data_long &lt;- wdi_data_long %&gt;%
@@ -263,7 +267,7 @@ For more on strings and regular expressions see [Introduction to stringr](https:
 <ol>
 <li id="fn1"><p><a href="http://data.worldbank.org/data-catalog/world-development-indicators" class="uri">http://data.worldbank.org/data-catalog/world-development-indicators</a><a href="#fnref1">↩</a></p></li>
 <li id="fn2"><p>The leading “^” means to match the start of the string. This is an example of a regular expression, which is a powerful method for pattern matching. See <a href="http://r4ds.had.co.nz/strings.html">R for Data Science</a> for more.<a href="#fnref2">↩</a></p></li>
-<li id="fn3"><p>The <strong>stringr</strong> package contains many functions for processing strings. See the <a href="https://cran.r-project.org/web/packages/stringr/vignettes/stringr.html">introduction</a> or the <em>R for Data Science</em> chapeter on <a href="http://r4ds.had.co.nz/strings.html">Strings</a> for more information on it.<a href="#fnref3">↩</a></p></li>
+<li id="fn3"><p>The <strong>stringr</strong> package contains many functions for processing strings. See the <a href="https://cran.r-project.org/web/packages/stringr/vignettes/stringr.html">introduction</a> or the <em>R for Data Science</em> chapter on <a href="http://r4ds.had.co.nz/strings.html">Strings</a> for more information on it.<a href="#fnref3">↩</a></p></li>
 </ol>
 </div>
 

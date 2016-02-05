@@ -71,6 +71,10 @@ $$
 \DeclareMathOperator{\mean}{mean}
 \DeclareMathOperator{\var}{var}
 \DeclareMathOperator{\E}{E}
+\DeclareMathOperator{\MSE}{MSE}
+\DeclareMathOperator{\Bias}{Bias}
+\DeclareMathOperator{\SE}{se}
+\DeclareMathOperator{\SD}{sd}
 \DeclareMathOperator{\argmin}{argmin}
 \DeclareMathOperator{\argmax}{argmax}
 $$
@@ -172,12 +176,12 @@ m = \arg \min_a \sum_{i = 1}^n d(x_i, a)
 <p>Let’s randomly draw some values for a sample.</p>
 <pre class="r"><code>x &lt;- sample(-20:20, 10, replace = TRUE)
 x</code></pre>
-<pre><code>##  [1]  11   5   7 -12   2   8 -14  -8  20 -18</code></pre>
+<pre><code>##  [1] -20 -19  -2   6 -12  18  -5  -6 -19  -5</code></pre>
 <p>Take as given, the mean will be between the minimum and maximum values of the sample. So we will try 100 different values of <span class="math inline">\(a\)</span> between <span class="math inline">\(min(x)\)</span> and <span class="math inline">\(max(x)\)</span>,</p>
 <pre class="r"><code>a &lt;- seq(min(x), max(x), length.out = 500)</code></pre>
 <p>Now we need to calculate <span class="math inline">\(\sum_{i = 1}^2 d(x_i, a)\)</span> for each value of <span class="math inline">\(a\)</span>. But first, let’s calculate it for one value of <span class="math inline">\(a\)</span>. The sum of squared errors for <span class="math inline">\(a = min(x)\)</span> is,</p>
 <pre class="r"><code>sum((x - min(a)) ^ 2)</code></pre>
-<pre><code>## [1] 4667</code></pre>
+<pre><code>## [1] 3156</code></pre>
 <p>To calculate it for many values of <span class="math inline">\(a\)</span>, we will use a <code>for</code> loop. First, we will create a new vector, the same length as <span class="math inline">\(a\)</span> which will hold the values of <span class="math inline">\(\sum_{i = 1}^n (x_i - a)^2\)</span> for each value of <span class="math inline">\(a\)</span>.</p>
 <pre class="r"><code>sum_sq_errors &lt;- rep(NA, length(a))</code></pre>
 <p>Now, we will loop through each value of <span class="math inline">\(sum_sq_errors\)</span>, calculate the sum of squared errors, and save it to <code>sum_sq_errors</code>.</p>
@@ -194,16 +198,16 @@ x</code></pre>
 <p><img src="descriptive_statistics_files/figure-html/unnamed-chunk-8-1.png" title="" alt="" width="672" /> Use the function <code>which</code> to find the location of the minimum value in <code>sum_sq_errors</code>,</p>
 <pre class="r"><code>sse_loc_min &lt;- which(sum_sq_errors == min(sum_sq_errors))
 sse_loc_min</code></pre>
-<pre><code>## [1] 239</code></pre>
+<pre><code>## [1] 180</code></pre>
 <p>The minimum value of the sum of squared errors is</p>
 <pre class="r"><code>sum_sq_errors[sse_loc_min]</code></pre>
-<pre><code>## [1] 1390.906</code></pre>
+<pre><code>## [1] 1306.41</code></pre>
 <p>But the mean is the value of <code>a</code> with the minimum sum of squared errors,</p>
 <pre class="r"><code>a[sse_loc_min]</code></pre>
-<pre><code>## [1] 0.1242485</code></pre>
+<pre><code>## [1] -6.368737</code></pre>
 <p>This should be very close to the actual mean,</p>
 <pre class="r"><code>mean(x)</code></pre>
-<pre><code>## [1] 0.1</code></pre>
+<pre><code>## [1] -6.4</code></pre>
 <p>However, the brute force way of searching for the mean is not necessary. We already know this because we have a formula for the mean! The formula for the mean is found by solving for the value that minimizes the squared errors with calculus. First, find the extrema (local or global minima or maxima) of <span class="math inline">\(f(a) = \sum_{i = 1}^n (x - a)^2\)</span>, <span class="math display">\[
 \begin{aligned}[t]
 \frac{d}{d\,a} \sum_{i = 1}^n (x_i - a)^2 &amp;= 0 \\

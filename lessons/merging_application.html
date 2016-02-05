@@ -71,6 +71,10 @@ $$
 \DeclareMathOperator{\mean}{mean}
 \DeclareMathOperator{\var}{var}
 \DeclareMathOperator{\E}{E}
+\DeclareMathOperator{\MSE}{MSE}
+\DeclareMathOperator{\Bias}{Bias}
+\DeclareMathOperator{\SE}{se}
+\DeclareMathOperator{\SD}{sd}
 \DeclareMathOperator{\argmin}{argmin}
 \DeclareMathOperator{\argmax}{argmax}
 $$
@@ -193,7 +197,7 @@ Challenge
 <div class="panel-body">
 <ol style="list-style-type: decimal">
 <li>How many unique countries are in <code>country</code>? And in <code>vdem</code>?</li>
-<li>Are all countries in <code>country</code> in <code>vdem</code>, and viceversa?</li>
+<li>Are all countries in <code>country</code> in <code>vdem</code>, and vice-versa?</li>
 <li>What are the outputs of the different merging commands? For each of the resulting datasets: what are the number of rows and the unique country codes (<code>COWcode</code>)? Is there something “wrong” with any of the new datasets?</li>
 </ol>
 </div>
@@ -204,7 +208,7 @@ summary(country$COWcode)
 length(unique(vdem$COWcode))
 summary(vdem$COWcode)
 
-# 2. 
+# 2.
 length(which(unique(country$COWcode) %in% unique(vdem$COWcode)))
 not_in_vdem &lt;- which(!(unique(country$COWcode) %in% unique(vdem$COWcode)))
 countries_not_vdem_id &lt;- unique(country$COWcode)[not_in_vdem]

@@ -1,5 +1,16 @@
+---
+title: Hypothesis Tests of the Mean
+author: Jeffrey B. Arnold
+---
+
 ```{r results='hide',echo=FALSE}
 knitr::opts_chunk$set(cache = TRUE, autodep = TRUE)
+```
+
+```{r message=FALSE}
+library("dplyr")
+library("ggplot2")
+library("tidyr")
 ```
 
 # Significance Tests

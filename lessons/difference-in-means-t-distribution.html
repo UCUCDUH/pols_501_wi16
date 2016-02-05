@@ -70,6 +70,10 @@ $$
 \DeclareMathOperator{\mean}{mean}
 \DeclareMathOperator{\var}{var}
 \DeclareMathOperator{\E}{E}
+\DeclareMathOperator{\MSE}{MSE}
+\DeclareMathOperator{\Bias}{Bias}
+\DeclareMathOperator{\SE}{se}
+\DeclareMathOperator{\SD}{sd}
 \DeclareMathOperator{\argmin}{argmin}
 \DeclareMathOperator{\argmax}{argmax}
 $$
@@ -83,7 +87,8 @@ $$
 
 <p>Read the data in:</p>
 <pre class="r"><code>library(rio)
-data &lt;- import(&#39;/Users/andreucasas/Dropbox/UW/TEACHING/POLS_501_WINTER16/labs_data/data/table1.dta&#39;)</code></pre>
+data &lt;- import(&#39;data/ajr_2001.dta&#39;)</code></pre>
+<pre><code>## Error in import(&quot;data/ajr_2001.dta&quot;): No such file</code></pre>
 <div id="challenge-1" class="panel panel-primary">
 <div class="panel-heading">
 <h3 class="panel-title">
@@ -107,10 +112,12 @@ head(data$shortnam)
 length(data$shortnam)</code></pre>
 <pre class="r"><code>data %&gt;%
   filter(shortnam != &quot;&quot;) %&gt;%
-  nrow()
-clean_data &lt;- data %&gt;%
+  nrow()</code></pre>
+<pre><code>## Error in eval(expr, envir, enclos): could not find function &quot;%&gt;%&quot;</code></pre>
+<pre class="r"><code>clean_data &lt;- data %&gt;%
   filter(shortnam != &quot;&quot;) %&gt;%
   filter(shortnam != &quot;.&quot;)</code></pre>
+<pre><code>## Error in eval(expr, envir, enclos): could not find function &quot;%&gt;%&quot;</code></pre>
 <pre class="r"><code>head(sort(table(clean_data$shortnam), decreasing = T))</code></pre>
 <p>The first 120 rows of the original dataset do not have a value for the country-name variable (<code>shortnam</code>) and they also have missing values for most of the other variables. Not clear what they are: getting rid of them.</p>
 <p>When importing STATA (<code>.dta</code>) dataset using the rio package, we have access to the variable description. We wrote a function in the <code>uwpols501</code> package to check at the variable description of STATA datasets loaded into R using <code>rio</code>.</p>
@@ -139,33 +146,31 @@ Challenge
 summary(clean_data$logem4)</code></pre>
 <p><code>logem4</code> is the log of <code>extmort4</code>. They calculate the log of mortality-rate because they theorize that it has a log-linear relationship with the type of institutions (<code>avexpr</code>: average expropriation risk). However, some observations have a value for the <code>logem4</code> variable but not for the <code>extmort4</code> one, which does not make much sense (looks like an error). Create a new variable (e.g. <code>log_mort</code>) with the log of <code>extmort4</code>.</p>
 <pre class="r"><code>clean_data$log_mort &lt;- log(clean_data$extmort4)</code></pre>
+<pre><code>## Error in eval(expr, envir, enclos): object &#39;clean_data&#39; not found</code></pre>
 <pre class="r"><code>library(ggplot2)
-p &lt;- ggplot(clean_data, aes(x= extmort4))
-p + geom_histogram(bins = 30)</code></pre>
-<pre><code>## Warning: Removed 163 rows containing non-finite values (stat_bin).</code></pre>
-<p><img src="difference-in-means-t-distribution_files/figure-html/unnamed-chunk-8-1.png" title="" alt="" width="672" /></p>
+p &lt;- ggplot(clean_data, aes(x= extmort4))</code></pre>
+<pre><code>## Error in ggplot(clean_data, aes(x = extmort4)): object &#39;clean_data&#39; not found</code></pre>
+<pre class="r"><code>p + geom_histogram(bins = 30)</code></pre>
+<pre><code>## Error in eval(expr, envir, enclos): object &#39;p&#39; not found</code></pre>
 <pre class="r"><code>p + geom_density() </code></pre>
-<pre><code>## Warning: Removed 163 rows containing non-finite values (stat_density).</code></pre>
-<p><img src="difference-in-means-t-distribution_files/figure-html/unnamed-chunk-8-2.png" title="" alt="" width="672" /></p>
+<pre><code>## Error in eval(expr, envir, enclos): object &#39;p&#39; not found</code></pre>
 <pre class="r"><code>ggplot(clean_data, aes(x = log_mort)) + geom_density()</code></pre>
-<pre><code>## Warning: Removed 163 rows containing non-finite values (stat_density).</code></pre>
-<p><img src="difference-in-means-t-distribution_files/figure-html/unnamed-chunk-8-3.png" title="" alt="" width="672" /></p>
+<pre><code>## Error in ggplot(clean_data, aes(x = log_mort)): object &#39;clean_data&#39; not found</code></pre>
 <p>Use plot to explore the relationship between the variables <code>logem4</code> and <code>avexpr</code>.</p>
 <pre class="r"><code>ggplot(clean_data, aes(x = logem4, y = avexpr)) + 
   geom_point() +
   geom_smooth(method = &quot;lm&quot;, se = F)</code></pre>
-<pre><code>## Warning: Removed 181 rows containing non-finite values (stat_smooth).</code></pre>
-<pre><code>## Warning: Removed 181 rows containing missing values (geom_point).</code></pre>
-<p><img src="difference-in-means-t-distribution_files/figure-html/unnamed-chunk-9-1.png" title="" alt="" width="672" /></p>
+<pre><code>## Error in ggplot(clean_data, aes(x = logem4, y = avexpr)): object &#39;clean_data&#39; not found</code></pre>
 <p>Another way to evaluate their theory that different <strong>institutions</strong> (<code>avexpr</code>: average expropiation risk) were set up in places where <strong>colonization</strong> was highly costly than in places that were easy to colonize (<code>logem4</code>: the log of their mortality rate measure) would be to compare the <strong>mean</strong> institution (average expropiation risk) in countries with high colonization costs and in countries with low colonization costs.</p>
 <p>Create a new dummy variable indicating those countries that have a value of <code>logem4</code> in the top quantile (==1).</p>
 <pre class="r"><code>clean_data &lt;- mutate(clean_data, high_mort = as.numeric(logem4 &gt; quantile(clean_data$logem4, probs = .75, na.rm = TRUE)))</code></pre>
+<pre><code>## Error in eval(expr, envir, enclos): could not find function &quot;mutate&quot;</code></pre>
 <p>Plot the distribution of the <code>logem4</code> variable for these two groups side-by-side.</p>
 <pre class="r"><code>ggplot(filter(clean_data, high_mort == 1), aes(x = logem4)) +
   geom_density(fill= &quot;green4&quot;, alpha = 0.3) +
   geom_density(data = filter(clean_data, high_mort == 0),
                aes(x = logem4), fill = &quot;blue4&quot;, alpha = 0.3)</code></pre>
-<p><img src="difference-in-means-t-distribution_files/figure-html/unnamed-chunk-11-1.png" title="" alt="" width="672" /></p>
+<pre><code>## Error in as.ts(x): object &#39;clean_data&#39; not found</code></pre>
 
 <hr>
 <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://licensebuttons.net/l/by-nc-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.

@@ -12,7 +12,7 @@
 
 <meta name="date" content="2016-02-04" />
 
-<title>Sampling Distributions and Confidence Intervals</title>
+<title>Sampling Distributions and the CLT</title>
 
 <script src="libs/jquery-1.11.0/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -80,7 +80,7 @@ $$
 $$
 
 <div id="header">
-<h1 class="title">Sampling Distributions and Confidence Intervals</h1>
+<h1 class="title">Sampling Distributions and the CLT</h1>
 <h4 class="author"><em>Jeffrey Arnold</em></h4>
 <h4 class="date"><em>2016-02-04</em></h4>
 </div>
@@ -91,8 +91,7 @@ $$
 <li><a href="#sampling-distribution">Sampling distribution</a></li>
 <li><a href="#sampling-distribution-of-the-sample-mean">Sampling Distribution of the Sample Mean</a></li>
 <li><a href="#binomial-distribution-and-the-bernoulli-distribution">Binomial Distribution and the Bernoulli Distribution</a></li>
-<li><a href="#evaluating-estimators">Evaluating Estimators</a></li>
-<li><a href="#how-can-we-evaluate-estimators">How can we evaluate estimators?</a><ul>
+<li><a href="#evaluating-estimators">Evaluating Estimators</a><ul>
 <li><a href="#bias">Bias</a></li>
 <li><a href="#variance">Variance</a></li>
 <li><a href="#mse">MSE</a></li>
@@ -151,16 +150,16 @@ p(\mu | \bar{x}) = \frac{\Pr(\bar{x}| \mu) \Pr(\mu)}{\Pr(\bar{x})}
 <p>We’ll illustrate the sampling distribution of the mean from a population distributed standard normal. To draw a single sample of size 8 and calculate the mean,</p>
 <pre class="r"><code>n &lt;- 8
 mean(rnorm(n))</code></pre>
-<pre><code>## [1] 0.2680703</code></pre>
+<pre><code>## [1] -0.2965122</code></pre>
 <p>However, to get a sample from the sampling distribution, we need to draw many samples and for each sample calculate the mean.</p>
-<pre class="r"><code>n &lt;- 8
+<pre class="r"><code>n &lt;- 32
 iter &lt;- 2048
 # Investigate
 results &lt;- list()
 for (i in 1:iter) {
   x &lt;- rnorm(n)
   stat &lt;- mean(x)
-  results[[i]] &lt;- data_frame(i = i, stat = mean(x))
+  results[[i]] &lt;- data_frame(i = i, stat = stat)
 }
 results &lt;- bind_rows(results)</code></pre>
 <p>Now we can plot the results,</p>
@@ -175,7 +174,7 @@ results &lt;- bind_rows(results)</code></pre>
 <p>For each sample size, draw samples from the sampling distribution,</p>
 <pre class="r"><code>results &lt;- list()
 for (k in seq_along(sample_sizes))  {
-  cat(&quot;sample size:&quot;, sample_sizes[k], &quot;\n&quot;)
+  message(&quot;sample size:&quot;, sample_sizes[k], &quot;\n&quot;)
   sampling_dist &lt;- list()
   n &lt;- sample_sizes[k]
   for (i in 1:iter) {
@@ -183,7 +182,7 @@ for (k in seq_along(sample_sizes))  {
     x &lt;- rnorm(n)
     # Uniform distribution: min = 0, max = 1. mean = 0.5
     # x &lt;- runif(n)
-    # Geometric distribution: prob = 0.25. mean = 4
+    # Geometric distribution: prob = 0.25. mean = 3
     # x &lt;- rgeom(n, prob = 0.25)
     # Beta distribution. Bimodal. mean = 0.5.
     # x &lt;- rbeta(n, shape1 = 0.25, shape2 = 0.25)
@@ -202,30 +201,19 @@ for (k in seq_along(sample_sizes))  {
     sampling_dist[[i]] &lt;- data_frame(size = n, stat = stat)
   }
   results[[k]] &lt;- bind_rows(sampling_dist)
-}</code></pre>
-<pre><code>## sample size: 1 
-## sample size: 2 
-## sample size: 4 
-## sample size: 8 
-## sample size: 16 
-## sample size: 32 
-## sample size: 64 
-## sample size: 128 
-## sample size: 256 
-## sample size: 512 
-## sample size: 1024</code></pre>
-<pre class="r"><code>results &lt;- bind_rows(results) %&gt;%
+}
+results &lt;- bind_rows(results) %&gt;%
   mutate(size = factor(size))</code></pre>
 <p>Plot the results for different sample size,</p>
 <pre class="r"><code>ggplot(results, aes(x = stat, colour = size)) +
   geom_density()</code></pre>
 <p><img src="Sampling_Distributions_files/figure-html/unnamed-chunk-9-1.png" title="" alt="" width="672" /></p>
 <p>In general the sampling distribution depends on three things:</p>
-<ul>
+<ol style="list-style-type: decimal">
 <li>the population distribution</li>
 <li>the sample size</li>
 <li>the sample statistic</li>
-</ul>
+</ol>
 <p>In the code there are alternative statistics and distributions, uncomment the code to try different combinations and see how the affect the shape of the sampling distribution.</p>
 </div>
 <div id="sampling-distribution-of-the-sample-mean" class="section level1">
@@ -360,11 +348,8 @@ ggplot() +
 <dd><p>A particular value of the estimator applied to data. E.g. 4.</p>
 </dd>
 </dl>
-<p>We evaluate estimators, not particular estimates. We want to judge methods based on how well they work in repeated samples.</p>
-</div>
-<div id="how-can-we-evaluate-estimators" class="section level1">
-<h1>How can we evaluate estimators?</h1>
-<p>We need to see how well they do in repeated samples, e.g. their sampling distribution. Let <span class="math inline">\(\theta\)</span> be the true value of the parameter, and <span class="math inline">\(\hat\theta\)</span> be an estimator for that parameter. Note that while <span class="math inline">\(\theta\)</span> is fixed, <span class="math inline">\(\hat\theta\)</span> is a random variable.</p>
+<p>We evaluate estimators, not particular estimates. We want to judge methods based on how well they work in repeated samples. In other words, we evaluate estimators based on properties of their sampling distribution.</p>
+<p>Let <span class="math inline">\(\theta\)</span> be the true value of the parameter, and <span class="math inline">\(\hat\theta\)</span> be an estimator for that parameter. Note that while <span class="math inline">\(\theta\)</span> is fixed, <span class="math inline">\(\hat\theta\)</span> is a random variable.</p>
 <div id="bias" class="section level2">
 <h2>Bias</h2>
 <p>The bias of an estimator is the difference between the expected value of its sampling distribution and the true value of the parameter, <span class="math display">\[
@@ -439,7 +424,7 @@ results &lt;- bind_rows(results)</code></pre>
 ## 
 ##   prop_contain_mu
 ##             (dbl)
-## 1            0.95</code></pre>
+## 1           0.956</code></pre>
 <pre class="r"><code>ggplot(results, aes(y = x_mean, ymin = lb, ymax = ub, x = i, color = contains_mu)) +
   geom_hline(yintercept = 0) + 
   geom_pointrange(size = rel(0.25)) +
@@ -460,7 +445,7 @@ for (i in 1:nrow(results)) {
 }
 summary(contains_x_mean)</code></pre>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-##  0.1663  0.7976  0.8998  0.8385  0.9439  0.9679</code></pre>
+## 0.06012 0.78960 0.89180 0.83290 0.93990 0.95790</code></pre>
 <div id="unknown-standard-deviation" class="section level2">
 <h2>Unknown standard deviation</h2>
 <p>Choose a confidence level of the confidence interval</p>
@@ -507,11 +492,13 @@ results &lt;- bind_rows(results)</code></pre>
   theme(axis.text.y = element_blank(),
         axis.ticks.y = element_blank(),
         axis.title.y = element_blank())</code></pre>
-<p><img src="Sampling_Distributions_files/figure-html/unnamed-chunk-24-1.png" title="" alt="" width="672" /> The sample standard deviations themselves have a sampling distribution, and the Student’s t-distribution accounts for that,</p>
+<p><img src="Sampling_Distributions_files/figure-html/unnamed-chunk-24-1.png" title="" alt="" width="672" /></p>
+<p>The sample standard deviations themselves have a sampling distribution.[^chisq]</p>
 <pre class="r"><code>ggplot(results, aes(x = s)) +
   geom_density() +
   geom_rug()</code></pre>
 <p><img src="Sampling_Distributions_files/figure-html/unnamed-chunk-25-1.png" title="" alt="" width="672" /></p>
+<p>The Student’s t distribution is used for hypothesis testing and confidence intervals instead of the normal distribution in order to account for the uncertainty due to estimating the population standard deviation from the sample standard deviation.</p>
 <p>One recommendation is to only use normal distribution quantiles for the critical values for sample sizes over 30 and if the distribution is not too skewed.</p>
 <pre class="r"><code>confidence &lt;- 95
 mu &lt;- 0
@@ -557,7 +544,7 @@ results &lt;- bind_rows(results) %&gt;%
 </div>
 <div id="skewed-distribution" class="section level2">
 <h2>Skewed distribution</h2>
-<p>What if we sample from a skewed distribution such as the geometric distribution?</p>
+<p>What if the sample is from a skewed population distribution such as the geometric distribution? A geometric distribution with <span class="math inline">\(p = 0.25\)</span> is right skewed,</p>
 <pre class="r"><code>confidence &lt;- 95
 prob &lt;- 0.1
 iter = 2048
@@ -596,7 +583,7 @@ results &lt;- bind_rows(results) %&gt;%
   xlab(&quot;Sample size&quot;) +
   ylab(expression(paste(&quot;Prop intervals containing &quot;, mu))) +
   scale_color_discrete(&quot;&quot;)</code></pre>
-<p><img src="Sampling_Distributions_files/figure-html/unnamed-chunk-29-1.png" title="" alt="" width="672" /></p>
+<p><img src="Sampling_Distributions_files/figure-html/unnamed-chunk-30-1.png" title="" alt="" width="672" /></p>
 <p>If a less than C% of a C% confidence interval contain the true value of the parameter, are the confidence intervals too narrow or too wide?</p>
 </div>
 <div id="miscellaneous" class="section level2">

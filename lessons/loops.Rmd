@@ -2,8 +2,12 @@
 title: "For loops"
 author: "Jeffrey Arnold"
 date: "February 4, 2016"
-output: html_document
 ---
+
+```{r results='hide',echo=FALSE}
+source("init.R")
+```
+
 
 ## For Loops
 
@@ -12,12 +16,12 @@ One way is to use six `print` statements:
 
 ```{r}
 best_practice <- c("Let", "the", "computer", "do", "the", "work")
-print(sentence[1])
-print(sentence[2])
-print(sentence[3])
-print(sentence[4])
-print(sentence[5])
-print(sentence[6])
+print(best_practice[1])
+print(best_practice[2])
+print(best_practice[3])
+print(best_practice[4])
+print(best_practice[5])
+print(best_practice[6])
 ```
 
 but that's a bad approach for two reasons:
@@ -33,16 +37,16 @@ sentence[-6]
 Here's a better approach:
 
 ```{r}
-for (word in sentence) {
-  print(word)
+for (something in best_practice) {
+  print(paste("this word is ", something))
 }
 ```
 
 This is shorter---certainly shorter than something that prints every character in a hundred-letter string---and more robust as well.
 If you change what is in sentence, it will still work.
 ```{r}
-sentence <- sentence[1:3]
-for (word in sentence) {
+best_practice <- c("a", "b")
+for (word in best_practice) {
   print(word)
 }
 ```
@@ -50,7 +54,7 @@ for (word in sentence) {
 The improved version of the code uses a *for loop* to repeat an operation---in this case, printing---once for each thing in a collection.
 The general form of a loop is:
 
-```{r, eval=FALSE}
+```r
 for (variable in collection) {
   do things with variable
 }
@@ -149,7 +153,7 @@ length(vowels)
 `length` is much faster than any R function we could write ourselves, and much easier to read than a two-line loop; it will also give us the length of many other things that we haven't met yet, so we should always use it when we can.
 
 
-`r start_challenge()`
+`r challenge_start()`
 R has a built-in function called `seq` that creates a list of numbers:
 
 ```{r}
@@ -157,8 +161,8 @@ seq(3)
 ```
 
 Using `seq` use a for loop to print the first **N** natural numbers, one per line:
-`r end_challenge()`
-`r start_solution()`
+`r challenge_end()`
+`r solution_start()`
 ```{r, echo=-1}
 N <- 3
 nseq <- seq(N)
@@ -166,7 +170,7 @@ for (num in nseq) {
   print(num)
 }
 ```
-`r end_solution()`
+`r solution_end()`
 
 Building a data frame from a list of data frames.
 
@@ -174,9 +178,9 @@ Building a data frame from a list of data frames.
 means <- c(-5, 0, 4)
 n <- 5
 results <- list()
-for (i in means) {
+for (i in 1:length(means)) {
   results[[i]] <-
-    data_frame(x = rnorm(n, mean = means[i]),
+    data.frame(x = rnorm(n, mean = means[i]),
                mu = means[i])
 }
 ```
@@ -186,6 +190,7 @@ results
 ```
 We can stack these data frames into a single data frame using the **dplyr** function `bind_rows`,
 ```{r}
+library("dplyr")
 bind_rows(results)
 ```
 

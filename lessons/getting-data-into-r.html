@@ -70,6 +70,10 @@ $$
 \DeclareMathOperator{\mean}{mean}
 \DeclareMathOperator{\var}{var}
 \DeclareMathOperator{\E}{E}
+\DeclareMathOperator{\MSE}{MSE}
+\DeclareMathOperator{\Bias}{Bias}
+\DeclareMathOperator{\SE}{se}
+\DeclareMathOperator{\SD}{sd}
 \DeclareMathOperator{\argmin}{argmin}
 \DeclareMathOperator{\argmax}{argmax}
 $$
@@ -273,26 +277,24 @@ Challenge
 <p>Go to the replication site of the paper and download the replication dataset <code>Study1_data.tab</code>. You can choose the format of the dataset, choose to download it in <code>RData</code> format. Save it in the working the directory you are using for this lab.</p>
 <p>Now load it and play with it! <code>.Rdata</code> is R’s native format. To load an <code>.Rdata</code> (or <code>.rda</code>) dataset, you use the <code>load()</code> function and you don’t need to assign the dataset to any object, the <code>load()</code> function will automatically create a new dataset in your R environment (similar to what happens when we use the <code>data()</code> function to load datasets from R packages).</p>
 <pre class="r"><code>load(&quot;data/Study1_data.Rdata&quot;)</code></pre>
-<pre><code>## Warning in readChar(con, 5L, useBytes = TRUE): cannot open compressed file
-## &#39;data/Study1_data.Rdata&#39;, probable reason &#39;No such file or directory&#39;</code></pre>
-<pre><code>## Error in readChar(con, 5L, useBytes = TRUE): cannot open the connection</code></pre>
 </div>
 </div>
 <p>One confusing feature of <code>.Rdata</code> files is that the R object that is loaded need not have the same name as the file; in fact, multiple objects can be contained and loaded from a single <code>.Rdata</code> file. However, it is good practice to only save a single object to an <code>.Rdata</code> file and to give the <code>.Rdata</code> file the same name as the object. Unfortunately, other researchers may not always follow that convention. In the case of this data, the object that is loaded from <code>Study1_data.Rdata</code> is named <code>x</code>. The <code>load</code> function returns the names of the objects that it loads, so you can find them as follows,</p>
-<pre class="r"><code>names_of_objects_loaded &lt;- load(&quot;data/Study1_data.Rdata&quot;)</code></pre>
-<pre><code>## Warning in readChar(con, 5L, useBytes = TRUE): cannot open compressed file
-## &#39;data/Study1_data.Rdata&#39;, probable reason &#39;No such file or directory&#39;</code></pre>
-<pre><code>## Error in readChar(con, 5L, useBytes = TRUE): cannot open the connection</code></pre>
-<pre class="r"><code>names_of_objects_loaded</code></pre>
-<pre><code>## Error in eval(expr, envir, enclos): object &#39;names_of_objects_loaded&#39; not found</code></pre>
+<pre class="r"><code>names_of_objects_loaded &lt;- load(&quot;data/Study1_data.Rdata&quot;)
+names_of_objects_loaded</code></pre>
+<pre><code>## [1] &quot;x&quot;</code></pre>
 <p>You can also check the objects in the global environment using either</p>
 <pre class="r"><code>ls()</code></pre>
-<pre><code>##  [1] &quot;challenge_end&quot;   &quot;challenge_start&quot; &quot;Counter&quot;        
-##  [4] &quot;divorce&quot;         &quot;edu&quot;             &quot;phd&quot;            
-##  [7] &quot;salary&quot;          &quot;Sdeaths&quot;         &quot;Snow.deaths&quot;    
-## [10] &quot;Snow.polygons&quot;   &quot;Snow.pumps&quot;      &quot;Snow.streets&quot;   
-## [13] &quot;solution_end&quot;    &quot;solution_start&quot;  &quot;Spumps&quot;         
-## [16] &quot;Sstreets&quot;        &quot;wdi&quot;</code></pre>
+<pre><code>##  [1] &quot;challenge_end&quot;           &quot;challenge_start&quot;        
+##  [3] &quot;Counter&quot;                 &quot;divorce&quot;                
+##  [5] &quot;edu&quot;                     &quot;names_of_objects_loaded&quot;
+##  [7] &quot;phd&quot;                     &quot;salary&quot;                 
+##  [9] &quot;Sdeaths&quot;                 &quot;Snow.deaths&quot;            
+## [11] &quot;Snow.polygons&quot;           &quot;Snow.pumps&quot;             
+## [13] &quot;Snow.streets&quot;            &quot;solution_end&quot;           
+## [15] &quot;solution_start&quot;          &quot;Spumps&quot;                 
+## [17] &quot;Sstreets&quot;                &quot;wdi&quot;                    
+## [19] &quot;x&quot;</code></pre>
 <p>or check the “Environment” panel in RStudio for a new variable.</p>
 <div id="challenge-6" class="panel panel-primary">
 <div class="panel-heading">
@@ -302,12 +304,9 @@ Challenge
 </div>
 <div class="panel-body">
 <p>Look at the article and explore the dataset and see if you can identify in the dataset some of the key variables they discuss in the paper.</p>
-<pre class="r"><code>names(x)</code></pre>
-<pre><code>## Error in eval(expr, envir, enclos): object &#39;x&#39; not found</code></pre>
-<pre class="r"><code>table(x$policy_letter_treat)</code></pre>
-<pre><code>## Error in table(x$policy_letter_treat): object &#39;x&#39; not found</code></pre>
-<pre class="r"><code>table(x$policy_letter_treat, x$movable_total)</code></pre>
-<pre><code>## Error in table(x$policy_letter_treat, x$movable_total): object &#39;x&#39; not found</code></pre>
+<pre class="r"><code>names(x)
+table(x$policy_letter_treat)
+table(x$policy_letter_treat, x$movable_total)</code></pre>
 </div>
 </div>
 </div>

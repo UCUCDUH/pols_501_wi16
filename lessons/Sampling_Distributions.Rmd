@@ -1,10 +1,11 @@
 ---
-title: Sampling Distributions and Confidence Intervals
+title: Sampling Distributions and the CLT
 author: Jeffrey Arnold
 date: 2016-02-04
 ---
 
 ```{r results='hide',echo=FALSE}
+source("init.R")
 knitr::opts_chunk$set(cache = TRUE, autodep = TRUE)
 ```
 
@@ -64,14 +65,14 @@ mean(rnorm(n))
 ```
 However, to get a sample from the sampling distribution, we need to draw many samples and for each sample calculate the mean.
 ```{r}
-n <- 8
+n <- 32
 iter <- 2048
 # Investigate
 results <- list()
 for (i in 1:iter) {
   x <- rnorm(n)
   stat <- mean(x)
-  results[[i]] <- data_frame(i = i, stat = mean(x))
+  results[[i]] <- data_frame(i = i, stat = stat)
 }
 results <- bind_rows(results)
 ```
@@ -93,10 +94,10 @@ Number of samples to draw from the sampling distribution for each sample size,
 iter <- 4096
 ```
 For each sample size, draw samples from the sampling distribution,
-```{r}
+```{r message = FALSE}
 results <- list()
 for (k in seq_along(sample_sizes))  {
-  cat("sample size:", sample_sizes[k], "\n")
+  message("sample size:", sample_sizes[k], "\n")
   sampling_dist <- list()
   n <- sample_sizes[k]
   for (i in 1:iter) {
@@ -104,7 +105,7 @@ for (k in seq_along(sample_sizes))  {
     x <- rnorm(n)
     # Uniform distribution: min = 0, max = 1. mean = 0.5
     # x <- runif(n)
-    # Geometric distribution: prob = 0.25. mean = 4
+    # Geometric distribution: prob = 0.25. mean = 3
     # x <- rgeom(n, prob = 0.25)
     # Beta distribution. Bimodal. mean = 0.5.
     # x <- rbeta(n, shape1 = 0.25, shape2 = 0.25)
@@ -135,9 +136,9 @@ ggplot(results, aes(x = stat, colour = size)) +
 
 In general the sampling distribution depends on three things:
 
-- the population distribution
-- the sample size
-- the sample statistic
+1. the population distribution
+2. the sample size
+3. the sample statistic
 
 In the code there are alternative statistics and distributions, uncomment 
 the code to try different combinations and see how the affect the shape of the
@@ -299,10 +300,8 @@ Estimate
 
 We evaluate estimators, not particular estimates.
 We want to judge methods based on how well they work in repeated samples.
+In other words, we evaluate estimators based on properties of their sampling distribution.
 
-# How can we evaluate estimators?
-
-We need to see how well they do in repeated samples, e.g. their sampling distribution.
 Let $\theta$ be the true value of the parameter, and $\hat\theta$ be an estimator for that parameter.
 Note that while $\theta$ is fixed, $\hat\theta$ is a random variable.
 
@@ -476,13 +475,15 @@ ggplot(results, aes(y = x_mean, ymin = lb, ymax = ub, x = i, color = contains_mu
         axis.title.y = element_blank())
 
 ```
-The sample standard deviations themselves have a sampling distribution,
-and the Student's t-distribution accounts for that,
+
+The sample standard deviations themselves have a sampling distribution.[^chisq]
 ```{r}
 ggplot(results, aes(x = s)) +
   geom_density() +
   geom_rug()
 ```
+
+The Student's t distribution is used for hypothesis testing and confidence intervals instead of the normal distribution in order to account for the uncertainty due to estimating the population standard deviation from the sample standard deviation.
 
 One recommendation is to only use normal distribution quantiles for the critical values for sample sizes over 30 and if the distribution is not too skewed. 
 
@@ -534,7 +535,13 @@ ggplot(results, aes(x = n, y = contains_mu, color = se_type)) +
 
 ## Skewed distribution
 
-What if we sample from a skewed distribution such as the geometric distribution? 
+What if the sample is from a skewed population distribution such as the geometric distribution?
+A geometric distribution with $p = 0.25$ is right skewed,
+```{r}
+
+```
+
+
 ```{r}
 confidence <- 95
 prob <- 0.1

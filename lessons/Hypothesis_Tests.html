@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="author" content="Jeffrey B. Arnold" />
+
+
+<title>Hypothesis Tests of the Mean</title>
+
+<script src="libs/jquery-1.11.0/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap-3.3.1/css/cerulean.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.1/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.1/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.1/shim/respond.min.js"></script>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<link rel="stylesheet"
+      href="libs/highlight/textmate.css"
+      type="text/css" />
+<script src="libs/highlight/highlight.js"></script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img { 
+  max-width:100%; 
+  height: auto; 
+}
+</style>
+<div class="container-fluid main-container">
+
+<p>
+<strong>POL S/CS&amp;SS 501, University of Washington, Winter 2016</strong>
+</p>
+
+$$
+\DeclareMathOperator{\mean}{mean}
+\DeclareMathOperator{\var}{var}
+\DeclareMathOperator{\E}{E}
+\DeclareMathOperator{\MSE}{MSE}
+\DeclareMathOperator{\Bias}{Bias}
+\DeclareMathOperator{\SE}{se}
+\DeclareMathOperator{\SD}{sd}
+\DeclareMathOperator{\argmin}{argmin}
+\DeclareMathOperator{\argmax}{argmax}
+$$
+
+<div id="header">
+<h1 class="title">Hypothesis Tests of the Mean</h1>
+<h4 class="author"><em>Jeffrey B. Arnold</em></h4>
+</div>
+
+<div id="TOC">
+<ul>
+<li><a href="#significance-tests">Significance Tests</a></li>
+<li><a href="#frequentist-vs.bayesian-interpretations">Frequentist vs. Bayesian Interpretations</a></li>
+<li><a href="#ways-that-the-estimate-can-break">Ways that the estimate can break</a></li>
+</ul>
+</div>
+
+<pre class="r"><code>library(&quot;dplyr&quot;)
+library(&quot;ggplot2&quot;)
+library(&quot;tidyr&quot;)</code></pre>
+<div id="significance-tests" class="section level1">
+<h1>Significance Tests</h1>
+<p>p-value vs. significance level</p>
+<p>Hypothesis | True | False |<br />
+True | | Type I |<br />
+False | Type II | |</p>
+<pre class="r"><code>null_hypothesis &lt;- 0
+mu_values &lt;- c(0, 0.125, 0.25, 0.5, 1, 2)
+sigma &lt;- 1
+sample_sizes &lt;- c(8, 16, 32, 64, 128, 256)
+iter &lt;- 4096
+
+results &lt;- vector(mode = &quot;list&quot;,
+                  length = length(sample_sizes) *
+                  length(mu_values) * iter)
+result_num &lt;- 1
+for (i in seq_along(mu_values)) {
+  mu &lt;- mu_values[i]
+  for (j in seq_along(sample_sizes)) {
+    size &lt;- sample_sizes[j]
+    message(&quot;mu:&quot;, mu, &quot;, size:&quot;, size)
+    for (k in 1:iter) {
+      x &lt;- rnorm(size, mean = mu, sd = sigma)
+      x_mean &lt;- mean(x)
+      s &lt;- sd(x)
+      # s &lt;- sigma
+      se &lt;- s / sqrt(size)
+      z &lt;- (x_mean - null_hypothesis) / se
+      p_value &lt;- 2 * pnorm(-abs(z))
+      results[[result_num]] &lt;-
+        data_frame(size = size,
+                   mu = mu,
+                   x_mean = x_mean,
+                   s = s,
+                   se = se,
+                   z = z,
+                   p_value = p_value,
+                   same_sign = sign(x_mean) == sign(mu),
+                   effect = x_mean - mu
+                   )
+       result_num &lt;- result_num + 1
+    }
+  }
+}
+results &lt;- bind_rows(results)
+
+errors &lt;- 
+  results %&gt;%
+    group_by(mu, size) %&gt;%
+    mutate(decision_error = ifelse(mu == null_hypothesis, p_value &lt; 0.05, p_value &gt; 0.05),
+           magnitude_error = ifelse(p_value &lt; 0.05, abs(x_mean - mu), NA),
+           sign_error = sign(x_mean) != sign(mu)) %&gt;%
+    summarize(decision_error = sum(decision_error) / length(decision_error),
+              magnitude_error = mean(magnitude_error, na.rm = TRUE),
+              sign_error = sum(sign_error) / length(sign_error)) %&gt;%
+  ungroup()</code></pre>
+<pre class="r"><code>ggplot(errors %&gt;% mutate(mu = factor(mu)),
+       aes(x = sqrt(size), y = decision_error)) +
+  geom_point() +
+  geom_line() +
+  scale_y_continuous(limits = c(0, 1)) +
+  facet_wrap(~mu, ncol = 1)</code></pre>
+<p><img src="Hypothesis_Tests_files/figure-html/unnamed-chunk-4-1.png" title="" alt="" width="672" /></p>
+<pre class="r"><code>ggplot(errors %&gt;% mutate(mu = factor(mu)),
+       aes(x = sqrt(size), y = sign_error)) +
+  geom_point() +
+  geom_line() +
+  scale_y_continuous(limits = c(0, 1)) +
+  facet_wrap(~mu, ncol = 1)</code></pre>
+<p><img src="Hypothesis_Tests_files/figure-html/unnamed-chunk-5-1.png" title="" alt="" width="672" /></p>
+<pre class="r"><code>ggplot(errors %&gt;% mutate(mu = factor(mu)),
+       aes(x = sqrt(size), y = magnitude_error)) +
+  geom_point() +
+  geom_line() +
+  facet_wrap(~mu, ncol = 1)</code></pre>
+<p><img src="Hypothesis_Tests_files/figure-html/unnamed-chunk-6-1.png" title="" alt="" width="672" /></p>
+<pre class="r"><code>res &lt;- mutate(results,
+              size = factor(size,
+                            levels = as.character(sort(size))),
+              mu = as.character(mu))</code></pre>
+<pre><code>## Warning in `levels&lt;-`(`*tmp*`, value = if (nl == nL) as.character(labels)
+## else paste0(labels, : duplicated levels in factors are deprecated</code></pre>
+<pre class="r"><code>ggplot(res,
+       aes(x = p_value)) +
+  geom_histogram(binwidth = 0.05, mapping = aes(y = ..ndensity..)) +
+  facet_grid(size ~ mu, scales = &quot;free_y&quot;)</code></pre>
+<pre><code>## Warning in `levels&lt;-`(`*tmp*`, value = if (nl == nL) as.character(labels)
+## else paste0(labels, : duplicated levels in factors are deprecated
+
+## Warning in `levels&lt;-`(`*tmp*`, value = if (nl == nL) as.character(labels)
+## else paste0(labels, : duplicated levels in factors are deprecated</code></pre>
+<p><img src="Hypothesis_Tests_files/figure-html/unnamed-chunk-7-1.png" title="" alt="" width="672" /></p>
+<pre class="r"><code>ggplot(filter(res, p_value &lt; 0.05),
+       aes(x = x_mean)) +
+  geom_density(mapping = aes(y = ..scaled..), fill = &quot;black&quot;) +
+  facet_grid(size ~ mu, scales = &quot;free_y&quot;)</code></pre>
+<pre><code>## Warning in `levels&lt;-`(`*tmp*`, value = if (nl == nL) as.character(labels)
+## else paste0(labels, : duplicated levels in factors are deprecated
+
+## Warning in `levels&lt;-`(`*tmp*`, value = if (nl == nL) as.character(labels)
+## else paste0(labels, : duplicated levels in factors are deprecated</code></pre>
+<p><img src="Hypothesis_Tests_files/figure-html/unnamed-chunk-7-2.png" title="" alt="" width="672" /></p>
+<pre class="r"><code>ggplot(mutate(res, sig = p_value &lt; 0.05),
+       aes(x = x_mean, fill = sig, color = sig)) +
+  geom_histogram(binwidth = 0.1, alpha = 0.5) +
+  geom_rug() +
+  facet_grid(size ~ mu, scales = &quot;free_y&quot;)</code></pre>
+<pre><code>## Warning in `levels&lt;-`(`*tmp*`, value = if (nl == nL) as.character(labels)
+## else paste0(labels, : duplicated levels in factors are deprecated
+
+## Warning in `levels&lt;-`(`*tmp*`, value = if (nl == nL) as.character(labels)
+## else paste0(labels, : duplicated levels in factors are deprecated</code></pre>
+<p><img src="Hypothesis_Tests_files/figure-html/unnamed-chunk-7-3.png" title="" alt="" width="672" /></p>
+<p>Some notes on Type I and Type II errors:</p>
+<ul>
+<li>For a given test, there is is tradeoff of Type I and Type II error. The fewer false positives, the more false negatives. E.g. in trial a judge could minimize any innocent defendents being declared guilty by ruling not guilty on all trials. However, then all guilty defendents would be declared not guilty.</li>
+<li>Tests generally focus on Type I error, and then for a given Type I error, more powerful tests are preferred. One reason to focus on Type I error, is that Type II error requires specifying a value of the alternative hypothesis, but there is often not just one value.</li>
+<li>Type I error is independent of sample size</li>
+<li><p>Type II decreases with sample size</p></li>
+<li>For a fixed sample mean and standard deviation: How would the significance change with the sample size?</li>
+<li><p>For a fixed sample mean and sample size: How would the significance change with the sample standard deviation?</p></li>
+</ul>
+</div>
+<div id="frequentist-vs.bayesian-interpretations" class="section level1">
+<h1>Frequentist vs. Bayesian Interpretations</h1>
+<p><span class="math inline">\(p(D | H)\)</span>, and <span class="math inline">\(p(H | D) \propto p(D | H) p(H)\)</span></p>
+</div>
+<div id="ways-that-the-estimate-can-break" class="section level1">
+<h1>Ways that the estimate can break</h1>
+<ul>
+<li>finite population</li>
+<li><p>correlated errors</p>
+<ul>
+<li>serial correlation</li>
+<li>cluster correlation</li>
+</ul></li>
+<li><p>skewed distribution</p></li>
+</ul>
+</div>
+
+<hr>
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://licensebuttons.net/l/by-nc-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
+R code is licensed under a <a href="https://www.r-project.org/Licenses/BSD_2_clause">BSD 2-clause</a> license.
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

@@ -71,6 +71,10 @@ $$
 \DeclareMathOperator{\mean}{mean}
 \DeclareMathOperator{\var}{var}
 \DeclareMathOperator{\E}{E}
+\DeclareMathOperator{\MSE}{MSE}
+\DeclareMathOperator{\Bias}{Bias}
+\DeclareMathOperator{\SE}{se}
+\DeclareMathOperator{\SD}{sd}
 \DeclareMathOperator{\argmin}{argmin}
 \DeclareMathOperator{\argmax}{argmax}
 $$
@@ -82,16 +86,8 @@ $$
 </div>
 
 
-<pre class="r"><code>library(&quot;dplyr&quot;)</code></pre>
-<pre><code>## 
-## Attaching package: &#39;dplyr&#39;</code></pre>
-<pre><code>## The following objects are masked from &#39;package:stats&#39;:
-## 
-##     filter, lag</code></pre>
-<pre><code>## The following objects are masked from &#39;package:base&#39;:
-## 
-##     intersect, setdiff, setequal, union</code></pre>
-<pre class="r"><code>library(&quot;magrittr&quot;)</code></pre>
+<pre class="r"><code>library(&quot;dplyr&quot;)
+library(&quot;magrittr&quot;)</code></pre>
 <p>The symbol <code>%&gt;%</code> is known as the pipe operator. It is from the <strong>magrittr</strong> package, but most widely used in the <strong>dplyr</strong> package.</p>
 <p>The verbal description of what the pipe operator does is it takes the result of the previous expression and uses it as the first argument in the next function.</p>
 <p>For example, suppose we wanted to take a sample of 100 from the normal distribution and find the maximum value in the sample.</p>
