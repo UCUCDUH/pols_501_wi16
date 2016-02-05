@@ -152,16 +152,16 @@ p &lt;- ggplot(clean_data, aes(x= extmort4))</code></pre>
 <pre><code>## Error in ggplot(clean_data, aes(x = extmort4)): object &#39;clean_data&#39; not found</code></pre>
 <pre class="r"><code>p + geom_histogram(bins = 30)</code></pre>
 <pre><code>## Error in eval(expr, envir, enclos): object &#39;p&#39; not found</code></pre>
-<pre class="r"><code>p + geom_density() </code></pre>
+<pre class="r"><code>p + geom_density()</code></pre>
 <pre><code>## Error in eval(expr, envir, enclos): object &#39;p&#39; not found</code></pre>
 <pre class="r"><code>ggplot(clean_data, aes(x = log_mort)) + geom_density()</code></pre>
 <pre><code>## Error in ggplot(clean_data, aes(x = log_mort)): object &#39;clean_data&#39; not found</code></pre>
 <p>Use plot to explore the relationship between the variables <code>logem4</code> and <code>avexpr</code>.</p>
-<pre class="r"><code>ggplot(clean_data, aes(x = logem4, y = avexpr)) + 
+<pre class="r"><code>ggplot(clean_data, aes(x = logem4, y = avexpr)) +
   geom_point() +
   geom_smooth(method = &quot;lm&quot;, se = F)</code></pre>
 <pre><code>## Error in ggplot(clean_data, aes(x = logem4, y = avexpr)): object &#39;clean_data&#39; not found</code></pre>
-<p>Another way to evaluate their theory that different <strong>institutions</strong> (<code>avexpr</code>: average expropiation risk) were set up in places where <strong>colonization</strong> was highly costly than in places that were easy to colonize (<code>logem4</code>: the log of their mortality rate measure) would be to compare the <strong>mean</strong> institution (average expropiation risk) in countries with high colonization costs and in countries with low colonization costs.</p>
+<p>Another way to evaluate their theory that different <strong>institutions</strong> (<code>avexpr</code>: average expropriation risk) were set up in places where <strong>colonization</strong> was highly costly than in places that were easy to colonize (<code>logem4</code>: the log of their mortality rate measure) would be to compare the <strong>mean</strong> institution (average expropriation risk) in countries with high colonization costs and in countries with low colonization costs.</p>
 <p>Create a new dummy variable indicating those countries that have a value of <code>logem4</code> in the top quantile (==1).</p>
 <pre class="r"><code>clean_data &lt;- mutate(clean_data, high_mort = as.numeric(logem4 &gt; quantile(clean_data$logem4, probs = .75, na.rm = TRUE)))</code></pre>
 <pre><code>## Error in eval(expr, envir, enclos): could not find function &quot;mutate&quot;</code></pre>

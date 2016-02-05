@@ -132,7 +132,7 @@ for (i in 1:iter) {
 <pre class="r"><code>summarize(results, prop_contain_mu = sum(contains_mu) / n())</code></pre>
 <pre><code>## Source: local data frame [0 x 0]</code></pre>
 <pre class="r"><code>ggplot(results, aes(y = x_mean, ymin = lb, ymax = ub, x = i, color = contains_mu)) +
-  geom_hline(yintercept = 0) + 
+  geom_hline(yintercept = 0) +
   geom_pointrange(size = rel(0.25)) +
   coord_flip() +
   scale_color_manual(values = c(&quot;TRUE&quot; = alpha(&quot;black&quot;, 0.67), &quot;FALSE&quot; = &quot;red&quot;)) +
@@ -143,11 +143,11 @@ for (i in 1:iter) {
 <pre><code>## Error in eval(expr, envir, enclos): object &#39;x_mean&#39; not found</code></pre>
 <p><img src="Confidence_Intervals_files/figure-html/unnamed-chunk-6-1.png" title="" alt="" width="672" /></p>
 <p>Note that the confidence intervals (<span class="math inline">\(\bar{x}\)</span>) are different in each sample.</p>
-<p>The “confidence” in the confidence interval is not the probability that future samples have confidence intervals contain sample mean of the current probability interval. If we calculate this for all the confidence intervals we can check this. For a 95% confidnence interval the proportion of confidence intervals containing the sample mean of the current sample will vary by sample, but on average will be somewhere around 88%.</p>
+<p>The “confidence” in the confidence interval is not the probability that future samples have confidence intervals contain sample mean of the current probability interval. If we calculate this for all the confidence intervals we can check this. For a 95% confidence interval the proportion of confidence intervals containing the sample mean of the current sample will vary by sample, but on average will be somewhere around 88%.</p>
 <pre class="r"><code>contains_x_mean &lt;- rep(NA, nrow(results))
 for (i in 1:nrow(results)) {
   x_mean_i &lt;- results[i, ][[&quot;x_mean&quot;]]
-  contains_x_mean[i] &lt;- 
+  contains_x_mean[i] &lt;-
     (sum(results$lb &lt; x_mean_i &amp; results$ub &gt; x_mean_i) - 1) / (nrow(results) - 1)
 }
 summary(contains_x_mean)</code></pre>
@@ -191,7 +191,7 @@ results &lt;- bind_rows(results)</code></pre>
 ##             (dbl)
 ## 1           0.936</code></pre>
 <pre class="r"><code>ggplot(results, aes(y = x_mean, ymin = lb, ymax = ub, x = i, color = contains_mu)) +
-  geom_hline(yintercept = 0) + 
+  geom_hline(yintercept = 0) +
   geom_pointrange(size = rel(0.25)) +
   coord_flip() +
   scale_color_manual(values = c(&quot;TRUE&quot; = alpha(&quot;black&quot;, 0.67), &quot;FALSE&quot; = &quot;red&quot;)) +
@@ -200,7 +200,7 @@ results &lt;- bind_rows(results)</code></pre>
         axis.ticks.y = element_blank(),
         axis.title.y = element_blank())</code></pre>
 <p><img src="Confidence_Intervals_files/figure-html/unnamed-chunk-11-1.png" title="" alt="" width="672" /></p>
-<p>The sample standard deviations themselves have a sampling distribution.[^chisq]</p>
+<p>The sample standard deviations themselves have a sampling distribution.</p>
 <pre class="r"><code>ggplot(results, aes(x = s)) +
   geom_density() +
   geom_rug()</code></pre>
@@ -223,8 +223,8 @@ for (i in seq_along(sample_sizes)) {
   norm_contains_mu &lt;- rep(NA, iter)
   t_contains_mu &lt;- rep(NA, iter)
   for (j in 1:iter) {
-    
-    # Sample from the normal distribution 
+
+    # Sample from the normal distribution
     x &lt;- rnorm(n, mean = mu, sd = sigma)
     x_mean &lt;- mean(x)
     s &lt;- sd(x)
@@ -234,7 +234,7 @@ for (i in seq_along(sample_sizes)) {
     t_contains_mu[j] &lt;- abs(z) &lt; t_critical_value
   }
   results[[i]] &lt;-
-    data_frame(n = n, 
+    data_frame(n = n,
                `Normal` = sum(norm_contains_mu) / iter,
                `Student&#39;s t` = sum(t_contains_mu) / iter)
 }
@@ -242,7 +242,7 @@ results &lt;- bind_rows(results) %&gt;%
   gather(se_type, contains_mu, -n)</code></pre>
 <pre class="r"><code>ggplot(results, aes(x = n, y = contains_mu, color = se_type)) +
   geom_point() +
-  geom_line() + 
+  geom_line() +
   geom_hline(yintercept = 1 - alpha) +
   xlab(&quot;Sample size&quot;) +
   ylab(expression(paste(&quot;Prop intervals containing &quot;, mu))) +
@@ -277,7 +277,7 @@ for (i in seq_along(sample_sizes)) {
     t_contains_mu[j] &lt;- abs(z) &lt; t_critical_value
   }
   results[[i]] &lt;-
-    data_frame(n = n, 
+    data_frame(n = n,
                `Normal` = sum(norm_contains_mu) / iter,
                `Student&#39;s t` = sum(t_contains_mu) / iter)
 }
@@ -285,7 +285,7 @@ results &lt;- bind_rows(results) %&gt;%
   gather(se_type, contains_mu, -n)</code></pre>
 <pre class="r"><code>ggplot(results, aes(x = n, y = contains_mu, color = se_type)) +
   geom_point() +
-  geom_line() + 
+  geom_line() +
   geom_hline(yintercept = 1 - alpha) +
   xlab(&quot;Sample size&quot;) +
   ylab(expression(paste(&quot;Prop intervals containing &quot;, mu))) +

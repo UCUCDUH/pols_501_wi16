@@ -414,7 +414,7 @@ Note that the confidence intervals ($\bar{x}$) are different in each sample.
 
 The "confidence" in the confidence interval is not the probability that future samples have confidence intervals contain sample mean of the current probability interval.
 If we calculate this for all the confidence intervals we can check this.
-For a 95% confidnence interval the proportion of confidence intervals containing the sample mean of the current sample will vary by sample, but on average will be somewhere around 88%.
+For a 95% confidence interval the proportion of confidence intervals containing the sample mean of the current sample will vary by sample, but on average will be somewhere around 88%.
 ```{r}
 contains_x_mean <- rep(NA, nrow(results))
 for (i in 1:nrow(results)) {
