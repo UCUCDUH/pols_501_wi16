@@ -180,7 +180,7 @@ Lab
 <li> <i class="fa-li fa fa-book"></i> <em>SMISS</em>. 7.1&ndash;7.4,   </li> (skim)
 <li><i class="fa-li fa fa-book"></i> <a href="http://blog.vctr.me/posts/central-limit-theorem.html">Central Limit Theorem Visualized in D3"</a>. Setosa.io. An interactive visualization.
 <li><i class="fa-li fa fa-book"></i> OpenIntro Shiny apps for <a href="https://gallery.shinyapps.io/CLT_mean/">Central Limit Theorem for Means</a>, <a href="https://gallery.shinyapps.io/CLT_prop/">Central Limit for Proportions</a>.
-<li><i class="fa-li fa fa-book"></i> Wickham, Hadley. 2010. "Graphical Inference for Infovis." <em>IEEE Transactions on Visualization and Computer Graphics</em>. <a href="http://dx.doi.org/10.1109/TVCG.2010.161">DOI</a>
+<li><i class="fa-li fa fa-book"></i> Hadley Wickham. <em> Advanced R</em>  <a href="http://adv-r.had.co.nz/Style.html">Style Guide</a>.</li>
 </ul>
 
 Class and Lab
