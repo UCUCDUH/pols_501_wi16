@@ -15,17 +15,12 @@ library("tidyr")
 
 # Significance Tests
 
-p-value vs. significance level
-
-| Hypothesis | True | False |
-| True | | Type I |
-| False | Type II | |
 
 ```{r, message = FALSE}
 null_hypothesis <- 0
-mu_values <- c(0, 0.125, 0.25, 0.5, 1, 2)
+mu_values <- c(0, 0.125, 0.25, 1)
 sigma <- 1
-sample_sizes <- c(8, 16, 32, 64, 128, 256)
+sample_sizes <- c(8, 32, 256, 1024)
 iter <- 4096
 
 results <- vector(mode = "list",
@@ -35,18 +30,17 @@ result_num <- 1
 for (i in seq_along(mu_values)) {
   mu <- mu_values[i]
   for (j in seq_along(sample_sizes)) {
-    size <- sample_sizes[j]
-    message("mu:", mu, ", size:", size)
+    n <- sample_sizes[j]
+    message("mu:", mu, ", n:", n)
     for (k in 1:iter) {
-      x <- rnorm(size, mean = mu, sd = sigma)
+      x <- rnorm(n, mean = mu, sd = sigma)
       x_mean <- mean(x)
       s <- sd(x)
-      # s <- sigma
-      se <- s / sqrt(size)
+      se <- s / sqrt(n)
       z <- (x_mean - null_hypothesis) / se
-      p_value <- 2 * pnorm(-abs(z))
+      p_value <- 2 * pt(-abs(z), df = n - 1)
       results[[result_num]] <-
-        data_frame(size = size,
+        data_frame(n = n,
                    mu = mu,
                    x_mean = x_mean,
                    s = s,
@@ -64,9 +58,10 @@ results <- bind_rows(results)
 
 errors <-
   results %>%
-    group_by(mu, size) %>%
-    mutate(decision_error = ifelse(mu == null_hypothesis, p_value < 0.05, p_value > 0.05),
-           magnitude_error = ifelse(p_value < 0.05, abs(x_mean - mu), NA),
+    group_by(mu, n) %>%
+    mutate(decision_error = ifelse(mu == null_hypothesis,
+                                   p_value < 0.05, p_value > 0.05),
+           magnitude_error = ifelse(p_value < 0.05, abs(x_mean - mu), NA_real_),
            sign_error = sign(x_mean) != sign(mu)) %>%
     summarize(decision_error = sum(decision_error) / length(decision_error),
               magnitude_error = mean(magnitude_error, na.rm = TRUE),
@@ -76,7 +71,7 @@ errors <-
 
 ```{r}
 ggplot(errors %>% mutate(mu = factor(mu)),
-       aes(x = sqrt(size), y = decision_error)) +
+       aes(x = sqrt(n), y = decision_error)) +
   geom_point() +
   geom_line() +
   scale_y_continuous(limits = c(0, 1)) +
@@ -85,7 +80,7 @@ ggplot(errors %>% mutate(mu = factor(mu)),
 
 ```{r}
 ggplot(errors %>% mutate(mu = factor(mu)),
-       aes(x = sqrt(size), y = sign_error)) +
+       aes(x = sqrt(n), y = sign_error)) +
   geom_point() +
   geom_line() +
   scale_y_continuous(limits = c(0, 1)) +
@@ -95,7 +90,7 @@ ggplot(errors %>% mutate(mu = factor(mu)),
 
 ```{r}
 ggplot(errors %>% mutate(mu = factor(mu)),
-       aes(x = sqrt(size), y = magnitude_error)) +
+       aes(x = sqrt(n), y = magnitude_error)) +
   geom_point() +
   geom_line() +
   facet_wrap(~mu, ncol = 1)
@@ -104,24 +99,31 @@ ggplot(errors %>% mutate(mu = factor(mu)),
 
 ```{r}
 res <- mutate(results,
-              size = factor(size,
-                            levels = as.character(sort(size))),
+              n = factor(as.character(n),
+                         levels = as.character(sort(unique(n)))),
               mu = as.character(mu))
 ggplot(res,
        aes(x = p_value)) +
-  geom_histogram(binwidth = 0.05, mapping = aes(y = ..ndensity..)) +
-  facet_grid(size ~ mu, scales = "free_y")
+  geom_histogram(binwidth = 0.05, mapping = aes()) +
+  facet_grid(n ~ mu, scales = "free_y")
 
 ggplot(filter(res, p_value < 0.05),
        aes(x = x_mean)) +
   geom_density(mapping = aes(y = ..scaled..), fill = "black") +
-  facet_grid(size ~ mu, scales = "free_y")
+  facet_grid(n ~ mu, scales = "free_y")
 
 ggplot(mutate(res, sig = p_value < 0.05),
        aes(x = x_mean, fill = sig, color = sig)) +
-  geom_histogram(binwidth = 0.1, alpha = 0.5) +
+  geom_histogram(binwidth = 0.05, alpha = 0.5) +
   geom_rug() +
-  facet_grid(size ~ mu, scales = "free_y")
+  facet_grid(n ~ mu, scales = "free_y")
+
+```
+
+
+```{r}
+
+
 ```
 
 
