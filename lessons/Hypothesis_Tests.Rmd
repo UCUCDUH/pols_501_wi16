@@ -18,7 +18,7 @@ library("ggplot2")
 library("tidyr")
 ```
 
-# Significance Tests
+# Type I and II Errors
 
 ```{r, message = FALSE}
 null_hypothesis <- 0
