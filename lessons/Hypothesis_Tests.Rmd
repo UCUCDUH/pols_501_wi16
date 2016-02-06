@@ -100,12 +100,8 @@ errors <-
   results %>%
     group_by(mu, n) %>%
     mutate(decision_error = ifelse(mu == null_hypothesis,
-                                   p_value < alpha, p_value > alpha),
-           magnitude_error = ifelse(p_value < alpha, abs(x_mean - mu), NA_real_),
-           sign_error = sign(x_mean) != sign(mu)) %>%
-    summarize(decision_error = sum(decision_error) / length(decision_error),
-              magnitude_error = mean(magnitude_error, na.rm = TRUE),
-              sign_error = sum(sign_error) / length(sign_error)) %>%
+                                   p_value < alpha, p_value > alpha)) %>%
+    summarize(decision_error = sum(decision_error) / length(decision_error)) %>%
   ungroup()
 ```
 
@@ -120,26 +116,50 @@ ggplot(errors %>% mutate(mu = factor(mu)),
   ggtitle("Probability of Type I or Type II error")
 ```
 
-Probability of a sign error for different values of $\mu$ as $n$ increases,
+
+Alternative method of illustrating p-values and effect sizes 
+
 ```{r}
-ggplot(errors %>% mutate(mu = factor(mu)),
-       aes(x = sqrt(n), y = sign_error)) +
+sizes <- 1:2048
+mu_values <- c(0, 0.01, 0.25, 1)
+number_studies <- 256
+study_sizes <- sample(sizes, number_studies, replace = TRUE,
+                      prob = 1 / sqrt(sizes))
+alpha <- 0.05
+mu <- 0.01
+mu_0 <- 0
+sigma <- 1
+
+results <- list()
+for (i in seq_along(means)) {
+  effect_sizes <- rep(NA, number_studies)
+  p_values <- rep(NA, number_studies)
+  
+  for (j in 1:number_studies) {
+    n <- study_sizes[j]
+    x <- rnorm(n, mean = mu, sd = sigma)
+    x_mean <- mean(x)
+    se <- sd(x) / sqrt(n)
+    p <- 2 * pt(-abs((x_mean - mu_0) / se), df = n - 1)
+    
+    p_values[j] <- p
+    effect_sizes[j] <- (x_mean - mu_0) / s
+  }
+  results[[i]] <- data_frame(p_values = p_values,
+                             effect_sizes = effect_sizes)
+}
+
+results <-
+  bind_rows(results) %>%
+  mutate(significant = p_value < alpha)
+
+ggplot(results,
+       aes(x = effect_size, y = n, color = significant)) +
   geom_point() +
-  geom_line() +
-  scale_y_continuous(limits = c(0, 1)) +
-  facet_wrap(~mu, ncol = 1) +
-  ggtitle("Probability of the Wrong Sign")
+  scale_color_manual(values = c("TRUE" = "red", 
+                                "FALSE" = "black"))
 ```
 
-Size of the magnitude error for different values of $\mu$ as $n$ increases,
-```{r}
-ggplot(errors %>% mutate(mu = factor(mu)),
-       aes(x = sqrt(n), y = magnitude_error)) +
-  geom_point() +
-  geom_line() +
-  facet_wrap(~mu, ncol = 1) +
-  ggtitle("Magnitude Error for Statistcally Significant Results")
-```
 
 # Power
 
