@@ -211,6 +211,7 @@ Class and Lab
 **Inference for Categorical data (proportion tests, Chi-squared tests)**
 
 <ul class="fa-ul">
+<li><i class="fa-li fa fa-puzzle-piece"></i><a href="/assignments/reading-06/">Readings assignment 6 due</a></li>
 <li> <i class="fa-li fa fa-book"></i> <em>OpenIntro</em>. Ch 6: "Inference for Categorical Data" </li>
 <li><i class="fa-li fa fa-code"></i> Data Camp <a href="https://www.datacamp.com/courses/reporting-with-r-markdown">Reporting with R Markdown</a></li>
 </ul>
