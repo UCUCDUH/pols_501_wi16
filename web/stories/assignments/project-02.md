@@ -10,7 +10,7 @@ For any data you have available, but at least one dataset, answer the following.
 4. What is the unit of observation of the dataset? What variable(s) uniquely identify observations in the data?
 5. How many observations are there in the dataset?
 6. Use `summary()` to summarize relevant variables.
-7. Which variables have missing values? How prevalant are missing values?
+7. Which variables have missing values? How  prevalent are missing values?
 8. Plot the distribution of at least one variable using **ggplot2** with either `geom_histogram` or `geom_density` with `geom_rug`. What is the shape of the distribution?
 9. Choose two variables to compare. If they are both continuous, create a scatterplot using `geom_scatter`. If they are both discrete, create a faceted bar plot using `geom_scatter` and `facet_grid`. If one is discrete and one is continuous, create a boxplot using `geom_boxplot`.
 

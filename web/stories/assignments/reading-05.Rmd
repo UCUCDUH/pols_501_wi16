@@ -5,7 +5,7 @@ Complete all the even numbered exercises in *OpenIntro Statistics* Chapter 5.
 Submit as a Word Document or PDF via Canvas. Answers must be typed.
 
 This requires calculating cumulative probabilities and quantiles of the normal distributions. To calculate these in R, you can use the functions `pt` and `qt`.
-For solving questions, even though you are calculating these tests manually, 
+For solving questions, even though you are calculating these tests manually,
 save yourself some work by doing the calculations in R rather than by hand and calculator.
 
 **Ex 5.1** The critical t values are:
@@ -92,7 +92,7 @@ x_bar + c(-1, 1) * me
 ```
 
 
-**Ex 5.29** 
+**Ex 5.29**
 The test rejects the null hypothesis that the average number of traffic related emergency room admissions are different between Friday the 6th and Friday the 13th.
 
 The test rejects the null (alternative) hypothesis that the average number of traffic related emergency room admissions are the same on (different on) Friday the 6th and Friday the 13th.
@@ -151,7 +151,7 @@ The values of the sample sizes $n$, sample means $\bar{x}$, sample standard devi
 ```{r}
 mu_0 <- 0
 ```
-The values for lineseed fed chickens,
+The values for linseed fed chickens,
 ```{r}
 n_2 <- 12
 x_bar_2 <- 218.75
@@ -199,7 +199,3 @@ The confidence interval is $\bar{x}_{diff} \pm ME_{diff}$,
 ```{r}
 x_bar_diff + c(-1, 1) * me
 ```
-
-
-
-

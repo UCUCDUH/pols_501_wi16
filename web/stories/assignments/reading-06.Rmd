@@ -151,7 +151,7 @@ The pooled proportion is
 p_pool <- row_totals["Do not know"] / n
 p_pool
 ```
-The standard error usins the pooled proportion is
+The standard error using the pooled proportion is
 ```{r}
 se <- sqrt(p_pool * (1 - p_pool) * (1 / n_C + 1 / n_N))
 se
@@ -258,7 +258,7 @@ The expected counts under independence are
 expected <- row_prop %o% col_prop * n
 ```
 The operator `%o%` is the outer produce which calculates the product of each of the vectors for each entry in the matrix.
-We mulitply this by `n` in order to turn the proportions to counts.
+We multiply this by `n` in order to turn the proportions to counts.
 
 The test-statistic is
 ```{r}

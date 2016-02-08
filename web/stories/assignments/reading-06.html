@@ -219,7 +219,7 @@ p_N</code></pre>
 p_pool</code></pre>
 <pre><code>## Do not know 
 ##   0.2841596</code></pre>
-<p>The standard error usins the pooled proportion is</p>
+<p>The standard error using the pooled proportion is</p>
 <pre class="r"><code>se &lt;- sqrt(p_pool * (1 - p_pool) * (1 / n_C + 1 / n_N))
 se</code></pre>
 <pre><code>## Do not know 
@@ -347,7 +347,7 @@ col_prop</code></pre>
 ## 0.5296252 0.4703748</code></pre>
 <p>The expected counts under independence are</p>
 <pre class="r"><code>expected &lt;- row_prop %o% col_prop * n</code></pre>
-<p>The operator <code>%o%</code> is the outer produce which calculates the product of each of the vectors for each entry in the matrix. We mulitply this by <code>n</code> in order to turn the proportions to counts.</p>
+<p>The operator <code>%o%</code> is the outer produce which calculates the product of each of the vectors for each entry in the matrix. We multiply this by <code>n</code> in order to turn the proportions to counts.</p>
 <p>The test-statistic is</p>
 <pre class="r"><code>chisq &lt;- sum((observed - expected) ^ 2 / expected)
 chisq</code></pre>

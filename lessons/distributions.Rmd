@@ -259,7 +259,7 @@ data_frame(df = c(1, 2, 4, 8, 16, 32, 64, 512)) %>%
   ggplot(aes(x = x, y = density, color = factor(df))) +
   geom_line()
 ```
-Setting `df = Inf` (infinity) in a Studen's t distribution gives the Normal distribution.
+Setting `df = Inf` (infinity) in a Student's t distribution gives the Normal distribution.
 
 The function `pt` calculates the cumulative distribution function for the Student's t distribution, $F(x) = \Pr(X \leq x)$.
 For example, the probability that a Student's t random variable $X$ is less than -1.96 will be somewhat higher than the 0.025 probability in a Normal distribution, and decrease with the degrees of freedom,
