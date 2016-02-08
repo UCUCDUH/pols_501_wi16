@@ -5,67 +5,8 @@ Complete all the even numbered exercises in *OpenIntro Statistics* Chapter 5.
 Submit as a Word Document or PDF via Canvas. Answers must be typed.
 
 This requires calculating cumulative probabilities and quantiles of the normal distributions. To calculate these in R, you can use the functions `pt` and `qt`.
-
-For solving questions, even though you are calculating these tests manually, 
+For solving questions, even though you are calculating these tests manually,
 save yourself some work by doing the calculations in R rather than by hand and calculator.
-
-For example:
-
-**Ex 4.15** The confidence interval is $3.2 \pm 0.3 = (2.9, 3.5)$ relationships.
-The confidence interval for a sample mean is,
-$$
-\bar{x} \pm z^*_{\alpha/2} \frac{s}{\sqrt{n}} .
-$$
-The values of the sample size $n$, sample mean $\bar{x}$, and sample standard deviation $s$ given in the problem:
-
-```r
-n <- 203
-xbar <- 3.2
-s <- 1.97
-```
-The standard error, $SE = s / \sqrt{n}$,
-
-```r
-se <- s / sqrt(n)
-se
-```
-
-```
-## [1] 0.1382669
-```
-The critical value, $z^*$, for a 95% CI is 1.96, but we can calculate it directly using `qnorm()`.
-Since qnorm will calculate the quantile for an area on the lower tail, it will be negative, so we need to switch the sign to ensure it is positive in our calculations.
-
-```r
-# 
-alpha <- 0.05
-z_star <- -qnorm(0.05 / 2)
-z_star
-```
-
-```
-## [1] 1.959964
-```
-Margin of error, $ME = z^* \times SE$
-
-```r
-me <- z_star * se
-me
-```
-
-```
-## [1] 0.2709981
-```
-The confidence interval, $\bar{x} \pm ME$,
-
-```r
-xbar + c(-1, 1) * me
-```
-
-```
-## [1] 2.929002 3.470998
-```
-This assumes the criteria for inference are met; these would need to be checked.
 
 **Ex 5.1** The critical t values are:
 $n = 6$, $CL = 90%$,
@@ -219,7 +160,7 @@ x_bar + c(-1, 1) * me
 ```
 
 
-**Ex 5.29** 
+**Ex 5.29**
 The test rejects the null hypothesis that the average number of traffic related emergency room admissions are different between Friday the 6th and Friday the 13th.
 
 The test rejects the null (alternative) hypothesis that the average number of traffic related emergency room admissions are the same on (different on) Friday the 6th and Friday the 13th.
@@ -295,7 +236,7 @@ The values of the sample sizes $n$, sample means $\bar{x}$, sample standard devi
 ```r
 mu_0 <- 0
 ```
-The values for lineseed fed chickens,
+The values for linseed fed chickens,
 
 ```r
 n_2 <- 12
@@ -380,7 +321,3 @@ x_bar_diff + c(-1, 1) * me
 ```
 ## [1]  14.64749 102.45251
 ```
-
-
-
-
