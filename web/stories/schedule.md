@@ -194,13 +194,13 @@ Class and Lab
 
 ## Week 6
 
-**Inference for Numerical Data (t-tests, ANOVA); Bootstrap.**
+**Inference for Numerical Data (t-tests, ANOVA); `Bootstrap`.**
 
 <ul class="fa-ul">
 <li><i class="fa-li fa fa-puzzle-piece"></i><a href="/assignments/reading-05/">Reading assignment 5 due</a></li>
 <li><i class="fa-li fa fa-book"></i> <em>OpenIntro</em>, Ch 5 </li>
 <li><i class="fa-li fa fa-book"></i> Cowles, Michael, and Caroline David. 1982. "On the Origins of the .05 Level of Statistical Significance"<em>American Psychologist</em>. <a href="https://dx.doi.org/10.1037/0003-066X.37.5.553">DOI</a>
-<li><i class="fa-li fa fa-book"></i><em>The Basic Practice of Statistics.</em>7th ed. Chapter 16. "Bootstrap Methods and Permutation Tests"<a href"http://content.bfwpub.com/webroot_pubcontent/Content/BCS_4/IPS7e/Student/Companion%20Chapters/ips_chap16.pdf">URL</a>.
+<li><i class="fa-li fa fa-book">Moore, McCabe, and Craig. </i><em>Introduction to the Practice of Statistics.</em>7th ed. Chapter 16. "Bootstrap Methods and Permutation Tests"<a href="http://content.bfwpub.com/webroot_pubcontent/Content/BCS_4/IPS7e/Student/Companion%20Chapters/ips_chap16.pdf">URL</a>.
 <li><i class="fa-li fa fa-book"></i>Gelman, Andrew, and Hal Stern. 2006. &lsquo;The Difference Between &lsquo;Significant&rsquo; and &lsquo;Not Significance&rsquo; is not Itself Statistically Significant&rsquo;<em>The American Statistician</em>. <a href="https://dx.doi.org/10.1198/000313006X152649">DOI</a>
 <li><i class="fa-li fa fa-book"></i>Reinhart, Alex. 2012. <em>Statistics Done Wrong: The Woefully Complete Guide</em>. Chapters 1, 2, 4, and 5.
 </ul>
