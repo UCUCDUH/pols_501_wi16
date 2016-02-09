@@ -12,17 +12,17 @@ For this assignment, apply the methods learned so far in the course (through Wee
 
 4. Analyze your question using your data and any of the methods that we have learned thus far (through Week 7). These methods include:
 
-  - graphical methods: scatterplots, box plots, mosaic plots, etc.
-  - difference in means tests or confidence intervals
-  - permutation tests
-  - bootstrapped confidence intervals
-  - ANOVA
-  - difference in proportions tests or confidence intervals
-  - Chi-squared test of independence or goodness of fit
+    - graphical methods: scatterplots, box plots, mosaic plots, etc.
+    - difference in means tests or confidence intervals
+    - permutation tests
+    - bootstrapped confidence intervals
+    - ANOVA
+    - difference in proportions tests or confidence intervals
+    - Chi-squared test of independence or goodness of fit
 
-  Use any or all of these methods that are appropriate.
+    Use any or all of these methods that are appropriate.
 
-  If your response and explanatory variables are both continuous, generally you would use regression methods. Since the course has not covered regression yet, create a categorical variable from explanatory variable. For example. you can create a dichotomous variable by splitting the explanatory variable at its mean or median.
+    If your response and explanatory variables are both continuous, generally you would use regression methods. Since the course has not covered regression yet, create a categorical variable from explanatory variable. For example. you can create a dichotomous variable by splitting the explanatory variable at its mean or median.
 
 5. Are your results robust to confounding variables? We have not covered multivariate regression yet. Instead, divide your sample into groups of the confounding variable and see whether your results hold across subgroups.
 
