@@ -8,6 +8,8 @@
 - [#4](reading-04/)
 - [#5](reading-05/)
 - [#6](reading-06/)
+- [#7](reading-07/)
+- [#8](reading-08/)
 
 ## Research Project
 

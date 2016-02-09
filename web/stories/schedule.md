@@ -211,7 +211,7 @@ Class and Lab
 **Inference for Categorical data (proportion tests, Chi-squared tests)**
 
 <ul class="fa-ul">
-<li><i class="fa-li fa fa-puzzle-piece"></i><a href="/assignments/reading-06/">Readings assignment 6 due</a></li>
+<li><i class="fa-li fa fa-puzzle-piece"></i><a href="/assignments/reading-06/">Reading assignment 6 due</a></li>
 <li> <i class="fa-li fa fa-book"></i> <em>OpenIntro</em>. Ch 6: "Inference for Categorical Data" </li>
 <li><i class="fa-li fa fa-code"></i> Data Camp <a href="https://www.datacamp.com/courses/reporting-with-r-markdown">Reporting with R Markdown</a></li>
 </ul>
@@ -221,6 +221,7 @@ Class and Lab
 **Introduction to Linear Regression**
 
 <ul class="fa-ul">
+<li><i class="fa-li fa fa-puzzle-piece"></i><a href="/assignments/reading-07/">Reading assignment 7 due</a></li>
 <li> <i class="fa-li fa fa-book"></i> <em>OpenIntro</em>. Ch 7: "Introduction to Linear Regression" </li>
 </ul>
 
@@ -229,6 +230,7 @@ Class and Lab
 **Multiple regression**
 
 <ul class="fa-ul">
+<li><i class="fa-li fa fa-puzzle-piece"></i><a href="/assignments/reading-08/">Reading assignment 8 due</a></li>
 <li> <i class="fa-li fa fa-book"></i> <em>OpenIntro</em>. Ch 8: &ldquo;Multiple and Logistic Regression&rdquo; </li>
 <li> <i class="fa-li fa fa-book"></li> <em>OpenIntro</em> Supplement: &ldquo;Interaction Terms&rdquo; </li> <a href="https://www.openintro.org/download.php?file=os2_extra_interaction_effects&referrer=/stat/textbook.php">URL</a>
 <li> <i class="fa-li fa fa-book"></li> <em>OpenIntro</em> Supplement: &ldquo;Regression for nonlinear relationships&rdquo; </li> <a href="https://www.openintro.org/download.php?file=os2_extra_nonlinear_relationships&referrer=/stat/textbook.php">URL</a>
