@@ -2,7 +2,7 @@
 .. title: Research Project Assignment 4
 -->
 
-For this assignment, apply the methods in the course through week 7 to your project. Your assignment should address at least the following points. You should write this in the format of a paper. There is no page or word limit on this. Consider this a draft what will eventually be your final paper. The more work you do now, the less later. More importantly, it is an opportunity to get initial feedback from the instructors.
+For this assignment, apply the methods learned so far in the course (through Week 7) to your project. Your assignment should address at least the following points. You should write this in the format of a paper. There is no page or word limit on this. Consider this a draft what will eventually be your final paper. The more work you do now, the less later. More importantly, it is an opportunity to get initial feedback from the instructors.
 
 1. Clearly state your question. It should be clear what your outcome variable and explanatory variables are. You should keep this concise and focus on the theory and mechanisms. You can cite relevant papers to your theory, but do not spend time or space on a literature review.
 

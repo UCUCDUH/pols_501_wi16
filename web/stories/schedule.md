@@ -221,6 +221,7 @@ Class and Lab
 **Introduction to Linear Regression**
 
 <ul class="fa-ul">
+<li><i class="fa-li fa fa-puzzle-piece"></i><a href="/assignments/project-04/">Project assignment 4 due</a></li>
 <li><i class="fa-li fa fa-puzzle-piece"></i><a href="/assignments/reading-07/">Reading assignment 7 due</a></li>
 <li> <i class="fa-li fa fa-book"></i> <em>OpenIntro</em>. Ch 7: "Introduction to Linear Regression" </li>
 <li> <i class="fa-li fa fa-book"></i> <em>SMISS</em>. Sections 2.3.4, 2.3.5, Ch 2 Appendix, 6.6.3, 6.7, 7.5 </li>
