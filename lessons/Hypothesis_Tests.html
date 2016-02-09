@@ -85,7 +85,7 @@ $$
 
 <div id="TOC">
 <ul>
-<li><a href="#significance-tests">Significance Tests</a></li>
+<li><a href="#type-i-and-ii-errors">Type I and II Errors</a></li>
 <li><a href="#power">Power</a></li>
 <li><a href="#ways-that-the-estimate-can-break">Ways that the estimate can break</a></li>
 </ul>
@@ -96,8 +96,8 @@ $$
 <pre class="r"><code>library(&quot;dplyr&quot;)
 library(&quot;ggplot2&quot;)
 library(&quot;tidyr&quot;)</code></pre>
-<div id="significance-tests" class="section level1">
-<h1>Significance Tests</h1>
+<div id="type-i-and-ii-errors" class="section level1">
+<h1>Type I and II Errors</h1>
 <pre class="r"><code>null_hypothesis &lt;- 0
 mu_values &lt;- c(0, 0.125, 0.25, 1)
 sigma &lt;- 1
@@ -169,12 +169,8 @@ errors &lt;-
   results %&gt;%
     group_by(mu, n) %&gt;%
     mutate(decision_error = ifelse(mu == null_hypothesis,
-                                   p_value &lt; alpha, p_value &gt; alpha),
-           magnitude_error = ifelse(p_value &lt; alpha, abs(x_mean - mu), NA_real_),
-           sign_error = sign(x_mean) != sign(mu)) %&gt;%
-    summarize(decision_error = sum(decision_error) / length(decision_error),
-              magnitude_error = mean(magnitude_error, na.rm = TRUE),
-              sign_error = sum(sign_error) / length(sign_error)) %&gt;%
+                                   p_value &lt; alpha, p_value &gt; alpha)) %&gt;%
+    summarize(decision_error = sum(decision_error) / length(decision_error)) %&gt;%
   ungroup()</code></pre>
 <p>Probability of Type I or Type II errors for different values of <span class="math inline">\(\mu\)</span> as <span class="math inline">\(n\)</span> increases,</p>
 <pre class="r"><code>ggplot(errors %&gt;% mutate(mu = factor(mu)),
@@ -185,23 +181,50 @@ errors &lt;-
   facet_wrap(~mu, ncol = 1) +
   ggtitle(&quot;Probability of Type I or Type II error&quot;)</code></pre>
 <p><img src="Hypothesis_Tests_files/figure-html/unnamed-chunk-7-1.png" title="" alt="" width="672" /></p>
-<p>Probability of a sign error for different values of <span class="math inline">\(\mu\)</span> as <span class="math inline">\(n\)</span> increases,</p>
-<pre class="r"><code>ggplot(errors %&gt;% mutate(mu = factor(mu)),
-       aes(x = sqrt(n), y = sign_error)) +
+<p>Alternative method of illustrating p-values and effect sizes</p>
+<pre class="r"><code>sizes &lt;- 4:2048
+mu_values &lt;- c(0, 0.01, 0.25, 1)
+number_studies &lt;- 256
+study_sizes &lt;- sample(sizes, number_studies, replace = TRUE,
+                      prob = 1 / sqrt(sizes))
+alpha &lt;- 0.05
+mu_0 &lt;- 0
+sigma &lt;- 1
+
+results &lt;- list()
+for (i in seq_along(mu_values)) {
+  effect_sizes &lt;- rep(NA, number_studies)
+  p_values &lt;- rep(NA, number_studies)
+  mu &lt;- mu_values[i]
+  
+  for (j in 1:number_studies) {
+    n &lt;- study_sizes[j]
+    x &lt;- rnorm(n, mean = mu, sd = sigma)
+    x_mean &lt;- mean(x)
+    s &lt;- sd(x)
+    se &lt;- s / sqrt(n)
+    p &lt;- 2 * pt(-abs((x_mean - mu_0) / se), df = n - 1)
+    
+    p_values[j] &lt;- p
+    effect_sizes[j] &lt;- (x_mean - mu_0) / s
+  }
+  results[[i]] &lt;- data_frame(p_values = p_values,
+                             effect_sizes = effect_sizes,
+                             n = study_sizes,
+                             mu = mu)
+}
+
+results &lt;-
+  bind_rows(results) %&gt;%
+  mutate(significant = p_values &lt; alpha)
+
+ggplot(results,
+       aes(x = effect_sizes, y = sqrt(n), color = significant)) +
   geom_point() +
-  geom_line() +
-  scale_y_continuous(limits = c(0, 1)) +
-  facet_wrap(~mu, ncol = 1) +
-  ggtitle(&quot;Probability of the Wrong Sign&quot;)</code></pre>
+  scale_color_manual(values = c(&quot;TRUE&quot; = &quot;red&quot;, 
+                                &quot;FALSE&quot; = &quot;black&quot;)) +
+  facet_grid(mu ~ .)</code></pre>
 <p><img src="Hypothesis_Tests_files/figure-html/unnamed-chunk-8-1.png" title="" alt="" width="672" /></p>
-<p>Size of the magnitude error for different values of <span class="math inline">\(\mu\)</span> as <span class="math inline">\(n\)</span> increases,</p>
-<pre class="r"><code>ggplot(errors %&gt;% mutate(mu = factor(mu)),
-       aes(x = sqrt(n), y = magnitude_error)) +
-  geom_point() +
-  geom_line() +
-  facet_wrap(~mu, ncol = 1) +
-  ggtitle(&quot;Magnitude Error for Statistcally Significant Results&quot;)</code></pre>
-<p><img src="Hypothesis_Tests_files/figure-html/unnamed-chunk-9-1.png" title="" alt="" width="672" /></p>
 </div>
 <div id="power" class="section level1">
 <h1>Power</h1>
@@ -248,7 +271,7 @@ if (mu_0 &lt; mu_a) {
                      fill = &quot;orange&quot;, alpha = 0.5)
 }
 ggp</code></pre>
-<p><img src="Hypothesis_Tests_files/figure-html/unnamed-chunk-10-1.png" title="" alt="" width="672" /></p>
+<p><img src="Hypothesis_Tests_files/figure-html/unnamed-chunk-9-1.png" title="" alt="" width="672" /></p>
 <p>Calculate power through simulation.</p>
 <pre class="r"><code>mu_0 &lt;- 0
 mu &lt;- 0.5
@@ -270,7 +293,7 @@ if (mu == mu_0) {
 } else {
   message(&quot;Power: &quot;, round(reject_pct, 2), &quot;%&quot;)
 }</code></pre>
-<pre><code>## Power: 14.2%</code></pre>
+<pre><code>## Power: 13.4%</code></pre>
 <p>Some notes on Type I and Type II errors:</p>
 <ul>
 <li>For a given test, there is is trade-off of Type I and Type II error. The fewer false positives, the more false negatives. E.g. in trial a judge could minimize any innocent defendants being declared guilty by ruling not guilty on all trials. However, then all guilty defendants would be declared not guilty.</li>

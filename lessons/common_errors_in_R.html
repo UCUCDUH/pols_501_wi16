@@ -136,16 +136,16 @@ iris[[&quot;Species&quot;]]</code></pre>
 </h3>
 </div>
 <div id="solution-1" class="panel-collapse collapse">
-<pre><code>ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length)) + 
+<pre><code>ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length)) +
   geom_bar(stat = &quot;summary&quot;, position = &quot;dodge&quot;, fun.y=&quot;mean&quot;)
 
-ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length)) + 
+ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length)) +
   geom_bar(stat = &quot;summary&quot;, position = &quot;dodge&quot;, fun.y=&quot;sum&quot;)
-  </code></pre>
+</code></pre>
 </div>
 </div>
 <pre><code>iris[10,2] &lt;- NA
-ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length)) + 
+ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length)) +
   geom_point()</code></pre>
 <div class="panel panel-info">
 <div class="panel-heading">
@@ -156,27 +156,24 @@ ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length)) +
 <div id="solution-2" class="panel-collapse collapse">
 <pre><code>library(dplyr)
 iris2 &lt;- na.omit(iris)
-ggplot(iris2, aes(x = Sepal.Width, y = Sepal.Length)) + 
+ggplot(iris2, aes(x = Sepal.Width, y = Sepal.Length)) +
   geom_point()</code></pre>
 </div>
 </div>
 <p>Load <strong>dplyr</strong>, then load the package <strong>MASS</strong>.</p>
 <pre class="r"><code>library(dplyr)</code></pre>
 <pre><code>## 
-## Attaching package: &#39;dplyr&#39;
+## Attaching package: &#39;dplyr&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:stats&#39;:
 ## 
-## The following objects are masked from &#39;package:stats&#39;:
-## 
-##     filter, lag
-## 
-## The following objects are masked from &#39;package:base&#39;:
+##     filter, lag</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
 ## 
 ##     intersect, setdiff, setequal, union</code></pre>
 <pre class="r"><code>library(MASS)</code></pre>
 <pre><code>## 
-## Attaching package: &#39;MASS&#39;
-## 
-## The following object is masked from &#39;package:dplyr&#39;:
+## Attaching package: &#39;MASS&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:dplyr&#39;:
 ## 
 ##     select</code></pre>
 <p>What are the messages shown when you load them? Now try using the dataset <code>cars</code> in <strong>ggplot2</strong>,</p>
@@ -207,7 +204,6 @@ ggplot(iris2, aes(x = Sepal.Width, y = Sepal.Length)) +
 <h1>References</h1>
 <ul>
 <li><a href="http://www.burns-stat.com/documents/tutorials/impatient-r/#errors" class="uri">http://www.burns-stat.com/documents/tutorials/impatient-r/#errors</a></li>
-<li><a href="http://varianceexplained.org/pages/errors.html" class="uri">http://varianceexplained.org/pages/errors.html</a></li>
 <li><a href="http://blog.revolutionanalytics.com/2015/03/the-most-common-r-error-messages.html" class="uri">http://blog.revolutionanalytics.com/2015/03/the-most-common-r-error-messages.html</a></li>
 <li><a href="https://github.com/noamross/zero-dependency-problems/blob/master/misc/stack-overflow-common-r-errors.md" class="uri">https://github.com/noamross/zero-dependency-problems/blob/master/misc/stack-overflow-common-r-errors.md</a></li>
 </ul>

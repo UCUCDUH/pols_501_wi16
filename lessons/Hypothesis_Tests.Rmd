@@ -120,44 +120,48 @@ ggplot(errors %>% mutate(mu = factor(mu)),
 Alternative method of illustrating p-values and effect sizes 
 
 ```{r}
-sizes <- 1:2048
+sizes <- 4:2048
 mu_values <- c(0, 0.01, 0.25, 1)
 number_studies <- 256
 study_sizes <- sample(sizes, number_studies, replace = TRUE,
                       prob = 1 / sqrt(sizes))
 alpha <- 0.05
-mu <- 0.01
 mu_0 <- 0
 sigma <- 1
 
 results <- list()
-for (i in seq_along(means)) {
+for (i in seq_along(mu_values)) {
   effect_sizes <- rep(NA, number_studies)
   p_values <- rep(NA, number_studies)
+  mu <- mu_values[i]
   
   for (j in 1:number_studies) {
     n <- study_sizes[j]
     x <- rnorm(n, mean = mu, sd = sigma)
     x_mean <- mean(x)
-    se <- sd(x) / sqrt(n)
+    s <- sd(x)
+    se <- s / sqrt(n)
     p <- 2 * pt(-abs((x_mean - mu_0) / se), df = n - 1)
     
     p_values[j] <- p
     effect_sizes[j] <- (x_mean - mu_0) / s
   }
   results[[i]] <- data_frame(p_values = p_values,
-                             effect_sizes = effect_sizes)
+                             effect_sizes = effect_sizes,
+                             n = study_sizes,
+                             mu = mu)
 }
 
 results <-
   bind_rows(results) %>%
-  mutate(significant = p_value < alpha)
+  mutate(significant = p_values < alpha)
 
 ggplot(results,
-       aes(x = effect_size, y = n, color = significant)) +
+       aes(x = effect_sizes, y = sqrt(n), color = significant)) +
   geom_point() +
   scale_color_manual(values = c("TRUE" = "red", 
-                                "FALSE" = "black"))
+                                "FALSE" = "black")) +
+  facet_grid(mu ~ .)
 ```
 
 
