@@ -165,7 +165,7 @@ ggplot(results,
 
 ```{r}
 sigma <- 1
-n <- 1000
+n <- 10
 mu_0 <- 0
 mu_a <- -0.5
 alpha <- 0.05

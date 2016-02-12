@@ -1,5 +1,5 @@
 DEPLOY_DIR = "../web/files/docs"
-PDF = Bayes.pdf
+PDF = Bayes.pdf notes_2016-02-11.pdf
 
 build: $(PDF)
 
@@ -9,6 +9,7 @@ deploy: build
 
 %.pdf: %.Rmd
 	RScript -e 'rmarkdown::render("$^", output_format="pdf_document", output_file="$@")'
+
 
 %.pdf: %.tex
 	latexmk -xelatex $^

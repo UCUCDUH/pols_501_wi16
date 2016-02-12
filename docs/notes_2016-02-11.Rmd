@@ -1,0 +1,143 @@
+---
+title: Notes for POLS 501, Feb 11, 2016
+author: Jeffrey Arnold
+---
+
+Overview of class
+
+1. Questions on questions
+
+# Notes on understanding p-values
+
+In order to understand and interpret a hypothesis test you only need to understand three things:
+
+1. What are the null and alternative hypotheses of the test?
+2. What are the conditions under which the test is valid? And how robust is the test when those assumptions aren't met.
+3. What is the p-value?
+
+In general, you do not need to understand the details of how the test statistic is generated,
+and how the sampling distribution is generated. The p-value is interpreted the same regardless of the details of the
+method used to generate it.
+
+> The probability of observing a test statistic equal to or more extreme than the one in the sample, where extreme is defined by the alternative hypothesis, *if the null hypothesis is true*.
+
+# Notes on understanding confidence intervals
+
+Confidence intervals:
+
+1. What is the population parameter of interest?
+2. What are the conditions under which the test is valid? And how robust is the test when those assumptions aren't met.
+3. What is the confidence level?
+4. What is the point estimates, and end points?
+
+Again, the interpretation of the confidence interval does not require you to understand the method used to generate the sampling distribution, only to understand what the confidence interval is of, and what assumptions are made for it to be valid.
+
+> We are C% confidence that the parameter is between lower bound and upper bound, where confident is defined as
+  in repeated samples from the same population, C% of the confidence intervals calculated using this method will contain the
+  parameter of interest.
+
+# Power
+
+Why is it so important?
+
+# t-Distribution
+
+Why is the t-distribution used?
+
+# Difference in means
+
+The confidence interval for a difference in means
+
+**Linear combination of random variables**:
+For two  random variables, $X$ and $Y$, the expected value of
+$a X + b Y$ is,
+$$
+E(a X + b Y) = a E(X) + b E(Y)
+$$
+where $a$ and $b$ are scalars.
+This result holds whether or not $X$ and $Y$ are independent.
+For two *independent$ variables, the variance of their linear combination is
+$$
+V(a X + b Y) = a^2 V(X) + b^2 V(Y)
+$$
+If $X$ and $Y$ are not independent then this is,
+$$
+V(a X + b Y) = a^2 V(X) + b^2 V(Y) - a b Cov(X, Y)
+$$
+
+**Linear combinations of normal variables:**
+Suppose $X \sim N(\mu_1, \sigma_1^2)$, $Y \sim N(\mu_2, \sigma_2^2)$, and $X$ and $Y$ are independent, then
+$$
+a X + b Y \sim N(a \mu_1 + b \mu_2, \sqrt{a^2 \sigma^2 + b^2 \sigma^2})
+$$
+
+How do these relate to the difference in means?
+
+What is the general pattern of these tests?
+$$
+\frac{? - ?}{?}
+$$
+What is the general pattern of these confidence intervals?
+$$
+? \pm ? \times ?
+$$
+
+A note on the degrees of freedom.
+
+How does the difference in means t-test relate to linear regression?
+
+A note on robustness of difference in means.
+
+Degrees of freedom in Welch is approximately
+$$
+df \approx \frac{\left(\frac{s_1^2}{n_1} + \frac{s_2^2}{n_2}\right)^2}{\frac{1}{n_1 - 1} \left(\frac{s_1^2}{n_1} \right)^2 + \frac{1}{n_2 - 1} \left( \frac{s_2^2}{n_2} \right)^2}
+$$
+This will be less than $\min(n_1, n_2) - 1$, so a conservative alternative is to use $df = \min(n_1, n_2) - 1$.
+
+# Overlapping confidence intervals
+
+Suppose $\bar{x}_1 = 0$, $\bar{x}_2 = 0.3$, $n_1 = n_2 = 100$, and $s_1 = s_2 = 1$.
+
+- Find the confidence intervals for $\mu_1$, $\mu_2$, and $\mu_1 - \mu_2$.
+- Do the confidence intervals overlap? Can you reject the null hypothesis that $\mu_1 - \mu_2 = 0$?
+- Can you reject the hypotheses $\mu_1 = 0$, $\mu_2 = 0$?
+- Can you conclude that you can reject the hypothesis $\mu_1 - \mu_2 = 0$?
+
+# Paired t-test
+
+Notes on causal inference?
+
+
+# ANOVA
+
+- What are the null and alternative hypotheses? When would we use one?
+- ANOVA is equivalent to regression with all categorical variables
+- The test used in ANOVA will be similar to R^2
+- Can reject null hypothesis that all means are the same, but fail to reject the hypothesis that any given pair of means is the same.
+
+# Multiple testing
+
+![XKCD Comic "Significant"](https://imgs.xkcd.com/comics/significant.png)
+
+There were 20 hypothesis tests. All used a significance level of 5%.
+
+What is the probability of getting at least on test that was significant? Assume all the tests are significant.
+
+Corrections
+
+- Bonferroni correction: $\alpha / k$
+- Sidak correction: If independent, then $1 - (1 - \alpha)^k$
+- Holm-Bonferroni.
+    - Order all hypotheses by p-value
+    - Test in order of p-value until $P_{k} > \alpha / (m + 1 - k)$.
+
+Boole's inequality: probability of the union of events is less than or equal to the sum or the probability of events.
+
+*Family-wise error rate*: Probability of at least one Type I error for $k$ comparison (assuming null).
+
+*False discovery rate*: Proportion of significant results that are false positives.
+
+Benjami-Hochberg:
+
+1. For given $\alpha$ find the largest $k$ such that $P_{(k)} \leq \frac{k}{m} \alpha$.
+2. Reject null hypothosis for all $H_{(i)}$ for $i = 1, \dots, k$.
