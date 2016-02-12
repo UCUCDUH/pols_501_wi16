@@ -5,17 +5,20 @@ date: "February 10, 2016"
 output: html_document
 ---
 
-# Sampling Distribution
+```{r}
+library("dplyr")
+set.seed(153305)
+```
 
-Asymptotically, the Central Limit Theorem states that the sampling distribution of the sample 
-mean is $N(\mu, \sigma / \sqrt{n})$.
+The Central Limit Theorem states that the sampling distribution of the sample 
+mean is $N(\mu, \sigma / \sqrt{n})$ as $n$ gets large.
 This means that test-statistics and critical values are defined as,
 $$
 \frac{\bar{x} - \mu}{\sigma / \sqrt{n}} \sim N(0, 1)
 $$
-The problem with this is that rarely do we know the population standard deviation, $\sigma$.
+However, the previous equation assumes that the population standard deviation, $\sigma$, is known.
 It would be unusual to have an unknown population mean, but a known population standard deviation.
-So in practice, the test statistic that is used plugs in the sample standard deviation for the population standard deviation
+In practice, the test statistic that is used plugs in the sample standard deviation for the population standard deviation,
 $$
 \frac{\bar{x} - \mu}{\sigma / \sqrt{n}} \approx \frac{\bar{x} - \mu}{s / \sqrt{n}}
 $$
@@ -27,12 +30,13 @@ for (i in 1:5) {
 ```
 So the sampling distribution of the test statistic of the mean will need to account for both the variability of sample means and standard deviations.
 
-The sample standard deviation has its own sampling distribution.
-Let's draw samples from the standard normal distribution at several sample sizes, and save the mean and variance of each sample.
+# Sampling distribution of the sample variances
+
+To get some intuition about the sampling distribution of the variance, draw samples from the standard normal distribution at several sample sizes, and save the mean and variance of each sample.
 ```{r}
-library("dplyr")
+sample_sizes <- as.integer(c(4, 16, 32, 256))
 samples <-
-    data_frame(size = as.integer(c(4, 16, 32, 256)),
+    data_frame(size = sample_sizes,
                iter = 2048) %>%
     group_by(size) %>%
     do({
@@ -50,9 +54,7 @@ samples <-
 ggplot(samples, aes(x = x_var, colour = factor(size))) +
   geom_density()
 ```
-
-The sampling distribution of the variance is known when the population distribution is a normal distribution. 
-In that case, the sampling distribution for the sum of squares of iid samples 
+When the population distribution is standard normal, the sampling distribution of the sum of squares ($n - 1 s ^ 2 = \sum (x_i - \bar{x})^2$) from independent samples is a Chi-squared distribution,
 $$
 (n - 1) s^2  / \sigma^2 \sim \chi^2_{n - 1}
 $$
@@ -67,8 +69,9 @@ ggplot(samples_w_chisq) +
   facet_wrap(~size, scales = "free_x")
 ```
 
-For smaller sample sizes the tails of the distribution of $(\bar{x} - \mu) / (s / \sqrt{n})$ are wider than those of $(\bar{x} - \mu) / (\sigma / \sqrt{n})$. 
-This is due to the added sampling variability of the sample variance (standard deviation).
+How does the sampling variability of the standard deviation affect the sampling variability of the mean test statistics?
+The tails of the distribution of $(\bar{x} - \mu) / (s / \sqrt{n})$ are wider than those of $(\bar{x} - \mu) / (\sigma / \sqrt{n})$.
+At smaller sample sizes, when there is more variance in the sum of squares, this difference is noticeable, but as the sample sizes increases, the tails become narrower, as the standard error of the standard deviation decreases.
 ```{r}
 comparison <- samples %>%
   mutate(known = x_mean / (1 / sqrt(size)),
@@ -80,12 +83,11 @@ ggplot(comparison, aes(samples = value, colour = sigma)) +
   facet_wrap(~size, scales = "free")
 ```
 
+Student's $t$-distribution is the distribution of the sampling distribution of the mean with an unknown standard deviation.
 
-The Student's t distribution is the distribution of the sampling distribution of the mean with an unknown standard deviation.
 
+TODO: coverage ratios of confidence intervals with and without Student's t distribution
 
-TODO: coverage ratios of confidence intervals
-
-TODO: Type I errors for sample sizes with normal and student's t distribution
+TODO: Type I errors for sample sizes with normal and Student's t distribution
 
 
