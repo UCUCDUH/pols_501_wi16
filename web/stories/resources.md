@@ -26,3 +26,4 @@
 - [Finding Help with R](getting_help_with_r/)
 - [Data Analysis Project Paper Guidelines](data_analysis_project_paper_guidelines/)
 - [Going from Stata to R](stata_to_r/)
+- [Labs: links to datasets and other info](https://docs.google.com/document/d/1Um8_q0Xi30RknaoZf24wLSa_7QyBmtxwlvfCqFOHCrU/edit?usp=sharing)

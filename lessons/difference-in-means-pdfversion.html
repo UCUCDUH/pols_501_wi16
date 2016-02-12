@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="author" content="Andreu Casas" />
+
+
+<title>Difference in Means. T-Distribution and Hypothesis Testing</title>
+
+<script src="libs/jquery-1.11.0/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap-3.3.1/css/cerulean.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.1/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.1/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.1/shim/respond.min.js"></script>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<link rel="stylesheet"
+      href="libs/highlight/textmate.css"
+      type="text/css" />
+<script src="libs/highlight/highlight.js"></script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img { 
+  max-width:100%; 
+  height: auto; 
+}
+</style>
+<div class="container-fluid main-container">
+
+<p>
+<strong>POL S/CS&amp;SS 501, University of Washington, Winter 2016</strong>
+</p>
+
+$$
+\DeclareMathOperator{\mean}{mean}
+\DeclareMathOperator{\var}{var}
+\DeclareMathOperator{\E}{E}
+\DeclareMathOperator{\argmin}{argmin}
+\DeclareMathOperator{\argmax}{argmax}
+$$
+
+<div id="header">
+<h1 class="title">Difference in Means. T-Distribution and Hypothesis Testing</h1>
+<h4 class="author"><em>Andreu Casas</em></h4>
+<h4 class="date"><em>January , 2016</em></h4>
+</div>
+
+<div id="TOC">
+<ul>
+<li><a href="#challenge">Challenge</a></li>
+<li><a href="#challenge-1">Challenge</a></li>
+</ul>
+</div>
+
+<p>Read the data in:</p>
+<pre class="r"><code>library(rio)
+data &lt;- import(&quot;data/ajr_2001.dta&quot;)</code></pre>
+<div id="challenge" class="section level2">
+<h2>Challenge</h2>
+<p>Explore and get familiar with the data:</p>
+<ul>
+<li>How many obersvations (rows) and variables (columns) does the dataset have?</li>
+<li>What does each observation represent?</li>
+<li>How many unique countries (<code>shortnam</code>) are in the dataset?</li>
+<li>Is there a country that shows up more than once?</li>
+<li>Are there any missing values for any variable?</li>
+</ul>
+<pre class="r"><code>library(dplyr)
+names(data)
+length(unique(data$shortnam))
+head(data, n = 1)
+nrow(na.omit(data))
+length(unique(data$shortnam))
+head(data$shortnam)</code></pre>
+<p>When importing STATA (<code>.dta</code>) dataset using the rio package, we have access to the variable description. We wrote a function in the <code>uwpols501</code> package to check at the variable description of STATA datasets loaded into R using <code>rio</code>.</p>
+<pre class="r"><code># library(devtools)
+# install_github(username = &quot;jrnold&quot;, repo = &quot;UW-POLS501/r-uwpols501&quot;)
+library(uwpols501)
+extract_var_info(data)</code></pre>
+<p>The variable <code>extmort4</code> contains information about <em>potential settlers mortality</em> (See Note in Figure 1 of the paper for a description of the variable: <em>measured in terms of deaths per annum per 1,000…</em>)</p>
+</div>
+<div id="challenge-1" class="section level2">
+<h2>Challenge</h2>
+<p>Explore the <code>extmort4</code> and <code>logem4</code> variable:</p>
+<ul>
+<li>How many missing values do they have?</li>
+<li>Do they have the same missing values? Why or why not?</li>
+<li>What is their mean, median, first, and third quantile?</li>
+<li>What would be the best way to plot this variable in order to analyze its distribution?</li>
+</ul>
+<pre class="r"><code>summary(data$extmort4)
+summary(data$logem4)</code></pre>
+<p><code>logem4</code> is the log of <code>extmort4</code>. They calculate the log of mortality-rate because they theorize that it has a log-linear relationship with the type of institutions (<code>avexpr</code>: average expropriation risk). However, some observations have a value for the <code>logem4</code> variable but not for the <code>extmort4</code> one, which does not make much sense (looks like an error). Create a new variable (e.g. <code>log_mort</code>) with the log of <code>extmort4</code>.</p>
+<pre class="r"><code>data$log_mort &lt;- log(data$extmort4)</code></pre>
+<pre class="r"><code>library(ggplot2)
+p &lt;- ggplot(data, aes(x= extmort4))
+p + geom_histogram(bins = 30)</code></pre>
+<pre><code>## Warning: Removed 76 rows containing non-finite values (stat_bin).</code></pre>
+<p><img src="difference-in-means-pdfversion_files/figure-html/unnamed-chunk-6-1.png" title="" alt="" width="672" /></p>
+<pre class="r"><code>p + geom_density() </code></pre>
+<pre><code>## Warning: Removed 76 rows containing non-finite values (stat_density).</code></pre>
+<p><img src="difference-in-means-pdfversion_files/figure-html/unnamed-chunk-6-2.png" title="" alt="" width="672" /></p>
+<pre class="r"><code>ggplot(data, aes(x = log_mort)) + geom_density()</code></pre>
+<pre><code>## Warning: Removed 76 rows containing non-finite values (stat_density).</code></pre>
+<p><img src="difference-in-means-pdfversion_files/figure-html/unnamed-chunk-6-3.png" title="" alt="" width="672" /></p>
+<p>Use plot to explore the relationship between the variables <code>logem4</code> and <code>avexpr</code>.</p>
+<pre class="r"><code>ggplot(data, aes(x = logem4, y = avexpr)) + 
+  geom_point() +
+  geom_smooth(method = &quot;lm&quot;, se = F)</code></pre>
+<pre><code>## Warning: Removed 89 rows containing non-finite values (stat_smooth).</code></pre>
+<pre><code>## Warning: Removed 89 rows containing missing values (geom_point).</code></pre>
+<p><img src="difference-in-means-pdfversion_files/figure-html/unnamed-chunk-7-1.png" title="" alt="" width="672" /></p>
+<p>Another way to evaluate their theory that different <strong>institutions</strong> (<code>avexpr</code>: average expropiation risk) were set up in places where <strong>colonization</strong> was highly costly than in places that were easy to colonize (<code>logem4</code>: the log of their mortality rate measure) would be to compare the <strong>mean</strong> institution (average expropiation risk) in countries with high colonization costs and in countries with low colonization costs.</p>
+<p>Create a new dummy variable indicating those countries that have a value of <code>logem4</code> in the top quantile (==1).</p>
+<pre class="r"><code>library(dplyr)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;dplyr&#39;
+## 
+## The following objects are masked from &#39;package:stats&#39;:
+## 
+##     filter, lag
+## 
+## The following objects are masked from &#39;package:base&#39;:
+## 
+##     intersect, setdiff, setequal, union</code></pre>
+<pre class="r"><code>data &lt;- mutate(data, high_mort = as.numeric(logem4 &gt; quantile(data$logem4, probs = .75, na.rm = TRUE)))</code></pre>
+<p>Plot the distribution of the <code>logem4</code> variable for these two groups side-by-side.</p>
+<pre class="r"><code>ggplot(filter(data, high_mort == 1), aes(x = logem4)) +
+  geom_density(fill= &quot;green4&quot;, alpha = 0.3) +
+  geom_density(data = filter(data, high_mort == 0),
+               aes(x = logem4), fill = &quot;blue4&quot;, alpha = 0.3)</code></pre>
+<p><img src="difference-in-means-pdfversion_files/figure-html/unnamed-chunk-9-1.png" title="" alt="" width="672" /></p>
+</div>
+
+<hr>
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://licensebuttons.net/l/by-nc-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
+R code is licensed under a <a href="https://www.r-project.org/Licenses/BSD_2_clause">BSD 2-clause</a> license.
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

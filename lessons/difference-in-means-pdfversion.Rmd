@@ -1,0 +1,197 @@
+---
+title: "Difference in Means: T-Test and Hypothesis Testing"
+author: "Andreu Casas"
+date: "January , 2016"
+output: 
+  pdf_document:
+    fig_width: 4
+    fig_height: 3
+---
+
+In this lab we will use data from Acemoglu et al.'s (2001) [paper](http://economics.mit.edu/files/4123) "The Colonial Origins of Comparative Development: An Empirical Investigation" in *AER*. 
+
+Go to Acemoglu's [website](http://economics.mit.edu/faculty/acemoglu/data/ajr2001), and download the data to replicate `Table 1`. 
+
+---
+
+## Challenge: 
+Skim the paper and briefly describe:
+  
+  - What's the puzzle/question?
+  - What's their argument?
+  - What are their key variables?
+  
+---
+
+
+Read the data in:
+```{r}
+library(rio)
+data <- import("data/ajr_2001.dta")
+```
+
+---
+
+## Challenge: 
+Explore the data:
+  
+  - How many obersvations (rows) and variables (columns) does the dataset have?
+  - What does each observation represent?
+  - How many unique countries (`shortnam`) are in the dataset?
+  - Is there a country that shows up more than once?
+  - Are there any missing values for any variable? 
+
+---
+
+```{r, eval = FALSE, echo = FALSE}
+library(dplyr)
+names(data)
+length(unique(data$shortnam))
+head(data, n = 1)
+nrow(na.omit(data))
+length(unique(data$shortnam))
+head(data$shortnam)
+```
+
+When importing STATA (`.dta`) dataset using the rio package, we have access to the variables description. We wrote a function in the `uwpols501` package to check the variables description of STATA datasets loaded into R using `rio`. 
+
+```{r, eval = FALSE}
+library(devtools)
+install_github(username = "jrnold", repo = "UW-POLS501/r-uwpols501")
+```
+
+
+```{r}
+library(uwpols501)
+extract_var_info(data)
+```
+
+The variable `extmort4` contains information about *potential settlers mortality* (See Note in Figure 1 of the paper for a description of the variable: *measured in terms of deaths per annum per 1,000...*)
+
+
+---
+
+## Challenge:
+Explore the `logpgp95` and `logem4` variable:
+
+  - Do they have missing values? If they do, are they the same?
+  - Summarize and explore the variables
+  - Why do they take the log of `mortality rate` and `gdp in 1995`?
+  - What would be the best way to plot this variable in order to analyze its distribution?
+
+---
+
+```{r, eval=FALSE}
+summary(data$extmort4)
+summary(data$logem4)
+```
+
+`logem4` is the log of `extmort4`. They calculate the log of mortality-rate because they theorize that it has a log-linear relationship with the type of institutions (`avexpr`) and economic growth (`logpgp95`).
+
+```{r, message=FALSE, fig.align='center'}
+library(ggplot2)
+p <- ggplot(data, aes(x= extmort4))
+p + geom_histogram(bins = 30)
+p + geom_density() 
+```
+
+\pagebreak
+
+Use a plot to explore the relationship between the variables `logem4` and `logpgp95`. 
+
+```{r, fig.align='center'}
+ggplot(data, aes(x = logem4, y = logpgp95)) + 
+  geom_point() +
+  geom_smooth(method = "lm")
+```
+
+Another way to evaluate AJR's theory that the mortality rate in new settlements conditioned the type of institutions that metropolies implemented in different territories and, as a result, the future economic growth in those regions, would be to compare the **mean** economic development (`logpgp95`) between countries with low and high mortality rates (`logem4`)
+
+Create a new dummy variable indicating those countries that have a value of `logem4` in the top 3 quantiles (==1). Also remove from the dataset those observation that do not have a value for `logem4`. 
+
+```{r, message=FALSE}
+library(dplyr)
+data <- data %>%
+  mutate(high_mort = 
+                 factor(as.numeric(logem4 > quantile(data$logem4, probs = .25, na.rm = TRUE))))
+data <- mutate(data, high_mort = ifelse(high_mort == 0, "low", "high"))
+data <- data %>%
+  filter(! is.na(high_mort))
+```
+
+---
+
+## Challenge:
+
+How would we calculate the mean `logpgp95` for each group (`high_mort` == "low" and "high") and a 95% confidence interval around those means?
+
+---
+
+```{r}
+differences <- data %>%
+  group_by(high_mort) %>%
+  summarize(n = length(logpgp95),
+            x = round(mean(logpgp95, na.rm = TRUE), 2),
+            s = round(sd(logpgp95, na.rm = TRUE), 2),
+            t_val = round(abs(qt(0.05/2, n)), 2),
+            se = round((s / sqrt(n)), 2),
+            lwr = round(x - (t_val * se), 2),
+            upr = round(x + (t_val * se), 2)) %>%
+  as.data.frame()
+differences <- differences[1:2,]
+```
+
+```{r table, echo=FALSE, results='asis'}
+# install.packages(xtable)
+library(xtable)
+print(xtable(differences, caption = "Differences 1"), 
+      comment = FALSE, include.rownames = FALSE,caption.placement = "top")
+```
+
+A simpler way to calculate the mean `avexpr` (+ 95% CIs) for these two groups is to use the `t.test()` function in R.
+
+```{r, results = 'asis'}
+low_test <- t.test(select(filter(data, high_mort == "low"), logpgp95))
+high_test <- t.test(select(filter(data, high_mort == "high"), logpgp95))
+low_estimates <- data.frame(x = low_test$estimate, lwr = low_test$conf.int[1],
+                            upr = low_test$conf.int[2])
+high_estimates <- data.frame(x = high_test$estimate, lwr = high_test$conf.int[1],
+                            upr = high_test$conf.int[2])
+differences2 <- as.data.frame(rbind_list(high_estimates, low_estimates))
+print(xtable(differences2, caption = "Differences2"),caption.placement = "top",
+      comment = FALSE, include.rownames = FALSE)
+```
+
+There is a simpler way to do it with the `broom` package
+
+```{r, results = 'asis'}
+library("broom")
+data %>%
+  group_by(high_mort) %>%
+  do(tidy(t.test(.$logpgp95))) %>%
+  xtable(caption = "Differences 3") %>%
+  print(caption.placement = "top",
+      comment = FALSE, include.rownames = FALSE)
+```
+
+\pagebreak
+
+We can plot these two means and CIs to see more clearly if they overlap.
+
+```{r, fig.align = 'center'}
+ggplot(differences, aes(x = high_mort, y = x)) +
+  ylim(min(select(differences, lwr)), max(select(differences, upr))) +
+  geom_point(size = 1) +
+  geom_errorbar(aes(ymin = lwr, ymax = upr), width = .1) +
+  ggtitle("Mean average protection against expropriation 
+          by Mortality Rate") +
+  ylab("Av. Prot. against Expr.") +
+  xlab("AJR's Mortality Rate Index ")
+```
+
+We can also use the `t.test` function to test if these two means are statistically distinct. 
+
+```{r}
+tt_mort <- t.test(data$logpgp95 ~ data$high_mort)
+tt_mort
+```
