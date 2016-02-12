@@ -189,7 +189,7 @@ Class and Lab
 <li><i class="fa-li fa fa-bar-chart"></i><a href="/lessons/loops.html">Loops in R</a>
 <li><i class="fa-li fa fa-bar-chart"></i><a href="/lessons/Sampling_Distributions.html">Sampling Distributions through Simulation in R</a>
 <li><i class="fa-li fa fa-bar-chart"></i><a href="/lessons/Confidence_Intervals.html">Confidence Intervals of the Mean through Simulation in R</a>
-<li><i class="fa-li fa fa-bar-chart"></i><a href="/lessons/Hypothesis_Tests.html">Hypothesis Tests of the Mean through Simulation in R</a>
+<li><i class="fa-li fa fa-bar-chart"></i><a href="https://uw-pols501.github.io/pols_501_wi16/lessons/difference-in-means-pdfversion.html">Hypothesis Tests of the Mean through Simulation in R</a>
 </ul>
 
 Lab
