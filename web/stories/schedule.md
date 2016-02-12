@@ -192,6 +192,12 @@ Class and Lab
 <li><i class="fa-li fa fa-bar-chart"></i><a href="/lessons/Hypothesis_Tests.html">Hypothesis Tests of the Mean through Simulation in R</a>
 </ul>
 
+Lab
+
+<ul class="fa-ul">
+<li><i class="fa-li fa fa-bar-chart"></i><a href="lessons/difference-in-means-pdfversion.html">Difference in means in R</a>
+</ul>
+
 ## Week 6
 
 **Inference for Numerical Data (t-tests, ANOVA); `Bootstrap`.**

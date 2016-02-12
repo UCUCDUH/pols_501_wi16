@@ -14,7 +14,7 @@ Go to Acemoglu's [website](http://economics.mit.edu/faculty/acemoglu/data/ajr200
 
 ---
 
-## Challenge: 
+### Challenge: 
 Skim the paper and briefly describe:
   
   - What's the puzzle/question?
@@ -32,7 +32,7 @@ data <- import("data/ajr_2001.dta")
 
 ---
 
-## Challenge: 
+### Challenge: 
 Explore the data:
   
   - How many obersvations (rows) and variables (columns) does the dataset have?
@@ -71,7 +71,7 @@ The variable `extmort4` contains information about *potential settlers mortality
 
 ---
 
-## Challenge:
+### Challenge:
 Explore the `logpgp95` and `logem4` variable:
 
   - Do they have missing values? If they do, are they the same?
@@ -121,7 +121,7 @@ data <- data %>%
 
 ---
 
-## Challenge:
+### Challenge:
 
 How would we calculate the mean `logpgp95` for each group (`high_mort` == "low" and "high") and a 95% confidence interval around those means?
 

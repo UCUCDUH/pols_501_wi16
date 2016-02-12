@@ -11,7 +11,7 @@
 <meta name="author" content="Andreu Casas" />
 
 
-<title>Difference in Means. T-Distribution and Hypothesis Testing</title>
+<title>Difference in Means: T-Test and Hypothesis Testing</title>
 
 <script src="libs/jquery-1.11.0/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -70,29 +70,41 @@ $$
 \DeclareMathOperator{\mean}{mean}
 \DeclareMathOperator{\var}{var}
 \DeclareMathOperator{\E}{E}
+\DeclareMathOperator{\MSE}{MSE}
+\DeclareMathOperator{\Bias}{Bias}
+\DeclareMathOperator{\SE}{se}
+\DeclareMathOperator{\SD}{sd}
 \DeclareMathOperator{\argmin}{argmin}
 \DeclareMathOperator{\argmax}{argmax}
 $$
 
 <div id="header">
-<h1 class="title">Difference in Means. T-Distribution and Hypothesis Testing</h1>
+<h1 class="title">Difference in Means: T-Test and Hypothesis Testing</h1>
 <h4 class="author"><em>Andreu Casas</em></h4>
 <h4 class="date"><em>January , 2016</em></h4>
 </div>
 
-<div id="TOC">
-<ul>
-<li><a href="#challenge">Challenge</a></li>
-<li><a href="#challenge-1">Challenge</a></li>
-</ul>
-</div>
 
+<p>In this lab we will use data from Acemoglu et al.’s (2001) <a href="http://economics.mit.edu/files/4123">paper</a> “The Colonial Origins of Comparative Development: An Empirical Investigation” in <em>AER</em>.</p>
+<p>Go to Acemoglu’s <a href="http://economics.mit.edu/faculty/acemoglu/data/ajr2001">website</a>, and download the data to replicate <code>Table 1</code>.</p>
+<hr />
+<div id="challenge" class="section level3">
+<h3>Challenge:</h3>
+<p>Skim the paper and briefly describe:</p>
+<ul>
+<li>What’s the puzzle/question?</li>
+<li>What’s their argument?</li>
+<li>What are their key variables?</li>
+</ul>
+<hr />
 <p>Read the data in:</p>
 <pre class="r"><code>library(rio)
 data &lt;- import(&quot;data/ajr_2001.dta&quot;)</code></pre>
-<div id="challenge" class="section level2">
-<h2>Challenge</h2>
-<p>Explore and get familiar with the data:</p>
+<hr />
+</div>
+<div id="challenge-1" class="section level3">
+<h3>Challenge:</h3>
+<p>Explore the data:</p>
 <ul>
 <li>How many obersvations (rows) and variables (columns) does the dataset have?</li>
 <li>What does each observation represent?</li>
@@ -100,71 +112,161 @@ data &lt;- import(&quot;data/ajr_2001.dta&quot;)</code></pre>
 <li>Is there a country that shows up more than once?</li>
 <li>Are there any missing values for any variable?</li>
 </ul>
-<pre class="r"><code>library(dplyr)
-names(data)
-length(unique(data$shortnam))
-head(data, n = 1)
-nrow(na.omit(data))
-length(unique(data$shortnam))
-head(data$shortnam)</code></pre>
-<p>When importing STATA (<code>.dta</code>) dataset using the rio package, we have access to the variable description. We wrote a function in the <code>uwpols501</code> package to check at the variable description of STATA datasets loaded into R using <code>rio</code>.</p>
-<pre class="r"><code># library(devtools)
-# install_github(username = &quot;jrnold&quot;, repo = &quot;UW-POLS501/r-uwpols501&quot;)
-library(uwpols501)
+<hr />
+<p>When importing STATA (<code>.dta</code>) dataset using the rio package, we have access to the variables description. We wrote a function in the <code>uwpols501</code> package to check the variables description of STATA datasets loaded into R using <code>rio</code>.</p>
+<pre class="r"><code>library(devtools)
+install_github(username = &quot;jrnold&quot;, repo = &quot;UW-POLS501/r-uwpols501&quot;)</code></pre>
+<pre class="r"><code>library(uwpols501)
 extract_var_info(data)</code></pre>
+<pre><code>##  [1] &quot;3 letter country name&quot;                        
+##  [2] &quot;European settlers 1900, AJR&quot;                  
+##  [3] &quot;=1 if was colony FLOPS definiti&quot;              
+##  [4] &quot;average protection against expropriation risk&quot;
+##  [5] &quot;log PPP GDP pc in 1995, World Bank&quot;           
+##  [6] &quot;cons on exec in 1st year indep&quot;               
+##  [7] &quot;democracy in 1900&quot;                            
+##  [8] &quot;constraint on executive in 1900&quot;              
+##  [9] &quot;corrected mortality&quot;                          
+## [10] &quot;log settler mortality&quot;                        
+## [11] &quot; log GDP per work, Hall&amp;Jones&quot;                
+## [12] &quot;base sample Colonial Origins paper&quot;</code></pre>
 <p>The variable <code>extmort4</code> contains information about <em>potential settlers mortality</em> (See Note in Figure 1 of the paper for a description of the variable: <em>measured in terms of deaths per annum per 1,000…</em>)</p>
+<hr />
 </div>
-<div id="challenge-1" class="section level2">
-<h2>Challenge</h2>
-<p>Explore the <code>extmort4</code> and <code>logem4</code> variable:</p>
+<div id="challenge-2" class="section level3">
+<h3>Challenge:</h3>
+<p>Explore the <code>logpgp95</code> and <code>logem4</code> variable:</p>
 <ul>
-<li>How many missing values do they have?</li>
-<li>Do they have the same missing values? Why or why not?</li>
-<li>What is their mean, median, first, and third quantile?</li>
+<li>Do they have missing values? If they do, are they the same?</li>
+<li>Summarize and explore the variables</li>
+<li>Why do they take the log of <code>mortality rate</code> and <code>gdp in 1995</code>?</li>
 <li>What would be the best way to plot this variable in order to analyze its distribution?</li>
 </ul>
+<hr />
 <pre class="r"><code>summary(data$extmort4)
 summary(data$logem4)</code></pre>
-<p><code>logem4</code> is the log of <code>extmort4</code>. They calculate the log of mortality-rate because they theorize that it has a log-linear relationship with the type of institutions (<code>avexpr</code>: average expropriation risk). However, some observations have a value for the <code>logem4</code> variable but not for the <code>extmort4</code> one, which does not make much sense (looks like an error). Create a new variable (e.g. <code>log_mort</code>) with the log of <code>extmort4</code>.</p>
-<pre class="r"><code>data$log_mort &lt;- log(data$extmort4)</code></pre>
+<p><code>logem4</code> is the log of <code>extmort4</code>. They calculate the log of mortality-rate because they theorize that it has a log-linear relationship with the type of institutions (<code>avexpr</code>) and economic growth (<code>logpgp95</code>).</p>
 <pre class="r"><code>library(ggplot2)
 p &lt;- ggplot(data, aes(x= extmort4))
 p + geom_histogram(bins = 30)</code></pre>
 <pre><code>## Warning: Removed 76 rows containing non-finite values (stat_bin).</code></pre>
-<p><img src="difference-in-means-pdfversion_files/figure-html/unnamed-chunk-6-1.png" title="" alt="" width="672" /></p>
+<p><img src="difference-in-means-pdfversion_files/figure-html/unnamed-chunk-6-1.png" title="" alt="" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>p + geom_density() </code></pre>
 <pre><code>## Warning: Removed 76 rows containing non-finite values (stat_density).</code></pre>
-<p><img src="difference-in-means-pdfversion_files/figure-html/unnamed-chunk-6-2.png" title="" alt="" width="672" /></p>
-<pre class="r"><code>ggplot(data, aes(x = log_mort)) + geom_density()</code></pre>
-<pre><code>## Warning: Removed 76 rows containing non-finite values (stat_density).</code></pre>
-<p><img src="difference-in-means-pdfversion_files/figure-html/unnamed-chunk-6-3.png" title="" alt="" width="672" /></p>
-<p>Use plot to explore the relationship between the variables <code>logem4</code> and <code>avexpr</code>.</p>
-<pre class="r"><code>ggplot(data, aes(x = logem4, y = avexpr)) + 
+<p><img src="difference-in-means-pdfversion_files/figure-html/unnamed-chunk-6-2.png" title="" alt="" width="672" style="display: block; margin: auto;" /></p>
+<p></p>
+<p>Use a plot to explore the relationship between the variables <code>logem4</code> and <code>logpgp95</code>.</p>
+<pre class="r"><code>ggplot(data, aes(x = logem4, y = logpgp95)) + 
   geom_point() +
-  geom_smooth(method = &quot;lm&quot;, se = F)</code></pre>
-<pre><code>## Warning: Removed 89 rows containing non-finite values (stat_smooth).</code></pre>
-<pre><code>## Warning: Removed 89 rows containing missing values (geom_point).</code></pre>
-<p><img src="difference-in-means-pdfversion_files/figure-html/unnamed-chunk-7-1.png" title="" alt="" width="672" /></p>
-<p>Another way to evaluate their theory that different <strong>institutions</strong> (<code>avexpr</code>: average expropiation risk) were set up in places where <strong>colonization</strong> was highly costly than in places that were easy to colonize (<code>logem4</code>: the log of their mortality rate measure) would be to compare the <strong>mean</strong> institution (average expropiation risk) in countries with high colonization costs and in countries with low colonization costs.</p>
-<p>Create a new dummy variable indicating those countries that have a value of <code>logem4</code> in the top quantile (==1).</p>
-<pre class="r"><code>library(dplyr)</code></pre>
+  geom_smooth(method = &quot;lm&quot;)</code></pre>
+<pre><code>## Warning: Removed 82 rows containing non-finite values (stat_smooth).</code></pre>
+<pre><code>## Warning: Removed 82 rows containing missing values (geom_point).</code></pre>
+<p><img src="difference-in-means-pdfversion_files/figure-html/unnamed-chunk-7-1.png" title="" alt="" width="672" style="display: block; margin: auto;" /></p>
+<p>Another way to evaluate AJR’s theory that the mortality rate in new settlements conditioned the type of institutions that metropolies implemented in different territories and, as a result, the future economic growth in those regions, would be to compare the <strong>mean</strong> economic development (<code>logpgp95</code>) between countries with low and high mortality rates (<code>logem4</code>)</p>
+<p>Create a new dummy variable indicating those countries that have a value of <code>logem4</code> in the top 3 quantiles (==1). Also remove from the dataset those observation that do not have a value for <code>logem4</code>.</p>
+<pre class="r"><code>library(dplyr)
+data &lt;- data %&gt;%
+  mutate(high_mort = 
+                 factor(as.numeric(logem4 &gt; quantile(data$logem4, probs = .25, na.rm = TRUE))))
+data &lt;- mutate(data, high_mort = ifelse(high_mort == 0, &quot;low&quot;, &quot;high&quot;))
+data &lt;- data %&gt;%
+  filter(! is.na(high_mort))</code></pre>
+<hr />
+</div>
+<div id="challenge-3" class="section level3">
+<h3>Challenge:</h3>
+<p>How would we calculate the mean <code>logpgp95</code> for each group (<code>high_mort</code> == “low” and “high”) and a 95% confidence interval around those means?</p>
+<hr />
+<pre class="r"><code>differences &lt;- data %&gt;%
+  group_by(high_mort) %&gt;%
+  summarize(n = length(logpgp95),
+            x = round(mean(logpgp95, na.rm = TRUE), 2),
+            s = round(sd(logpgp95, na.rm = TRUE), 2),
+            t_val = round(abs(qt(0.05/2, n)), 2),
+            se = round((s / sqrt(n)), 2),
+            lwr = round(x - (t_val * se), 2),
+            upr = round(x + (t_val * se), 2)) %&gt;%
+  as.data.frame()
+differences &lt;- differences[1:2,]</code></pre>
+\begin{table}[ht]
+\centering
+\caption{Differences 1} 
+\begin{tabular}{lrrrrrrr}
+  \hline
+high\_mort &amp; n &amp; x &amp; s &amp; t\_val &amp; se &amp; lwr &amp; upr \\ 
+  \hline
+high &amp;  65 &amp; 7.80 &amp; 0.88 &amp; 2.00 &amp; 0.11 &amp; 7.58 &amp; 8.02 \\ 
+  low &amp;  22 &amp; 8.88 &amp; 1.16 &amp; 2.07 &amp; 0.25 &amp; 8.36 &amp; 9.40 \\ 
+   \hline
+\end{tabular}
+\end{table}
+<p>A simpler way to calculate the mean <code>avexpr</code> (+ 95% CIs) for these two groups is to use the <code>t.test()</code> function in R.</p>
+<pre class="r"><code>low_test &lt;- t.test(select(filter(data, high_mort == &quot;low&quot;), logpgp95))
+high_test &lt;- t.test(select(filter(data, high_mort == &quot;high&quot;), logpgp95))
+low_estimates &lt;- data.frame(x = low_test$estimate, lwr = low_test$conf.int[1],
+                            upr = low_test$conf.int[2])
+high_estimates &lt;- data.frame(x = high_test$estimate, lwr = high_test$conf.int[1],
+                            upr = high_test$conf.int[2])
+differences2 &lt;- as.data.frame(rbind_list(high_estimates, low_estimates))
+print(xtable(differences2, caption = &quot;Differences2&quot;),caption.placement = &quot;top&quot;,
+      comment = FALSE, include.rownames = FALSE)</code></pre>
+\begin{table}[ht]
+\centering
+\caption{Differences2} 
+\begin{tabular}{rrr}
+  \hline
+x &amp; lwr &amp; upr \\ 
+  \hline
+7.80 &amp; 7.58 &amp; 8.03 \\ 
+  8.88 &amp; 8.33 &amp; 9.42 \\ 
+   \hline
+\end{tabular}
+\end{table}
+<p>There is a simpler way to do it with the <code>broom</code> package</p>
+<pre class="r"><code>library(&quot;broom&quot;)
+data %&gt;%
+  group_by(high_mort) %&gt;%
+  do(tidy(t.test(.$logpgp95))) %&gt;%
+  xtable(caption = &quot;Differences 3&quot;) %&gt;%
+  print(caption.placement = &quot;top&quot;,
+      comment = FALSE, include.rownames = FALSE)</code></pre>
+\begin{table}[ht]
+\centering
+\caption{Differences 3} 
+\begin{tabular}{lrrrrrr}
+  \hline
+high\_mort &amp; estimate &amp; statistic &amp; p.value &amp; parameter &amp; conf.low &amp; conf.high \\ 
+  \hline
+high &amp; 7.80 &amp; 69.19 &amp; 0.00 &amp; 60.00 &amp; 7.58 &amp; 8.03 \\ 
+  low &amp; 8.88 &amp; 34.10 &amp; 0.00 &amp; 19.00 &amp; 8.33 &amp; 9.42 \\ 
+   \hline
+\end{tabular}
+\end{table}
+<p></p>
+<p>We can plot these two means and CIs to see more clearly if they overlap.</p>
+<pre class="r"><code>ggplot(differences, aes(x = high_mort, y = x)) +
+  ylim(min(select(differences, lwr)), max(select(differences, upr))) +
+  geom_point(size = 1) +
+  geom_errorbar(aes(ymin = lwr, ymax = upr), width = .1) +
+  ggtitle(&quot;Mean average protection against expropriation 
+          by Mortality Rate&quot;) +
+  ylab(&quot;Av. Prot. against Expr.&quot;) +
+  xlab(&quot;AJR&#39;s Mortality Rate Index &quot;)</code></pre>
+<p><img src="difference-in-means-pdfversion_files/figure-html/unnamed-chunk-12-1.png" title="" alt="" width="672" style="display: block; margin: auto;" /></p>
+<p>We can also use the <code>t.test</code> function to test if these two means are statistically distinct.</p>
+<pre class="r"><code>tt_mort &lt;- t.test(data$logpgp95 ~ data$high_mort)
+tt_mort</code></pre>
 <pre><code>## 
-## Attaching package: &#39;dplyr&#39;
+##  Welch Two Sample t-test
 ## 
-## The following objects are masked from &#39;package:stats&#39;:
-## 
-##     filter, lag
-## 
-## The following objects are masked from &#39;package:base&#39;:
-## 
-##     intersect, setdiff, setequal, union</code></pre>
-<pre class="r"><code>data &lt;- mutate(data, high_mort = as.numeric(logem4 &gt; quantile(data$logem4, probs = .75, na.rm = TRUE)))</code></pre>
-<p>Plot the distribution of the <code>logem4</code> variable for these two groups side-by-side.</p>
-<pre class="r"><code>ggplot(filter(data, high_mort == 1), aes(x = logem4)) +
-  geom_density(fill= &quot;green4&quot;, alpha = 0.3) +
-  geom_density(data = filter(data, high_mort == 0),
-               aes(x = logem4), fill = &quot;blue4&quot;, alpha = 0.3)</code></pre>
-<p><img src="difference-in-means-pdfversion_files/figure-html/unnamed-chunk-9-1.png" title="" alt="" width="672" /></p>
+## data:  data$logpgp95 by data$high_mort
+## t = -3.7938, df = 26.499, p-value = 0.0007798
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -1.6594863 -0.4938429
+## sample estimates:
+## mean in group high  mean in group low 
+##           7.803004           8.879669</code></pre>
 </div>
 
 <hr>
