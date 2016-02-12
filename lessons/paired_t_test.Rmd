@@ -1,0 +1,44 @@
+---
+title: "Paired t-test"
+author: "Jeffrey Arnold"
+date: "February 10, 2016"
+output: html_document
+---
+
+t-test 
+
+What does pairing do? 
+
+1. Reduces (or eliminates!) bias
+2. Reduces variance
+
+```{r}
+
+
+```
+
+```{r}
+library("ggplot2")
+library("dplyr")
+library("tidyr")
+
+data("sleep")
+ggplot(sleep, aes(x = group, y = extra, group = ID)) +
+  geom_point() +
+  geom_line()
+
+```
+
+```{r}
+ggplot(sleep, aes(x = group, y = extra, group = ID)) +
+  geom_point() +
+  geom_line()
+```
+
+```{r}
+t.test(extra ~ group, data = sleep)
+
+```
+
+
+

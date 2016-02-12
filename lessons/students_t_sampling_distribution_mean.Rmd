@@ -1,0 +1,91 @@
+---
+title: "Student’s t-distribution and Inference of the Population Mean"
+author: "Jeffrey Arnold"
+date: "February 10, 2016"
+output: html_document
+---
+
+# Sampling Distribution
+
+Asymptotically, the Central Limit Theorem states that the sampling distribution of the sample 
+mean is $N(\mu, \sigma / \sqrt{n})$.
+This means that test-statistics and critical values are defined as,
+$$
+\frac{\bar{x} - \mu}{\sigma / \sqrt{n}} \sim N(0, 1)
+$$
+The problem with this is that rarely do we know the population standard deviation, $\sigma$.
+It would be unusual to have an unknown population mean, but a known population standard deviation.
+So in practice, the test statistic that is used plugs in the sample standard deviation for the population standard deviation
+$$
+\frac{\bar{x} - \mu}{\sigma / \sqrt{n}} \approx \frac{\bar{x} - \mu}{s / \sqrt{n}}
+$$
+But the sample variance, and by extension, the sample standard deviation, will vary across samples,
+```{r}
+for (i in 1:5) {
+  var(rnorm(10))
+}
+```
+So the sampling distribution of the test statistic of the mean will need to account for both the variability of sample means and standard deviations.
+
+The sample standard deviation has its own sampling distribution.
+Let's draw samples from the standard normal distribution at several sample sizes, and save the mean and variance of each sample.
+```{r}
+library("dplyr")
+samples <-
+    data_frame(size = as.integer(c(4, 16, 32, 256)),
+               iter = 2048) %>%
+    group_by(size) %>%
+    do({
+      results <- list()
+      for (i in 1:.$iter) {
+        x <- rnorm(.$size)
+        results[[i]] <- data_frame(x_mean = mean(x),
+                                   x_var = var(x))
+      }
+      bind_rows(results)
+    }) %>% ungroup()
+```
+
+```{r}
+ggplot(samples, aes(x = x_var, colour = factor(size))) +
+  geom_density()
+```
+
+The sampling distribution of the variance is known when the population distribution is a normal distribution. 
+In that case, the sampling distribution for the sum of squares of iid samples 
+$$
+(n - 1) s^2  / \sigma^2 \sim \chi^2_{n - 1}
+$$
+```{r}
+samples_w_chisq <- samples %>%
+  mutate(sum_sq = x_var * (size - 1),
+         chisq = dchisq(x_var * size, df = size),
+         size = factor(size))
+ggplot(samples_w_chisq) +
+  geom_density(mapping = aes(x = sum_sq), color = "black") +
+  geom_line(mapping = aes(x = sum_sq, y = chisq), color = "red") +
+  facet_wrap(~size, scales = "free_x")
+```
+
+For smaller sample sizes the tails of the distribution of $(\bar{x} - \mu) / (s / \sqrt{n})$ are wider than those of $(\bar{x} - \mu) / (\sigma / \sqrt{n})$. 
+This is due to the added sampling variability of the sample variance (standard deviation).
+```{r}
+comparison <- samples %>%
+  mutate(known = x_mean / (1 / sqrt(size)),
+         estimated = x_mean / sqrt(x_var / size)) %>%
+  select(size, known, estimated) %>%
+  gather(sigma, value, -size)
+ggplot(comparison, aes(samples = value, colour = sigma)) +
+  geom_qq() +
+  facet_wrap(~size, scales = "free")
+```
+
+
+The Student's t distribution is the distribution of the sampling distribution of the mean with an unknown standard deviation.
+
+
+TODO: coverage ratios of confidence intervals
+
+TODO: Type I errors for sample sizes with normal and student's t distribution
+
+

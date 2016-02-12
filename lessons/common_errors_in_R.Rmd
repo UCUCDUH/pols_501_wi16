@@ -77,7 +77,7 @@ iris[ , "blahblah"]
 iris[["Species"]] <- NULL
 iris[["Species"]]
 ```
- 
+
 ```
 read.csv("this_file_probably_does_not_exist.csv")
 ```
@@ -95,18 +95,18 @@ ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length)) + geom_bar()
 ```
 `r solution_start()`
 ```
-ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length)) + 
+ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length)) +
   geom_bar(stat = "summary", position = "dodge", fun.y="mean")
 
-ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length)) + 
+ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length)) +
   geom_bar(stat = "summary", position = "dodge", fun.y="sum")
-  
+
 ```
 `r solution_end()`
 
 ```
 iris[10,2] <- NA
-ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length)) + 
+ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length)) +
   geom_point()
 ```
 
@@ -114,7 +114,7 @@ ggplot(iris, aes(x = Sepal.Width, y = Sepal.Length)) +
 ```
 library(dplyr)
 iris2 <- na.omit(iris)
-ggplot(iris2, aes(x = Sepal.Width, y = Sepal.Length)) + 
+ggplot(iris2, aes(x = Sepal.Width, y = Sepal.Length)) +
   geom_point()
 ```
 `r solution_end()`
@@ -136,7 +136,7 @@ Select the variables `manufacturer`, `model`, and `year` from `mpg`.
 ```
 select(mpg, manufacturer, model, year)
 ```
-What's going on? 
+What's going on?
 
 `r solution_start()`
 Since you loaded `MASS` second, **R** uses the function `select` from that package, not
@@ -157,7 +157,7 @@ Try creating a plot with the `ggplot` function
 ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, colour = Species)) +
   geom_point()
 ```
-However, you can still create a plot with 
+However, you can still create a plot with
 ```
 ggplot2::ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, colour = Species)) +
   geom_point()
@@ -167,6 +167,5 @@ ggplot2::ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, colour = Species)) 
 # References
 
 - http://www.burns-stat.com/documents/tutorials/impatient-r/#errors
-- http://varianceexplained.org/pages/errors.html
 - http://blog.revolutionanalytics.com/2015/03/the-most-common-r-error-messages.html
 - https://github.com/noamross/zero-dependency-problems/blob/master/misc/stack-overflow-common-r-errors.md

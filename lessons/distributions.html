@@ -283,7 +283,7 @@ ggplot(aes(x = x, y = y)) +
                 density = dt(x, .$df))) %&gt;%
   ggplot(aes(x = x, y = density, color = factor(df))) +
   geom_line()</code></pre>
-<p><img src="distributions_files/figure-html/unnamed-chunk-28-1.png" title="" alt="" width="672" /> Setting <code>df = Inf</code> (infinity) in a Studen’s t distribution gives the Normal distribution.</p>
+<p><img src="distributions_files/figure-html/unnamed-chunk-28-1.png" title="" alt="" width="672" /> Setting <code>df = Inf</code> (infinity) in a Student’s t distribution gives the Normal distribution.</p>
 <p>The function <code>pt</code> calculates the cumulative distribution function for the Student’s t distribution, <span class="math inline">\(F(x) = \Pr(X \leq x)\)</span>. For example, the probability that a Student’s t random variable <span class="math inline">\(X\)</span> is less than -1.96 will be somewhat higher than the 0.025 probability in a Normal distribution, and decrease with the degrees of freedom,</p>
 <pre class="r"><code>pt(-1.96, df = c(1, 8, 16, 32, 512, Inf))</code></pre>
 <pre><code>## [1] 0.15017145 0.04282903 0.03382516 0.02937642 0.02526889 0.02499790</code></pre>

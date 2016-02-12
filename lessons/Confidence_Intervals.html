@@ -91,7 +91,6 @@ $$
 <li><a href="#unknown-standard-deviation">Unknown standard deviation</a></li>
 <li><a href="#skewed-distribution">Skewed distribution</a></li>
 <li><a href="#miscellaneous">Miscellaneous</a></li>
-<li><a href="#common-misinterpretations-of-confidence-intervals">Common misinterpretations of confidence intervals</a></li>
 </ul></li>
 </ul>
 </div>
@@ -301,20 +300,6 @@ results &lt;- bind_rows(results) %&gt;%
 <li>What if the population is finite? How does that affect confidence intervals and standard errors?</li>
 <li>What if observations are not independent? Consider examples with clustering or autoregression.</li>
 </ul>
-</div>
-<div id="common-misinterpretations-of-confidence-intervals" class="section level2">
-<h2>Common misinterpretations of confidence intervals</h2>
-<p>Suppose you have a treatment that you suspect may alter performance on a certain task. You compare the means of your control and experimental groups (say 20 subjects in each sample). Further, suppose you use a simple independent means t-test and your result is significant (t = 2.7, d.f. = 18, p = 0.01). Please mark each of the statements below as “true” or “false.” “False” means that the statement does not follow logically from the above premises. Also note that several or none of the statements may be correct (between the population means) (From Hoekstra et al. 2014. “Robust Misinterpretation of Confidence Intervals.” <em>Psychological Bulletin Review</em>)</p>
-<ol style="list-style-type: decimal">
-<li>The probability that the true mean is greater than 0 is at least 95%</li>
-<li>The probability that the true mean equals 0 is smaller than 5%.</li>
-<li>The “null hypothesis” that the true mean equals 0 is likely to be incorrect</li>
-<li>There is a 95% probability that the true mean lies between 0.1 and 0.4</li>
-<li>If we were to repeat the experiment over and over, then 95% of the time the true mean falls between 0.1 and 0.4.</li>
-<li>If we were to repeat the experiment over and over then 95% of the confidence intervals would contain the sample mean of 0.25.</li>
-</ol>
-<p>All of these are false. The correct interpretation is:</p>
-<p>The confidence interval was generated using a method so that in repeated samples, 95% of the samples the confidence interval will contain the true mean.</p>
 </div>
 </div>
 
