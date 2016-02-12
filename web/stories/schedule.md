@@ -195,7 +195,7 @@ Class and Lab
 Lab
 
 <ul class="fa-ul">
-<li><i class="fa-li fa fa-bar-chart"></i><a href="lessons/difference-in-means-pdfversion.html">Difference in means in R</a>
+<li><i class="fa-li fa fa-bar-chart"></i><a href="/lessons/difference-in-means-pdfversion.html">Difference in means in R</a>
 </ul>
 
 ## Week 6
