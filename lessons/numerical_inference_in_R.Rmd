@@ -26,7 +26,7 @@ data("Duncan")
 glimpse(Duncan)
 ```
 
-This lesson will also use Student's sleep data, included with R.
+This lesson will also use Student's sleep data.
 This is a dataset on the effect of two different sleep medications on 10 patients that was used in Student's 1908 paper.
 ```{r}
 data("sleep")
@@ -179,7 +179,6 @@ ggplot(duncan_t_tests, aes(x = type,
 ```
 
 
-
 Now, consider the sleep data. 
 Since it has the extra hours of sleep for the same set of 10 patients for two drugs, this is paired data, and should be analyzed using a paired t-test.
 Although the data is paired, `t.test()` does not know this and will run a two-sample difference in means test by default,
@@ -227,18 +226,21 @@ The function `pairwise.t.test` does what it says; it runs pairwise t-tests.
 The first argument is a numeric vector; the second argument is the vector with categories.
 The argument `p.adjust.method` allows the user to choose a method to adjust the p-values for multiple comparison. 
 
-The Bonferroni correction adjusts the p-values so that the adjusted p-value is `\bar{alpha} = \alpha / m$, where $m$ is the number of tests.
-```{r}
-pairwise.t.test(Duncan$prestige, Duncan$type)
-```
-
+The Bonferroni correction adjusts the p-values so that the adjusted p-value is $\bar{alpha} = \alpha / m$, where $m$ is the number of tests. It controls the Familywise Error Rate (FWER).
+This is the probability that there is *at least one* Type I error,
 ```{r}
 pairwise.t.test(Duncan$prestige, Duncan$type, p.adjust.method = "bonferroni")
 ```
-
+The "Holm" correction, like the Bonferroni correction, controls the FWER, but is more powerful than the Bonferroni correction.
+```{r}
+pairwise.t.test(Duncan$prestige, Duncan$type, p.adjust.method = "holm")
+```
+An alternative approach to correcting multiple comparisons is the False Discovery Rate (FDR).
+The False Discovery Rate is the expected rate of false positives among all positives.
 ```{r}
 pairwise.t.test(Duncan$prestige, Duncan$type, p.adjust.method = "BH")
 ```
+See [EGAP](http://egap.org/methods-guides/10-things-you-need-know-about-multiple-comparisons) for more discussion of multiple testing adjustment.
 
 The **broom** package has some support for `pairwise.t.test`, and will put 
 ```{r}
@@ -248,4 +250,3 @@ tidy(pw_ttest_Duncan_type)
 
 **Note:** Pairwise t-tests are different than paired t-tests. In a paired t-test there are two populations which are not independent, in which each observation in one sample can be matched to another observation in the other sample. An example of this would be a before-after study.
 Pairwise t-tests are used to compare each pair of $K \geq 2$ samples, for a total of $K (K + 1) / 2$ difference in means t-tests. Since there are multiple t-tests, the p-values of pairwise t-tests need to be corrected for multiple testing.
-

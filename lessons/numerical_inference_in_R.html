@@ -114,7 +114,7 @@ glimpse(Duncan)</code></pre>
 ## $ income    (int) 62, 72, 75, 55, 64, 21, 64, 80, 67, 72, 42, 76, 76, ...
 ## $ education (int) 86, 76, 92, 90, 86, 84, 93, 100, 87, 86, 74, 98, 97,...
 ## $ prestige  (int) 82, 83, 90, 76, 90, 87, 93, 90, 52, 88, 57, 89, 97, ...</code></pre>
-<p>This lesson will also use Student’s sleep data, included with R. This is a dataset on the effect of two different sleep medications on 10 patients that was used in Student’s 1908 paper.</p>
+<p>This lesson will also use Student’s sleep data. This is a dataset on the effect of two different sleep medications on 10 patients that was used in Student’s 1908 paper.</p>
 <pre class="r"><code>data(&quot;sleep&quot;)
 glimpse(sleep)</code></pre>
 <pre><code>## Observations: 20
@@ -457,18 +457,7 @@ duncan_type_anova</code></pre>
 <div id="pairwise-t-tests" class="section level1">
 <h1>Pairwise t-tests</h1>
 <p>The function <code>pairwise.t.test</code> does what it says; it runs pairwise t-tests. The first argument is a numeric vector; the second argument is the vector with categories. The argument <code>p.adjust.method</code> allows the user to choose a method to adjust the p-values for multiple comparison.</p>
-<p>The Bonferroni correction adjusts the p-values so that the adjusted p-value is `{alpha} = / m$, where <span class="math inline">\(m\)</span> is the number of tests.</p>
-<pre class="r"><code>pairwise.t.test(Duncan$prestige, Duncan$type)</code></pre>
-<pre><code>## 
-##  Pairwise comparisons using t tests with pooled SD 
-## 
-## data:  Duncan$prestige and Duncan$type 
-## 
-##      bc      prof   
-## prof 7.6e-14 -      
-## wc   0.066   1.3e-06
-## 
-## P value adjustment method: holm</code></pre>
+<p>The Bonferroni correction adjusts the p-values so that the adjusted p-value is <span class="math inline">\(\bar{alpha} = \alpha / m\)</span>, where <span class="math inline">\(m\)</span> is the number of tests. It controls the Familywise Error Rate (FWER). This is the probability that there is <em>at least one</em> Type I error,</p>
 <pre class="r"><code>pairwise.t.test(Duncan$prestige, Duncan$type, p.adjust.method = &quot;bonferroni&quot;)</code></pre>
 <pre><code>## 
 ##  Pairwise comparisons using t tests with pooled SD 
@@ -480,6 +469,19 @@ duncan_type_anova</code></pre>
 ## wc   0.2     2.0e-06
 ## 
 ## P value adjustment method: bonferroni</code></pre>
+<p>The “Holm” correction, like the Bonferroni correction, controls the FWER, but is more powerful than the Bonferroni correction.</p>
+<pre class="r"><code>pairwise.t.test(Duncan$prestige, Duncan$type, p.adjust.method = &quot;holm&quot;)</code></pre>
+<pre><code>## 
+##  Pairwise comparisons using t tests with pooled SD 
+## 
+## data:  Duncan$prestige and Duncan$type 
+## 
+##      bc      prof   
+## prof 7.6e-14 -      
+## wc   0.066   1.3e-06
+## 
+## P value adjustment method: holm</code></pre>
+<p>An alternative approach to correcting multiple comparisons is the False Discovery Rate (FDR). The False Discovery Rate is the expected rate of false positives among all positives.</p>
 <pre class="r"><code>pairwise.t.test(Duncan$prestige, Duncan$type, p.adjust.method = &quot;BH&quot;)</code></pre>
 <pre><code>## 
 ##  Pairwise comparisons using t tests with pooled SD 
@@ -491,6 +493,7 @@ duncan_type_anova</code></pre>
 ## wc   0.066   9.9e-07
 ## 
 ## P value adjustment method: BH</code></pre>
+<p>See <a href="http://egap.org/methods-guides/10-things-you-need-know-about-multiple-comparisons">EGAP</a> for more discussion of multiple testing adjustment.</p>
 <p>The <strong>broom</strong> package has some support for <code>pairwise.t.test</code>, and will put</p>
 <pre class="r"><code>pw_ttest_Duncan_type &lt;- pairwise.t.test(Duncan$prestige, Duncan$type)
 tidy(pw_ttest_Duncan_type)</code></pre>
