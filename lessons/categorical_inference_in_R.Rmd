@@ -1,0 +1,215 @@
+---
+title: "Categorical Inference in R"
+author: "Jeffrey Arnold"
+date: "February 14, 2016"
+---
+
+This lesson introduces the R commands for inference on categorical variables.
+
+- `prop.test`: One-sample proportions, two-sample difference in proportions using a normal distribution approximation.
+- `binom.test`: Exact inference for a one-sample proportion.
+- `chisq.test`: Chi-squared tests of goodness of fit and independence.
+
+This lesson uses the following packages, although all the functions for inference (`t.test()`, `anova()`, and `pairwise.t.test()`) are included with R.
+```{r message=FALSE}
+library("car")
+library("broom")
+library("dplyr")
+library("tidyr")
+```
+
+
+# Ones-sample inference of proportions
+
+The R function `prop.test()` calculates both hypothesis tests and confidence intervals for one- and two-sample proportion tests.
+
+For this, use an example from *OpenIntro* (p. 275),
+
+  In New York City on October 23rd, 2014, a doctor who had recently been treating Ebola
+  patients in Guinea went to the hospital with a slight fever and was subsequently diagnosed
+  with Ebola. Soon thereafter, an NBC 4 New York/The Wall Street Journal/Marist Poll
+  found that 82% of New Yorkers favored a "mandatory 21-day quarantine for anyone who
+  has come in contact with an Ebola patient". This poll included responses of 1,042 New
+  York adults between October 26th and 28th, 2014.
+
+By default, the function `prop.test` calculates confidence intervals and a hypothesis.
+The first argument of  `prop.test` is the number of "successes", the second argument is the total counts.
+
+The number of counts and the proportion from the example. 
+```{r}
+n <- 1024
+p <- 0.82
+```
+Since `prop.test` requires a the number of successes, create that variable,
+```{r}
+x <- n * p
+```
+Now calculate a confidence interval and hypothesis test using `prop.test`,
+```{r}
+prop.test(x, n)
+```
+By default `prop.test` calculates a 95% confidence interval and the hypothesis test, $H_0: p = 0.5$ and $H_a: p \neq 0.5$.
+
+To change the confidence level of the confidence interval use the `conf.level` argument.
+To calculate a 90% confidence interval,
+```{r}
+prop.test(x, n, conf.level = 0.90)
+```
+or a 99% confidence interval,
+```{r}
+prop.test(x, n, conf.level = 0.99)
+```
+To change the population proportion used in the hypothesis test, use the $p$ argument.
+To calculate a hypothesis test, $H_0: p = 0.75$ and $H_a: p \neq 0.75$,
+```{r}
+prop.test(x, n, p = 0.75)
+```
+To run one-sided tests using the `alternative` argument.
+To calculate the hypothesis test, $H_0: p = 0.75$ and $H_a: p > 0.75$,
+```{r}
+prop.test(x, n, p = 0.75, alternative = "greater")
+```
+To calculate the hypothesis test, $H_0: p = 0.85$ and $H_a: p < 0.85$,
+```{r}
+prop.test(x, n, p = 0.75, alternative = "less")
+```
+
+The results of `prop.test` can be saved to an object to use in computations later,
+```{r}
+ebola_poll <- prop.test(x, n, p = 0.8)
+```
+You can extract data from the 
+```{r}
+ebola_poll$conf.int
+ebola_poll$estimate
+ebola_poll$p.value
+```
+The elements in a `prop.test` object can be viewed with `names`,
+```{r}
+names(ebola_poll)
+```
+
+The **broom** package has functions that converts the results of `prop.test` to a data frame,
+```{r}
+tidy(ebola_poll)
+```
+
+The function `prop.test` uses the normal approximation and requires a minimal sample size ($np > 10$ and $n (1 - p) > 10$).
+
+Since the exact sampling distribution for $n$ independent Bernoulli random variables with probability $p$ is the binomial distribution, one approach to small samples is to use an exact binomial test.
+
+Consider the example in *OpenIntro Statistics* (p. 302), 
+
+  People providing an organ for donation sometimes seek the help of a special “medical
+  consultant”. These consultants assist the patient in all aspects of the surgery, with the
+  goal of reducing the possibility of complications during the medical procedure and recovery.
+  Patients might choose a consultant based in part on the historical complication rate of
+  the consultant’s clients. One consultant tried to attract patients by noting the average
+  complication rate for liver donor surgeries in the US is about 10%, but her clients have
+  only had 3 complications in the 62 liver donor surgeries she has facilitated. 
+
+The sample size and proportion are,
+```{r}
+n <- 62
+x <- 3
+p <- x / n
+```
+This fails to meet the $np, n (1 - p) \geq 10$ criteria, so `prop.test` should not be used.
+```{r}
+n * c(p, 1 - p)
+```
+Use `binom.test` to test the hypothesis that the proportion of complications for that medical consultant is less than the national average of 10%,
+```{r}
+p0 <- 0.1
+binom.test(x, n, p = p0, alternative = "less")
+```
+In a two-sided tests, the hypothesis test fails to reject the null hypothesis that $H_0: p = 0.1$.
+
+
+
+# Two-Sample (Difference in) Proportions Tests
+
+The function `prop.test` can alo be used for two-sample proportion tests, where $H_0: p_1 = p_2$.
+
+Example from *OpenIntro* (p. 282):
+
+  A 30-year study was conducted with nearly 90,000 female participants. During a 5-
+  year screening period, each woman was randomized to one of two groups: in the first group,
+  women received regular mammograms to screen for breast cancer, and in the second group,
+  women received regular non-mammogram breast cancer exams. No intervention was made
+  during the following 25 years of the study, and we’ll consider death resulting from breast
+  cancer over the full 30-year period.
+  
+  
+```{r}
+breast_cancer_study <-
+  matrix(c(500, 505, 44425, 44405),
+         nrow = 2, ncol = 2,
+         dimnames = list(c("Mammogram", "Control"),
+                         "Death from breast cancer?" = c("Yes", "No")))
+breast_cancer_study
+```
+The total successes are 
+```{r}
+breast_cancer_study[ , "Yes"]
+```
+The total observervations per group are,
+```{r}
+group_totals <- margin.table(breast_cancer_study, 1)
+group_totals
+```
+A two-sample difference in proportions test is,
+```{r}
+prop.test(breast_cancer_study[ , "Yes"], group_totals)
+```
+The hypothesis test is $H_0: p_1 = p_2$ and $H_a: p_1 \neq p_2$.
+The p-value is 0.89, so it does not reject the null hypothesis that the proportions are equal.
+The 95% confidence interval is $(-0.0015, 0.0013)$.
+
+Alternatively, `prop.test` can be given a table with two columns (success, failures) and rows for each group,
+```{r}
+prop.test(breast_cancer_study)
+```
+
+
+
+# Chi-Squared test for goodness of fit
+
+**Example** In a city, 275 people served jury duty. If the individuals selected to serve on a jury were randomly selected from the population, how many of each race (White, Black, Hispanic Other) would you expect? If they were randomly selected, the proportions serving on juries should match the proportion of each race in the poulation: White 72%, black 7%, Hispanic 12%, and other 9%.
+To test whether the observed counts match the expected counts under the null hypothesis use a one-sample Chi-squared test. 
+```{r}
+population_races <- c(White = .72, Black = .07, Hispanic = 0.12,
+                      Other = 0.09)
+jury_counts <- c(White = 205, Black = 26, Hispanic = 25, Other = 19)
+chisq.test(jury_counts, p = population_races)
+```
+
+Note that unlike `prop.test` and `t.test`, `chisq.test` does not calculate confidence intervals.
+
+
+
+# Chi-squared test for independence
+
+A Pew Research poll in March 2012 asked the approval ratings of Barack Obama,
+Democrats in Congress, and Republicans in Congress. We want to know whether there
+is any difference in approval ratings between Obama, Dems, and Reps in Congress.
+
+|            | Obama | Democrats | Republicans | Total |
+|:-----------|------:|----------:|------------:|------:|
+| Approve    |  842  |      736  |         541 | 2119  |
+| Disapprove |  646  |      646  |         842 | 2104  |
+| Total      | 1458  |    1382   |        1383 | 4223  |
+
+The function `chisq.test` also can calculate Chi-squared tests of independence,
+```{r}
+poll_results <-
+  matrix(c(842, 646, 736, 646, 541, 842),
+         nrow = 2, ncol = 3,
+         dimnames = list(c("Approve", "Disapprove"),
+                         c("Obama", "Democrats", "Republicans")))
+poll_results
+chisq.test(poll_results)
+```
+The Chi-squared test has a p-value of less than 0.001, so the test rejects the null hypothesis
+that approval ratings of the groups are the same.
+
