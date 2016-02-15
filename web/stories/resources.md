@@ -18,6 +18,8 @@
 - [Sampling Distributions and Confidence Intervals](/lessons/Sampling_Distributions.html)
 - [Confidence Intervals of the Mean through Simulation in R](/lessons/Confidence_Intervals.html)
 - [Hypothesis Testings of the Mean through Simulation in R](/lessons/Hypothesis_Tests.html)
+- [t-tests and ANOVA in R](/lessons/numerical_inference_in_R.html)
+- [Proportion and Chi-squared tests in R](/lessons/categorical_inference_in_R.html)
 
 # Miscellaneous
 

@@ -244,7 +244,7 @@ binom.test(x, n, p = p0, alternative = &quot;less&quot;)</code></pre>
 </div>
 <div id="two-sample-difference-in-proportions-tests" class="section level1">
 <h1>Two-Sample (Difference in) Proportions Tests</h1>
-<p>The function <code>prop.test</code> can alo be used for two-sample proportion tests, where <span class="math inline">\(H_0: p_1 = p_2\)</span>.</p>
+<p>The function <code>prop.test</code> can also be used for two-sample proportion tests, where <span class="math inline">\(H_0: p_1 = p_2\)</span>.</p>
 <p>Example from <em>OpenIntro</em> (p. 282):</p>
 <p>A 30-year study was conducted with nearly 90,000 female participants. During a 5- year screening period, each woman was randomized to one of two groups: in the first group, women received regular mammograms to screen for breast cancer, and in the second group, women received regular non-mammogram breast cancer exams. No intervention was made during the following 25 years of the study, and we’ll consider death resulting from breast cancer over the full 30-year period.</p>
 <pre class="r"><code>breast_cancer_study &lt;-
@@ -261,7 +261,7 @@ breast_cancer_study</code></pre>
 <pre class="r"><code>breast_cancer_study[ , &quot;Yes&quot;]</code></pre>
 <pre><code>## Mammogram   Control 
 ##       500       505</code></pre>
-<p>The total observervations per group are,</p>
+<p>The total observations per group are,</p>
 <pre class="r"><code>group_totals &lt;- margin.table(breast_cancer_study, 1)
 group_totals</code></pre>
 <pre><code>## 
@@ -299,7 +299,7 @@ group_totals</code></pre>
 </div>
 <div id="chi-squared-test-for-goodness-of-fit" class="section level1">
 <h1>Chi-Squared test for goodness of fit</h1>
-<p><strong>Example</strong> In a city, 275 people served jury duty. If the individuals selected to serve on a jury were randomly selected from the population, how many of each race (White, Black, Hispanic Other) would you expect? If they were randomly selected, the proportions serving on juries should match the proportion of each race in the poulation: White 72%, black 7%, Hispanic 12%, and other 9%. To test whether the observed counts match the expected counts under the null hypothesis use a one-sample Chi-squared test.</p>
+<p><strong>Example</strong> In a city, 275 people served jury duty. If the individuals selected to serve on a jury were randomly selected from the population, how many of each race (White, Black, Hispanic Other) would you expect? If they were randomly selected, the proportions serving on juries should match the proportion of each race in the population: White 72%, black 7%, Hispanic 12%, and other 9%. To test whether the observed counts match the expected counts under the null hypothesis use a one-sample Chi-squared test.</p>
 <pre class="r"><code>population_races &lt;- c(White = .72, Black = .07, Hispanic = 0.12,
                       Other = 0.09)
 jury_counts &lt;- c(White = 205, Black = 26, Hispanic = 25, Other = 19)
@@ -313,7 +313,7 @@ chisq.test(jury_counts, p = population_races)</code></pre>
 </div>
 <div id="chi-squared-test-for-independence" class="section level1">
 <h1>Chi-squared test for independence</h1>
-<p>A Pew Research poll in March 2012 asked the approval ratings of Barack Obama, Democrats in Congress, and Republicans in Congress. We want to know whether there is any difference in approval ratings between Obama, Dems, and Reps in Congress.</p>
+<p>A Pew Research poll in March 2012 asked the approval ratings of Barack Obama, Democrats in Congress, and Republicans in Congress. We want to know whether there is any difference in approval ratings between Obama, Democrats, and Reps in Congress.</p>
 <table>
 <thead>
 <tr class="header">

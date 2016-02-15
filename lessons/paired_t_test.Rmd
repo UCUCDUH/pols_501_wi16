@@ -1,44 +1,123 @@
 ---
-title: "Paired t-test"
+title: "Numerical Inference in R"
 author: "Jeffrey Arnold"
 date: "February 10, 2016"
-output: html_document
 ---
 
-t-test 
-
-What does pairing do? 
-
-1. Reduces (or eliminates!) bias
-2. Reduces variance
-
-```{r}
 
 
-```
+
+- `t.test()` One and two-sided t-tests
+- `pairwise.t.test()` Pairwise 
 
 ```{r}
-library("ggplot2")
+library("car")
+library("broom")
 library("dplyr")
-library("tidyr")
+```
 
-data("sleep")
-ggplot(sleep, aes(x = group, y = extra, group = ID)) +
-  geom_point() +
-  geom_line()
+This example will use Duncan's occupational prestige data from the **car** package,
+which has the prestige and other characteristics of 45 U.S. occupations in 1950.
+```{r}
+data("Duncan")
+glimpse(Duncan)
+```
 
+
+
+# t-test
+
+The R function `t.test()` calculates both hypothesis tests and confidence intervals for one- and two-sample t-tests, and paired t-tests.
+
+In the Duncan data, the `prestige` variable is the percent of raters which rate the occupation as "excellent" or "good".
+The average prestige score is
+```{r}
+summary(Duncan$prestige)
+```
+Now analyze the mean of `prestige` using `t.test()`,
+```{r}
+t.test(Duncan$prestige)
+```
+By default `t.test()` runs a two-sided hypothesis test where $H_0: \mu = 0$ and $H_a: \mu \neq 0$,
+and calculates a 95% confidence interval.
+
+To calculate a different hypothesis test, use the options `mu` (to change the null hypothesis parameter value), and `alternative` to choose a one-sided ("less", "greater") instead of a two-sided test.
+This runs a two-sided test where $H_0: \mu = 50$,
+```{r}
+t.test(Duncan$prestige, mu = 50)
+```
+This runs a one-sided test where $H_0: \mu = 50$ and $H_a: \mu < 50$,
+```{r}
+t.test(Duncan$prestige, mu = 50, alternative = "less")
+```
+This runs a one-sided test where $H_0: \mu = 45$ and $H_a: \mu > 45$,
+```{r}
+t.test(Duncan$prestige, mu = 45, alternative = "greater")
+```
+
+By default `t.test()` calculates a 95% confidence interval. To change the confidence level, use the `conf.level` argument.
+This calculates a 99% confidence interval,
+```{r}
+t.test(Duncan$prestige, conf.level = 0.99)
+```
+and this calculates a 90% confidence interval,
+```{r}
+t.test(Duncan$prestige, conf.level = 0.90)
+```
+
+TODO: Examples with the **broom** package
+
+TODO: Two-sample ifference in means t-test
+
+If you try to run `t.test()` with a grouping factor with more than two levels, it will throw an error,
+```{r error = FALSE}
+t.test(prestige ~ type, data = Duncan)
+```
+
+TODO: paired t-test using Sleep data
+
+TODO: Examples using data from OpenIntro Numeric Inference Lab.
+
+
+# ANOVA
+
+One way to run a one-way ANOVA is to run a linear regression in R using `lm()` with a single categorical explanatory variable, and then apply `anova()` to the result.
+```{r}
+duncan_type_anova <- anova(lm(prestige ~ type, data = Duncan))
+duncan_type_anova
+```
+
+In `R`, the use of `~` is known as the formula notation.
+It can have slightly different meanings in different functions, but in `lm()`, the left-hand variable is the outcome variable, and the right-hand side variable(s) is (are) the explanatory variable(s). 
+
+# Pairwise t-tests
+
+The function `pairwise.t.test` does what it says; it runs pairwise t-tests.
+The first argument is a numeric vector; the second argument is the vector with categories.
+The argument `p.adjust.method` allows the user to choose a method to adjust the p-values for multiple comparison. 
+
+The Bonferroni correction adjusts the p-values so that the adjusted p-value is `\bar{alpha} = \alpha / m$, where $m$ is the number of tests.
+```{r}
+pairwise.t.test(Duncan$prestige, Duncan$type)
 ```
 
 ```{r}
-ggplot(sleep, aes(x = group, y = extra, group = ID)) +
-  geom_point() +
-  geom_line()
+pairwise.t.test(Duncan$prestige, Duncan$type, p.adjust.method = "bonferroni")
 ```
 
 ```{r}
-t.test(extra ~ group, data = sleep)
-
+pairwise.t.test(Duncan$prestige, Duncan$type, p.adjust.method = "BH")
 ```
+
+The **broom** package has some support for `pairwise.t.test`, and will put 
+```{r}
+pw_ttest_Duncan_type <- pairwise.t.test(Duncan$Duncan, Duncan$type)
+tidy(pw_ttest_Duncan_type)
+```
+
+**Note:** Pairwise t-tests are different than paired t-tests. In a paired t-test there are two populations which are not independent, in which each observation in one sample can be matched to another observation in the other sample. An example of this would be a before-after study.
+Pairwise t-tests are used to compare each pair of $K \geq 2$ samples, for a total of $K (K + 1) / 2$ difference in means t-tests. Since there are multiple t-tests, the p-values of pairwise t-tests need to be corrected for multiple testing.
+
 
 
 

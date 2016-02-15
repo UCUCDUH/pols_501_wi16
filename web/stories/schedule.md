@@ -203,6 +203,7 @@ Lab
 **Inference for Numerical Data (t-tests, ANOVA); `Bootstrap`.**
 
 <ul class="fa-ul">
+<li> <i class="fa-li fa fa-bar-chart"></i> <a href="/lessons/numerical_inference_in_R.html">Numerical Inference in R (t-tests and ANOVA)</a></li>
 <li><i class="fa-li fa fa-puzzle-piece"></i><a href="/assignments/reading-05/">Reading assignment 5 due</a></li>
 <li><i class="fa-li fa fa-book"></i> <em>OpenIntro</em>, Ch 5 </li>
 <li><i class="fa-li fa fa-book"></i> Cowles, Michael, and Caroline David. 1982. "On the Origins of the .05 Level of Statistical Significance"<em>American Psychologist</em>. <a href="https://dx.doi.org/10.1037/0003-066X.37.5.553">DOI</a></li>
@@ -217,10 +218,15 @@ Lab
 **Inference for Categorical data (proportion tests, Chi-squared tests)**
 
 <ul class="fa-ul">
+<li> <i class="fa-li fa fa-bar-chart"></i> <a href="/lessons/categorical_inference_in_R.html">Categorical Inference in R (proportion and Chi-squared tests)</a></li>
 <li><i class="fa-li fa fa-puzzle-piece"></i><a href="/assignments/reading-06/">Reading assignment 6 due</a></li>
 <li> <i class="fa-li fa fa-book"></i> <em>OpenIntro</em>. Ch 6: "Inference for Categorical Data" </li>
 <li><i class="fa-li fa fa-code"></i> Data Camp <a href="https://www.datacamp.com/courses/reporting-with-r-markdown">Reporting with R Markdown</a></li>
 </ul>
+
+Lab
+
+
 
 ## Week 8
 

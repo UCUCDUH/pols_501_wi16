@@ -6,7 +6,7 @@ date: "February 10, 2016"
 
 This lesson introduces the R commands for basic numerical inference.
 
-- `t.test()`: One-sample mean, two-sample differenc in means, and paired difference in means confidence intervals and hypothesis tests
+- `t.test()`: One-sample mean, two-sample difference in means, and paired difference in means confidence intervals and hypothesis tests
 - `anova()`: ANOVA
 - `pairwise.t.test()`: Pairwise t-tests adjusting p-value for multiple comparisons
 
@@ -101,7 +101,7 @@ The full set of elements that can be extracted from the results of `t.test()` ca
 ```{r}
 names(prestige_ttest)
 ```
-See the documantation of `t.test()` for what they do.
+See the documentation of `t.test()` for what they do.
 
 The **broom** package provides another interface to the results of `t.test()` (and many other statistics models).
 The function `tidy()` from this package will return a data frame from the results of `t.test()`,
@@ -130,7 +130,7 @@ If you try to run `t.test()` with a grouping factor with more than two levels, i
 t.test(prestige ~ type, data = Duncan)
 ```
 
-Now, suppose we wanted to use `t.test()` to find a 95% confidence interval of the mean of  occupational prestige for each category of occpuational type (blue-collar, white-collar, and professional).
+Now, suppose we wanted to use `t.test()` to find a 95% confidence interval of the mean of  occupational prestige for each category of occupational type (blue-collar, white-collar, and professional).
 One way to do this would be to run each test separately,
 ```{r}
 t.test(filter(Duncan, type == "bc")$prestige)
@@ -149,7 +149,7 @@ However, if we wanted to put the results of these tests in a table or plots, or 
 
 Using **dplyr** and **broom** can simplify that task.
 The following code runs `t.test()` on each category of `type`, converts the results of the t-test to a data frame using `tidy`.
-This areturns a data frame with a row for each catgory of `type`, and columns with results from the t-tests,
+This returns a data frame with a row for each category of `type`, and columns with results from the t-tests,
 ```{r}
 duncan_t_tests <-
   Duncan %>%
