@@ -10,7 +10,7 @@
 
 <meta name="author" content="Jeffrey Arnold" />
 
-<meta name="date" content="2016-02-14" />
+<meta name="date" content="2016-02-15" />
 
 <title>Categorical Inference in R</title>
 
@@ -82,15 +82,16 @@ $$
 <div id="header">
 <h1 class="title">Categorical Inference in R</h1>
 <h4 class="author"><em>Jeffrey Arnold</em></h4>
-<h4 class="date"><em>February 14, 2016</em></h4>
+<h4 class="date"><em>February 15, 2016</em></h4>
 </div>
 
 <div id="TOC">
 <ul>
-<li><a href="#ones-sample-inference-of-proportions">Ones-sample inference of proportions</a></li>
+<li><a href="#one-sample-inference-of-proportions">One-sample inference of proportions</a></li>
 <li><a href="#two-sample-difference-in-proportions-tests">Two-Sample (Difference in) Proportions Tests</a></li>
 <li><a href="#chi-squared-test-for-goodness-of-fit">Chi-Squared test for goodness of fit</a></li>
 <li><a href="#chi-squared-test-for-independence">Chi-squared test for independence</a></li>
+<li><a href="#proportions-tests-and-chi-squared-tests-with-data">Proportions tests and Chi-squared tests with data</a></li>
 </ul>
 </div>
 
@@ -105,8 +106,13 @@ $$
 library(&quot;broom&quot;)
 library(&quot;dplyr&quot;)
 library(&quot;tidyr&quot;)</code></pre>
-<div id="ones-sample-inference-of-proportions" class="section level1">
-<h1>Ones-sample inference of proportions</h1>
+<p>Also install (or update) <strong>uwpols501</strong>,</p>
+<pre class="r"><code>install_github(&quot;UW-POLS501/r-uwpols501&quot;)</code></pre>
+<pre class="r"><code>library(&quot;uwpols501&quot;)</code></pre>
+<p>This lesson will the <code>turnout</code> dataset included in the <strong>uwpols501</strong> package which includes voting turnout data from the 1992 Americal National Election Survey.</p>
+<pre class="r"><code>data(&quot;turnout&quot;, package = &quot;uwpols501&quot;)</code></pre>
+<div id="one-sample-inference-of-proportions" class="section level1">
+<h1>One-sample inference of proportions</h1>
 <p>The R function <code>prop.test()</code> calculates both hypothesis tests and confidence intervals for one- and two-sample proportion tests.</p>
 <p>For this, use an example from <em>OpenIntro</em> (p. 275),</p>
 <p>In New York City on October 23rd, 2014, a doctor who had recently been treating Ebola patients in Guinea went to the hospital with a slight fever and was subsequently diagnosed with Ebola. Soon thereafter, an NBC 4 New York/The Wall Street Journal/Marist Poll found that 82% of New Yorkers favored a “mandatory 21-day quarantine for anyone who has come in contact with an Ebola patient”. This poll included responses of 1,042 New York adults between October 26th and 28th, 2014.</p>
@@ -365,6 +371,61 @@ poll_results</code></pre>
 ## data:  poll_results
 ## X-squared = 97.137, df = 2, p-value &lt; 2.2e-16</code></pre>
 <p>The Chi-squared test has a p-value of less than 0.001, so the test rejects the null hypothesis that approval ratings of the groups are the same.</p>
+</div>
+<div id="proportions-tests-and-chi-squared-tests-with-data" class="section level1">
+<h1>Proportions tests and Chi-squared tests with data</h1>
+<p>Both <code>prop.test</code> and <code>chisq.test</code> use summary statistics of the total number of observations and number of observations in each category. However, often the data will not be in that form, and some preprocessing will be needed before using those functions. Consider the <code>turnout</code> dataset with data on voting turnout in the 1992 election.</p>
+<pre class="r"><code>glimpse(turnout)</code></pre>
+<pre><code>## Observations: 2,000
+## Variables: 5
+## $ race    (fctr) white, white, white, white, white, white, white, whit...
+## $ age     (int) 60, 51, 24, 38, 25, 67, 40, 56, 32, 75, 46, 52, 22, 60...
+## $ educate (dbl) 14, 10, 12, 8, 12, 12, 12, 10, 12, 16, 15, 12, 12, 12,...
+## $ income  (dbl) 3.3458, 1.8561, 0.6304, 3.4183, 2.7852, 2.3866, 4.2857...
+## $ vote    (int) 1, 0, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, ...</code></pre>
+<p>What is the proportion of survey respondents who responded that they voted? This can be calculated with</p>
+<pre class="r"><code>turnout %&gt;% 
+  summarize(prop_vote = mean(vote))</code></pre>
+<pre><code>##   prop_vote
+## 1     0.746</code></pre>
+<p>To use <code>prop.test</code> to calculate a confidence interval for this we need the number of successes and the total number of observations,</p>
+<pre class="r"><code>turnout_vote_totals &lt;- 
+  turnout %&gt;%
+    summarize(num_vote = sum(vote),
+              total_obs = n())
+turnout_vote_totals</code></pre>
+<pre><code>##   num_vote total_obs
+## 1     1492      2000</code></pre>
+<pre class="r"><code>prop.test(turnout_vote_totals$num_vote, turnout_vote_totals$total_obs)</code></pre>
+<pre><code>## 
+##  1-sample proportions test with continuity correction
+## 
+## data:  turnout_vote_totals$num_vote out of turnout_vote_totals$total_obs, null probability 0.5
+## X-squared = 483.14, df = 1, p-value &lt; 2.2e-16
+## alternative hypothesis: true p is not equal to 0.5
+## 95 percent confidence interval:
+##  0.7262078 0.7648367
+## sample estimates:
+##     p 
+## 0.746</code></pre>
+<p>Now let’s analyze whether income and voting are related using a Chi-squared test of independence. First, add a categorical variable of income, splitting it at its quantiles,</p>
+<pre class="r"><code>turnout &lt;-
+  mutate(turnout, income_quantiles = cut(income, quantile(income)))</code></pre>
+<p>The function <code>xtabs</code> creates a two-way table. In this case, levels of <code>vote</code> are the rows, and <code>income_quantiles</code> are the columns,</p>
+<pre class="r"><code>tab_vote_inc &lt;- xtabs(~vote + income_quantiles, data = turnout)
+tab_vote_inc</code></pre>
+<pre><code>##     income_quantiles
+## vote (0,1.74] (1.74,3.35] (3.35,5.23] (5.23,14.9]
+##    0      202         138         112          55
+##    1      299         359         406         427</code></pre>
+<p>This table can be passed to <code>chisq.test</code>,</p>
+<pre class="r"><code>chisq.test(tab_vote_inc)</code></pre>
+<pre><code>## 
+##  Pearson&#39;s Chi-squared test
+## 
+## data:  tab_vote_inc
+## X-squared = 114.08, df = 3, p-value &lt; 2.2e-16</code></pre>
+<p>The p-value of the Chi-squared test is &lt; 0.001, so it rejects the null hypothesis that income and voting are unrelated, which should not be surprising.</p>
 </div>
 
 <hr>

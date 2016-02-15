@@ -1,7 +1,7 @@
 ---
 title: "Categorical Inference in R"
 author: "Jeffrey Arnold"
-date: "February 14, 2016"
+date: "February 15, 2016"
 ---
 
 This lesson introduces the R commands for inference on categorical variables.
@@ -17,9 +17,22 @@ library("broom")
 library("dplyr")
 library("tidyr")
 ```
+Also install (or update) **uwpols501**,
+```{r eval = FALSE}
+install_github("UW-POLS501/r-uwpols501")
+```
+```{r}
+library("uwpols501")
+```
+
+This lesson will the `turnout` dataset included in the **uwpols501** package which includes
+voting turnout data from the 1992 Americal National Election Survey.
+```{r}
+data("turnout", package = "uwpols501")
+```
 
 
-# Ones-sample inference of proportions
+# One-sample inference of proportions
 
 The R function `prop.test()` calculates both hypothesis tests and confidence intervals for one- and two-sample proportion tests.
 
@@ -212,4 +225,51 @@ chisq.test(poll_results)
 ```
 The Chi-squared test has a p-value of less than 0.001, so the test rejects the null hypothesis
 that approval ratings of the groups are the same.
+
+# Proportions tests and Chi-squared tests with data
+
+Both `prop.test` and `chisq.test` use summary statistics of the total number of observations and number of observations in each category. 
+However, often the data will not be in that form, and some preprocessing will be needed before using those functions.
+Consider the `turnout` dataset with data on voting turnout in the 1992 election.
+```{r}
+glimpse(turnout)
+```
+
+What is the proportion of survey respondents who responded that they voted?
+This can be calculated with
+```{r}
+turnout %>% 
+  summarize(prop_vote = mean(vote))
+```
+To use `prop.test` to calculate a confidence interval for this we need the number of successes and the total number of observations,
+```{r}
+turnout_vote_totals <- 
+  turnout %>%
+    summarize(num_vote = sum(vote),
+              total_obs = n())
+turnout_vote_totals
+prop.test(turnout_vote_totals$num_vote, turnout_vote_totals$total_obs)
+```
+
+Now let's analyze whether income and voting are related using a Chi-squared test of independence.
+First, add a categorical variable of income, splitting it at its quantiles,
+```{r}
+turnout <-
+  mutate(turnout, income_quantiles = cut(income, quantile(income)))
+```
+The function `xtabs` creates a two-way table. In this case, levels of `vote` are the rows, and `income_quantiles` are the columns,
+```{r}
+tab_vote_inc <- xtabs(~vote + income_quantiles, data = turnout)
+tab_vote_inc
+```
+This table can be passed to `chisq.test`,
+```{r}
+chisq.test(tab_vote_inc)
+```
+The p-value of the Chi-squared test is < 0.001, so it rejects the null hypothesis that income and voting are unrelated, which should not be surprising.
+
+
+
+
+
 
