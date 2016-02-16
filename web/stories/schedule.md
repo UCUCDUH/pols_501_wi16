@@ -249,6 +249,7 @@ Lab
 <li> <i class="fa-li fa fa-book"></li> <em>OpenIntro</em> Supplement: &ldquo;Interaction Terms&rdquo; </li> <a href="https://www.openintro.org/download.php?file=os2_extra_interaction_effects&referrer=/stat/textbook.php">URL</a>
 <li> <i class="fa-li fa fa-book"></li> <em>OpenIntro</em> Supplement: &ldquo;Regression for nonlinear relationships&rdquo; </li> <a href="https://www.openintro.org/download.php?file=os2_extra_nonlinear_relationships&referrer=/stat/textbook.php">URL</a>
 <li> <i class="fa-li fa fa-book"></li> Brambor, Thomas, William Roberts Clark, and Matt Golder. 2005. "Understanding Interaction Models: Improving Empirical Analysis." <em>Political Analysis</em>. <a href="https://dx.doi.org/10.1093/pan/mpi014">DOI</a>
+<li> <i class="fa-li fa fa-book"></li> Matt Golder. "Interactions". <a href="http://mattgolder.com/interactions">URL</a>
 </ul>
 
 ## Week 10
