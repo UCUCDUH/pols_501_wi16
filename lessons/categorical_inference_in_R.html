@@ -101,7 +101,7 @@ $$
 <li><code>binom.test</code>: Exact inference for a one-sample proportion.</li>
 <li><code>chisq.test</code>: Chi-squared tests of goodness of fit and independence.</li>
 </ul>
-<p>This lesson uses the following packages, although all the functions for inference (<code>t.test()</code>, <code>anova()</code>, and <code>pairwise.t.test()</code>) are included with R.</p>
+<p>This lesson uses the following packages, although all the functions for inference (<code>prop.test</code>, <code>binom.test</code>, and <code>chisq.test</code>) are included with R.</p>
 <pre class="r"><code>library(&quot;car&quot;)
 library(&quot;broom&quot;)
 library(&quot;dplyr&quot;)
@@ -109,7 +109,7 @@ library(&quot;tidyr&quot;)</code></pre>
 <p>Also install (or update) <strong>uwpols501</strong>,</p>
 <pre class="r"><code>install_github(&quot;UW-POLS501/r-uwpols501&quot;)</code></pre>
 <pre class="r"><code>library(&quot;uwpols501&quot;)</code></pre>
-<p>This lesson will the <code>turnout</code> dataset included in the <strong>uwpols501</strong> package which includes voting turnout data from the 1992 Americal National Election Survey.</p>
+<p>This lesson will the <code>turnout</code> dataset included in the <strong>uwpols501</strong> package which includes voting turnout data from the 1992 American National Election Survey.</p>
 <pre class="r"><code>data(&quot;turnout&quot;, package = &quot;uwpols501&quot;)</code></pre>
 <div id="one-sample-inference-of-proportions" class="section level1">
 <h1>One-sample inference of proportions</h1>
@@ -374,7 +374,7 @@ poll_results</code></pre>
 </div>
 <div id="proportions-tests-and-chi-squared-tests-with-data" class="section level1">
 <h1>Proportions tests and Chi-squared tests with data</h1>
-<p>Both <code>prop.test</code> and <code>chisq.test</code> use summary statistics of the total number of observations and number of observations in each category. However, often the data will not be in that form, and some preprocessing will be needed before using those functions. Consider the <code>turnout</code> dataset with data on voting turnout in the 1992 election.</p>
+<p>Both <code>prop.test</code> and <code>chisq.test</code> use summary statistics of the total number of observations and number of observations in each category. However, often the data will not be in that form, and some pre-processing will be needed before using those functions. Consider the <code>turnout</code> dataset with data on voting turnout in the 1992 election.</p>
 <pre class="r"><code>glimpse(turnout)</code></pre>
 <pre><code>## Observations: 2,000
 ## Variables: 5

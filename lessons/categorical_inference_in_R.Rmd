@@ -10,7 +10,7 @@ This lesson introduces the R commands for inference on categorical variables.
 - `binom.test`: Exact inference for a one-sample proportion.
 - `chisq.test`: Chi-squared tests of goodness of fit and independence.
 
-This lesson uses the following packages, although all the functions for inference (`t.test()`, `anova()`, and `pairwise.t.test()`) are included with R.
+This lesson uses the following packages, although all the functions for inference (`prop.test`, `binom.test`, and `chisq.test`) are included with R.
 ```{r message=FALSE}
 library("car")
 library("broom")
@@ -26,7 +26,7 @@ library("uwpols501")
 ```
 
 This lesson will the `turnout` dataset included in the **uwpols501** package which includes
-voting turnout data from the 1992 Americal National Election Survey.
+voting turnout data from the 1992 American National Election Survey.
 ```{r}
 data("turnout", package = "uwpols501")
 ```
@@ -229,7 +229,7 @@ that approval ratings of the groups are the same.
 # Proportions tests and Chi-squared tests with data
 
 Both `prop.test` and `chisq.test` use summary statistics of the total number of observations and number of observations in each category. 
-However, often the data will not be in that form, and some preprocessing will be needed before using those functions.
+However, often the data will not be in that form, and some pre-processing will be needed before using those functions.
 Consider the `turnout` dataset with data on voting turnout in the 1992 election.
 ```{r}
 glimpse(turnout)
