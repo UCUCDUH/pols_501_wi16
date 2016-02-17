@@ -33,6 +33,8 @@ Research projects do not progress linearly, and your data may turn out to be mes
 
 # Organization
 
+*Edit:* Format your document using the [Final Paper Guidelines](https://uw-pols501.github.io/pols_501_wi16/resources/data_analysis_project_paper_guidelines/).
+
 Your assignment should be in an RStudio project directory, with the following directory structure.
 Create the R project directory using `File > New Project > New Directory > Empty Project` in RStudio.
 Replace `jrnold` with your `netid`; your netid is the same as your UW email address: `netid@uw.edu`.
