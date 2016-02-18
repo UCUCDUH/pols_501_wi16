@@ -15,7 +15,7 @@ build: $(HTML_FILES)
 
 deploy:
 	[ -d "$(DEPLOY_DIR)" ] || mkdir -p $(DEPLOY_DIR)
-	-cp $(HTML_FILES) $(DEPLOY_DIR)
+	-cp *.html $(DEPLOY_DIR)
 	-cp -R *_files  $(DEPLOY_DIR)
 	-cp -R libs $(DEPLOY_DIR)
 	-cp $(R_FILES) $(DEPLOY_DIR)

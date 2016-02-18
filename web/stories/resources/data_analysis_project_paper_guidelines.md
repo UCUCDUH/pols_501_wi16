@@ -1,6 +1,6 @@
 # Research Project Paper Guidelines
 
-The research project paper must comply with the following guidelines. To help you meet these guidelines, start with this example [.docx](/docs/web/files/docs/template-finalpaper.docx).
+The research project paper must comply with the following guidelines. To help you meet these guidelines, start with this example [.docx](/docs/template-finalpaper.docx).
 
 - The paper should be submitted as either a Microsoft Word (*.docx*) or PDF file.
 - The paper must be 15 pages or less, including figures, tables, and references, but not including the title page and abstract. The paper must be formatted in 12 point standard serif font (e.g. Times New Roman), doubled spaced, with 1 inch margins.
