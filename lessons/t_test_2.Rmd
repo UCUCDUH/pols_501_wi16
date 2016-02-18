@@ -1,0 +1,29 @@
+---
+title: "T-Test: another example."
+date: February 13, 2016
+author: Andreu Casas
+output: html_document
+---
+
+```{r init,results='hide',echo=FALSE}
+source("init.R")
+```
+
+This is another example of how to perform a `t.test()` to evaluate difference in means. To do so, we need to:
+
+  - Split the observations of a dataset into two groups depending on their values for a key independent variable.
+  - Calculate the mean value of the two groups for the dependent variable.
+  - Calculate upper and lower 95% confidence intervals around the two means.
+  - Evaluate if they overlap.
+  
+In this example we'll use a dataset in the packages `car`. Install and load the package.
+
+```{r, eval = FALSE}
+#install.packages(car)
+```
+
+```{r}
+library(car)
+```
+
+This package conatins a dataset `Prestige` with data about the professional occupation of certain individuals and the presitge of that occupation based on a survey conducted in the mid-1960s.
