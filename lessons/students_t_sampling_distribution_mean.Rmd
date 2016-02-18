@@ -5,6 +5,11 @@ date: "February 10, 2016"
 output: html_document
 ---
 
+```{r echo=FALSE,results='hide'}
+source("init.R")
+```
+
+
 ```{r}
 library("dplyr")
 set.seed(153305)
