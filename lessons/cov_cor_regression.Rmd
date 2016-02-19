@@ -1,0 +1,89 @@
+---
+title: "Lab 7: Covariance, Correlation, and Regression"
+author: "Andreu Casas"
+date: "February 26, 2016"
+---
+
+```{r init,results='hide',echo=FALSE}
+source("init.R")
+```
+
+### Outline
+
+In this lab we'll look at different methdos to study the relationship between variables. 
+
+1. Covariance
+2. Correlation
+3. Regression
+
+### Intro
+
+We'll use the dataset `Prestige` from the package `car`. Install it if you don't have it. We will also use other packages that we've already used in previous labs: `dplyr`, `ggplot2`, `broom`.
+
+```{r, message = FALSE}
+library(car)
+library(dplyr)
+library(ggplot2)
+library(broom)
+```
+
+Load the dataset `Presige` in the package `car` and take a look at it.
+
+```{r}
+data("Prestige")
+glimpse(Prestige)
+```
+
+The dataset was constructed using 1971 census data from Canada. Each observation of the dataset (nrow = 102) is an occupation (e.g. biologists, secretaries, athletes, etc.) and the variables are: the average `education` and `income` for the respondents with those occupations, the percentage of `women` respondents, the `prestige` of the occupation (Pineo-Porter prestige score: social survey from the 1960s), and `type`of occupation (Blue collar -bc-, Professional -prof-, and White Collar -wc-).
+
+### Covariance
+
+Imagine that we were interested in studying if there is a relationship between the average level of `education` for respondents with any given occupation and the average `income`. 
+
+One way to study such relationship would be to look at the `covariance`. Let's start by to calculating the covariance between these 2 variables"manually" we need to know: the values of the two variables (`y`, `x`), their means (`yhat`, `xhat`), and the sample size (`n`). 
+
+```{r}
+x <- Prestige$education
+y <- Prestige$income
+n <- nrow(Prestige)
+xhat <- mean(Prestige$education)
+yhat <- mean(Prestige$income)
+covariance <- sum((y - mean(y)) * (x - mean(x))) / (n-1)
+covariance
+```
+
+In `R` we can also calculate the covariance using the function `cov()`. This function takes two vectors of the same length and calculates the covariance.
+
+```{r}
+cov(Prestige$education, Prestige$income)
+```
+
+### Correlation
+
+One of the analytical downsides of calculating the covariance to study the relationship between two variables is that the resulting estimator is scale-dependent and it's hard to compare it to other covariance estimators. To address this issue, we often calculate intsead the `correlation` of two variables; which is a standardized statistic that ranges from -1 to 1. Positive correlation values indicate a positive relationship and negative values a negative one. The closer the statistic is to -1 or to 1, the stronger the relationship between these two variables. 
+
+Let's do the same we did with the covariance and calculate first the correlation between `education` and `income` manually. To do so we need: the covariance of x and y (`covariance`), the variance of x (`varx`) and the variance of y (`vary`)
+
+```{r}
+varx <- var(Prestige$education)
+vary <- var(Prestige$income)
+cor_xy <- covariance / (sqrt(varx) * sqrt(vary))
+cor_xy
+```
+
+As it happened with calculating the covariance, there is also an `R` function to calculate the correlation of two variables: `cor()`. This variable also takes two vectors of the same length.
+
+```{r}
+cor(Prestige$income, Prestige$education)
+```
+
+You can also use `R` to calculate the correlation between all numeric variables in a dataset; but they have to be numerical! (`numeric` and `integer` `R` variables). To do that, let's create a subset of Prestige only with the numeric variables `education`, `income`, `women`, and `prestige`.
+
+```{r}
+prestige_num <- select(Prestige, education, income, women, prestige)
+cor(prestige_num)
+```
+
+Instead of having a table with the correlation between all numeric variables, we can also create a plot.
+
+

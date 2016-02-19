@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="author" content="Andreu Casas" />
+
+<meta name="date" content="2016-02-26" />
+
+<title>Lab 7: Covariance, Correlation, and Regression</title>
+
+<script src="libs/jquery-1.11.0/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap-3.3.1/css/cerulean.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.1/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.1/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.1/shim/respond.min.js"></script>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<link rel="stylesheet"
+      href="libs/highlight/textmate.css"
+      type="text/css" />
+<script src="libs/highlight/highlight.js"></script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img { 
+  max-width:100%; 
+  height: auto; 
+}
+</style>
+<div class="container-fluid main-container">
+
+<p>
+<strong>POL S/CS&amp;SS 501, University of Washington, Winter 2016</strong>
+</p>
+
+$$
+\DeclareMathOperator{\mean}{mean}
+\DeclareMathOperator{\var}{var}
+\DeclareMathOperator{\E}{E}
+\DeclareMathOperator{\MSE}{MSE}
+\DeclareMathOperator{\Bias}{Bias}
+\DeclareMathOperator{\SE}{se}
+\DeclareMathOperator{\SD}{sd}
+\DeclareMathOperator{\argmin}{argmin}
+\DeclareMathOperator{\argmax}{argmax}
+$$
+
+<div id="header">
+<h1 class="title">Lab 7: Covariance, Correlation, and Regression</h1>
+<h4 class="author"><em>Andreu Casas</em></h4>
+<h4 class="date"><em>February 26, 2016</em></h4>
+</div>
+
+
+<div id="outline" class="section level3">
+<h3>Outline</h3>
+<p>In this lab we’ll look at different methdos to study the relationship between variables.</p>
+<ol style="list-style-type: decimal">
+<li>Covariance</li>
+<li>Correlation</li>
+<li>Regression</li>
+</ol>
+</div>
+<div id="intro" class="section level3">
+<h3>Intro</h3>
+<p>We’ll use the dataset <code>Prestige</code> from the package <code>car</code>. Install it if you don’t have it. We will also use other packages that we’ve already used in previous labs: <code>dplyr</code>, <code>ggplot2</code>, <code>broom</code>.</p>
+<pre class="r"><code>library(car)
+library(dplyr)
+library(ggplot2)
+library(broom)</code></pre>
+<p>Load the dataset <code>Presige</code> in the package <code>car</code> and take a look at it.</p>
+<pre class="r"><code>data(&quot;Prestige&quot;)
+glimpse(Prestige)</code></pre>
+<pre><code>## Observations: 102
+## Variables: 6
+## $ education (dbl) 13.11, 12.26, 12.77, 11.42, 14.62, 15.64, 15.09, 15....
+## $ income    (int) 12351, 25879, 9271, 8865, 8403, 11030, 8258, 14163, ...
+## $ women     (dbl) 11.16, 4.02, 15.70, 9.11, 11.68, 5.13, 25.65, 2.69, ...
+## $ prestige  (dbl) 68.8, 69.1, 63.4, 56.8, 73.5, 77.6, 72.6, 78.1, 73.1...
+## $ census    (int) 1113, 1130, 1171, 1175, 2111, 2113, 2133, 2141, 2143...
+## $ type      (fctr) prof, prof, prof, prof, prof, prof, prof, prof, pro...</code></pre>
+<p>The dataset was constructed using 1971 census data from Canada. Each observation of the dataset (nrow = 102) is an occupation (e.g. biologists, secretaries, athletes, etc.) and the variables are: the average <code>education</code> and <code>income</code> for the respondents with those occupations, the percentage of <code>women</code> respondents, the <code>prestige</code> of the occupation (Pineo-Porter prestige score: social survey from the 1960s), and <code>type</code>of occupation (Blue collar -bc-, Professional -prof-, and White Collar -wc-).</p>
+</div>
+<div id="covariance" class="section level3">
+<h3>Covariance</h3>
+<p>Imagine that we were interested in studying if there is a relationship between the average level of <code>education</code> for respondents with any given occupation and the average <code>income</code>.</p>
+<p>One way to study such relationship would be to look at the <code>covariance</code>. Let’s start by to calculating the covariance between these 2 variables“manually” we need to know: the values of the two variables (<code>y</code>, <code>x</code>), their means (<code>yhat</code>, <code>xhat</code>), and the sample size (<code>n</code>).</p>
+<pre class="r"><code>x &lt;- Prestige$education
+y &lt;- Prestige$income
+n &lt;- nrow(Prestige)
+xhat &lt;- mean(Prestige$education)
+yhat &lt;- mean(Prestige$income)
+covariance &lt;- sum((y - mean(y)) * (x - mean(x))) / (n-1)
+covariance</code></pre>
+<pre><code>## [1] 6691.13</code></pre>
+<p>In <code>R</code> we can also calculate the covariance using the function <code>cov()</code>. This function takes two vectors of the same length and calculates the covariance.</p>
+<pre class="r"><code>cov(Prestige$education, Prestige$income)</code></pre>
+<pre><code>## [1] 6691.13</code></pre>
+</div>
+<div id="correlation" class="section level3">
+<h3>Correlation</h3>
+<p>One of the analytical downsides of calculating the covariance to study the relationship between two variables is that the resulting estimator is scale-dependent and it’s hard to compare it to other covariance estimators. To address this issue, we often calculate intsead the <code>correlation</code> of two variables; which is a standardized statistic that ranges from -1 to 1. Positive correlation values indicate a positive relationship and negative values a negative one. The closer the statistic is to -1 or to 1, the stronger the relationship between these two variables.</p>
+<p>Let’s do the same we did with the covariance and calculate first the correlation between <code>education</code> and <code>income</code> manually. To do so we need: the covariance of x and y (<code>covariance</code>), the variance of x (<code>varx</code>) and the variance of y (<code>vary</code>)</p>
+<pre class="r"><code>varx &lt;- var(Prestige$education)
+vary &lt;- var(Prestige$income)
+cor_xy &lt;- covariance / (sqrt(varx) * sqrt(vary))
+cor_xy</code></pre>
+<pre><code>## [1] 0.5775802</code></pre>
+<p>As it happened with calculating the covariance, there is also an <code>R</code> function to calculate the correlation of two variables: <code>cor()</code>. This variable also takes two vectors of the same length.</p>
+<pre class="r"><code>cor(Prestige$income, Prestige$education)</code></pre>
+<pre><code>## [1] 0.5775802</code></pre>
+<p>You can also use <code>R</code> to calculate the correlation between all numeric variables in a dataset; but they have to be numerical! (<code>numeric</code> and <code>integer</code> <code>R</code> variables). To do that, let’s create a subset of Prestige only with the numeric variables <code>education</code>, <code>income</code>, <code>women</code>, and <code>prestige</code>.</p>
+<pre class="r"><code>prestige_num &lt;- select(Prestige, education, income, women, prestige)
+cor(prestige_num)</code></pre>
+<pre><code>##            education     income       women   prestige
+## education 1.00000000  0.5775802  0.06185286  0.8501769
+## income    0.57758023  1.0000000 -0.44105927  0.7149057
+## women     0.06185286 -0.4410593  1.00000000 -0.1183342
+## prestige  0.85017689  0.7149057 -0.11833419  1.0000000</code></pre>
+<p>Instead of having a table with the correlation between all numeric variables, we can also create a plot.</p>
+</div>
+
+<hr>
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://licensebuttons.net/l/by-nc-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
+R code is licensed under a <a href="https://www.r-project.org/Licenses/BSD_2_clause">BSD 2-clause</a> license.
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
