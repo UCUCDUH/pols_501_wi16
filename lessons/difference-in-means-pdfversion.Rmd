@@ -2,10 +2,6 @@
 title: "Difference in Means: T-Test and Hypothesis Testing"
 author: "Andreu Casas"
 date: "January , 2016"
-output: 
-  pdf_document:
-    fig_width: 4
-    fig_height: 3
 ---
 
 In this lab we will use data from Acemoglu et al.'s (2001) [paper](http://economics.mit.edu/files/4123) "The Colonial Origins of Comparative Development: An Empirical Investigation" in *AER*. 
@@ -144,7 +140,7 @@ differences <- differences[1:2,]
 ```{r table, echo=FALSE, results='asis'}
 # install.packages(xtable)
 library(xtable)
-print(xtable(differences, caption = "Differences 1"), 
+print(xtable(differences, caption = "Differences 1"), type = 'html',
       comment = FALSE, include.rownames = FALSE,caption.placement = "top")
 ```
 
@@ -158,7 +154,7 @@ low_estimates <- data.frame(x = low_test$estimate, lwr = low_test$conf.int[1],
 high_estimates <- data.frame(x = high_test$estimate, lwr = high_test$conf.int[1],
                             upr = high_test$conf.int[2])
 differences2 <- as.data.frame(rbind_list(high_estimates, low_estimates))
-print(xtable(differences2, caption = "Differences2"),caption.placement = "top",
+print(xtable(differences2, caption = "Differences2"),caption.placement = "top", type = 'html',
       comment = FALSE, include.rownames = FALSE)
 ```
 
@@ -170,7 +166,7 @@ data %>%
   group_by(high_mort) %>%
   do(tidy(t.test(.$logpgp95))) %>%
   xtable(caption = "Differences 3") %>%
-  print(caption.placement = "top",
+  print(caption.placement = "top", type = 'html',
       comment = FALSE, include.rownames = FALSE)
 ```
 

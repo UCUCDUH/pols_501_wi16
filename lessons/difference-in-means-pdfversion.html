@@ -188,18 +188,89 @@ data &lt;- data %&gt;%
             upr = round(x + (t_val * se), 2)) %&gt;%
   as.data.frame()
 differences &lt;- differences[1:2,]</code></pre>
-\begin{table}[ht]
-\centering
-\caption{Differences 1} 
-\begin{tabular}{lrrrrrrr}
-  \hline
-high\_mort &amp; n &amp; x &amp; s &amp; t\_val &amp; se &amp; lwr &amp; upr \\ 
-  \hline
-high &amp;  65 &amp; 7.80 &amp; 0.88 &amp; 2.00 &amp; 0.11 &amp; 7.58 &amp; 8.02 \\ 
-  low &amp;  22 &amp; 8.88 &amp; 1.16 &amp; 2.07 &amp; 0.25 &amp; 8.36 &amp; 9.40 \\ 
-   \hline
-\end{tabular}
-\end{table}
+<table border="1">
+<caption align="top">
+Differences 1
+</caption>
+<tr>
+<th>
+high_mort
+</th>
+<th>
+n
+</th>
+<th>
+x
+</th>
+<th>
+s
+</th>
+<th>
+t_val
+</th>
+<th>
+se
+</th>
+<th>
+lwr
+</th>
+<th>
+upr
+</th>
+</tr>
+<tr>
+<td>
+high
+</td>
+<td align="right">
+65
+</td>
+<td align="right">
+7.80
+</td>
+<td align="right">
+0.88
+</td>
+<td align="right">
+2.00
+</td>
+<td align="right">
+0.11
+</td>
+<td align="right">
+7.58
+</td>
+<td align="right">
+8.02
+</td>
+</tr>
+<tr>
+<td>
+low
+</td>
+<td align="right">
+22
+</td>
+<td align="right">
+8.88
+</td>
+<td align="right">
+1.16
+</td>
+<td align="right">
+2.07
+</td>
+<td align="right">
+0.25
+</td>
+<td align="right">
+8.36
+</td>
+<td align="right">
+9.40
+</td>
+</tr>
+</table>
 <p>A simpler way to calculate the mean <code>avexpr</code> (+ 95% CIs) for these two groups is to use the <code>t.test()</code> function in R.</p>
 <pre class="r"><code>low_test &lt;- t.test(select(filter(data, high_mort == &quot;low&quot;), logpgp95))
 high_test &lt;- t.test(select(filter(data, high_mort == &quot;high&quot;), logpgp95))
@@ -208,40 +279,128 @@ low_estimates &lt;- data.frame(x = low_test$estimate, lwr = low_test$conf.int[1]
 high_estimates &lt;- data.frame(x = high_test$estimate, lwr = high_test$conf.int[1],
                             upr = high_test$conf.int[2])
 differences2 &lt;- as.data.frame(rbind_list(high_estimates, low_estimates))
-print(xtable(differences2, caption = &quot;Differences2&quot;),caption.placement = &quot;top&quot;,
+print(xtable(differences2, caption = &quot;Differences2&quot;),caption.placement = &quot;top&quot;, type = &#39;html&#39;,
       comment = FALSE, include.rownames = FALSE)</code></pre>
-\begin{table}[ht]
-\centering
-\caption{Differences2} 
-\begin{tabular}{rrr}
-  \hline
-x &amp; lwr &amp; upr \\ 
-  \hline
-7.80 &amp; 7.58 &amp; 8.03 \\ 
-  8.88 &amp; 8.33 &amp; 9.42 \\ 
-   \hline
-\end{tabular}
-\end{table}
+<table border="1">
+<caption align="top">
+Differences2
+</caption>
+<tr>
+<th>
+x
+</th>
+<th>
+lwr
+</th>
+<th>
+upr
+</th>
+</tr>
+<tr>
+<td align="right">
+7.80
+</td>
+<td align="right">
+7.58
+</td>
+<td align="right">
+8.03
+</td>
+</tr>
+<tr>
+<td align="right">
+8.88
+</td>
+<td align="right">
+8.33
+</td>
+<td align="right">
+9.42
+</td>
+</tr>
+</table>
 <p>There is a simpler way to do it with the <code>broom</code> package</p>
 <pre class="r"><code>library(&quot;broom&quot;)
 data %&gt;%
   group_by(high_mort) %&gt;%
   do(tidy(t.test(.$logpgp95))) %&gt;%
   xtable(caption = &quot;Differences 3&quot;) %&gt;%
-  print(caption.placement = &quot;top&quot;,
+  print(caption.placement = &quot;top&quot;, type = &#39;html&#39;,
       comment = FALSE, include.rownames = FALSE)</code></pre>
-\begin{table}[ht]
-\centering
-\caption{Differences 3} 
-\begin{tabular}{lrrrrrr}
-  \hline
-high\_mort &amp; estimate &amp; statistic &amp; p.value &amp; parameter &amp; conf.low &amp; conf.high \\ 
-  \hline
-high &amp; 7.80 &amp; 69.19 &amp; 0.00 &amp; 60.00 &amp; 7.58 &amp; 8.03 \\ 
-  low &amp; 8.88 &amp; 34.10 &amp; 0.00 &amp; 19.00 &amp; 8.33 &amp; 9.42 \\ 
-   \hline
-\end{tabular}
-\end{table}
+<table border="1">
+<caption align="top">
+Differences 3
+</caption>
+<tr>
+<th>
+high_mort
+</th>
+<th>
+estimate
+</th>
+<th>
+statistic
+</th>
+<th>
+p.value
+</th>
+<th>
+parameter
+</th>
+<th>
+conf.low
+</th>
+<th>
+conf.high
+</th>
+</tr>
+<tr>
+<td>
+high
+</td>
+<td align="right">
+7.80
+</td>
+<td align="right">
+69.19
+</td>
+<td align="right">
+0.00
+</td>
+<td align="right">
+60.00
+</td>
+<td align="right">
+7.58
+</td>
+<td align="right">
+8.03
+</td>
+</tr>
+<tr>
+<td>
+low
+</td>
+<td align="right">
+8.88
+</td>
+<td align="right">
+34.10
+</td>
+<td align="right">
+0.00
+</td>
+<td align="right">
+19.00
+</td>
+<td align="right">
+8.33
+</td>
+<td align="right">
+9.42
+</td>
+</tr>
+</table>
 <p></p>
 <p>We can plot these two means and CIs to see more clearly if they overlap.</p>
 <pre class="r"><code>ggplot(differences, aes(x = high_mort, y = x)) +
