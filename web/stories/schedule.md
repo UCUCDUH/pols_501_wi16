@@ -227,7 +227,7 @@ Lab
 Class
 
 <ul class="fa-ul">
-<li><i class="fa-li fa fa-bar-chart"></i> <a href="/slides/2016-02-18.pdf">Slides from class</a> and <a href="/lessons/2016-02-18.html">Notes from class</a>.
+<li><i class="fa-li fa fa-bar-chart"></i> <a href="/docs/2016-02-18.pdf">Slides from class</a> and <a href="/lessons/2016-02-18.html">Notes from class</a>.
 </ul>
 
 
