@@ -457,7 +457,7 @@ duncan_type_anova</code></pre>
 <div id="pairwise-t-tests" class="section level1">
 <h1>Pairwise t-tests</h1>
 <p>The function <code>pairwise.t.test</code> does what it says; it runs pairwise t-tests. The first argument is a numeric vector; the second argument is the vector with categories. The argument <code>p.adjust.method</code> allows the user to choose a method to adjust the p-values for multiple comparison.</p>
-<p>The Bonferroni correction adjusts the p-values so that the adjusted p-value is <span class="math inline">\(\bar{alpha} = \alpha / m\)</span>, where <span class="math inline">\(m\)</span> is the number of tests. It controls the Familywise Error Rate (FWER). This is the probability that there is <em>at least one</em> Type I error,</p>
+<p>The Bonferroni correction adjusts the p-values so that the adjusted p-value is <span class="math inline">\(\bar{alpha} = \alpha / m\)</span>, where <span class="math inline">\(m\)</span> is the number of tests. It controls the Family-wise Error Rate (FWER). This is the probability that there is <em>at least one</em> Type I error,</p>
 <pre class="r"><code>pairwise.t.test(Duncan$prestige, Duncan$type, p.adjust.method = &quot;bonferroni&quot;)</code></pre>
 <pre><code>## 
 ##  Pairwise comparisons using t tests with pooled SD 
