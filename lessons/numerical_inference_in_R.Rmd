@@ -226,7 +226,7 @@ The function `pairwise.t.test` does what it says; it runs pairwise t-tests.
 The first argument is a numeric vector; the second argument is the vector with categories.
 The argument `p.adjust.method` allows the user to choose a method to adjust the p-values for multiple comparison. 
 
-The Bonferroni correction adjusts the p-values so that the adjusted p-value is $\bar{alpha} = \alpha / m$, where $m$ is the number of tests. It controls the Familywise Error Rate (FWER).
+The Bonferroni correction adjusts the p-values so that the adjusted p-value is $\bar{alpha} = \alpha / m$, where $m$ is the number of tests. It controls the Family-wise Error Rate (FWER).
 This is the probability that there is *at least one* Type I error,
 ```{r}
 pairwise.t.test(Duncan$prestige, Duncan$type, p.adjust.method = "bonferroni")

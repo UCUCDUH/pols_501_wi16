@@ -224,7 +224,11 @@ Lab
 <li><i class="fa-li fa fa-code"></i> Data Camp <a href="https://www.datacamp.com/courses/reporting-with-r-markdown">Reporting with R Markdown</a></li>
 </ul>
 
-Lab
+Class
+
+<ul class="fa-ul">
+<li><i class="fa-li fa fa-bar-chart"></i> <a href="/slides/2016-02-18.pdf">Slides from class</a> and <a href="/lessons/2016-02-18.html">Notes from class</a>.
+</ul>
 
 
 

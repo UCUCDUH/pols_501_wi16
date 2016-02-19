@@ -1,28 +1,81 @@
 ---
-title: "Tests of Proportions"
+title: "Examples from Class"
 author: "Jeffrey Arnold"
 date: "February 18, 2016"
-output: html_document
 ---
 
 ```{r echo=FALSE,results='hide'}
 source("init.R")
 ```
 
-
 # 2016 Nevada Primaries
 
 Consider this CNN poll of the Nevada Democratic and Republican Presidential Caucuses taken on Feb 10-12, 2016: http://elections.huffingtonpost.com/pollster/polls/cnn-23764.
 The full poll results are here: http://i2.cdn.turner.com/cnn/2016/images/02/17/topnv1.pdf
 
-- Calculate the standard error and 95% confidence interval of Donald Trump's proportion of support? 
-- Calculate the standard error and 95% confidence interval of Bernie Sanders proportion of support?
-- Can you calculate the confidence interval of the difference between Ted Cruz and Marco Rubio's support? What assumption is violated.
-- Look at the most recent values of Huffpost Pollster Trend. Use a Chi-squared test to compare the poll-results to those in the Pollster trend.
-- Is support for Hillary Clinton and Bernie Sanders independent of age? See p. 33 of the full poll results. Use a Chi-squared test of independence.
-- Is support for Hillary Clinton different between men and women? Use a confidence interval and a hypothesis test for a difference of proportions.
+*Calculate the standard error and 95% confidence interval of Donald Trump's proportion of support?*
 
-# Difference in Statistical Significance does not mean the difference is statistically significant
+The CNN poll has a sample of 245 likely voters (Republican), and the proportion who will vote for Trump as 45%.
+
+The 95% confidence interval is about 38.8 to 51.2% 
+```{r}
+p <- 0.45
+n <- 245
+p + c(-1, 1) * 1.96 * sqrt(p * (1 - p) / n)
+```
+
+*Calculate the standard error and 95% confidence interval of Bernie Sanders proportion of support?*
+
+The CNN poll has a sample of 282 likely voters (Democratic), and the proportion who answered that they will vote for Sanders is 47%.
+
+The 95% confidence interval is 41.2--52.8%
+```{r}
+p <- 0.47
+n <- 282
+p + c(-1, 1) * 1.96 * sqrt(p * (1 - p) / n)
+```
+
+*Can you calculate the confidence interval of the difference between Ted Cruz and Marco Rubio's support? What assumption is violated?*
+
+No. These are not independent populations.
+
+*Look at the most recent values of Huffpost Pollster Trend for the 2016 National Republican Primary support by Republicans for the Republican candidates. Use a Chi-squared test to compare the poll-results in Nevada to the national trend. Are they different than the national trend?*
+
+Pollster uses a model that approximately averages the polls.  On [Feb 17](http://elections.huffingtonpost.com/pollster/2016-national-gop-primary), it HuffPost Pollster's model estimated the support for the candidates at
+```{r}
+national = c("Donald Trump" = 0.378,
+                   "Ted Cruz" = .181,
+                   "Marco Rubio" = .149,
+                   "John Kasich" = .078,
+                   "Ben Carson" = .083,
+                   "Jeb Bush" = .063,
+                   "Other" = .068)
+```
+The values observed in the CNN poll for Nevada are,
+```{r}
+n <- 245
+poll_results = c("Donald Trump" = 0.45,
+                   "Ted Cruz" = .17,
+                   "Marco Rubio" = .19,
+                   "John Kasich" = .05,
+                   "Ben Carson" = .07,
+                   "Jeb Bush" = .01,
+                   "Other" = .06)
+
+chisq.test(poll_results, p = national)
+```
+The test does not reject that the Nevada primary opinion is different than national opinion, but the small sample size makes the Chi-squared test inappropriate.
+
+
+*Is support for Hillary Clinton and Bernie Sanders independent of age? See p. 33 of the full poll results. Use a Chi-squared test of independence.*
+
+
+*Is support for Hillary Clinton different between men and women? Use a confidence interval and a hypothesis test for a difference of proportions.*
+
+
+# Interpreting Difference in Means
+
+## Statistically Significant and Not Statistically Significant
 
 Consider two samples of size 100 from independent populations.
 Sample 1 has a mean of $\bar{x}_1 = 0$, standard deviation of $s_1 = 10$.
@@ -38,30 +91,36 @@ s_1 <- 10
 n_1 <- 100
 se_1 <- s_1 / sqrt(n_1)
 
-x_bar_2 <- 2.25
+x_bar_2 <- 2.3
 s_2 <- s_1
 n_2 <- n_1
 se_2 <- s_2 / sqrt(n_2)
 ```
 
-The 95% confidence interval of $\mu_1$:
+The 95% confidence interval of $\mu_1$ includes 0, obviously, since $\bar{x}_1 = 0$. The hypothesis test implied by the confidence interval does not reject that $\mu_1 = 0$.
 ```{r}
 x_bar_1 + c(-1, 1) * 1.96 * se_1
 ```
-The 95% confidence interval of $\mu_2$:
+The 95% confidence interval of $\mu_2$. The hypothesis test implied by the confidence interval does reject that $\mu_2 = 0$, and accepts the alternative hypothesis that $\mu_2 \neq 0$.
 ```{r}
 x_bar_2 + c(-1, 1) * 1.96 * se_2
 ```
 
-The 95% confidence interval of $\mu_1 - \mu_2$:
+Although our tests show that $\mu_2 \neq 0$ and cannot reject $\mu_1 = 0$, however the data cannot reject that $\mu_1 = \mu_2$.
+The 95% confidence interval of $\mu_1 - \mu_2$ is
 ```{r}
 se_diff <- sqrt(se_1 ^ 2 + se_2 ^ 2)
 (x_bar_1 - x_bar_2) + c(-1, 1) * 1.96 * se_diff
 ```
+The confidence interval includes 0, so the data cannot reject the null hypothesis that $\mu_1 = \mu_2$.
 
-# Overlapping Confidence intervals
+Thus although $\mu_2$ is statistically significant, and $\mu_1$ is not statistically significant, this does not imply that the difference between them is statistically significant.
+This is unfortunately a common interpretative mistake in applied work. 
+For more, see
 
-## Example 1
+> Gelman, Andrew, and Hal Stern. 2006. ``The Difference Between `Significant' and `Not Significant' is not Itself Statistically Significant.'' *The American Statistician.* <https://dx.doi.org/10.1198/000313006X152649>.
+
+## Non Overlapping Confidence Intervals
 
 Consider two samples of size 100 from independent populations.
 Sample 1 has a mean of $\bar{x}_1 = 0$, standard deviation of $s_1 = 10$.
@@ -83,22 +142,24 @@ n_2 <- n_1
 se_2 <- s_2 / sqrt(n_2)
 ```
 
-The 95% confidence interval of $\mu_1$:
+The 95% confidence interval of $\mu_1$ is
 ```{r}
 x_bar_1 + c(-1, 1) * 1.96 * se_1
 ```
-The 95% confidence interval of $\mu_2$:
+The 95% confidence interval of $\mu_2$ is
 ```{r}
 x_bar_2 + c(-1, 1) * 1.96 * se_2
 ```
+They do not overlap.
 
-The 95% confidence interval of $\mu_1 - \mu_2$:
+The 95% confidence interval of $\mu_1 - \mu_2$ does not include 0, so the data rejects that $\mu_1 = \mu_2$ and accepts the alternative hypothesis that $\mu_1 \neq \mu_2$,
 ```{r}
 se_diff <- sqrt(se_1 ^ 2 + se_2 ^ 2)
 (x_bar_1 - x_bar_2) + c(-1, 1) * 1.96 * se_diff
 ```
 
-## Example 2
+
+## Overlapping Intervals
 
 Consider two samples of size 100 from independent populations.
 Sample 1 has a mean of $\bar{x}_1 = 0$, standard deviation of $s_1 = 10$.
@@ -129,23 +190,37 @@ The 95% confidence interval of $\mu_2$:
 x_bar_2 + c(-1, 1) * 1.96 * se_2
 ```
 
-The 95% confidence interval of $\mu_1 - \mu_2$:
+However, the 95% confidence interval of $\mu_1 - \mu_2$ does not contain 0, so the data rejects the hypothesis that $\mu_1 = \mu_2$ and accepts the alternative hypothesis that $\mu_1 \neq \mu_2$,
 ```{r}
 se_diff <- sqrt(se_1 ^ 2 + se_2 ^ 2)
 (x_bar_1 - x_bar_2) + c(-1, 1) * 1.96 * se_diff
 ```
+So although the confidence intervals of two groups overlaps, the difference between these groups may be statistically significant.
+In order to check whether the difference between the groups is statistically significant is to test the difference.
 
-Why this difference? The sum of the standard errors of the two samples is always greater than the standard error of difference,
+Why do the confidence intervals of the means of each group and the confidence interval of the difference of means produce different results.
+Confidence intervals of the means of two groups will not overlap when
+$$
+\bar{x}_1 - \bar{x_2} > z^* (se_1 + se_2) .
+$$
+The confidence interval of the difference in means of two groups will not include zero when
+$$
+\bar{x}_1 - \bar{x_2} > z^* \sqrt{se_1^2 + se_2^2} .
+$$
+Since the sum of the standard errors of the means of two samples is always greater than the standard error of difference in means,
 $$
 (se_1 + se_2) > \sqrt{se_1^2 + se_2^2}
 $$
+Thus there are cases in which the confidence intervals of two means can overlap but the confidence interval of the difference in means does not include zero.
+
+We observed this in the example, 
 ```{r}
 se_1 + se_2
 se_diff
 ```
 
-This means that if two confidence intervals are **not** overlapping, then the difference will also be significant.
-But if the two means are overlapping, the difference may or may not be significant.
+Thus, if two confidence intervals are **not** overlapping, then the difference will also be significant.
+But, if the two means are overlapping, the difference may or may not be significant.
 
 For more see this [handout](https://www.cscu.cornell.edu/news/statnews/Stnews73insert.pdf)
 
