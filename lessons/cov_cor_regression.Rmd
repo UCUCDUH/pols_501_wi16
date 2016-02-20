@@ -23,6 +23,7 @@ We'll use the dataset `Prestige` from the package `car`. Install it if you don't
 ```{r, message = FALSE}
 library(car)
 library(dplyr)
+library(tidyr)
 library(ggplot2)
 library(broom)
 ```
@@ -81,9 +82,44 @@ You can also use `R` to calculate the correlation between all numeric variables 
 
 ```{r}
 prestige_num <- select(Prestige, education, income, women, prestige)
-cor(prestige_num)
+prestige_cor <- round(cor(prestige_num), 2)
+prestige_cor
 ```
 
 Instead of having a table with the correlation between all numeric variables, we can also create a plot.
 
+We first need to organize the dataset so that we can then plot the data using `geom_tile()` from `ggplot2`.
+
+```{r}
+prestige_cor[lower.tri(prestige_cor)]<-NA
+prestige_cor_new <- gather(as.data.frame(prestige_cor), var1, cor)
+prestige_cor_new$var2 <- rep(colnames(prestige_cor),4)
+prestige_cor_new <- na.omit(prestige_cor_new)
+```
+
+
+And now we plot the correlation between the variables in `Prestige`:
+```{r, fig.keep='all', fig.allign = 'center'}
+ggplot(prestige_cor_new, aes(var1, var2))+
+ geom_tile(data=prestige_cor_new, aes(fill=cor), color="white")+
+ scale_fill_gradient2(low="blue", high="red", mid="white", 
+  midpoint=0, limit=c(-1,1),name="Correlation\n(Pearson)")+
+ theme(axis.text.x = element_text(angle=45, vjust=1, size=11, hjust=1))+
+ coord_equal() + labs(x = "", y = "") +
+  ggtitle("Correlation Plot")
+```
+
+### Regression
+
+The basic `R` command for linear regression is `lm()`. We need to specify two main arguments in this function: the name of the dataset containing the key variables (`data =`) and the formula expressing our model (`formula =`). For the `formula` argument, we use the symbol `~` to separate the right from the left side of the equation.
+
+```{r}
+reg <- lm(data = Prestige, formula = income ~ education)
+```
+
+To look at the resulting statistics, we use the apply the function `summary()` to the `lm` output.
+
+```{r}
+summary(reg)
+```
 

@@ -100,6 +100,7 @@ $$
 <p>We’ll use the dataset <code>Prestige</code> from the package <code>car</code>. Install it if you don’t have it. We will also use other packages that we’ve already used in previous labs: <code>dplyr</code>, <code>ggplot2</code>, <code>broom</code>.</p>
 <pre class="r"><code>library(car)
 library(dplyr)
+library(tidyr)
 library(ggplot2)
 library(broom)</code></pre>
 <p>Load the dataset <code>Presige</code> in the package <code>car</code> and take a look at it.</p>
@@ -145,13 +146,53 @@ cor_xy</code></pre>
 <pre><code>## [1] 0.5775802</code></pre>
 <p>You can also use <code>R</code> to calculate the correlation between all numeric variables in a dataset; but they have to be numerical! (<code>numeric</code> and <code>integer</code> <code>R</code> variables). To do that, let’s create a subset of Prestige only with the numeric variables <code>education</code>, <code>income</code>, <code>women</code>, and <code>prestige</code>.</p>
 <pre class="r"><code>prestige_num &lt;- select(Prestige, education, income, women, prestige)
-cor(prestige_num)</code></pre>
-<pre><code>##            education     income       women   prestige
-## education 1.00000000  0.5775802  0.06185286  0.8501769
-## income    0.57758023  1.0000000 -0.44105927  0.7149057
-## women     0.06185286 -0.4410593  1.00000000 -0.1183342
-## prestige  0.85017689  0.7149057 -0.11833419  1.0000000</code></pre>
+prestige_cor &lt;- round(cor(prestige_num), 2)
+prestige_cor</code></pre>
+<pre><code>##           education income women prestige
+## education      1.00   0.58  0.06     0.85
+## income         0.58   1.00 -0.44     0.71
+## women          0.06  -0.44  1.00    -0.12
+## prestige       0.85   0.71 -0.12     1.00</code></pre>
 <p>Instead of having a table with the correlation between all numeric variables, we can also create a plot.</p>
+<p>We first need to organize the dataset so that we can then plot the data using <code>geom_tile()</code> from <code>ggplot2</code>.</p>
+<pre class="r"><code>prestige_cor[lower.tri(prestige_cor)]&lt;-NA
+prestige_cor_new &lt;- gather(as.data.frame(prestige_cor), var1, cor)
+prestige_cor_new$var2 &lt;- rep(colnames(prestige_cor),4)
+prestige_cor_new &lt;- na.omit(prestige_cor_new)</code></pre>
+<p>And now we plot the correlation between the variables in <code>Prestige</code>:</p>
+<pre class="r"><code>ggplot(prestige_cor_new, aes(var1, var2))+
+ geom_tile(data=prestige_cor_new, aes(fill=cor), color=&quot;white&quot;)+
+ scale_fill_gradient2(low=&quot;blue&quot;, high=&quot;red&quot;, mid=&quot;white&quot;, 
+  midpoint=0, limit=c(-1,1),name=&quot;Correlation\n(Pearson)&quot;)+
+ theme(axis.text.x = element_text(angle=45, vjust=1, size=11, hjust=1))+
+ coord_equal() + labs(x = &quot;&quot;, y = &quot;&quot;) +
+  ggtitle(&quot;Correlation Plot&quot;)</code></pre>
+<p><img src="cov_cor_regression_files/figure-html/unnamed-chunk-9-1.png" title="" alt="" width="672" /></p>
+</div>
+<div id="regression" class="section level3">
+<h3>Regression</h3>
+<p>The basic <code>R</code> command for linear regression is <code>lm()</code>. We need to specify two main arguments in this function: the name of the dataset containing the key variables (<code>data =</code>) and the formula expressing our model (<code>formula =</code>). For the <code>formula</code> argument, we use the symbol <code>~</code> to separate the right from the left side of the equation.</p>
+<pre class="r"><code>reg &lt;- lm(data = Prestige, formula = income ~ education)</code></pre>
+<p>To look at the resulting statistics, we use the apply the function <code>summary()</code> to the <code>lm</code> output.</p>
+<pre class="r"><code>summary(reg)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = income ~ education, data = Prestige)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -5493.2 -2433.8   -41.9  1491.5 17713.1 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  -2853.6     1407.0  -2.028   0.0452 *  
+## education      898.8      127.0   7.075 2.08e-10 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 3483 on 100 degrees of freedom
+## Multiple R-squared:  0.3336, Adjusted R-squared:  0.3269 
+## F-statistic: 50.06 on 1 and 100 DF,  p-value: 2.079e-10</code></pre>
 </div>
 
 <hr>
