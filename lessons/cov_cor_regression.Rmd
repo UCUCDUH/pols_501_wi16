@@ -93,7 +93,7 @@ We first need to organize the dataset so that we can then plot the data using `g
 ```{r}
 prestige_cor[lower.tri(prestige_cor)]<-NA
 prestige_cor_new <- gather(as.data.frame(prestige_cor), var1, cor)
-prestige_cor_new$var2 <- rep(colnames(prestige_cor),4)
+prestige_cor_new$var2 <- rep(colnames(prestige_cor), ncol(prestige_cor))
 prestige_cor_new <- na.omit(prestige_cor_new)
 ```
 
@@ -117,9 +117,71 @@ The basic `R` command for linear regression is `lm()`. We need to specify two ma
 reg <- lm(data = Prestige, formula = income ~ education)
 ```
 
-To look at the resulting statistics, we use the apply the function `summary()` to the `lm` output.
+There are multiple ways to look at and explore the output of the regression:
+
+1. If we just type the resulting object in the console, `reg` in our case, `R` returns the formula of the model that generated that output + the coefficients for each covariate and the intercept. Not much info.
+
+```{r}
+reg
+```
+
+
+2. We can also use the `summary()` function and insert the regression output (`reg`) as argument to get further details. In particular `R` returns:
+
+  - Formula of the model
+  - Summary of the residuals
+  - A table with the:
+      - Coefficients
+      - SEs
+      - T-Values
+      - P-Values
+  - Multiple R-squared info
+  - F-statistic
 
 ```{r}
 summary(reg)
+```
+
+3. The regression output `reg` contains more information than the one that the `summary()` function returns. To take a look at the differen info in `reg`, use the `str()` function. You can do the same with the output of a large number of statistical tests in `R`.
+
+```{r}
+str(reg)
+```
+
+You can pull out any of these elements within the regression output object using the `$` dolar sign. Or you can also use the dolar sign to pull out an object from the `summary` of `reg` (`summary(reg)`).
+
+```{r}
+# str(summary(reg))
+fit_vals <- reg$fitted.values
+coef_table <- summary(reg)$coefficients
+coef_table
+```
+
+The package `broom` has some functions to pull out and transform to friendly `data.frames` the output of statistical tests (e.g. `t.test`, `lm`, etc.). `broom` has 3 main functions:
+  
+  1. `tidy`: Transforms into a ready-to-go `data.frame` the coefficients, SEs (and CIs if given), critical values, and p-values in statistical tests' outputs
+  2. `augment`: Add columns to the original data that was modeled. This includes predictions, residuals, and cluster assignments.
+  3. `glance`: Always return a one-row `data.frame` that is a summary of the model: e.g. R2, adjusted R2, etc.
+  
+```{r}
+tidy(reg)
+```
+
+```{r}
+new_Prestige <- augment(reg)
+head(new_Prestige)
+```
+
+```{r}
+glance(reg)
+```
+
+For example, we can use the new dataset we created using the `augment()` function (`new_Prestige`) to plot the values of `income` predicted by the model (with 95% CIs) v. the actual values of `income`.
+
+```{r, fig.keep='all'}
+ggplot(new_Prestige, aes(x = income, y = .fitted)) + 
+  geom_point() +
+  geom_line(aes(x = income, y = income), linetype="dashed") +
+  geom_smooth(method = 'lm', se = FALSE) 
 ```
 
