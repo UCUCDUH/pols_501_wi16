@@ -5,6 +5,14 @@ date: "February 25, 2016"
 output: html_document
 ---
 
+```{r}
+library("dplyr")
+library("tidyr")
+library("broom") 
+library("ggplot2")
+```
+
+
 ## Covariance
 
 The sample covariance of $x$ and $y$ is,
@@ -67,10 +75,54 @@ $$
   \Cor(ax, y) = \frac{\Cov(ax, y)}{\sd(ax) \sd(y)} = \frac{a \Cov(x, y) }{a \sd(x) \sd(y)} = \Cor(x, y)
   \end{aligned}[t]
   $$
-
+  
 ## Linear Regression
 
+The regression equation models a response variable $Y$ as a f
 
+## Anscombe Quartet
+
+The Anscombe quartet is a data frame included in 
+```{r}
+data("anscombe", package = "datasets")
+```
+```{r}
+anscombe_df <- 
+  as_data_frame(anscombe) %>%
+    mutate(id = row_number()) %>%
+    gather(variable_, value, -id) %>%
+    separate(variable_, c("variable", "dataset"), sep = 1) %>%
+    spread(variable, value)
+```
+
+What are the means, standard deviations, and correlations of $x$ and $y$ in each dataset,
+```{r}
+anscombe_df %>%
+  group_by(dataset) %>%
+  summarize(mean_x = mean(x),
+            mean_y = mean(y),
+            sd_x = sd(x),
+            sd_y = sd(y),
+            cor_xy = cor(x, y),
+            cov_xy = cov(x, y))
+```
+These datasets have the same means for $x$ and $y$, and approximately the same standard deviations of $x$ and $y$, and the approximately same correlation and covariance between $x$ and $y$. 
+If we run linear regression on each of these, they have the same intercepts and slopes.
+```{r}
+anscombe_df %>%
+  group_by(dataset) %>%
+  do(tidy(lm(y ~ x, data = .))) %>%
+  select(term, estimate) %>%
+  spread(term, estimate)
+```
+
+However, if we plot these datasets, although they have the same linear relationship between $x$ and $y$, they look very different.
+```{r}
+ggplot(anscombe_df, aes(x = x, y = y)) + 
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  facet_wrap(~ dataset)
+```
 
 
 
