@@ -1,6 +1,6 @@
----
-title: Peer Review
----
+<!--
+.. title: Peer Review Assignment
+!-->
 
 Review the paper of the peer to which you have been assigned.
 The objective of this assignment is to give constructive feedback in order to help the author improve their paper.[^1]
@@ -16,12 +16,14 @@ Your peer review should be roughly 2--3 pages, and in the following format:
 
 - Start by summarizing the paper. What is the question? What are the data and methods used to address the question? What does the paper find.
 - Discuss general comments.
-- Discuss specific comments (perhaps in a bullet list). These would include things like a confusing graph, or an unclear sentance on a specific page.
+- Discuss specific comments (perhaps in a bullet list). These would include things like a confusing graph, or an unclear sentence on a specific page.
 
 [^1]: This is different than reviewing an article, in which the objective is to determine whether the paper is publishable or not. This is an example of pre-publication comments when you offer advice to an author.
 [^2]: Though if you find it is, point it out.
 
 ## Questions to consider
+
+These are some questions to guide your review, but should not be considered an exclusive list.
 
 ### Research question and hypothesis:  
 
@@ -52,14 +54,14 @@ empirical analysis?  
 - Can you imagine a better, or alternative, empirical strategy?  
 - Is the empirical strategy convincing?  Are appropriate caveats mentioned?  
 
-### Replicability
+## Replication
 
 - Did they cite the sources of the data? They should provide enough information so that
    you can find the original data that they used; verify that by trying to find the data.
-- Are you able to run the code?
-- Did the code produce the results that were provided in the
-- Is the code clear and accessible? In particular, can you tell which parts of
-   the code produce which tables, figures, and results.
+- Was the code and data provided with the paper? Were you able to run the code?
+- Did the code produce the results that were given in the paper?
+- Was the code understandable and well-commented?
+  Can you which parts of the code produce which tables, figures, and results?
 
 
 ## General Advice
@@ -73,7 +75,7 @@ How to do peer review well (https://stat545-ubc.github.io/peer-review02_peer-eva
 
 ## Evaluations of Peer Review
 
-Peer reviews will be evalaated as "good" or "needs more".
+Peer reviews will be evaluated as "good" or "needs more".
 Some reasons why a peer review will be given a grade of "needs more":
 
 - The review is so generic that it’s hard to determine which assignment you’re reviewing.
@@ -88,12 +90,10 @@ However, these are useful to read for your professional development.
 
 - *The Political Methodologist*, Fall 2015, issue on Peer Review [[URL]](https://thepoliticalmethodologist.files.wordpress.com/2016/02/tpm_v23_n1.pdf), especially Brendan Nyhan, "A Checklist Manifesto for Peer Review" and Thomas Pepinsky, "What is Peer Review For? Why Referees are not the Disciplinary Police".
 - Miller, Beth, Jon Pevehouse, Ron Rogowski, Dustin Tingley, and Rick Wilson. 2013. “How To Be a Peer Reviewer: A Guide for Recent and Soon-to-be PhDs.” *PS: Political Science & Politics* [[DOI]](https://dx.doi.org/10.1017/S104909651200128X)
-- William Thompson, *A Guide for the Young Economist*, 2nd ed. Ch 4 "Writing Referee Reports".
 - Chris Blattman [Research Design & Casual Inference Syllabus](http://chrisblattman.com/files/2009/07/PLSC508-Syllabus-Spring2010.pdf), last two pages
-- Kwan Choi [Being a good referee](http://www.roie.org/how.htm) (A little dated)
 - Tyler Cowen [How to be a good referee](http://marginalrevolution.com/marginalrevolution/2006/10/how_to_be_a_goo.html)
-- David McKenzie [How much to referee and how to do it?](http://blogs.worldbank.org/impactevaluations/how-much-to-referee-and-how-to-do-it)
-- [Q&A with Larry Katz, editor of QJE](http://blogs.worldbank.org/impactevaluations/qa-with-larry-katz-editor-of-qje)
+- William Thompson, *A Guide for the Young Economist*, 2nd ed. Ch 4 "Writing Referee Reports".
+
 
 * * *
 

@@ -5,11 +5,12 @@ date: "February 25, 2016"
 output: html_document
 ---
 
-```{r}
+```{r message=FALSE}
 library("dplyr")
 library("tidyr")
 library("broom") 
 library("ggplot2")
+library("uwpols501")
 ```
 
 
@@ -50,6 +51,7 @@ $$
   = a Cov(x, y)
   \end{aligned}[t]
   $$
+  
 
 ## Correlation
 
@@ -76,9 +78,49 @@ $$
   \end{aligned}[t]
   $$
   
-## Linear Regression
+### Example
 
-The regression equation models a response variable $Y$ as a f
+What is the relationship between the log effective number of parties and redistribution?
+
+```{r}
+data("iver", package = "uwpols501")
+```
+
+
+```{r}
+iver_cov_table_1 <- 
+  iver %>%
+    mutate(ln_enp = log(enp),
+           ln_enp_diff = ln_enp - mean(ln_enp),
+           povred_diff = povred - mean(povred),
+           povred_diff_ln_enp_diff = ln_enp_diff * povred_diff) %>%
+    select(cty, povred, ln_enp, povred_diff,ln_enp_diff, povred_diff_ln_enp_diff)
+iver_cov_table_1 %>%
+  knitr::kable()
+```
+The covariance is the sum of the product of the differences between the variables and their means,
+```{r}
+summarize(iver_cov_table_1, sum(povred_diff_ln_enp_diff) / (n() - 1))
+```
+We can confirm this using the `cov` function
+```{r}
+cov(iver$povred, log(iver$enp))
+```
+Note that the covariance does not depend on the order of the variables,
+```{r}
+cov(log(iver$enp), iver$povred)
+```
+
+The correlation divides the covariance by the product of the standard deviations of each variable,
+```{r}
+cov(iver$povred, log(iver$enp)) / (sd(iver$povred) * sd(log(iver$enp)))
+```
+This agrees with the correlation as produced by `cor`,
+```{r}
+cor(iver$povred, log(iver$enp))
+```
+
+
 
 ## Anscombe Quartet
 
@@ -121,8 +163,16 @@ However, if we plot these datasets, although they have the same linear relations
 ggplot(anscombe_df, aes(x = x, y = y)) + 
   geom_point() +
   geom_smooth(method = "lm", se = FALSE) +
-  facet_wrap(~ dataset)
+  facet_wrap(~dataset)
 ```
 
+Note that correlation and covariance only measure the strength and direction of the linear relationship between two variables. 
+It does not say anything about the slope of that linear relationship.
+Nor does it capture non-linear relationships between variables.
+The following figure illustrates these points.
+The figure plots several sets of x,y points and the correlation coefficient between those varaibles.
 
+![Several sets of (x, y) points, with the Pearson correlation coefficient of x and y for each set](images/Correlation_examples2.svg)
+
+By <a href="//commons.wikimedia.org/w/index.php?title=User:DenisBoigelot&amp;action=edit&amp;redlink=1" class="new" title="User:DenisBoigelot (page does not exist)">DenisBoigelot</a>, original uploader was <a href="//en.wikipedia.org/wiki/User:Imagecreator" class="extiw" title="en:User:Imagecreator">Imagecreator</a> - <span class="int-own-work" lang="en">Own work</span>, original uploader was <a href="//en.wikipedia.org/wiki/User:Imagecreator" class="extiw" title="en:User:Imagecreator">Imagecreator</a>, <a href="http://creativecommons.org/publicdomain/zero/1.0/deed.en" title="Creative Commons Zero, Public Domain Dedication">CC0</a>, https://commons.wikimedia.org/w/index.php?curid=15165296
 
