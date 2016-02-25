@@ -1,0 +1,76 @@
+---
+title: "Covariance and Correlation"
+author: "Jeffrey Arnold"
+date: "February 25, 2016"
+output: html_document
+---
+
+## Covariance
+
+The sample covariance of $x$ and $y$ is,
+$$
+\Cov(x, y) = \frac{1}{n - 1} \sum_i (x_i - \bar{x}) (y_i - \bar{y})
+$$
+
+There is also corresponding parameter for the population defined in terms of the expectation of random variables.
+The covariance of random variables $X$ and $Y$ are,
+$$
+\Cov(X, Y) = (X - \E(X)) (Y - \E(Y))
+$$
+
+- The covariance of a variable with itself is its variance,
+  $$
+  Cov(x, x) = \frac{1}{n - 1} \sum_i (x_i - \bar{x}) (x_i - \bar{x}) = Var(x)
+  $$
+- Like variance, the covariance includes the term $1 / (n - 1)$. This is because dividing by $n - 1$ provides an unbiased estimate of the population covariance.
+- The range of covariance is $(-\infty, +\infty)$.
+- Covarariance does not change when a constant is added to either (or both) variables,
+  $$
+  \begin{aligned}[t]
+  Cov(x + a, y) = \frac{1}{n - 1} \sum_i ((x_i + a) - \overline{(x + a)} - b) (y_i - \bar{y}) \\
+  = Cov(x + a, y) = \frac{1}{n - 1} \sum_i ((x_i + a) - \bar{x} - a) (y_i - \bar{y}) \\
+  = Cov(x + a, y) = \frac{1}{n - 1} \sum_i (x_i + \bar{x}) (y_i - \bar{y}) \\
+  = Cov(x, y)
+  \end{aligned}[t]  
+  $$
+- Covariance does change when either (or both) variables is multiplied by a constant. This implies that the scale of the variables affects the covariance.
+  $$
+  \begin{aligned}[t]
+  Cov(a x, y) = \frac{1}{n - 1} \sum_i (a x_i - \overline{(a x)) (y_i - \bar{y}) \\
+  = Cov(a x, y) = \frac{1}{n - 1} \sum_i (ax_i - a\bar{x}) (y_i - \bar{y}) \\
+  = Cov(a x, y) = \frac{a}{n - 1} \sum_i (x_i + \bar{x}) (y_i - \bar{y})
+  = a Cov(x, y)
+  \end{aligned}[t]
+  $$
+
+## Correlation
+
+The sample covariance of $x$ and $y$ is the covariance divided by the 
+$$
+\Cor(x, y) = \Cov(x, y) / (\sd(x) \sd(y)) 
+$$
+
+- The correlation of a variable with itself is equal to one,
+  $$
+  Cor(x, x) = \Cov(x, x) / (\sd(x) \sd(x)) = \Var(x) / \Var(x) = 1
+  $$
+- The range of covariance is $(-1, 1)$.
+- Correlation does not change when a constant is added to either (or both) variables,
+  $$
+  \begin{aligned}[t]
+  \Cor(x + a, y) = \frac{\Cov(x + a, y)}{\sd(x + a) \sd(y)} = \frac{\Cov(x, y) }{ \sd(x) \sd(y)} = \Cor(x, y)
+  \end{aligned}[t]  
+  $$
+- Unlike covariance, correlation does not change when either (or both) variables is multiplied by a constant. Thus, the correlation of two variables, is not affected by the scale of those variables.
+  $$
+  \begin{aligned}[t]
+  \Cor(ax, y) = \frac{\Cov(ax, y)}{\sd(ax) \sd(y)} = \frac{a \Cov(x, y) }{a \sd(x) \sd(y)} = \Cor(x, y)
+  \end{aligned}[t]
+  $$
+
+## Linear Regression
+
+
+
+
+

@@ -1,0 +1,196 @@
+---
+title: "Lab 7: Covariance, Correlation, and Regression"
+author: "Andreu Casas"
+date: "February 26, 2016"
+---
+
+```{r init,results='hide',echo=FALSE}
+source("init.R")
+```
+
+## Outline
+
+In this lab we'll look at different methods to study the relationship between variables. 
+
+1. Covariance
+2. Correlation
+3. Regression
+
+## Intro
+
+We'll use the dataset `Prestige` from the package `car`. Install it if you don't have it. We will also use other packages that we've already used in previous labs: `dplyr`, `ggplot2`, `broom`.
+
+```{r, message = FALSE}
+library("car")
+library("dplyr")
+library("tidyr")
+library("ggplot2")
+library("broom")
+```
+
+Load the dataset `Presige` in the package `car` and take a look at it.
+
+```{r}
+data("Prestige")
+glimpse(Prestige)
+```
+
+The dataset was constructed using 1971 census data from Canada. Each observation of the dataset (`nrow = 102`) is an occupation (e.g. biologists, secretaries, athletes, etc.) and the variables are: the average `education` and `income` for the respondents with those occupations, the percentage of `women` respondents, the `prestige` of the occupation (Pineo-Porter prestige score: social survey from the 1960s), and `type`of occupation (Blue collar `bc`, Professional `prof`, and White Collar `wc`).
+
+## Covariance
+
+Imagine that we were interested in studying if there is a relationship between the average level of `education` for respondents with any given occupation and the average `income`. 
+
+One way to study such relationship would be to look at the `covariance`. Let's start by to calculating the covariance between these 2 variables"manually" we need to know: the values of the two variables (`y`, `x`), their means (`yhat`, `xhat`), and the sample size (`n`). 
+
+```{r}
+x <- Prestige$education
+y <- Prestige$income
+n <- nrow(Prestige)
+xhat <- mean(Prestige$education)
+yhat <- mean(Prestige$income)
+covariance <- sum((y - mean(y)) * (x - mean(x))) / (n - 1)
+covariance
+```
+
+In `R` we can also calculate the covariance using the function `cov()`. This function takes two vectors of the same length and calculates the covariance.
+
+```{r}
+cov(Prestige$education, Prestige$income)
+```
+
+## Correlation
+
+One of the analytical downsides of calculating the covariance to study the relationship between two variables is that the resulting estimator is scale-dependent and it's hard to compare it to other covariance estimators. To address this issue, we often calculate instead the `correlation` of two variables; which is a standardized statistic that ranges from -1 to 1. Positive correlation values indicate a positive relationship and negative values a negative one. The closer the statistic is to -1 or to 1, the stronger the relationship between these two variables. 
+
+Let's do the same we did with the covariance and calculate first the correlation between `education` and `income` manually. To do so we need: the covariance of x and y (`covariance`), the variance of x (`varx`) and the variance of y (`vary`)
+
+```{r}
+varx <- var(Prestige$education)
+vary <- var(Prestige$income)
+cor_xy <- covariance / (sqrt(varx) * sqrt(vary))
+cor_xy
+```
+
+As it happened with calculating the covariance, there is also an `R` function to calculate the correlation of two variables: `cor()`. This variable also takes two vectors of the same length.
+
+```{r}
+cor(Prestige$income, Prestige$education)
+```
+
+You can also use `R` to calculate the correlation between all numeric variables in a dataset; but they have to be numerical! (`numeric` and `integer` `R` variables). To do that, let's create a subset of Prestige only with the numeric variables `education`, `income`, `women`, and `prestige`.
+
+```{r}
+prestige_num <- select(Prestige, education, income, women, prestige)
+prestige_cor <- round(cor(prestige_num), 2)
+prestige_cor
+```
+
+Instead of having a table with the correlation between all numeric variables, we can also create a plot.
+
+We first need to organize the dataset so that we can then plot the data using `geom_tile()` from `ggplot2`.
+
+```{r}
+prestige_cor[lower.tri(prestige_cor)] <- NA
+prestige_cor_new <- gather(as.data.frame(prestige_cor), var1, cor)
+prestige_cor_new$var2 <- rep(colnames(prestige_cor), ncol(prestige_cor))
+prestige_cor_new <- na.omit(prestige_cor_new)
+```
+
+
+And now we plot the correlation between the variables in `Prestige`:
+```{r, fig.keep='all', fig.allign = 'center'}
+ggplot(prestige_cor_new, aes(var1, var2)) +
+  geom_tile(data = prestige_cor_new, aes(fill = cor), color="white") +
+  scale_fill_gradient2(low = "blue", high = "red", mid = "white", 
+                       midpoint = 0, limit = c(-1, 1), name = "Correlation\n(Pearson)") +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, size = 11, hjust = 1)) +
+  coord_equal() +
+  labs(x = "", y = "") +
+  ggtitle("Correlation Plot") +
+  theme_minimal() +
+  theme(panel.grid = element_blank())
+```
+
+## Regression
+
+The basic `R` command for linear regression is `lm()`. We need to specify two main arguments in this function: the name of the dataset containing the key variables (`data =`) and the formula expressing our model (`formula =`). For the `formula` argument, we use the symbol `~` to separate the right from the left side of the equation.
+
+```{r}
+reg <- lm(data = Prestige, formula = income ~ education)
+```
+
+There are multiple ways to look at and explore the output of the regression:
+
+1. If we just type the resulting object in the console, `reg` in our case, `R` returns the formula of the model that generated that output + the coefficients for each covariate and the intercept. Not much info.
+
+```{r}
+reg
+```
+
+
+2. We can also use the `summary()` function and insert the regression output (`reg`) as argument to get further details. In particular `R` returns:
+
+  - Formula of the model
+  - Summary of the residuals
+  - A table with the:
+      - Coefficients
+      - standard errors
+      - T-Values
+      - P-Values
+  - Multiple R-squared info
+  - F-statistic
+
+```{r}
+summary(reg)
+```
+
+3. The regression output `reg` contains more information than the one that the `summary()` function returns. To take a look at the different info in `reg`, use the `str()` function. You can do the same with the output of a large number of statistical tests in `R`.
+
+```{r}
+str(reg)
+```
+
+[EDIT] Explain the parts of the str
+
+
+You can pull out any of these elements within the regression output object using the `$` dollar sign. Or you can also use the dollar sign to pull out an object from the `summary` of `reg` (`summary(reg)`).
+
+```{r}
+# str(summary(reg))
+fit_vals <- reg$fitted.values
+coef_table <- summary(reg)$coefficients
+coef_table
+```
+
+The package `broom` has some functions to pull out and transform to friendly `data.frames` the output of statistical tests (e.g. `t.test`, `lm`, etc.). `broom` has 3 main functions:
+  
+  1. `tidy`: Transforms into a ready-to-go `data.frame` the coefficients, standard errors (and confidence intervals if given), critical values, and p-values in statistical tests' outputs
+  2. `augment`: Add columns to the original data that was modeled. This includes predictions, residuals, and cluster assignments.
+  3. `glance`: Always return a one-row `data.frame` that is a summary of the model: e.g. R2, adjusted R2, etc.
+  
+```{r}
+tidy(reg)
+```
+
+```{r}
+new_Prestige <- augment(reg)
+head(new_Prestige)
+```
+
+```{r}
+glance(reg)
+```
+
+EDIT: explaing the columns of these data frames.
+
+For example, we can use the new dataset we created using the `augment()` function (`new_Prestige`) to plot the values of `income` predicted by the model (with 95% confidence intervals) v. the actual values of `income`.
+
+```{r, fig.keep='all'}
+ggplot(new_Prestige, aes(x = income, y = .fitted)) + 
+  geom_point() +
+  geom_line(aes(x = income, y = income), linetype = "dashed") +
+  geom_smooth(method = "lm", se = FALSE) +
+  x
+```
+
