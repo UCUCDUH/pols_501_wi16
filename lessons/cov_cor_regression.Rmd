@@ -186,11 +186,38 @@ EDIT: explaing the columns of these data frames.
 
 For example, we can use the new dataset we created using the `augment()` function (`new_Prestige`) to plot the values of `income` predicted by the model (with 95% confidence intervals) v. the actual values of `income`.
 
+Fill in description: Fitted values plot
+
 ```{r, fig.keep='all'}
-ggplot(new_Prestige, aes(x = income, y = .fitted)) + 
-  geom_point() +
-  geom_line(aes(x = income, y = income), linetype = "dashed") +
-  geom_smooth(method = "lm", se = FALSE) +
-  x
+ggplot(new_Prestige, aes(x = income)) +
+  geom_point(aes(y = prestige)) +
+  geom_line(aes(y = .fitted))
 ```
+
+Plot of the residuals:
+```{r}
+ggplot(new_Prestige, aes(x = income, y = .resid)) +
+  geom_point()
+```
+
+Density plot of residuals
+```{r}
+ggplot(new_Prestige, aes(x = .resid)) + 
+  geom_density() +
+  geom_rug()
+```
+
+Find the expected prestige of a job with incomes of 1000, 2000, 4000, and 8000.
+
+```{r}
+incomes <- c(1000, 2000, 4000, 8000)
+coef(reg)['(Intercept)'] + coef(reg)['income'] * incomes
+```
+
+Use predict to calculate predicted values of prestige.
+```{r}
+predict(reg, newdata = data.frame(income = incomes))
+```
+
+
 
