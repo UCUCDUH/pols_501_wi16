@@ -200,6 +200,9 @@ head(new_Prestige)
 - `.fitted`: the model predictions for all observations
 - `.se.fit`: the estandard error of the predictions
 - `.resid`: the residuals of the predictions (acual - predicted values)
+- `.sigma` is the standard error of the prediction.
+
+The other values `.hat`, `.cooksd`, and `.std.resid` are used in regression diagnostics.
 
 ```{r}
 glance(reg)
