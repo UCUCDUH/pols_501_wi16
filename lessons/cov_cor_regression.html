@@ -88,7 +88,7 @@ $$
 
 <div id="outline" class="section level3">
 <h3>Outline</h3>
-<p>In this lab we’ll look at different methdos to study the relationship between variables.</p>
+<p>In this lab we’ll look at different methods to study the relationship between variables.</p>
 <ol style="list-style-type: decimal">
 <li>Covariance</li>
 <li>Correlation</li>
@@ -114,7 +114,7 @@ glimpse(Prestige)</code></pre>
 ## $ prestige  (dbl) 68.8, 69.1, 63.4, 56.8, 73.5, 77.6, 72.6, 78.1, 73.1...
 ## $ census    (int) 1113, 1130, 1171, 1175, 2111, 2113, 2133, 2141, 2143...
 ## $ type      (fctr) prof, prof, prof, prof, prof, prof, prof, prof, pro...</code></pre>
-<p>The dataset was constructed using 1971 census data from Canada. Each observation of the dataset (nrow = 102) is an occupation (e.g. biologists, secretaries, athletes, etc.) and the variables are: the average <code>education</code> and <code>income</code> for the respondents with those occupations, the percentage of <code>women</code> respondents, the <code>prestige</code> of the occupation (Pineo-Porter prestige score: social survey from the 1960s), and <code>type</code>of occupation (Blue collar -bc-, Professional -prof-, and White Collar -wc-).</p>
+<p>The dataset was constructed using 1971 census data from Canada. Each observation of the dataset (<code>nrow = 102</code>) is an occupation (e.g. biologists, secretaries, athletes, etc.) and the variables are: the average <code>education</code> and <code>income</code> for the respondents with those occupations, the percentage of <code>women</code> respondents, the <code>prestige</code> of the occupation (Pineo-Porter prestige score: social survey from the 1960s), and <code>type</code>of occupation (Blue collar <code>bc</code>, Professional <code>prof</code>, and White Collar <code>wc</code>).</p>
 </div>
 <div id="covariance" class="section level3">
 <h3>Covariance</h3>
@@ -125,7 +125,7 @@ y &lt;- Prestige$income
 n &lt;- nrow(Prestige)
 xhat &lt;- mean(Prestige$education)
 yhat &lt;- mean(Prestige$income)
-covariance &lt;- sum((y - mean(y)) * (x - mean(x))) / (n-1)
+covariance &lt;- sum((y - mean(y)) * (x - mean(x))) / (n - 1)
 covariance</code></pre>
 <pre><code>## [1] 6691.13</code></pre>
 <p>In <code>R</code> we can also calculate the covariance using the function <code>cov()</code>. This function takes two vectors of the same length and calculates the covariance.</p>
@@ -134,7 +134,7 @@ covariance</code></pre>
 </div>
 <div id="correlation" class="section level3">
 <h3>Correlation</h3>
-<p>One of the analytical downsides of calculating the covariance to study the relationship between two variables is that the resulting estimator is scale-dependent and it’s hard to compare it to other covariance estimators. To address this issue, we often calculate intsead the <code>correlation</code> of two variables; which is a standardized statistic that ranges from -1 to 1. Positive correlation values indicate a positive relationship and negative values a negative one. The closer the statistic is to -1 or to 1, the stronger the relationship between these two variables.</p>
+<p>One of the analytical downsides of calculating the covariance to study the relationship between two variables is that the resulting estimator is scale-dependent and it’s hard to compare it to other covariance estimators. To address this issue, we often calculate instead the <code>correlation</code> of two variables; which is a standardized statistic that ranges from -1 to 1. Positive correlation values indicate a positive relationship and negative values a negative one. The closer the statistic is to -1 or to 1, the stronger the relationship between these two variables.</p>
 <p>Let’s do the same we did with the covariance and calculate first the correlation between <code>education</code> and <code>income</code> manually. To do so we need: the covariance of x and y (<code>covariance</code>), the variance of x (<code>varx</code>) and the variance of y (<code>vary</code>)</p>
 <pre class="r"><code>varx &lt;- var(Prestige$education)
 vary &lt;- var(Prestige$income)
@@ -155,18 +155,21 @@ prestige_cor</code></pre>
 ## prestige       0.85   0.71 -0.12     1.00</code></pre>
 <p>Instead of having a table with the correlation between all numeric variables, we can also create a plot.</p>
 <p>We first need to organize the dataset so that we can then plot the data using <code>geom_tile()</code> from <code>ggplot2</code>.</p>
-<pre class="r"><code>prestige_cor[lower.tri(prestige_cor)]&lt;-NA
+<pre class="r"><code>prestige_cor[lower.tri(prestige_cor)] &lt;- NA
 prestige_cor_new &lt;- gather(as.data.frame(prestige_cor), var1, cor)
 prestige_cor_new$var2 &lt;- rep(colnames(prestige_cor), ncol(prestige_cor))
 prestige_cor_new &lt;- na.omit(prestige_cor_new)</code></pre>
 <p>And now we plot the correlation between the variables in <code>Prestige</code>:</p>
-<pre class="r"><code>ggplot(prestige_cor_new, aes(var1, var2))+
- geom_tile(data=prestige_cor_new, aes(fill=cor), color=&quot;white&quot;)+
- scale_fill_gradient2(low=&quot;blue&quot;, high=&quot;red&quot;, mid=&quot;white&quot;, 
-  midpoint=0, limit=c(-1,1),name=&quot;Correlation\n(Pearson)&quot;)+
- theme(axis.text.x = element_text(angle=45, vjust=1, size=11, hjust=1))+
- coord_equal() + labs(x = &quot;&quot;, y = &quot;&quot;) +
-  ggtitle(&quot;Correlation Plot&quot;)</code></pre>
+<pre class="r"><code>ggplot(prestige_cor_new, aes(var1, var2)) +
+  geom_tile(data = prestige_cor_new, aes(fill = cor), color=&quot;white&quot;) +
+  scale_fill_gradient2(low = &quot;blue&quot;, high = &quot;red&quot;, mid = &quot;white&quot;, 
+                       midpoint = 0, limit = c(-1, 1), name = &quot;Correlation\n(Pearson)&quot;) +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, size = 11, hjust = 1)) +
+  coord_equal() +
+  labs(x = &quot;&quot;, y = &quot;&quot;) +
+  ggtitle(&quot;Correlation Plot&quot;) +
+  theme_minimal() +
+  theme(panel.grid = element_blank())</code></pre>
 <p><img src="cov_cor_regression_files/figure-html/unnamed-chunk-9-1.png" title="" alt="" width="672" /></p>
 </div>
 <div id="regression" class="section level3">
@@ -194,7 +197,7 @@ prestige_cor_new &lt;- na.omit(prestige_cor_new)</code></pre>
 <li>A table with the:
 <ul>
 <li>Coefficients</li>
-<li>SEs</li>
+<li>standard errors</li>
 <li>T-Values</li>
 <li>P-Values</li>
 </ul></li>
@@ -221,7 +224,7 @@ prestige_cor_new &lt;- na.omit(prestige_cor_new)</code></pre>
 ## Multiple R-squared:  0.3336, Adjusted R-squared:  0.3269 
 ## F-statistic: 50.06 on 1 and 100 DF,  p-value: 2.079e-10</code></pre>
 <ol start="3" style="list-style-type: decimal">
-<li>The regression output <code>reg</code> contains more information than the one that the <code>summary()</code> function returns. To take a look at the differen info in <code>reg</code>, use the <code>str()</code> function. You can do the same with the output of a large number of statistical tests in <code>R</code>.</li>
+<li>The regression output <code>reg</code> contains more information than the one that the <code>summary()</code> function returns. To take a look at the different info in <code>reg</code>, use the <code>str()</code> function. You can do the same with the output of a large number of statistical tests in <code>R</code>.</li>
 </ol>
 <pre class="r"><code>str(reg)</code></pre>
 <pre><code>## List of 12
@@ -281,7 +284,7 @@ prestige_cor_new &lt;- na.omit(prestige_cor_new)</code></pre>
 ##   .. .. ..- attr(*, &quot;dataClasses&quot;)= Named chr [1:2] &quot;numeric&quot; &quot;numeric&quot;
 ##   .. .. .. ..- attr(*, &quot;names&quot;)= chr [1:2] &quot;income&quot; &quot;education&quot;
 ##  - attr(*, &quot;class&quot;)= chr &quot;lm&quot;</code></pre>
-<p>You can pull out any of these elements within the regression output object using the <code>$</code> dolar sign. Or you can also use the dolar sign to pull out an object from the <code>summary</code> of <code>reg</code> (<code>summary(reg)</code>).</p>
+<p>You can pull out any of these elements within the regression output object using the <code>$</code> dollar sign. Or you can also use the dollar sign to pull out an object from the <code>summary</code> of <code>reg</code> (<code>summary(reg)</code>).</p>
 <pre class="r"><code># str(summary(reg))
 fit_vals &lt;- reg$fitted.values
 coef_table &lt;- summary(reg)$coefficients
@@ -291,7 +294,7 @@ coef_table</code></pre>
 ## education     898.8128   127.0354  7.075294 2.079192e-10</code></pre>
 <p>The package <code>broom</code> has some functions to pull out and transform to friendly <code>data.frames</code> the output of statistical tests (e.g. <code>t.test</code>, <code>lm</code>, etc.). <code>broom</code> has 3 main functions:</p>
 <ol style="list-style-type: decimal">
-<li><code>tidy</code>: Transforms into a ready-to-go <code>data.frame</code> the coefficients, SEs (and CIs if given), critical values, and p-values in statistical tests’ outputs</li>
+<li><code>tidy</code>: Transforms into a ready-to-go <code>data.frame</code> the coefficients, standard errors (and confidence intervals if given), critical values, and p-values in statistical tests’ outputs</li>
 <li><code>augment</code>: Add columns to the original data that was modeled. This includes predictions, residuals, and cluster assignments.</li>
 <li><code>glance</code>: Always return a one-row <code>data.frame</code> that is a summary of the model: e.g. R2, adjusted R2, etc.</li>
 </ol>
@@ -320,11 +323,11 @@ head(new_Prestige)</code></pre>
 ## 1 0.3335989     0.3269349 3483.378  50.05978 2.079192e-10  2 -975.6091
 ##        AIC      BIC   deviance df.residual
 ## 1 1957.218 1965.093 1213392025         100</code></pre>
-<p>For example, we can use the new dataset we created using the <code>augment()</code> function (<code>new_Prestige</code>) to plot the values of <code>income</code> predicted by the model (with 95% CIs) v. the actual values of <code>income</code>.</p>
+<p>For example, we can use the new dataset we created using the <code>augment()</code> function (<code>new_Prestige</code>) to plot the values of <code>income</code> predicted by the model (with 95% confidence intervals) v. the actual values of <code>income</code>.</p>
 <pre class="r"><code>ggplot(new_Prestige, aes(x = income, y = .fitted)) + 
   geom_point() +
-  geom_line(aes(x = income, y = income), linetype=&quot;dashed&quot;) +
-  geom_smooth(method = &#39;lm&#39;, se = FALSE) </code></pre>
+  geom_line(aes(x = income, y = income), linetype = &quot;dashed&quot;) +
+  geom_smooth(method = &quot;lm&quot;, se = FALSE) </code></pre>
 <p><img src="cov_cor_regression_files/figure-html/unnamed-chunk-18-1.png" title="" alt="" width="672" /></p>
 </div>
 

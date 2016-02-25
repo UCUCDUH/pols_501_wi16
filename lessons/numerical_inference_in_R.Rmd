@@ -178,7 +178,6 @@ ggplot(duncan_t_tests, aes(x = type,
   xlab("Occupation Type")
 ```
 
-
 Now, consider the sleep data. 
 Since it has the extra hours of sleep for the same set of 10 patients for two drugs, this is paired data, and should be analyzed using a paired t-test.
 Although the data is paired, `t.test()` does not know this and will run a two-sample difference in means test by default,
