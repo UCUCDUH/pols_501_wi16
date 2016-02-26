@@ -132,7 +132,7 @@ ggpairs(prestige_num)
 The basic `R` command for linear regression is `lm()`. We need to specify two main arguments in this function: the name of the dataset containing the key variables (`data =`) and the formula expressing our model (`formula =`). For the `formula` argument, we use the symbol `~` to separate the right from the left side of the equation.
 
 ```{r}
-reg <- lm(data = Prestige, formula = income ~ education)
+reg <- lm(data = Prestige, formula = prestige ~ income)
 ```
 
 There are multiple ways to look at and explore the output of the regression:
@@ -210,21 +210,21 @@ glance(reg)
 
 For example, we can use the new dataset we created using the `augment()` function (`new_Prestige`) to plot the values of `income` predicted by the model (with 95% CIs) v. the actual values of `income`.
 
-Fill in description: Fitted values plot
-
+Fitted values plot: Comparing the actual observations v. what the model would predict.
 ```{r, fig.keep='all'}
 ggplot(new_Prestige, aes(x = income)) +
   geom_point(aes(y = prestige)) +
   geom_line(aes(y = .fitted))
 ```
 
-Plot of the residuals:
+Plot of the residuals: should be randomly distributed around 0 ($\epsilon = N(0,\sigma^2)$). We shouldn't observe any clear pattern.
 ```{r}
 ggplot(new_Prestige, aes(x = income, y = .resid)) +
-  geom_point()
+  geom_point() +
+  geom_hline(yintercept = 0)
 ```
 
-Density plot of residuals
+Density plot of residuals: should be normally distributed ($\epsilon = N(0,\sigma^2)$).
 ```{r}
 ggplot(new_Prestige, aes(x = .resid)) + 
   geom_density() +

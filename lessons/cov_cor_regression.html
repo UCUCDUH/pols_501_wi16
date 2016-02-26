@@ -195,7 +195,7 @@ Challenge
 <div id="regression" class="section level3">
 <h3>Regression</h3>
 <p>The basic <code>R</code> command for linear regression is <code>lm()</code>. We need to specify two main arguments in this function: the name of the dataset containing the key variables (<code>data =</code>) and the formula expressing our model (<code>formula =</code>). For the <code>formula</code> argument, we use the symbol <code>~</code> to separate the right from the left side of the equation.</p>
-<pre class="r"><code>reg &lt;- lm(data = Prestige, formula = income ~ education)</code></pre>
+<pre class="r"><code>reg &lt;- lm(data = Prestige, formula = prestige ~ income)</code></pre>
 <p>There are multiple ways to look at and explore the output of the regression:</p>
 <ol style="list-style-type: decimal">
 <li>If we just type the resulting object in the console, <code>reg</code> in our case, <code>R</code> returns the formula of the model that generated that output + the coefficients for each covariate and the intercept. Not much info.</li>
@@ -203,11 +203,11 @@ Challenge
 <pre class="r"><code>reg</code></pre>
 <pre><code>## 
 ## Call:
-## lm(formula = income ~ education, data = Prestige)
+## lm(formula = prestige ~ income, data = Prestige)
 ## 
 ## Coefficients:
-## (Intercept)    education  
-##     -2853.6        898.8</code></pre>
+## (Intercept)       income  
+##   27.141176     0.002897</code></pre>
 <ol start="2" style="list-style-type: decimal">
 <li>We can also use the <code>summary()</code> function and insert the regression output (<code>reg</code>) as argument to get further details. In particular <code>R</code> returns:</li>
 </ol>
@@ -227,22 +227,22 @@ Challenge
 <pre class="r"><code>summary(reg)</code></pre>
 <pre><code>## 
 ## Call:
-## lm(formula = income ~ education, data = Prestige)
+## lm(formula = prestige ~ income, data = Prestige)
 ## 
 ## Residuals:
 ##     Min      1Q  Median      3Q     Max 
-## -5493.2 -2433.8   -41.9  1491.5 17713.1 
+## -33.007  -8.378  -2.378   8.432  32.084 
 ## 
 ## Coefficients:
-##             Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)  -2853.6     1407.0  -2.028   0.0452 *  
-## education      898.8      127.0   7.075 2.08e-10 ***
+##              Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) 2.714e+01  2.268e+00   11.97   &lt;2e-16 ***
+## income      2.897e-03  2.833e-04   10.22   &lt;2e-16 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## Residual standard error: 3483 on 100 degrees of freedom
-## Multiple R-squared:  0.3336, Adjusted R-squared:  0.3269 
-## F-statistic: 50.06 on 1 and 100 DF,  p-value: 2.079e-10</code></pre>
+## Residual standard error: 12.09 on 100 degrees of freedom
+## Multiple R-squared:  0.5111, Adjusted R-squared:  0.5062 
+## F-statistic: 104.5 on 1 and 100 DF,  p-value: &lt; 2.2e-16</code></pre>
 <ol start="3" style="list-style-type: decimal">
 <li>The regression output <code>reg</code> contains more information than the one that the <code>summary()</code> function returns. To take a look at the different info in <code>reg</code>, use the <code>str()</code> function. You can do the same with the output of a large number of statistical tests in <code>R</code>. You can pull out any of these elements within the regression output object using the <code>$</code> dolar sign. Or you can also use the dolar sign to pull out an object from the <code>summary</code> of <code>reg</code> (<code>summary(reg)</code>). For example, you could pull out:</li>
 </ol>
@@ -254,61 +254,61 @@ Challenge
 </ul>
 <pre class="r"><code>str(reg)</code></pre>
 <pre><code>## List of 12
-##  $ coefficients : Named num [1:2] -2854 899
-##   ..- attr(*, &quot;names&quot;)= chr [1:2] &quot;(Intercept)&quot; &quot;education&quot;
-##  $ residuals    : Named num [1:102] 3421 17713 647 1454 -1884 ...
+##  $ coefficients : Named num [1:2] 27.1412 0.0029
+##   ..- attr(*, &quot;names&quot;)= chr [1:2] &quot;(Intercept)&quot; &quot;income&quot;
+##  $ residuals    : Named num [1:102] 5.88 -33.01 9.4 3.98 22.02 ...
 ##   ..- attr(*, &quot;names&quot;)= chr [1:102] &quot;gov.administrators&quot; &quot;general.managers&quot; &quot;accountants&quot; &quot;purchasing.officers&quot; ...
-##  $ effects      : Named num [1:102] -68655 -24646 -763 862 -4415 ...
-##   ..- attr(*, &quot;names&quot;)= chr [1:102] &quot;(Intercept)&quot; &quot;education&quot; &quot;&quot; &quot;&quot; ...
+##  $ effects      : Named num [1:102] -472.99 -123.61 9.95 4.31 22.09 ...
+##   ..- attr(*, &quot;names&quot;)= chr [1:102] &quot;(Intercept)&quot; &quot;income&quot; &quot;&quot; &quot;&quot; ...
 ##  $ rank         : int 2
-##  $ fitted.values: Named num [1:102] 8930 8166 8624 7411 10287 ...
+##  $ fitted.values: Named num [1:102] 62.9 102.1 54 52.8 51.5 ...
 ##   ..- attr(*, &quot;names&quot;)= chr [1:102] &quot;gov.administrators&quot; &quot;general.managers&quot; &quot;accountants&quot; &quot;purchasing.officers&quot; ...
 ##  $ assign       : int [1:2] 0 1
 ##  $ qr           :List of 5
 ##   ..$ qr   : num [1:102, 1:2] -10.1 0.099 0.099 0.099 0.099 ...
 ##   .. ..- attr(*, &quot;dimnames&quot;)=List of 2
 ##   .. .. ..$ : chr [1:102] &quot;gov.administrators&quot; &quot;general.managers&quot; &quot;accountants&quot; &quot;purchasing.officers&quot; ...
-##   .. .. ..$ : chr [1:2] &quot;(Intercept)&quot; &quot;education&quot;
+##   .. .. ..$ : chr [1:2] &quot;(Intercept)&quot; &quot;income&quot;
 ##   .. ..- attr(*, &quot;assign&quot;)= int [1:2] 0 1
-##   ..$ qraux: num [1:2] 1.1 1.05
+##   ..$ qraux: num [1:2] 1.1 1.44
 ##   ..$ pivot: int [1:2] 1 2
 ##   ..$ tol  : num 1e-07
 ##   ..$ rank : int 2
 ##   ..- attr(*, &quot;class&quot;)= chr &quot;qr&quot;
 ##  $ df.residual  : int 100
 ##  $ xlevels      : Named list()
-##  $ call         : language lm(formula = income ~ education, data = Prestige)
-##  $ terms        :Classes &#39;terms&#39;, &#39;formula&#39; length 3 income ~ education
-##   .. ..- attr(*, &quot;variables&quot;)= language list(income, education)
+##  $ call         : language lm(formula = prestige ~ income, data = Prestige)
+##  $ terms        :Classes &#39;terms&#39;, &#39;formula&#39; length 3 prestige ~ income
+##   .. ..- attr(*, &quot;variables&quot;)= language list(prestige, income)
 ##   .. ..- attr(*, &quot;factors&quot;)= int [1:2, 1] 0 1
 ##   .. .. ..- attr(*, &quot;dimnames&quot;)=List of 2
-##   .. .. .. ..$ : chr [1:2] &quot;income&quot; &quot;education&quot;
-##   .. .. .. ..$ : chr &quot;education&quot;
-##   .. ..- attr(*, &quot;term.labels&quot;)= chr &quot;education&quot;
+##   .. .. .. ..$ : chr [1:2] &quot;prestige&quot; &quot;income&quot;
+##   .. .. .. ..$ : chr &quot;income&quot;
+##   .. ..- attr(*, &quot;term.labels&quot;)= chr &quot;income&quot;
 ##   .. ..- attr(*, &quot;order&quot;)= int 1
 ##   .. ..- attr(*, &quot;intercept&quot;)= int 1
 ##   .. ..- attr(*, &quot;response&quot;)= int 1
 ##   .. ..- attr(*, &quot;.Environment&quot;)=&lt;environment: R_GlobalEnv&gt; 
-##   .. ..- attr(*, &quot;predvars&quot;)= language list(income, education)
+##   .. ..- attr(*, &quot;predvars&quot;)= language list(prestige, income)
 ##   .. ..- attr(*, &quot;dataClasses&quot;)= Named chr [1:2] &quot;numeric&quot; &quot;numeric&quot;
-##   .. .. ..- attr(*, &quot;names&quot;)= chr [1:2] &quot;income&quot; &quot;education&quot;
+##   .. .. ..- attr(*, &quot;names&quot;)= chr [1:2] &quot;prestige&quot; &quot;income&quot;
 ##  $ model        :&#39;data.frame&#39;:   102 obs. of  2 variables:
-##   ..$ income   : int [1:102] 12351 25879 9271 8865 8403 11030 8258 14163 11377 11023 ...
-##   ..$ education: num [1:102] 13.1 12.3 12.8 11.4 14.6 ...
-##   ..- attr(*, &quot;terms&quot;)=Classes &#39;terms&#39;, &#39;formula&#39; length 3 income ~ education
-##   .. .. ..- attr(*, &quot;variables&quot;)= language list(income, education)
+##   ..$ prestige: num [1:102] 68.8 69.1 63.4 56.8 73.5 77.6 72.6 78.1 73.1 68.8 ...
+##   ..$ income  : int [1:102] 12351 25879 9271 8865 8403 11030 8258 14163 11377 11023 ...
+##   ..- attr(*, &quot;terms&quot;)=Classes &#39;terms&#39;, &#39;formula&#39; length 3 prestige ~ income
+##   .. .. ..- attr(*, &quot;variables&quot;)= language list(prestige, income)
 ##   .. .. ..- attr(*, &quot;factors&quot;)= int [1:2, 1] 0 1
 ##   .. .. .. ..- attr(*, &quot;dimnames&quot;)=List of 2
-##   .. .. .. .. ..$ : chr [1:2] &quot;income&quot; &quot;education&quot;
-##   .. .. .. .. ..$ : chr &quot;education&quot;
-##   .. .. ..- attr(*, &quot;term.labels&quot;)= chr &quot;education&quot;
+##   .. .. .. .. ..$ : chr [1:2] &quot;prestige&quot; &quot;income&quot;
+##   .. .. .. .. ..$ : chr &quot;income&quot;
+##   .. .. ..- attr(*, &quot;term.labels&quot;)= chr &quot;income&quot;
 ##   .. .. ..- attr(*, &quot;order&quot;)= int 1
 ##   .. .. ..- attr(*, &quot;intercept&quot;)= int 1
 ##   .. .. ..- attr(*, &quot;response&quot;)= int 1
 ##   .. .. ..- attr(*, &quot;.Environment&quot;)=&lt;environment: R_GlobalEnv&gt; 
-##   .. .. ..- attr(*, &quot;predvars&quot;)= language list(income, education)
+##   .. .. ..- attr(*, &quot;predvars&quot;)= language list(prestige, income)
 ##   .. .. ..- attr(*, &quot;dataClasses&quot;)= Named chr [1:2] &quot;numeric&quot; &quot;numeric&quot;
-##   .. .. .. ..- attr(*, &quot;names&quot;)= chr [1:2] &quot;income&quot; &quot;education&quot;
+##   .. .. .. ..- attr(*, &quot;names&quot;)= chr [1:2] &quot;prestige&quot; &quot;income&quot;
 ##  - attr(*, &quot;class&quot;)= chr &quot;lm&quot;</code></pre>
 <p>An alternative (easier) way to pull out the fitted values and the coefficients would be to use the functions <code>fitted()</code> and <code>coefficients()</code>. Also, we can calculate the standard errors of the coefficients by taking the square root of the diagonal of the variance-covariance matrix.</p>
 <pre class="r"><code># str(summary(reg))
@@ -317,9 +317,9 @@ coefs &lt;-  coefficients(reg)
 se &lt;- sqrt(diag(vcov(reg)))
 reg_table &lt;- data.frame(coefs = coefs, se = se)
 reg_table</code></pre>
-<pre><code>##                  coefs        se
-## (Intercept) -2853.5856 1407.0392
-## education     898.8128  127.0354</code></pre>
+<pre><code>##                    coefs           se
+## (Intercept) 27.141176368 2.2677036186
+## income       0.002896799 0.0002833245</code></pre>
 <p>The package <code>broom</code> has some functions to pull out and transform to friendly <code>data.frames</code> the output of statistical tests (e.g. <code>t.test</code>, <code>lm</code>, etc.). <code>broom</code> has 3 main functions:</p>
 <ol style="list-style-type: decimal">
 <li><code>tidy</code>: Transforms into a ready-to-go <code>data.frame</code> the coefficients, SEs (and CIs if given), critical values, and p-values in statistical tests’ outputs</li>
@@ -327,41 +327,61 @@ reg_table</code></pre>
 <li><code>glance</code>: Always return a one-row <code>data.frame</code> that is a summary of the model: e.g. R2, adjusted R2, etc.</li>
 </ol>
 <pre class="r"><code>tidy(reg)</code></pre>
-<pre><code>##          term   estimate std.error statistic      p.value
-## 1 (Intercept) -2853.5856 1407.0392 -2.028078 4.521163e-02
-## 2   education   898.8128  127.0354  7.075294 2.079192e-10</code></pre>
+<pre><code>##          term     estimate    std.error statistic      p.value
+## 1 (Intercept) 27.141176368 2.2677036186  11.96857 5.135229e-21
+## 2      income  0.002896799 0.0002833245  10.22432 3.192004e-17</code></pre>
 <pre class="r"><code>new_Prestige &lt;- augment(reg)
 head(new_Prestige)</code></pre>
-<pre><code>##             .rownames income education   .fitted  .se.fit     .resid
-## 1  gov.administrators  12351     13.11  8929.851 457.9908  3421.1492
-## 2    general.managers  25879     12.26  8165.860 395.4004 17713.1401
-## 3         accountants   9271     12.77  8624.254 430.8034   646.7456
-## 4 purchasing.officers   8865     11.42  7410.857 355.6196  1454.1429
-## 5            chemists   8403     14.62 10287.058 601.7919 -1884.0582
-## 6          physicists  11030     15.64 11203.847 711.8591  -173.8473
-##         .hat   .sigma      .cooksd  .std.resid
-## 1 0.01728671 3483.702 8.633196e-03  0.99073621
-## 2 0.01288466 3007.636 1.709611e-01  5.11812680
-## 3 0.01529527 3500.313 2.718823e-04  0.18710263
-## 4 0.01042246 3497.842 9.273713e-04  0.41964457
-## 5 0.02984637 3495.644 4.638397e-03 -0.54912786
-## 6 0.04176255 3500.881 5.664288e-05 -0.05098363</code></pre>
+<pre><code>##             .rownames prestige income   .fitted  .se.fit     .resid
+## 1  gov.administrators     68.8  12351  62.91954 1.976947   5.880457
+## 2    general.managers     69.1  25879 102.10744 5.537087 -33.007443
+## 3         accountants     63.4   9271  53.99740 1.387056   9.402598
+## 4 purchasing.officers     56.8   8865  52.82130 1.332650   3.978699
+## 5            chemists     73.5   8403  51.48298 1.280534  22.017020
+## 6          physicists     77.6  11030  59.09287 1.694313  18.507128
+##         .hat   .sigma      .cooksd .std.resid
+## 1 0.02673970 12.13586 0.0033393128  0.4930373
+## 2 0.20976307 11.56339 1.2519142229 -3.0712589
+## 3 0.01316298 12.11335 0.0040878547  0.7829037
+## 4 0.01215062 12.14398 0.0006742724  0.3311150
+## 5 0.01121886 11.94513 0.0190283833  1.8314356
+## 6 0.01964054 12.00454 0.0239440342  1.5460715</code></pre>
 <ul>
 <li><code>.fitted</code>: the model predictions for all observations</li>
 <li><code>.se.fit</code>: the estandard error of the predictions</li>
 <li><code>.resid</code>: the residuals of the predictions (acual - predicted values)</li>
+<li><code>.sigma</code> is the standard error of the prediction.</li>
 </ul>
+<p>The other values <code>.hat</code>, <code>.cooksd</code>, and <code>.std.resid</code> are used in regression diagnostics.</p>
 <pre class="r"><code>glance(reg)</code></pre>
 <pre><code>##   r.squared adj.r.squared    sigma statistic      p.value df    logLik
-## 1 0.3335989     0.3269349 3483.378  50.05978 2.079192e-10  2 -975.6091
-##        AIC      BIC   deviance df.residual
-## 1 1957.218 1965.093 1213392025         100</code></pre>
+## 1 0.5110901      0.506201 12.08974  104.5367 3.192004e-17  2 -397.9422
+##        AIC      BIC deviance df.residual
+## 1 801.8844 809.7593 14616.17         100</code></pre>
 <p>For example, we can use the new dataset we created using the <code>augment()</code> function (<code>new_Prestige</code>) to plot the values of <code>income</code> predicted by the model (with 95% CIs) v. the actual values of <code>income</code>.</p>
-<pre class="r"><code>ggplot(new_Prestige, aes(x = income, y = .fitted)) + 
-  geom_point() +
-  geom_line(aes(x = income, y = income)) +
-  geom_smooth(method = &quot;lm&quot;, se = FALSE) </code></pre>
+<p>Fitted values plot: Comparing the actual observations v. what the model would predict.</p>
+<pre class="r"><code>ggplot(new_Prestige, aes(x = income)) +
+  geom_point(aes(y = prestige)) +
+  geom_line(aes(y = .fitted))</code></pre>
 <p><img src="cov_cor_regression_files/figure-html/unnamed-chunk-19-1.png" title="" alt="" width="672" /></p>
+<p>Plot of the residuals: should be randomly distributed around 0 (<span class="math inline">\(\epsilon = N(0,\sigma^2)\)</span>). We shouldn’t observe any clear pattern.</p>
+<pre class="r"><code>ggplot(new_Prestige, aes(x = income, y = .resid)) +
+  geom_point() +
+  geom_hline(yintercept = 0)</code></pre>
+<p><img src="cov_cor_regression_files/figure-html/unnamed-chunk-20-1.png" title="" alt="" width="672" /></p>
+<p>Density plot of residuals: should be normally distributed (<span class="math inline">\(\epsilon = N(0,\sigma^2)\)</span>).</p>
+<pre class="r"><code>ggplot(new_Prestige, aes(x = .resid)) + 
+  geom_density() +
+  geom_rug()</code></pre>
+<p><img src="cov_cor_regression_files/figure-html/unnamed-chunk-21-1.png" title="" alt="" width="672" /></p>
+<p>Find the expected prestige of a job with incomes of 1000, 2000, 4000, and 8000.</p>
+<pre class="r"><code>incomes &lt;- c(1000, 2000, 4000, 8000)
+coef(reg)[&#39;(Intercept)&#39;] + coef(reg)[&#39;income&#39;] * incomes</code></pre>
+<pre><code>## [1] 30.03798 32.93477 38.72837 50.31557</code></pre>
+<p>Use predict to calculate predicted values of prestige.</p>
+<pre class="r"><code>predict(reg, newdata = data.frame(income = incomes))</code></pre>
+<pre><code>##        1        2        3        4 
+## 30.03798 32.93477 38.72837 50.31557</code></pre>
 </div>
 
 <hr>
