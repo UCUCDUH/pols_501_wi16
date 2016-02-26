@@ -67,9 +67,9 @@ One of the analytical downsides of calculating the covariance to study the relat
 Let's do the same we did with the covariance and calculate first the correlation between `education` and `income` manually. To do so we need: the covariance of x and y (`covariance`), the variance of x (`varx`) and the variance of y (`vary`)
 
 ```{r}
-varx <- var(Prestige$education)
-vary <- var(Prestige$income)
-cor_xy <- covariance / (sqrt(varx) * sqrt(vary))
+sx <- sd(Prestige$education)
+sy <- sd(Prestige$income)
+cor_xy <- covariance / (sx * sy)
 cor_xy
 ```
 

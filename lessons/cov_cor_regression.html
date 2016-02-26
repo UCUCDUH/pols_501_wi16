@@ -12,7 +12,7 @@
 
 <meta name="date" content="2016-02-26" />
 
-<title>Lab 7: Covariance, Correlation, and Regression</title>
+<title>Lab 8: Covariance, Correlation, and Regression</title>
 
 <script src="libs/jquery-1.11.0/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -80,7 +80,7 @@ $$
 $$
 
 <div id="header">
-<h1 class="title">Lab 7: Covariance, Correlation, and Regression</h1>
+<h1 class="title">Lab 8: Covariance, Correlation, and Regression</h1>
 <h4 class="author"><em>Andreu Casas</em></h4>
 <h4 class="date"><em>February 26, 2016</em></h4>
 </div>
@@ -137,9 +137,9 @@ covariance</code></pre>
 <h3>Correlation</h3>
 <p>One of the analytical downsides of calculating the covariance to study the relationship between two variables is that the resulting estimator is scale-dependent and it’s hard to compare it to other covariance estimators. To address this issue, we often calculate intsead the <code>correlation</code> of two variables; which is a standardized statistic that ranges from -1 to 1. Positive correlation values indicate a positive relationship and negative values a negative one. The closer the statistic is to -1 or to 1, the stronger the relationship between these two variables.</p>
 <p>Let’s do the same we did with the covariance and calculate first the correlation between <code>education</code> and <code>income</code> manually. To do so we need: the covariance of x and y (<code>covariance</code>), the variance of x (<code>varx</code>) and the variance of y (<code>vary</code>)</p>
-<pre class="r"><code>varx &lt;- var(Prestige$education)
-vary &lt;- var(Prestige$income)
-cor_xy &lt;- covariance / (sqrt(varx) * sqrt(vary))
+<pre class="r"><code>sx &lt;- sd(Prestige$education)
+sy &lt;- sd(Prestige$income)
+cor_xy &lt;- covariance / (sx * sy)
 cor_xy</code></pre>
 <pre><code>## [1] 0.5775802</code></pre>
 <p>As it happened with calculating the covariance, there is also an <code>R</code> function to calculate the correlation of two variables: <code>cor()</code>. This variable also takes two vectors of the same length.</p>
