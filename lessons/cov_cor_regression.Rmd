@@ -1,5 +1,5 @@
 ---
-title: "Lab 7: Covariance, Correlation, and Regression"
+title: "Lab 8: Covariance, Correlation, and Regression"
 author: "Andreu Casas"
 date: "February 26, 2016"
 ---
