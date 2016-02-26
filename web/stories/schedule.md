@@ -243,6 +243,12 @@ Class
 <li> <i class="fa-li fa fa-book"></i> <em>SMISS</em>. Sections 2.3.4, 2.3.5, Ch 2 Appendix, 6.6.3, 6.7, 7.5 </li>
 </ul>
 
+Lab
+
+<ul class="fa-ul">
+<li><i class="fa-li fa fa-bar-chart"></i><a href="/lessons/cov_cor_regression">Covariance, Correlation, and Regression</a>
+</ul>
+
 ## Week 9
 
 **Multiple regression**
