@@ -1,0 +1,51 @@
+---
+title: "Exporting tables from R"
+author: "Andreu Casas"
+date: "March 4, 2016"
+---
+
+```{r init,results='hide',echo=FALSE}
+source("init.R")
+```
+
+We often want to add in our papers tables that we have produced using R. That is an easy task if we are using R-Markdown, because we can simply add a chunk of code with that table to the Markdown report. However, how can we export an R table so we can add it to a Word document? In this lesson we'll see how to do so using three different packages:
+
+- `htmlTables()`
+- `xtable()`
+
+### `htmlTable()`
+
+We need an exmaple table we can use to practice. Let's fit a linear model using the dataset `iris` and then create a table with the output of the regression. We'll use the `tidy()` function of the `broom()` package to extract the coefficients table from the regression output.
+ 
+```{r}
+library(broom)
+reg <- lm(Sepal.Length ~ Sepal.Width, data = iris )
+reg_table <- tidy(reg)
+reg_table
+```
+
+The values in the table have numerous decimals. Let's round them so we can fit them in a table. Notice that we can't round the first column because it's a character variable with the variable names.
+
+```{r}
+reg_table[-1] <- round(reg_table[-1],2)
+reg_table
+```
+
+We can now use the `htmlTable()` function from the `htmlTable` package to print the table in the R-Studio viewer. Then we will be able to copy it and paste it in a Word document. In this case I'm selecting not to include the row names in the table (`rnames = FALSE`).
+
+```{r, eval = FALSE}
+htmlTable(reg_table, rnames = FALSE)
+```
+
+---
+
+### `xtable()`
+
+We can also use the `xtable()` package to create an html file that then we can open in a browser, copy the table we find in there, and paste it in a word document.
+
+```{r, eval = FALSE}
+library(xtable)
+print(xtable(reg_table), type = "html", file = "reg_table_xtable.html")
+```
+
+
