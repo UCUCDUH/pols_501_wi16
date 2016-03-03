@@ -66,7 +66,7 @@ In which units are the independent variable `prestige` and the covariate `educat
 
 The outcome variable `prestige` is measured using the Pineo-Porter prestige score for occupation, with range {14.80 , 87.20}. The independent variable `education` is measured in years (average years of education), with range {6.3 , 15.9}. The regression coefficient for `education` is **4.18** and the coefficient SE is **0.39**. 
 
-This means that, when `education` increases by 1 unit (so when the average education of people with certain occupation increase 1 year), `prestige` increases 0.39 units (so the Pineo-Porter prestige scores increases +0.39). For example, let's take a look at the first observation in the dataset Prestige to see more clearly how we should interpret this result.
+This means that, when `education` increases by 1 unit (so when the average education of people with certain occupation increase 1 year), `prestige` increases 4.18 units (so the Pineo-Porter prestige scores increases +4.18). For example, let's take a look at the first observation in the dataset Prestige to see more clearly how we should interpret this result.
 
 ```{r}
 Prestige[1,]
@@ -84,16 +84,13 @@ gov_admin_pred
 gov_admin_pred[1] - gov_admin_pred[2]
 ```
 
-We can calculate confidence intervals around those estimates using the standard error (**0.39**) of the coefficient (**4.18**). 
+We can calculate confidence intervals around those estimates using the argument `interval` and `level` in the `predict()` command.
 
-The hard way:
 ```{r}
-cf <- edu_reg$estimate
-coef_upr <- cf + 1.96 * edu_reg$std.error
-coef_lwr <- cf - 1.96 * edu_reg$std.error
-c(coef_lwr, cf, coef_upr)
-c(gov_admin_pred[1] + coef_lwr, gov_admin_pred[1] + cf, gov_admin_pred[1] + coef_upr)
+pred_CI <- predict(reg, newdata, interval = "confidence", level = .95)
+pred_CI
 ```
+
 
 ### Comparing the effect of all the covariates
 

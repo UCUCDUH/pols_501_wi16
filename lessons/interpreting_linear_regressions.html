@@ -97,7 +97,8 @@ install_github(username = &quot;jrnold&quot;, repo = &quot;UW-POLS501/r-uwpols50
 <pre class="r"><code>library(uwpols501)
 data(&quot;Prestige&quot;)
 library(broom)
-library(dplyr)</code></pre>
+library(dplyr)
+library(coefplot)</code></pre>
 </div>
 <div id="fitting-a-linear-regression" class="section level3">
 <h3>Fitting a linear regression</h3>
@@ -181,6 +182,12 @@ c(coef_lwr, cf, coef_upr)</code></pre>
 <pre class="r"><code>c(gov_admin_pred[1] + coef_lwr, gov_admin_pred[1] + cf, gov_admin_pred[1] + coef_upr)</code></pre>
 <pre><code>##        1        1        1 
 ## 67.64167 68.40352 69.16538</code></pre>
+</div>
+<div id="comparing-the-effect-of-all-the-covariates" class="section level3">
+<h3>Comparing the effect of all the covariates</h3>
+<p>These are not standardized. Look for an existing package to do so.</p>
+<pre class="r"><code>coefplot(reg)</code></pre>
+<p><img src="interpreting_linear_regressions_files/figure-html/unnamed-chunk-8-1.png" title="" alt="" width="672" /></p>
 </div>
 
 <hr>
