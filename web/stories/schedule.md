@@ -262,6 +262,12 @@ Lab
 <li> <i class="fa-li fa fa-book"></li> Matt Golder. "Interactions". <a href="http://mattgolder.com/interactions">URL</a>
 </ul>
 
+Lab
+
+<ul class="fa-ul">
+<li><i class="fa-li fa fa-bar-chart"></i><a href="/lessons/interpreting_linear_regressions">Interpreting linear regression outputs</a>
+</ul>
+
 ## Week 10
 
 TBD
