@@ -68,22 +68,22 @@ In which units are the independent variable `prestige` and the covariate `educat
 
 The outcome variable `prestige` is measured using the Pineo-Porter prestige score for occupation, with range {14.80 , 87.20}. The independent variable `education` is measured in years (average years of education), with range {6.3 , 15.9}. The regression coefficient for `education` is **4.18** and the coefficient SE is **0.39**. 
 
-This means that, when `education` increases by 1 unit (so when the average education of people with certain occupation increase 1 year), `prestige` increases 4.18 units (so the Pineo-Porter prestige scores increases +4.18). For example, let's take a look at the first observation in the dataset Prestige to see more clearly how we should interpret this result.
+This means that, when `education` increases by 1 unit (so when the average education of people with certain occupation increase 1 year), `prestige` increases 4.18 units (so the Pineo-Porter prestige scores increases +4.18). For example, let's create a dataset with 2 different observations where we keep all the variables but `education` to their mean and where one observation has one more unit of `education`.
 
 ```{r}
-Prestige[1,]
+obs1 <- data.frame(education = 13.11,
+                   income = mean(Prestige$income, na.rm = TRUE),
+                   women = mean(Prestige$women, na.rm = TRUE))
+obs2 <- mutate(obs1, education = education + 1)
+newdata <- bind_rows(obs1, obs2)
 ```
 
-The first occupation in the dataset Prestige is `gov.administrators`, with an average of 13.11 years of `education` and an average Pineo-Porter `prestige` score of 68.8. Using the `education` coefficient of the model, we should predict that if `gov.administrators` were to increase their average years of education by 1 year, the expected Pineo-porter score would increase by **4.18**. Let's use the coefficients in the model to predict the `prestige` score for gov.administrators with an `education` value of 13.11 and 14.11, and then compare them.
+Now let's use the model coefficients to predict `prestige` values for both observations and see what's the difference between them. Since the only thing that changes is a unit change on `education`, we should expect an increase of **4.18** on prestige. To make the predictions we will use the `predict()` command. 
 
 ```{r}
-gov_admin1 <- Prestige[1,]
-gov_admin2 <- Prestige[1,] %>%
-  mutate(education = education + 1)
-newdata <- bind_rows(gov_admin1, gov_admin2)
-gov_admin_pred <- predict(reg, newdata)
-gov_admin_pred
-gov_admin_pred[1] - gov_admin_pred[2]
+pred1 <- predict(reg, newdata)
+pred1
+pred1[2] - pred1[1]
 ```
 
 We can calculate confidence intervals around those estimates using the arguments `interval` and `level` in the `predict()` command.
@@ -94,7 +94,7 @@ pred_CI
 ```
 
 `r challenge_start()`
-Predict the Pineo-Porter prestige score (+ 95% CIs) for a "simulated" occupation where 100% of the people are men (`women` == 0) and the average years of `education` is 10.74 and the average `income` is $6798.
+Predict the Pineo-Porter prestige score (+ 95% CIs) for a "simulated" occupation where 100% of the people are men (`women` == 0) and the average years of `education` is 10.74 (the mean value for that variable) and the average `income` is $6798 (also the mean).
 
 Do the same for another simulated occupation where 100% of the people are women (`women` == 100) but have the same average education and income. 
 `r challenge_end()`
@@ -118,14 +118,14 @@ To compare predictions (+95% CIs) easily we can use the `errorbar` geom from `gg
 ```{r}
 mw_pred_tidy <- tidy(mw_pred)
 mw_pred_tidy <- mutate(mw_pred_tidy, scenario = c("men", "women"))
-ggplot(mw_pred_tidy, aes(x = scenario, y = fit)) +
-  geom_point() +
-  geom_errorbar(aes(ymin = lwr, ymax = upr), width=.1)
+ggplot(mw_pred_tidy, aes(x = scenario, y = fit, ymin = lwr, ymax = upr)) +
+  geom_pointrange() +
+  coord_flip()
 ```
 
-This is how we usually want to present our results in papers. It is easier to understand graphs that show effects rather than regression tables. 
+This is how we usually want to present our results in papers. It is easier to understand graphs that show effects (predicted values or probabilities) rather than regression tables. 
 
-### (If we have time) Comparing the effect of all the covariates
+### Comparing the effect of all the covariates
 
 There are some packages that allow you to plot the regression coefficients and present them visually. For example, one of these functions is `coefplot()` of the `coefplot` package.
 
