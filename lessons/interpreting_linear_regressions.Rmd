@@ -27,6 +27,7 @@ data("Prestige")
 library(broom)
 library(dplyr)
 library(coefplot)
+library(ggplot2)
 ```
 
 ### Fitting a linear regression
@@ -84,12 +85,45 @@ gov_admin_pred
 gov_admin_pred[1] - gov_admin_pred[2]
 ```
 
-We can calculate confidence intervals around those estimates using the argument `interval` and `level` in the `predict()` command.
+We can calculate confidence intervals around those estimates using the arguments `interval` and `level` in the `predict()` command.
 
 ```{r}
 pred_CI <- predict(reg, newdata, interval = "confidence", level = .95)
 pred_CI
 ```
+
+`r challenge_start()`
+Predict the Pineo-Porter prestige score (+ 95% CIs) for a "simulated" occupation where 100% of the people are men (`women` == 0) and the average years of `education` is 10.74 and the average `income` is $6798.
+
+Do the same for another simulated occupation where 100% of the people are women (`women` == 100) but have the same average education and income. 
+`r challenge_end()`
+
+`r solution_start()`
+```{r}
+sc_men <- data.frame(women = 0,
+                     education = 10.74,
+                     income = 6798)
+sc_women <- data.frame(women = 100,
+                       education = 10.74,
+                       income = 6798)
+newdata2 <- bind_rows(sc_men, sc_women)
+mw_pred <- predict(reg, newdata, level = 0.95, interval = "confidence")
+mw_pred
+```
+`r solution_end()`
+
+To compare predictions (+95% CIs) easily we can use the `errorbar` geom from `ggplot2`. If we want to use data into the output of the `predict()` command to create the plot, we first need to transform it to `data.frame` format using `tidy()` from `broom`. 
+
+```{r}
+mw_pred_tidy <- tidy(mw_pred)
+mw_pred_tidy <- mutate(mw_pred_tidy, scenario = c("men", "women"))
+ggplot(mw_pred_tidy, aes(x = scenario, y = fit)) +
+  geom_point() +
+  geom_errorbar(aes(ymin = lwr, ymax = upr), width=.1)
+```
+
+
+
 
 
 ### Comparing the effect of all the covariates
