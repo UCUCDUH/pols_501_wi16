@@ -98,7 +98,8 @@ install_github(username = &quot;jrnold&quot;, repo = &quot;UW-POLS501/r-uwpols50
 data(&quot;Prestige&quot;)
 library(broom)
 library(dplyr)
-library(coefplot)</code></pre>
+library(coefplot)
+library(ggplot2)</code></pre>
 </div>
 <div id="fitting-a-linear-regression" class="section level3">
 <h3>Fitting a linear regression</h3>
@@ -189,12 +190,41 @@ Challenge
 <p>Do the same for another simulated occupation where 100% of the people are women (<code>women</code> == 100) but have the same average education and income.</p>
 </div>
 </div>
+<div class="panel panel-info">
+<div class="panel-heading">
+<h3 class="panel-title">
+<a data-toggle="collapse" href="#solution-2">Solution</a>
+</h3>
+</div>
+<div id="solution-2" class="panel-collapse collapse">
+<pre class="r"><code>sc_men &lt;- data.frame(women = 0,
+                     education = 10.74,
+                     income = 6798)
+sc_women &lt;- data.frame(women = 100,
+                       education = 10.74,
+                       income = 6798)
+newdata2 &lt;- bind_rows(sc_men, sc_women)
+mw_pred &lt;- predict(reg, newdata, level = 0.95, interval = &quot;confidence&quot;)
+mw_pred</code></pre>
+<pre><code>##        fit      lwr      upr
+## 1 64.21688 61.66040 66.77336
+## 2 68.40352 65.66834 71.13870</code></pre>
+</div>
+</div>
+<p>To compare predictions (+95% CIs) easily we can use the <code>errorbar</code> geom from <code>ggplot2</code>. If we want to use data into the output of the <code>predict()</code> command to create the plot, we first need to transform it to <code>data.frame</code> format using <code>tidy()</code> from <code>broom</code>.</p>
+<pre class="r"><code>mw_pred_tidy &lt;- tidy(mw_pred)
+mw_pred_tidy &lt;- mutate(mw_pred_tidy, scenario = c(&quot;men&quot;, &quot;women&quot;))
+ggplot(mw_pred_tidy, aes(x = scenario, y = fit)) +
+  geom_point() +
+  geom_errorbar(aes(ymin = lwr, ymax = upr), width=.1)</code></pre>
+<p><img src="interpreting_linear_regressions_files/figure-html/unnamed-chunk-9-1.png" title="" alt="" width="672" /></p>
+<p>This is how we usually want to present our results in papers. It is easier to understand graphs that show effects rather than regression tables.</p>
 </div>
 <div id="comparing-the-effect-of-all-the-covariates" class="section level3">
 <h3>Comparing the effect of all the covariates</h3>
-<p>These are not standardized. Look for an existing package to do so.</p>
+<p>These are not standardized. We can not compare the effect that all covariates have on the response variable.</p>
 <pre class="r"><code>coefplot(reg)</code></pre>
-<p><img src="interpreting_linear_regressions_files/figure-html/unnamed-chunk-8-1.png" title="" alt="" width="672" /></p>
+<p><img src="interpreting_linear_regressions_files/figure-html/unnamed-chunk-10-1.png" title="" alt="" width="672" /></p>
 </div>
 
 <hr>

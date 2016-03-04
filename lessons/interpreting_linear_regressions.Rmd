@@ -28,6 +28,7 @@ library(broom)
 library(dplyr)
 library(coefplot)
 library(ggplot2)
+library(coefplot)
 ```
 
 ### Fitting a linear regression
@@ -122,15 +123,50 @@ ggplot(mw_pred_tidy, aes(x = scenario, y = fit)) +
   geom_errorbar(aes(ymin = lwr, ymax = upr), width=.1)
 ```
 
+This is how we usually want to present our results in papers. It is easier to understand graphs that show effects rather than regression tables. 
 
+### (If we have time) Comparing the effect of all the covariates
 
+There are some packages that allow you to plot the regression coefficients and present them visually. For example, one of these functions is `coefplot()` of the `coefplot` package.
 
-
-### Comparing the effect of all the covariates
-
-These are not standardized. Look for an existing package to do so. 
 ```{r}
 coefplot(reg)
 ```
+
+`r challenge_start()`
+What's the problem with the previous graph? Is it useful to compare the effect of the different covariates?
+`r challenge_end()`
+
+With the previous graph we cannot compare the effect of each covaraite because they are in different units. To make such comparisons, we should estimate the effect of a similar change of each variable keeping the others constant. For example, let's compare the effect that each variable has on the outcome variable when going from its 1st to 3rd quantile.
+
+```{r}
+effects_table <- data.frame(v1 = NULL,
+                            v2 = NULL)
+newdata3 <- data.frame(education = rep(mean(Prestige$education), 2),
+                       income = rep(mean(Prestige$income), 2),
+                       women = rep(mean(Prestige$women), 2))
+for (i in 2:nrow(reg_table)) {
+  vname <- reg_table$term[i]
+  vcontent <- Prestige[,vname]
+  q1 <- quantile(vcontent, .25, na.rm = TRUE)
+  q3 <- quantile(vcontent, .75, na.rm = TRUE)
+  newdata_var <- newdata3
+  newdata_var[, vname] <- c(q1, q3)
+  pred_sc <- predict(reg, newdata_var)
+  pest <- as.numeric(pred_sc[2] - pred_sc[1])
+  new_obs <- data.frame(pest, vname)
+  effects_table <- bind_rows(effects_table, new_obs)
+}
+effects_table
+```
+
+
+Then we can plot the effect of each variable when moving from their first to the third quantile.
+```{r}
+ggplot(effects_table, aes(x = vname, y = pest)) +
+  geom_point() +
+  geom_hline(yintercept = 0)
+```
+
 
 
