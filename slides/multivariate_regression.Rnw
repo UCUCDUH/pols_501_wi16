@@ -1,0 +1,156 @@
+\documentclass{beamer}
+
+\title{Multiple Regression}
+\author{Jeffrey B. Arnold}
+\date{January 28, 2016}
+
+\usepackage{tikz}
+\usepackage{amsmath}
+
+\DeclareMathOperator{\cov}{Cov}
+\DeclareMathOperator{\cor}{Cor}
+\DeclareMathOperator{\mean}{mean}
+\DeclareMathOperator{\var}{Var}
+\DeclareMathOperator{\E}{E}
+\DeclareMathOperator{\MSE}{MSE}
+\DeclareMathOperator{\Bias}{Bias}
+\DeclareMathOperator{\SE}{se}
+\DeclareMathOperator{\SD}{sd}
+\DeclareMathOperator{\argmin}{argmin}
+\DeclareMathOperator{\argmax}{argmax}
+
+\begin{document}
+\SweaveOpts{concordance=TRUE}
+
+\begin{frame}
+  \maketitle{}
+\end{frame}
+
+\section{Estimating Multiple Regression}
+
+\begin{frame}
+  \frametitle{Multiple Regression}
+  
+  \begin{itemize}
+  \item What is (are) the linear regression for multiple linear regression?
+  \item What is the sample statistic used to estimate multiple linear regression?
+  \item Linear regression finds the values of $\hat\beta$ that minimize what?
+  \item What is the mean value of the errors in linear regression? 
+  \end{itemize}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Multiple Linear Regression}
+  
+  \begin{itemize}
+  \item The population regression equation* is:
+  \begin{equation*}
+  Y = \beta_0 + \sum_{k = 1}^{K} \beta_k X_k + \epsilon
+  \end{equation*}
+  where $\E(\epsilon) = 0$.
+  \item The sample regression equation is:
+  \begin{equation*}
+  y_i = \hat\beta_0 + \sum_{k = 1}^K  \beta_k x_{k, i} + \hat\epsilon_i
+  \end{equation*}
+  \item Linear regression finds the values of $\hat\beta$ that minimize the sum of squared errors
+  \begin{equation*}
+  \hat\beta = \argmin_{\tilde\beta} \sum_{i = 1}^n (y_i - \beta_0 - \sum_{k = 1}^K \beta_k x_i)
+  \end{equation*}
+  \item The solution that ordinary least squares finds has $\mean(\hat\epsilon) = 0$
+  \end{itemize}
+  
+\end{frame}
+
+\begin{frame}
+\frametitle{Multiple Linear Regression}
+\begin{itemize}
+\item You want to estimate the effect of race on approval for Donald Trump (measured on a thermometer 1-100)? You sample 1000 whites? You cannot estimate the regression 
+  \begin{equation*}
+  \text{thermometer} = \beta_0 + \beta_1 \text{race} + \epsilon
+  \end{equation*}
+  Why not?
+\end{itemize}
+\end{frame}
+
+\section{Anatomy of OLS Coefficients}
+
+\begin{frame}
+\frametitle{Estimating Multiple Linear Regression}
+
+  In a bivariate linear regression the coefficients are
+  \begin{equation*}
+  y_i = \hat\beta_1 + \hat\beta_1 x_i + \hat\epsilon_i
+  \end{equation*}
+  where
+  \begin{align*}
+  \hat\beta_1 &= \frac{\sum (x_i - \bar{x}) (y_i - \bar{y})}{\sum (x_i - \bar{x})^2} = \frac{\cov(x, y)}{\var{x, y}} \\
+  \hat\beta_0 &= \bar{y} - \hat{\beta}_1 \bar{x}
+  \end{align*}
+  
+  What about in multiple linear regression?
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Anatomy of Multiple Linear Regression Coefficients}
+
+See exercise
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Anatomy of Multiple Linear Regression Coefficients}
+
+The regression coefficients for variable $k$ is
+\begin{equation*}
+\hat{\beta}_k = \frac{\cov(\tilde{\epsilon}_1, \hat{\eta}_k)}{\var(\tilde{\epsilon}_k)}
+\end{equation*}
+where
+\begin{itemize}
+\item $\tilde{\eta}$ are the residuals from the regression of $y$ on other $x$.
+\item $\tilde{\epsilon}$ are the residuals from the regression of $x_k$ on other $x$.
+\end{itemize}
+
+
+\end{frame}
+
+\section{Omitted Varible Bias}
+
+\begin{frame}
+\frametitle{Omitted Variable Bias I}
+
+Suppose the true model is 
+\begin{equation*}
+Y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \epsilon
+\end{equation*}
+However, we estimate the model,
+\begin{equation*}
+y_i = \hat\beta_0 \hat\beta_1 x_1 + \hat\epsilon_i
+\end{equation*}
+What is the relationship between $\hat\beta_1$ and $\beta_1$?
+\end{frame}
+
+\begin{frame}
+\frametitle{Omitted Variable Bias II}
+
+The coefficient in the regression with an omitted $x_2$ is,
+\begin{equation*}
+\hat\beta_1 = \beta_1 + \beta_2 \frac{\cov(x, z)}{\var{x}}
+\end{equation*}
+
+\begin{itemize}
+\item What is the bias of $\hat\beta_1$?
+\item For what values of $\beta_2$ and $\cov(x, z)$ is $\hat\beta_1$ unbiased? Interpret them.
+\end{itemize}
+\end{frame}
+
+
+\end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
+
+%  LocalWords:  DGP dgp SMISS
