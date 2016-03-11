@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>POL S/CS&amp;SS 501 WI16</title><link>https://UW-POLS501.github.io/pols_501_wi16/</link><description>Course website for University of Washington, POL S/CS&amp;SS 501: Advanced Research Design &amp; Analysis, Winter 2016</description><atom:link rel="self" href="https://UW-POLS501.github.io/pols_501_wi16/rss.xml" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Fri, 11 Mar 2016 03:07:12 GMT</lastBuildDate><generator>https://getnikola.com/</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Quick introduction to Pipes</title><link>https://UW-POLS501.github.io/pols_501_wi16/posts/quick-introduction-to-pipes/</link><dc:creator>Jeffrey B. Arnold</dc:creator><description>&lt;div&gt;&lt;p&gt;The DataCamp &lt;a href="https://campus.datacamp.com/courses/data-visualization-with-ggplot2-1"&gt;ggplot2&lt;/a&gt; uses the &lt;code&gt;%&amp;gt;%&lt;/code&gt; operator in one &lt;a href="https://campus.datacamp.com/courses/data-visualization-with-ggplot2-1/chapter-2-data?ex=10"&gt;tutorial&lt;/a&gt;. The &lt;code&gt;%&amp;gt;%&lt;/code&gt; is referred to as the pipe operator. 
+The pipe operator comes from the R package &lt;strong&gt;magrittr&lt;/strong&gt; (and &lt;strong&gt;dplyr&lt;/strong&gt;), and is new feature in R, but one that has been quickly and widely adopted.
+It most commonly used with the &lt;a href="https://cran.rstudio.com/web/packages/dplyr/vignettes/introduction.html"&gt;dplyr&lt;/a&gt; package for data manipulation and cleaning.
+The data camp and lab next week will cover this in more detail.
+But since we haven’t covered this, here is a quick idea of what it does.
+Suppose you have an R code that like this,&lt;/p&gt;
+&lt;pre class="code literal-block"&gt;&lt;span&gt;&lt;/span&gt;f(x, y)
+&lt;/pre&gt;
+
+
+&lt;p&gt;The pipe operator allows you to write it as &lt;/p&gt;
+&lt;pre class="code literal-block"&gt;&lt;span&gt;&lt;/span&gt;x %&amp;gt;% f(y)
+&lt;/pre&gt;
+
+
+&lt;p&gt;where &lt;code&gt;x&lt;/code&gt; will be the first argument of &lt;code&gt;f&lt;/code&gt;.
+This becomes useful when you are nesting many different functions, because you can write something like &lt;/p&gt;
+&lt;pre class="code literal-block"&gt;&lt;span&gt;&lt;/span&gt;h(g(f(x, y), z))
+&lt;/pre&gt;
+
+
+&lt;p&gt;in a more readable left-to-right form&lt;/p&gt;
+&lt;pre class="code literal-block"&gt;&lt;span&gt;&lt;/span&gt;x %&amp;gt;% f(y) %&amp;gt;% g(z) %&amp;gt;% h()
+&lt;/pre&gt;
+
+
+&lt;p&gt;Here is another fake example from &lt;a href="https://twitter.com/_inundata/status/557980236130689024"&gt;Hadley Wickham&lt;/a&gt; and based on the children’s song, &lt;a href="https://en.wikipedia.org/wiki/Little_Bunny_Foo_Foo"&gt;Little Bunny Foo Foo&lt;/a&gt;,&lt;/p&gt;
+&lt;pre class="code literal-block"&gt;&lt;span&gt;&lt;/span&gt;foo_foo &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; little_bunny&lt;span class="p"&gt;()&lt;/span&gt;
+
+bop_on&lt;span class="p"&gt;(&lt;/span&gt;scoop_up&lt;span class="p"&gt;(&lt;/span&gt;hop_through&lt;span class="p"&gt;(&lt;/span&gt;foo_foo&lt;span class="p"&gt;,&lt;/span&gt; forest&lt;span class="p"&gt;),&lt;/span&gt; field_mouse&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="kp"&gt;head&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="c1"&gt;# VS&lt;/span&gt;
+
+foo_foo &lt;span class="o"&gt;%&amp;gt;%&lt;/span&gt;
+  hop_through&lt;span class="p"&gt;(&lt;/span&gt;forest&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;%&amp;gt;%&lt;/span&gt;
+  scoop_up&lt;span class="p"&gt;(&lt;/span&gt;field_mouse&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;%&amp;gt;%&lt;/span&gt;
+  bop_on&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;head&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;
+
+
+&lt;p&gt;A real example is the following. 
+This code sorts a vector smallest to largest, and takes the mean of the squared difference between the values&lt;/p&gt;
+&lt;pre class="code literal-block"&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"dplyr"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+x &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kt"&gt;c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;96&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="m"&gt;12&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="m"&gt;75&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="m"&gt;19&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="m"&gt;88&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="kp"&gt;mean&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;diff&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;sort&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;x&lt;span class="p"&gt;)))&lt;/span&gt;
+&lt;/pre&gt;
+
+
+&lt;p&gt;With nested functions the order of operations happens from the middle-out.
+With pipes we can rewrite it as &lt;/p&gt;
+&lt;pre class="code literal-block"&gt;&lt;span&gt;&lt;/span&gt;x &lt;span class="o"&gt;%&amp;gt;%&lt;/span&gt; &lt;span class="kp"&gt;sort&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="o"&gt;%&amp;gt;%&lt;/span&gt; &lt;span class="kp"&gt;diff&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="o"&gt;%&amp;gt;%&lt;/span&gt; &lt;span class="kp"&gt;mean&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;/pre&gt;
+
+
+&lt;p&gt;With this the functions in the code are written the same order as the operations, which makes the steps easier to follow: First sort the vector, then take the difference, then take the mean.&lt;/p&gt;&lt;/div&gt;</description><guid>https://UW-POLS501.github.io/pols_501_wi16/posts/quick-introduction-to-pipes/</guid><pubDate>Sun, 10 Jan 2016 05:16:57 GMT</pubDate></item></channel></rss>

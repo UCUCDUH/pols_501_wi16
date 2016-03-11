@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="author" content="Jeffrey Arnold" />
+
+<meta name="date" content="2016-01-26" />
+
+<title>Dplyr and tidyr tutorial with gapminder</title>
+
+<script src="libs/jquery-1.11.0/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap-3.3.1/css/cerulean.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.1/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.1/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.1/shim/respond.min.js"></script>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<link rel="stylesheet"
+      href="libs/highlight/textmate.css"
+      type="text/css" />
+<script src="libs/highlight/highlight.js"></script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img { 
+  max-width:100%; 
+  height: auto; 
+}
+</style>
+<div class="container-fluid main-container">
+
+<p>
+<strong>POL S/CS&amp;SS 501, University of Washington, Winter 2016</strong>
+</p>
+
+$$
+\DeclareMathOperator{\mean}{mean}
+\DeclareMathOperator{\var}{var}
+\DeclareMathOperator{\E}{E}
+\DeclareMathOperator{\MSE}{MSE}
+\DeclareMathOperator{\Bias}{Bias}
+\DeclareMathOperator{\SE}{se}
+\DeclareMathOperator{\SD}{sd}
+\DeclareMathOperator{\argmin}{argmin}
+\DeclareMathOperator{\argmax}{argmax}
+$$
+
+<div id="header">
+<h1 class="title">Dplyr and tidyr tutorial with gapminder</h1>
+<h4 class="author"><em>Jeffrey Arnold</em></h4>
+<h4 class="date"><em>January 26, 2016</em></h4>
+</div>
+
+<div id="TOC">
+<ul>
+<li><a href="#data_frame"><code>data_frame</code></a></li>
+<li><a href="#glimpse">Glimpse</a></li>
+<li><a href="#select-rows-with-filter-or-slice">Select rows with <code>filter()</code> or <code>slice()</code></a></li>
+<li><a href="#reorder-rows-with-rename">Reorder rows with <code>rename()</code></a></li>
+<li><a href="#select-columns-with-select">Select columns with <code>select()</code></a></li>
+<li><a href="#extract-distinct-unique-rows-with-distinct">Extract distinct (unique) rows with <code>distinct()</code></a></li>
+<li><a href="#add-new-columns-with-mutate">Add new columns with <code>mutate()</code></a></li>
+<li><a href="#rename-columns-with-rename">Rename columns with <code>rename()</code></a></li>
+<li><a href="#randomly-sample-rows-with-sample_n-and-sample_frac">Randomly sample rows with <code>sample_n()</code> and <code>sample_frac()</code></a></li>
+<li><a href="#summarize-values-with-summarize">Summarize values with <code>summarize()</code></a></li>
+<li><a href="#group-by">Group By</a><ul>
+<li><a href="#ungroup"><code>ungroup()</code></a></li>
+<li><a href="#tally-and-count"><code>tally</code> and <code>count</code></a></li>
+</ul></li>
+<li><a href="#plotting">Plotting</a></li>
+</ul>
+</div>
+
+<p>This is an introduction to the <strong>dplyr</strong> and <strong>tidyr</strong> packages for data wrangling using the <code>gapminder</code> data from the <strong>gapminder</strong> package. For other introductions see the vignettes for <a href="https://cran.r-project.org/web/packages/dplyr/index.html">dplyr</a> and <a href="https://cran.r-project.org/web/packages/tidyr/index.html">tidyr</a>, and the <a href="http://r4ds.had.co.nz/">R for Data Science</a> chapters <a href="http://r4ds.had.co.nz/relational-data.html">Relational Data</a>, <a href="http://r4ds.had.co.nz/tidy.html">Tidy Data</a>, and <a href="http://r4ds.had.co.nz/transform.html">Data Transformation</a>.</p>
+<p>Load the relevant packages and data,</p>
+<pre class="r"><code>library(&quot;gapminder&quot;)
+library(&quot;dplyr&quot;)
+library(&quot;tidyr&quot;)
+library(&quot;ggplot2&quot;)</code></pre>
+<pre class="r"><code>data(&quot;gapminder&quot;)</code></pre>
+<div id="data_frame" class="section level1">
+<h1><code>data_frame</code></h1>
+<p>The <code>gapminder</code> data is special type of data frame created by the <strong>dplyr</strong> package,</p>
+<pre class="r"><code>class(gapminder)</code></pre>
+<p>You can tell this because it has class “tbl_df” in addition to “data.frame”. <code>tbl_df</code> objects are mostly compatible with <code>data.frame</code> objects; you can use <code>[</code>, <code>[[</code>, <code>$</code>, and all the functions compatible with data frames. The most noticeable way that they differ from <code>data.frame</code> objects is that they have prettier printing. Instead of printing the whole object, it will only print the first few lines and columns,</p>
+<pre class="r"><code>gapminder</code></pre>
+<p>Compare with how this prints if it is converted to a <code>data.frame</code>,</p>
+<pre class="r"><code>as.data.frame(gapminder)</code></pre>
+<p><code>tbl_df</code> objects can be created from an existing data frame using the <code>tbl_df</code> function, or from scratch with the <code>data_frame</code> function.</p>
+<p>You can read more about data frames in the <strong>dplyr</strong> package <a href="https://cran.r-project.org/web/packages/dplyr/vignettes/data_frames.html">here</a>.</p>
+</div>
+<div id="glimpse" class="section level1">
+<h1>Glimpse</h1>
+<p>The common method to view an object in R is the <code>str</code> function</p>
+<pre class="r"><code>str(gapminder)</code></pre>
+<p>The <code>glimpse</code> function in <strong>dplyr</strong> is similar, but specialized to data frames,</p>
+<pre class="r"><code>glimpse(gapminder)</code></pre>
+</div>
+<div id="select-rows-with-filter-or-slice" class="section level1">
+<h1>Select rows with <code>filter()</code> or <code>slice()</code></h1>
+<p>The functions <code>filter</code> and <code>slice</code> select a subset of rows in a data frame.</p>
+<p>Select all rows in 2007,</p>
+<pre class="r"><code>filter(gapminder, year == 2007)</code></pre>
+<p>Select all rows from the US</p>
+<pre class="r"><code>filter(gapminder, country == &quot;United States&quot;)</code></pre>
+<p>Select all observations in 2002 or 2007,</p>
+<pre class="r"><code>filter(gapminder, year %in% c(2002, 2007))</code></pre>
+<p>Multiple arguments, are equivalent to “and”. Select all rows with <code>lifeExp</code> less than 50 and population more than 50 million, and in Asia,</p>
+<pre class="r"><code>filter(gapminder, lifeExp &lt; 50, pop &gt; 50e+6, continent == &quot;Asia&quot;)</code></pre>
+<p>The previous code is equivalent to,</p>
+<pre class="r"><code>filter(gapminder, lifeExp &lt; 50 &amp; pop &gt; 50e+6 &amp; continent == &quot;Asia&quot;)</code></pre>
+<p>Select all rows with an average life expectancy less than 50 or GDP per capita less than 365, in Asia, for years after 1970,</p>
+<pre class="r"><code>filter(gapminder, lifeExp &lt; 50 | gdpPercap &lt; 456, continent == &quot;Asia&quot;, year &gt; 1970)</code></pre>
+<p>Select the first five rows,</p>
+<pre class="r"><code>slice(gapminder, 1:5)</code></pre>
+<p>Select the the last row, using the special function <code>n()</code> within <code>slice</code>,</p>
+<pre class="r"><code>slice(gapminder, n())</code></pre>
+<p>Select the rows 6 to 10,</p>
+<pre class="r"><code>slice(gapminder, 6:10)</code></pre>
+</div>
+<div id="reorder-rows-with-rename" class="section level1">
+<h1>Reorder rows with <code>rename()</code></h1>
+<p>Arrange sorts rows by a variable. Sort by life expectancy from lowest to highest,</p>
+<pre class="r"><code>arrange(gapminder, lifeExp)</code></pre>
+<p>Sort by life expectancy from highest to lowest (descending values),</p>
+<pre class="r"><code>arrange(gapminder, desc(lifeExp))</code></pre>
+<p>You can sort by multiple columns. Sort by year (ascending), and life expectancy (descending),</p>
+<pre class="r"><code>arrange(gapminder, year, desc(lifeExp))</code></pre>
+</div>
+<div id="select-columns-with-select" class="section level1">
+<h1>Select columns with <code>select()</code></h1>
+<p>The <code>select</code> function selects columns.</p>
+<p>Select columns by name</p>
+<pre class="r"><code>select(gapminder, country, year, lifeExp)</code></pre>
+<p>Select all columns between <code>country</code> and <code>pop</code>,</p>
+<pre class="r"><code>select(gapminder, country:pop)</code></pre>
+<p>Select all columns <em>except</em> continent,</p>
+<pre class="r"><code>select(gapminder, -continent)</code></pre>
+<p>Reorder columns so that year is first, country is second, with the remaining columns in the same order,</p>
+<pre class="r"><code>select(gapminder, year, country, everything())</code></pre>
+</div>
+<div id="extract-distinct-unique-rows-with-distinct" class="section level1">
+<h1>Extract distinct (unique) rows with <code>distinct()</code></h1>
+<p>The function <code>distinct</code> returns the unique row values in a table.</p>
+<p>This selects all unique continent, year values</p>
+<pre class="r"><code>distinct(select(gapminder, continent, year))</code></pre>
+<p>This selects all distinct countries,</p>
+<pre class="r"><code>distinct(select(gapminder, country))</code></pre>
+</div>
+<div id="add-new-columns-with-mutate" class="section level1">
+<h1>Add new columns with <code>mutate()</code></h1>
+<p>Add the columns GDP, log GDP per capita, log population, and log GDP, and a dummy variable for North America,</p>
+<pre class="r"><code>mutate(gapminder,
+       GDP = pop * gdpPercap,
+       log_pop = log(pop),
+       log_gdpPercap = log(gdpPercap),
+       log_gdp = log_pop + log_gdpPercap,
+       na_eu = continent %in% c(&quot;United States&quot;, &quot;Mexico&quot;, &quot;Canada&quot;))</code></pre>
+<p>It is tedious to mutate multiple columns. To apply one or more functions to one or more columns, use <code>mutate_each</code>,</p>
+<pre class="r"><code>mutate_each(gapminder, funs(log), pop, gdpPercap, lifeExp)</code></pre>
+<p>Note that you need to enclose the list of functions in the <code>funs</code> function. If you apply one function, the columns keep their same name. If you apply multiple functions, the columns have the name of the variable combined with the name of the function.</p>
+<pre class="r"><code>mutate_each(gapminder, funs(log, sqrt), pop, gdpPercap, lifeExp)</code></pre>
+</div>
+<div id="rename-columns-with-rename" class="section level1">
+<h1>Rename columns with <code>rename()</code></h1>
+<p>Rename columns with the <code>rename()</code> variable. Rename <code>pop</code> to <code>population</code>, <code>gdpPercap</code> to <code>gdp_per_cap</code>, and <code>lifeExp</code> to <code>life_expectancy</code>,</p>
+<pre class="r"><code>rename(gapminder,
+       population = pop,
+       gdp_per_cap = gdpPercap,
+       life_expectancy = lifeExp)</code></pre>
+</div>
+<div id="randomly-sample-rows-with-sample_n-and-sample_frac" class="section level1">
+<h1>Randomly sample rows with <code>sample_n()</code> and <code>sample_frac()</code></h1>
+<p>Use <code>sample_n</code> and <code>sample_frac</code> to sample rows. Sample 10 rows,</p>
+<pre class="r"><code>sample_n(gapminder, 10)</code></pre>
+<p>Sample 5 percent of rows,</p>
+<pre class="r"><code>sample_frac(gapminder, 0.05)</code></pre>
+<p>Sample all rows with replacement (bootstrap),</p>
+<pre class="r"><code>sample_frac(gapminder, replace = TRUE)</code></pre>
+</div>
+<div id="summarize-values-with-summarize" class="section level1">
+<h1>Summarize values with <code>summarize()</code></h1>
+<p>The function <code>summarize</code> collapses a data frame to a single row, summarized by functions.</p>
+<p>Create a data frame with the minimum and maximum years, the minimum, maximum, and median life expectancy, the average population, and the average GDP per capita, total number of observations, number of unique years, and number of unique countries,</p>
+<pre class="r"><code>summarize(gapminder,
+          year_min = min(year),
+          year_max = max(year),
+          life_exp_min = min(lifeExp),
+          life_exp_max = max(lifeExp),
+          life_exp_median = median(lifeExp),
+          pop = median(pop),
+          gdpPercap = mean(gdpPercap),
+          nobs = length(country),
+          n_years = length(unique(year)),
+          n_country = length(unique(continent)))</code></pre>
+<p>It is inconvenient if you need to summarize multiple columns with multiple functions. The function <code>summarize_each</code> simplifies that by applying one or more functions to one or more columns,</p>
+<pre class="r"><code>summarize_each(gapminder, funs(min, max, mean),
+               year, lifeExp, gdpPercap, pop)</code></pre>
+<p>Note that the functions need to be enclosed within the function <code>funs</code>.</p>
+</div>
+<div id="group-by" class="section level1">
+<h1>Group By</h1>
+<p>Use the <code>group_by</code> function to group the data frame. This allows for calculating variables and</p>
+<p>For each country, calculate its average, median, and maximum GDP per capita, and median life expectancy,</p>
+<pre class="r"><code>gapminder %&gt;%
+  group_by(country) %&gt;%
+  summarise(gdpPercap_mean = mean(gdpPercap),
+            gdpPercap_median = median(gdpPercap),
+            gdpPercap_max = max(gdpPercap),
+            lifeExp_median = median(lifeExp))</code></pre>
+<p>For each continent, for each year, calculate the number of countries, and median life expectancy,</p>
+<pre class="r"><code>gapminder %&gt;%
+  group_by(continent, year) %&gt;%
+  summarise(lifeExp = median(lifeExp),
+            gdpPercap = median(gdpPercap),
+            pop = sum(as.numeric(pop)))</code></pre>
+<p>For each year, find the three countries with the lowest GDP per capita,</p>
+<pre class="r"><code>gapminder %&gt;%
+  group_by(year) %&gt;%
+  arrange(gdpPercap) %&gt;%
+  slice(1:3)</code></pre>
+<p>Note that <code>arrange()</code> sorts within the group, not the whole data frame.</p>
+<p>For each country, calculate the z-score of its life expectancy,</p>
+<pre class="r"><code>gapminder %&gt;%
+  group_by(country) %&gt;%
+  mutate(life_exp_z = (lifeExp - mean(lifeExp)) / sd(lifeExp))</code></pre>
+<p>Note that when a data frame is grouped, summary functions like <code>mean</code> and <code>sd</code> are calculated within the groups, not over the whole data frame.</p>
+<p>For each year, find all observations with greater than the median life expectancy,</p>
+<pre class="r"><code>gapminder %&gt;%
+  group_by(year) %&gt;%
+  filter(lifeExp &gt; median(lifeExp)) %&gt;%
+  arrange(desc(lifeExp))</code></pre>
+<p>Calculate the difference in log GDP per capita for each country, and the percent growth in GDP (these should be approximately the same for small values),</p>
+<pre class="r"><code>gapminder %&gt;%
+  arrange(country, year) %&gt;%
+  group_by(country) %&gt;%
+  select(country, year, gdpPercap) %&gt;%
+  mutate(diff_log_gdpPercap = log(gdpPercap) - lag(log(gdpPercap)),
+         gr_gdpPercap = (gdpPercap - lag(gdpPercap)) / lag(gdpPercap))</code></pre>
+<div id="ungroup" class="section level2">
+<h2><code>ungroup()</code></h2>
+<p>As long as a data frame is grouped by a column, you cannot delete or alter that column. For example, this will give an error message,</p>
+<pre class="r"><code>gapminder %&gt;%
+  group_by(country) %&gt;%
+  mutate(country = stringr::str_to_upper(country))</code></pre>
+<pre><code>## Error in eval(expr, envir, enclos): cannot modify grouping variable</code></pre>
+<p>This tries to delete the column <code>country</code>. The function <code>select</code> does not give an error message, but instead silently does nothing.</p>
+<pre class="r"><code>gapminder %&gt;%
+  group_by(country) %&gt;%
+  select(-country)</code></pre>
+<p>You can remove any existing groupings of a data frame with <code>ungroup()</code>.</p>
+<pre class="r"><code>gapminder %&gt;%
+  group_by(country) %&gt;%
+  ungroup() %&gt;%
+  mutate(country = stringr::str_to_upper(country))
+gapminder %&gt;%
+  group_by(country) %&gt;%
+  ungroup() %&gt;%
+  select(-country)</code></pre>
+</div>
+<div id="tally-and-count" class="section level2">
+<h2><code>tally</code> and <code>count</code></h2>
+<p>To count the number of observations by group, use <code>tally()</code>.</p>
+<pre class="r"><code>gapminder %&gt;%
+  group_by(continent) %&gt;%
+  tally()</code></pre>
+<p>The function <code>count</code> is similar, but also does the <code>group_by</code> so you don’t have to,</p>
+<pre class="r"><code>gapminder %&gt;%
+  count(continent)</code></pre>
+</div>
+</div>
+<div id="plotting" class="section level1">
+<h1>Plotting</h1>
+<p>It can be useful to gather the data so that there is only one column with values in order to plot multiple variables or to summarize.</p>
+<pre class="r"><code>gapminder_by_variable &lt;-
+  gapminder %&gt;%
+  gather(variable, value, -country, -year, -continent)
+gapminder_by_variable</code></pre>
+<p>Now we can plot histograms of all the variables in a single plot,</p>
+<pre class="r"><code>ggplot(gapminder_by_variable,
+       aes(x = value)) +
+  geom_histogram() +
+  facet_wrap(~variable, ncol = 1, scales = &quot;free&quot;)</code></pre>
+<p><img src="gapminder_intro_to_dplyr_tidyr_files/figure-html/unnamed-chunk-44-1.png" title="" alt="" width="672" /></p>
+<p>With a column of variables, we can group by that variable, and easily calculate averages,</p>
+<pre class="r"><code>gapminder_by_variable %&gt;%
+  group_by(variable, country) %&gt;%
+  summarise(mean = mean(value),
+            median = median(value),
+            max = max(value))</code></pre>
+<p>Or calculate averages by country, and then transform back to the original form of the variable,</p>
+<pre class="r"><code>gapminder_by_variable %&gt;%
+  group_by(variable, country) %&gt;%
+  summarise(value = mean(value)) %&gt;%
+  spread(variable, value)</code></pre>
+<p>Create a new data frame in which each row is a country, and columns are the means and standard deviations of <code>gdpPercap</code>, <code>pop</code>, and <code>lifeExp</code> per country,</p>
+<pre class="r"><code>gapminder_by_variable %&gt;%
+  group_by(variable, country) %&gt;%
+  summarise(mean = mean(value),
+            sd = sd(value)) %&gt;%
+  gather(stat, value, -country, -variable) %&gt;%
+  ungroup() %&gt;%
+  unite(variable_stat, variable, stat) %&gt;%
+  spread(variable_stat, value)</code></pre>
+<p>Note that I needed to use <code>ungroup()</code> before <code>unite</code>. That is because if a data frame is grouped by a column it that column cannot be altered or deleted. In this case, the data frame was grouped by <code>variable</code>, and <code>unite</code> attempted to delete <code>variable</code>.</p>
+</div>
+
+<hr>
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://licensebuttons.net/l/by-nc-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
+R code is licensed under a <a href="https://www.r-project.org/Licenses/BSD_2_clause">BSD 2-clause</a> license.
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

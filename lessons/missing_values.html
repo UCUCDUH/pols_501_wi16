@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="author" content="Jeffrey Arnold" />
+
+<meta name="date" content="2016-01-21" />
+
+<title>Missing Values in R</title>
+
+<script src="libs/jquery-1.11.0/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap-3.3.1/css/cerulean.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.1/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.1/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.1/shim/respond.min.js"></script>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<link rel="stylesheet"
+      href="libs/highlight/textmate.css"
+      type="text/css" />
+<script src="libs/highlight/highlight.js"></script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img { 
+  max-width:100%; 
+  height: auto; 
+}
+</style>
+<div class="container-fluid main-container">
+
+<p>
+<strong>POL S/CS&amp;SS 501, University of Washington, Winter 2016</strong>
+</p>
+
+$$
+\DeclareMathOperator{\mean}{mean}
+\DeclareMathOperator{\var}{var}
+\DeclareMathOperator{\E}{E}
+\DeclareMathOperator{\MSE}{MSE}
+\DeclareMathOperator{\Bias}{Bias}
+\DeclareMathOperator{\SE}{se}
+\DeclareMathOperator{\SD}{sd}
+\DeclareMathOperator{\argmin}{argmin}
+\DeclareMathOperator{\argmax}{argmax}
+$$
+
+<div id="header">
+<h1 class="title">Missing Values in R</h1>
+<h4 class="author"><em>Jeffrey Arnold</em></h4>
+<h4 class="date"><em>2016-01-21</em></h4>
+</div>
+
+<div id="TOC">
+<ul>
+<li><a href="#behavior-of-na">Behavior of NA</a></li>
+<li><a href="#testing-for-na-with-is.na">Testing for <code>NA</code> with <code>is.na</code></a></li>
+<li><a href="#replace-missing-values">Replace missing values</a></li>
+<li><a href="#set-values-to-missing">Set values to missing</a></li>
+<li><a href="#missing-values-in-character-vectors">Missing values in character vectors</a></li>
+<li><a href="#reading-text-files-csv">Reading text files (csv)</a></li>
+<li><a href="#other-functions">Other functions</a></li>
+<li><a href="#listwise-deletion-of-rows-with-missing-values-in-data-frames">Listwise deletion of rows with missing values in data frames</a></li>
+<li><a href="#imputing-or-filling-missing-values">Imputing or filling missing values</a></li>
+</ul>
+</div>
+
+<p>In almost any set of real data, there will be missing values. All statistical software systems have some way of indicating missing values within variables. R uses the symbol <code>NA</code> to indicate a missing value.</p>
+<div id="behavior-of-na" class="section level1">
+<h1>Behavior of NA</h1>
+<p>Create two vectors that include missing values,</p>
+<pre class="r"><code>foo &lt;- c(1, NA, 3)
+bar &lt;- c(4, 5, NA)</code></pre>
+<div id="challenge-1" class="panel panel-primary">
+<div class="panel-heading">
+<h3 class="panel-title">
+Challenge
+</h3>
+</div>
+<div class="panel-body">
+<p>Try the following commands:. How do the NA affect the results?</p>
+<pre class="r"><code>foo + bar
+foo - bar
+foo * bar
+foo / bar
+foo == 1
+foo &gt; 1
+sum(foo)
+max(foo)</code></pre>
+</div>
+</div>
+<div class="panel panel-info">
+<div class="panel-heading">
+<h3 class="panel-title">
+<a data-toggle="collapse" href="#solution-1">Solution</a>
+</h3>
+</div>
+<div id="solution-1" class="panel-collapse collapse">
+<p>For the arithmetic operators, <code>+-*/</code>, any element with an <code>NA</code> produces an <code>NA</code> in the output. For the logical operators, comparing an element with <code>NA</code> also produces an <code>NA</code> (not <code>FALSE</code> as might be expected). For <code>sum</code> and <code>mean</code>, any <code>NA</code> in the vector produces <code>NA</code> for a result.</p>
+<pre class="r"><code>foo + bar</code></pre>
+<pre><code>## [1]  5 NA NA</code></pre>
+<pre class="r"><code>foo - bar</code></pre>
+<pre><code>## [1] -3 NA NA</code></pre>
+<pre class="r"><code>foo * bar</code></pre>
+<pre><code>## [1]  4 NA NA</code></pre>
+<pre class="r"><code>foo / bar</code></pre>
+<pre><code>## [1] 0.25   NA   NA</code></pre>
+<pre class="r"><code>foo == 1</code></pre>
+<pre><code>## [1]  TRUE    NA FALSE</code></pre>
+<pre class="r"><code>foo &gt; 1</code></pre>
+<pre><code>## [1] FALSE    NA  TRUE</code></pre>
+<pre class="r"><code>sum(foo)</code></pre>
+<pre><code>## [1] NA</code></pre>
+<pre class="r"><code>max(foo)</code></pre>
+<pre><code>## [1] NA</code></pre>
+</div>
+</div>
+</div>
+<div id="testing-for-na-with-is.na" class="section level1">
+<h1>Testing for <code>NA</code> with <code>is.na</code></h1>
+<p>Since comparing any value to <code>NA</code> produces an <code>NA</code>, you can’t easily use <code>==</code> to test whether an element of a vector is equal to <code>NA</code>. Why not?</p>
+<p>The function <code>is.na</code> is used to test whether an element of a vector is equal to <code>NA</code>.</p>
+<pre class="r"><code>is.na(foo)</code></pre>
+<pre><code>## [1] FALSE  TRUE FALSE</code></pre>
+<pre class="r"><code>is.na(bar)</code></pre>
+<pre><code>## [1] FALSE FALSE  TRUE</code></pre>
+<p>Thus, to test whether an element of a vector is <em>not</em> equal to <code>NA</code>,</p>
+<pre class="r"><code>!is.na(foo)</code></pre>
+<pre><code>## [1]  TRUE FALSE  TRUE</code></pre>
+<pre class="r"><code>!is.na(bar)</code></pre>
+<pre><code>## [1]  TRUE  TRUE FALSE</code></pre>
+<div id="challenge-2" class="panel panel-primary">
+<div class="panel-heading">
+<h3 class="panel-title">
+Challenge
+</h3>
+</div>
+<div class="panel-body">
+<p>Using <code>is.na</code> and <code>[</code> drop all missing values from <code>foo</code>.</p>
+</div>
+</div>
+<div class="panel panel-info">
+<div class="panel-heading">
+<h3 class="panel-title">
+<a data-toggle="collapse" href="#solution-2">Solution</a>
+</h3>
+</div>
+<div id="solution-2" class="panel-collapse collapse">
+<pre class="r"><code>foo[!is.na(foo)]</code></pre>
+<pre><code>## [1] 1 3</code></pre>
+<p>To check whether there are any missing values in a vector,</p>
+<pre class="r"><code>any(is.na(foo))</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<p>To check whether all values in a vector are missing,</p>
+<pre class="r"><code>all(is.na(foo))</code></pre>
+<pre><code>## [1] FALSE</code></pre>
+<p>To count the number of missing values in a vector,</p>
+<pre class="r"><code>sum(is.na(foo))</code></pre>
+<pre><code>## [1] 1</code></pre>
+<p>or calculate the fraction of missing values,</p>
+<pre class="r"><code>sum(is.na(foo)) / length(foo)</code></pre>
+<pre><code>## [1] 0.3333333</code></pre>
+</div>
+</div>
+</div>
+<div id="replace-missing-values" class="section level1">
+<h1>Replace missing values</h1>
+<p>There are several ways to replace missing values in a vector,</p>
+<pre class="r"><code>alpha &lt;- c(1, 2, NA)
+alpha[is.na(alpha)] &lt;- 0
+alpha</code></pre>
+<pre><code>## [1] 1 2 0</code></pre>
+<p>or</p>
+<pre class="r"><code>beta &lt;- c(1, 2, NA)
+beta &lt;- ifelse(is.na(beta), 0, beta)</code></pre>
+</div>
+<div id="set-values-to-missing" class="section level1">
+<h1>Set values to missing</h1>
+<p>Sometimes you need to set common</p>
+<p>A common convention in old datasets and survey data is to indicate missing values using unusually large or small values. For example, -66, -77, -88, or -99 in a 0-10 scale. How would you replace them with missing values?</p>
+<p>Consider the following vector.</p>
+<pre class="r"><code>Q1 &lt;- c(3, -88, 8, 2, 6, 7, 1, 5, 1, 9, -99)</code></pre>
+<p>Suppose, it represents the response to a question on a 0-10 scale, -88 is “Don’t know”, and -99 is “Refused to answer”. For your analysis, it makes sense to to “Don’t know” and “Refused to answer”&quot; with missing values.</p>
+<p>There are a few ways to do this: using <code>[</code>, using <code>is.na</code>, and using <code>ifelse</code>.</p>
+<pre class="r"><code>Q1_clean1 &lt;- ifelse(Q1 %in% c(-88, -99), NA, Q1)
+Q1_clean1</code></pre>
+<pre><code>##  [1]  3 NA  8  2  6  7  1  5  1  9 NA</code></pre>
+<pre class="r"><code>Q1_clean2 &lt;- Q1
+Q1_clean2[Q1_clean2 %in% c(-88, -99)] &lt;- NA
+Q1_clean2</code></pre>
+<pre><code>##  [1]  3 NA  8  2  6  7  1  5  1  9 NA</code></pre>
+<pre class="r"><code>Q1_clean3 &lt;- Q1
+is.na(Q1_clean3) &lt;- Q1_clean3 %in% c(-88, -99)
+Q1_clean3</code></pre>
+<pre><code>##  [1]  3 NA  8  2  6  7  1  5  1  9 NA</code></pre>
+</div>
+<div id="missing-values-in-character-vectors" class="section level1">
+<h1>Missing values in character vectors</h1>
+<p><code>NA</code> values can also occur in character vectors,</p>
+<pre class="r"><code>baz &lt;- c(&quot;A&quot;, &quot;B&quot;, NA, &quot;&quot;)</code></pre>
+<p>In a character vector, <code>NA</code> is <strong>not</strong> the same as “”.</p>
+<div id="challenge-3" class="panel panel-primary">
+<div class="panel-heading">
+<h3 class="panel-title">
+Challenge
+</h3>
+</div>
+<div class="panel-body">
+<p>Start with the vector of capital Latin letters.</p>
+<pre class="r"><code>letr &lt;- LETTERS</code></pre>
+<p>Note that the variables <code>letters</code> and <code>LETTERS</code> have the 26 Latin alphabet letters in lowercase and uppercase, respectively.</p>
+<p>Randomly set 3 elements to NA, and 3 elements to “”</p>
+<pre class="r"><code>letr[sample(1:length(letr), 6)] &lt;- c(rep(NA, 3), rep(&quot;&quot;, 3))</code></pre>
+<p>Without explicitly referencing the indexes of the elements</p>
+<ol style="list-style-type: decimal">
+<li>create a new vector named <code>letr</code> with all <code>NA</code> values to “”.</li>
+<li>create a new vector with all “” equal to <code>NA</code></li>
+<li>Remove all elements that are either “” or <code>NA</code></li>
+</ol>
+</div>
+</div>
+<div class="panel panel-info">
+<div class="panel-heading">
+<h3 class="panel-title">
+<a data-toggle="collapse" href="#solution-3">Solution</a>
+</h3>
+</div>
+<div id="solution-3" class="panel-collapse collapse">
+<p>To replace <code>NA</code> with “”,</p>
+<pre class="r"><code>letr1 &lt;- letr
+letr1[is.na(letr1)] &lt;- &quot;&quot;
+letr1</code></pre>
+<pre><code>##  [1] &quot;A&quot; &quot;B&quot; &quot;C&quot; &quot;D&quot; &quot;&quot;  &quot;F&quot; &quot;G&quot; &quot;H&quot; &quot;I&quot; &quot;J&quot; &quot;K&quot; &quot;L&quot; &quot;&quot;  &quot;N&quot; &quot;&quot;  &quot;&quot;  &quot;Q&quot;
+## [18] &quot;R&quot; &quot;S&quot; &quot;&quot;  &quot;U&quot; &quot;V&quot; &quot;W&quot; &quot;X&quot; &quot;&quot;  &quot;Z&quot;</code></pre>
+<p>or using <code>ifelse</code>,</p>
+<pre class="r"><code>letr2 &lt;- ifelse(is.na(letr), &quot;&quot;, letr)
+letr2</code></pre>
+<pre><code>##  [1] &quot;A&quot; &quot;B&quot; &quot;C&quot; &quot;D&quot; &quot;&quot;  &quot;F&quot; &quot;G&quot; &quot;H&quot; &quot;I&quot; &quot;J&quot; &quot;K&quot; &quot;L&quot; &quot;&quot;  &quot;N&quot; &quot;&quot;  &quot;&quot;  &quot;Q&quot;
+## [18] &quot;R&quot; &quot;S&quot; &quot;&quot;  &quot;U&quot; &quot;V&quot; &quot;W&quot; &quot;X&quot; &quot;&quot;  &quot;Z&quot;</code></pre>
+<p>or using <code>is.na</code>,</p>
+<pre class="r"><code>letr2 &lt;- letr
+is.na(letr2) &lt;- letr2 == &quot;&quot;</code></pre>
+<p>To replace “” with <code>NA</code>,</p>
+<pre class="r"><code>letr2 &lt;- ifelse(letr == &quot;&quot;, NA, letr)
+letr2</code></pre>
+<pre><code>##  [1] &quot;A&quot; &quot;B&quot; &quot;C&quot; &quot;D&quot; NA  &quot;F&quot; &quot;G&quot; &quot;H&quot; &quot;I&quot; &quot;J&quot; &quot;K&quot; &quot;L&quot; NA  &quot;N&quot; NA  NA  &quot;Q&quot;
+## [18] &quot;R&quot; &quot;S&quot; NA  &quot;U&quot; &quot;V&quot; &quot;W&quot; &quot;X&quot; NA  &quot;Z&quot;</code></pre>
+<p>To drop all observations with <code>NA</code> or “”,</p>
+<pre><code>letr3 &lt;- letr[! letr %in% c(NA, &quot;&quot;)]
+letr3</code></pre>
+</div>
+</div>
+</div>
+<div id="reading-text-files-csv" class="section level1">
+<h1>Reading text files (csv)</h1>
+<p>The function <code>read_csv</code> has an argument <code>na.strings</code> which determines what cell values are converted to <code>NA</code>. By default it only reads cells with “NA” as missing values. However, often you will want to treat any blank cells, e.g. <code>&quot;&quot;</code> as missing. To do that,</p>
+<pre class="r"><code>read.csv(file, na.strings = &quot;&quot;)</code></pre>
+</div>
+<div id="other-functions" class="section level1">
+<h1>Other functions</h1>
+<p><strong>tidyr</strong> has a function <code>replace_na</code> which fills in missing values in multiple columns of a data frame,</p>
+<pre class="r"><code>library(&quot;tidyr&quot;)
+library(&quot;dplyr&quot;)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;dplyr&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:stats&#39;:
+## 
+##     filter, lag</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     intersect, setdiff, setequal, union</code></pre>
+<pre class="r"><code>data_frame(x = c(1, 2, NA), y = c(&quot;a&quot;, NA, &quot;b&quot;)) %&gt;%
+  replace_na(list(x = 0, y = &quot;unknown&quot;))</code></pre>
+<pre><code>## Source: local data frame [3 x 2]
+## 
+##       x       y
+##   (dbl)   (chr)
+## 1     1       a
+## 2     2 unknown
+## 3     0       b</code></pre>
+<p><strong>stringr</strong> has a function <code>str_replace_na</code> to replace <code>NA</code> values in a character vector,</p>
+<pre class="r"><code>library(&quot;stringr&quot;)
+str_replace_na(c(&quot;a&quot;, &quot;b&quot;, NA), &quot;&quot;)</code></pre>
+<pre><code>## [1] &quot;a&quot; &quot;b&quot; &quot;&quot;</code></pre>
+</div>
+<div id="listwise-deletion-of-rows-with-missing-values-in-data-frames" class="section level1">
+<h1>Listwise deletion of rows with missing values in data frames</h1>
+<p>To drop any row in a data frame with any missing values use <code>na.omit</code>,</p>
+<pre class="r"><code>na.omit(data.frame(a = c(NA, 1, 2, 3), b = c(&quot;a&quot;, &quot;b&quot;, NA, &quot;d&quot;)))</code></pre>
+<pre><code>##   a b
+## 2 1 b
+## 4 3 d</code></pre>
+</div>
+<div id="imputing-or-filling-missing-values" class="section level1">
+<h1>Imputing or filling missing values</h1>
+<p>The package <em>zoo</em> contains several functions to fill in missing values in time series data. <code>na.locf</code> fills in missing values with the last non-missing value,</p>
+<pre class="r"><code>library(&quot;zoo&quot;)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;zoo&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     as.Date, as.Date.numeric</code></pre>
+<pre class="r"><code>na.locf(c(1, NA, NA, 2, NA, NA, NA, 3, 4, 5))</code></pre>
+<pre><code>##  [1] 1 1 1 2 2 2 2 3 4 5</code></pre>
+<p><code>na.approx</code> fills in missing values with a linear interpolation, while <code>na.spline</code> fills in missing observations with a spline (smooth) interpolation,</p>
+<pre class="r"><code>plot(na.spline(c(1, NA, NA, 2, NA, 4, NA, NA, NA, NA, 3, NA, 1)), type = &quot;l&quot;)</code></pre>
+<p><img src="missing_values_files/figure-html/unnamed-chunk-27-1.png" title="" alt="" width="672" /></p>
+<pre class="r"><code>plot(na.approx(c(1, NA, NA, 2, NA, 4, NA, NA, NA, NA, 3, NA, 1)), type = &quot;l&quot;)</code></pre>
+<p><img src="missing_values_files/figure-html/unnamed-chunk-27-2.png" title="" alt="" width="672" /></p>
+<p>See packages:</p>
+<ul>
+<li><a href="https://cran.r-project.org/web/packages/mice/index.html">mice</a></li>
+<li><p><a href="https://cran.r-project.org/web/packages/Amelia/index.html">Amelia</a></p></li>
+<li><p><a href="http://www.cookbook-r.com/Manipulating_data/" class="uri">http://www.cookbook-r.com/Manipulating_data/</a></p></li>
+</ul>
+<!--
+
+- Talk about NULL? 
+- Don't need to mention Inf or NaN, since those appear infrequently in what they are doing
+
+-->
+</div>
+
+<hr>
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://licensebuttons.net/l/by-nc-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
+R code is licensed under a <a href="https://www.r-project.org/Licenses/BSD_2_clause">BSD 2-clause</a> license.
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

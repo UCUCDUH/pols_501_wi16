@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# " lang="en">
+<head>
+<meta charset="utf-8">
+<base href="https://UW-POLS501.github.io/pols_501_wi16/assignments/reading-06/">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title> Reading Assignment 6 | POL S/CS&amp;SS 501 WI16</title>
+<link href="../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<meta content="#5670d4" name="theme-color">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="../../rss.xml">
+<link rel="canonical" href="https://UW-POLS501.github.io/pols_501_wi16/assignments/reading-06/">
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+        processEscapes: true
+    },
+    displayAlign: 'left', // Change this to 'center' to center equations.
+    "HTML-CSS": {
+        styles: {'.MathJax_Display': {"margin": 0}}
+    }
+});
+</script><!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+<meta name="author" content="Jeffrey B. Arnold">
+<meta property="og:site_name" content="POL S/CS&amp;SS 501 WI16">
+<meta property="og:title" content=" Reading Assignment 6">
+<meta property="og:url" content="https://UW-POLS501.github.io/pols_501_wi16/assignments/reading-06/">
+<meta property="og:description" content="Complete the following exercises from OpenIntro Statistics Chapter 6: 4, 6, 12, 14, 22, 24, 26, 28, 30, 38, 40, 42, 50, 52, 54.
+Find an poll. HuffingtonPost Pollster and RealClearPolitics are good pla">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2016-03-10T19:03:42-08:00">
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Menubar -->
+
+<nav class="navbar navbar-inverse navbar-static-top"><div class="container">
+<!-- This keeps the margins nice -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="https://UW-POLS501.github.io/pols_501_wi16/">
+
+                <span id="blog-title">POL S/CS&amp;SS 501 WI16</span>
+            </a>
+        </div>
+<!-- /.navbar-header -->
+        <div class="collapse navbar-collapse" id="bs-navbar" aria-expanded="false">
+            <ul class="nav navbar-nav">
+<li>
+<a href="../../">Syllabus</a>
+                </li>
+<li>
+<a href="../../schedule/">Schedule</a>
+                </li>
+<li>
+<a href="../">Assignments</a>
+                </li>
+<li>
+<a href="../../resources/">Resources</a>
+                </li>
+<li>
+<a href="../../posts/">Posts</a>
+
+                
+            </li>
+</ul>
+<!-- Custom search with Google--><form id="search" action="//www.google.com/search" method="get" class="navbar-form pull-right">
+<input type="hidden" name="q" value="site:https://UW-POLS501.github.io/pols_501_wi16/"><input type="text" name="q" maxlength="255" results="0" placeholder="Search">
+</form>
+<!-- End of custom search -->
+
+
+            <ul class="nav navbar-nav navbar-right"></ul>
+</div>
+<!-- /.navbar-collapse -->
+    </div>
+<!-- /.container -->
+</nav><!-- End of Menubar --><div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        <div class="row">
+            
+            
+<article class="storypage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url"> Reading Assignment 6</a></h1>
+
+        
+
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <div>
+<p>Complete the following exercises from <em>OpenIntro Statistics</em> Chapter 6: 4, 6, 12, 14, 22, 24, 26, 28, 30, 38, 40, 42, 50, 52, 54.</p>
+<p>Find an poll. HuffingtonPost <a href="http://elections.huffingtonpost.com/pollster">Pollster</a> and <a href="http://www.realclearpolitics.com/epolls/latest_polls/">RealClearPolitics</a> are good places to start.</p>
+<ul>
+<li>Calculate the confidence interval of a proportion</li>
+<li>Calculate the confidence interval for a difference in proportions</li>
+<li>Conduct a hypothesis test that two proportions are different</li>
+<li>Conduct a Chi-squared test of independence (look for a poll with a table multiple demographic groups)</li>
+</ul>
+<p>Submit as a Word Document or PDF via Canvas. Answers must be typed.</p>
+<p>There are several useful R functions: <code>pchisq</code>, <code>prop.test</code>, and <code>chisq.test</code>.
+For solving questions, even though you are calculating these tests manually, 
+save yourself some work by doing the calculations in R rather than by hand and calculator.</p>
+<p>Here are some R code for solving <em>OpenIntro Stats</em> exercises.
+These are not full answers to those exercises (since these are odd questions with answers in the back), but only the R code needed to answer them.</p>
+<h2 id="ex-611">Ex 6.11</h2>
+<p>The sample size and proportion for this question are,</p>
+<pre class="code literal-block"><span></span>n <span class="o">&lt;-</span> <span class="m">1509</span>
+p <span class="o">&lt;-</span> <span class="m">0.55</span>
+</pre>
+
+
+<p>To calculate a confidence interval for a proportion, first
+calculate the standard error,</p>
+<pre class="code literal-block"><span></span>se <span class="o">&lt;-</span> <span class="kp">sqrt</span><span class="p">(</span>p <span class="o">*</span> <span class="p">(</span><span class="m">1</span> <span class="o">-</span> p<span class="p">)</span> <span class="o">/</span> n<span class="p">)</span>
+</pre>
+
+
+<p>and critical value,</p>
+<pre class="code literal-block"><span></span>z <span class="o">&lt;-</span> <span class="o">-</span>qnorm<span class="p">(</span><span class="m">0.05</span><span class="p">)</span>
+</pre>
+
+
+<p>Then the confidence interval is,</p>
+<pre class="code literal-block"><span></span>p <span class="o">+</span> <span class="kt">c</span><span class="p">(</span><span class="m">-1</span><span class="p">,</span> <span class="m">1</span><span class="p">)</span> <span class="o">*</span> z <span class="o">*</span> se
+</pre>
+
+
+<pre class="code literal-block"><span></span>## [1] 0.5289346 0.5710654
+</pre>
+
+
+<p>You can confirm this using the R function <code>prop.test()</code>,</p>
+<pre class="code literal-block"><span></span>prop.test<span class="p">(</span>x <span class="o">=</span> p <span class="o">*</span> n<span class="p">,</span> n <span class="o">=</span> n<span class="p">,</span> conf.level <span class="o">=</span> <span class="m">0.90</span><span class="p">)</span>
+</pre>
+
+
+<pre class="code literal-block"><span></span>## 
+##  1-sample proportions test with continuity correction
+## 
+## data:  p * n out of n, null probability 0.5
+## X-squared = 14.891, df = 1, p-value = 0.0001139
+## alternative hypothesis: true p is not equal to 0.5
+## 90 percent confidence interval:
+##  0.5285316 0.5712866
+## sample estimates:
+##    p 
+## 0.55
+</pre>
+
+
+<p>The first argument is the number of successes, the second is the sample size.
+By default, <code>prop.test()</code> calculates a 95% confidence interval, so the <code>conf.level</code> argument is needed to calculate a 90% confidence interval. 
+Note that <code>prop.test()</code> also performs a hypothesis test.
+The confidence interval given by <code>prop.test()</code> is slightly different than the one calculated manually because it uses a different method; However, they should be close.</p>
+<h2 id="ex-613">Ex 6.13</h2>
+<p>The sample size and proportion for this question are,</p>
+<pre class="code literal-block"><span></span>n <span class="o">&lt;-</span> <span class="m">783</span>
+p <span class="o">&lt;-</span> <span class="m">0.52</span>
+</pre>
+
+
+<p>The null and alternative hypotheses are $H_0: p = 0.5$, $H_a: p &gt; 0.5$.
+The standard error is calculated using $p_0 = 0.5$,</p>
+<pre class="code literal-block"><span></span>p0 <span class="o">&lt;-</span> <span class="m">0.5</span>
+se <span class="o">&lt;-</span> <span class="kp">sqrt</span><span class="p">(</span>p0 <span class="o">*</span> <span class="p">(</span><span class="m">1</span> <span class="o">-</span> p0<span class="p">)</span> <span class="o">/</span> n<span class="p">)</span>
+se
+</pre>
+
+
+<pre class="code literal-block"><span></span>## [1] 0.01786854
+</pre>
+
+
+<p>The test statistic is,</p>
+<pre class="code literal-block"><span></span>z <span class="o">&lt;-</span> <span class="p">(</span>p <span class="o">-</span> p0<span class="p">)</span> <span class="o">/</span> se
+z
+</pre>
+
+
+<pre class="code literal-block"><span></span>## [1] 1.119285
+</pre>
+
+
+<p>The p-value for a one-sided hypothesis test is,</p>
+<pre class="code literal-block"><span></span>pnorm<span class="p">(</span>z<span class="p">,</span> lower.tail <span class="o">=</span> <span class="kc">FALSE</span><span class="p">)</span>
+</pre>
+
+
+<pre class="code literal-block"><span></span>## [1] 0.1315092
+</pre>
+
+
+<p>We can confirm this <code>prop.test()</code>,</p>
+<pre class="code literal-block"><span></span>prop.test<span class="p">(</span>n <span class="o">*</span> p<span class="p">,</span> n<span class="p">,</span> alternative <span class="o">=</span> <span class="s">"greater"</span><span class="p">)</span>
+</pre>
+
+
+<pre class="code literal-block"><span></span>## 
+##  1-sample proportions test with continuity correction
+## 
+## data:  n * p out of n, null probability 0.5
+## X-squared = 1.1741, df = 1, p-value = 0.1393
+## alternative hypothesis: true p is greater than 0.5
+## 95 percent confidence interval:
+##  0.4899762 1.0000000
+## sample estimates:
+##    p 
+## 0.52
+</pre>
+
+
+<p>Note that by default, <code>prop.test</code> tests the hypothesis that <code>p = 0.38</code>, and a two-sided test.
+The argument <code>alternative</code> is needed to select a one-sided test.</p>
+<p>Note: If it were a two-sided test the p-value would be</p>
+<pre class="code literal-block"><span></span><span class="m">2</span> <span class="o">*</span> pnorm<span class="p">(</span><span class="o">-</span><span class="kp">abs</span><span class="p">(</span>z<span class="p">))</span>
+</pre>
+
+
+<pre class="code literal-block"><span></span>## [1] 0.2630184
+</pre>
+
+
+<h2 id="ex-627">Ex 6.27</h2>
+<p>The proportions and sample sizes for this question are,</p>
+<pre class="code literal-block"><span></span>p_D <span class="o">&lt;-</span> <span class="m">0.7</span>
+n_D <span class="o">&lt;-</span> <span class="m">819</span>
+p_I <span class="o">&lt;-</span> <span class="m">0.42</span>
+n_I <span class="o">&lt;-</span> <span class="m">783</span>
+</pre>
+
+
+<p>The 95% confidence interval is,</p>
+<pre class="code literal-block"><span></span><span class="c1"># Standard error</span>
+se <span class="o">&lt;-</span> <span class="kp">sqrt</span><span class="p">(</span>p_D <span class="o">*</span> <span class="p">(</span><span class="m">1</span> <span class="o">-</span> p_D<span class="p">)</span> <span class="o">/</span> n_D <span class="o">+</span> p_I <span class="o">*</span> <span class="p">(</span><span class="m">1</span> <span class="o">-</span> p_I<span class="p">)</span> <span class="o">/</span> n_I<span class="p">)</span>
+se
+</pre>
+
+
+<pre class="code literal-block"><span></span>## [1] 0.02382271
+</pre>
+
+
+<pre class="code literal-block"><span></span><span class="c1"># (1 - alpha) * 100% confidence interval</span>
+confidence <span class="o">&lt;-</span> <span class="m">95</span>
+alpha <span class="o">&lt;-</span> <span class="m">1</span> <span class="o">-</span> confidence <span class="o">/</span> <span class="m">100</span>
+<span class="c1"># two-sided critical value</span>
+z <span class="o">&lt;-</span> <span class="o">-</span>qnorm<span class="p">(</span>alpha <span class="o">/</span> <span class="m">2</span><span class="p">)</span>
+<span class="c1"># Confidence interval</span>
+<span class="p">(</span>p_D <span class="o">-</span> p_I<span class="p">)</span> <span class="o">+</span> <span class="kt">c</span><span class="p">(</span><span class="m">-1</span><span class="p">,</span> <span class="m">1</span><span class="p">)</span> <span class="o">*</span> z <span class="o">*</span> se
+</pre>
+
+
+<pre class="code literal-block"><span></span>## [1] 0.2333084 0.3266916
+</pre>
+
+
+<p>Alternatively, you can also use <code>prop.test</code> for confidence intervals and hypothesis tests for differences of proportions,</p>
+<pre class="code literal-block"><span></span>prop.test<span class="p">(</span><span class="kt">c</span><span class="p">(</span>n_D <span class="o">*</span> p_D<span class="p">,</span> n_I <span class="o">*</span> p_I<span class="p">),</span> <span class="kt">c</span><span class="p">(</span>n_D<span class="p">,</span> n_I<span class="p">))</span>
+</pre>
+
+
+<pre class="code literal-block"><span></span>## 
+##  2-sample test for equality of proportions with continuity
+##  correction
+## 
+## data:  c(n_D * p_D, n_I * p_I) out of c(n_D, n_I)
+## X-squared = 126.43, df = 1, p-value &lt; 2.2e-16
+## alternative hypothesis: two.sided
+## 95 percent confidence interval:
+##  0.2320593 0.3279407
+## sample estimates:
+## prop 1 prop 2 
+##   0.70   0.42
+</pre>
+
+
+<p>The first argument is the number of successes (which is why it is $p_D * n_D$ and $p_I * n_I$).
+The confidence interval will be slightly different than the one just calculated because <code>prop.test()</code> uses a slightly different method.</p>
+<h2 id="ex-629">Ex 6.29</h2>
+<p>The sample sizes and proportions for this question are,</p>
+<pre class="code literal-block"><span></span>tbl <span class="o">&lt;-</span> <span class="kt">matrix</span><span class="p">(</span><span class="kt">c</span><span class="p">(</span><span class="m">154</span><span class="p">,</span> <span class="m">180</span><span class="p">,</span> <span class="m">104</span><span class="p">,</span> <span class="m">132</span><span class="p">,</span> <span class="m">126</span><span class="p">,</span> <span class="m">131</span><span class="p">),</span>
+         nrow <span class="o">=</span> <span class="m">3</span><span class="p">,</span> ncol <span class="o">=</span> <span class="m">2</span><span class="p">,</span>
+         dimnames <span class="o">=</span>
+           <span class="kt">list</span><span class="p">(</span><span class="kt">c</span><span class="p">(</span><span class="s">"Support"</span><span class="p">,</span> <span class="s">"Oppose"</span><span class="p">,</span> <span class="s">"Do not know"</span><span class="p">),</span>
+                <span class="s">"College grad"</span> <span class="o">=</span> <span class="kt">c</span><span class="p">(</span><span class="s">"Yes"</span><span class="p">,</span> <span class="s">"No"</span><span class="p">)))</span>
+tbl
+</pre>
+
+
+<pre class="code literal-block"><span></span>##              College grad
+##               Yes  No
+##   Support     154 132
+##   Oppose      180 126
+##   Do not know 104 131
+</pre>
+
+
+<p>Total sample size,</p>
+<pre class="code literal-block"><span></span>n <span class="o">&lt;-</span> <span class="kp">sum</span><span class="p">(</span>tbl<span class="p">)</span>
+n
+</pre>
+
+
+<pre class="code literal-block"><span></span>## [1] 827
+</pre>
+
+
+<p>Column and row totals,</p>
+<pre class="code literal-block"><span></span>col_totals <span class="o">&lt;-</span> <span class="kp">margin.table</span><span class="p">(</span>tbl<span class="p">,</span> <span class="m">2</span><span class="p">)</span>
+col_totals
+</pre>
+
+
+<pre class="code literal-block"><span></span>## College grad
+## Yes  No 
+## 438 389
+</pre>
+
+
+<pre class="code literal-block"><span></span>row_totals <span class="o">&lt;-</span> <span class="kp">margin.table</span><span class="p">(</span>tbl<span class="p">,</span> <span class="m">1</span><span class="p">)</span>
+row_totals
+</pre>
+
+
+<pre class="code literal-block"><span></span>## 
+##     Support      Oppose Do not know 
+##         286         306         235
+</pre>
+
+
+<p>College grad sample size and proportions are</p>
+<pre class="code literal-block"><span></span>n_C <span class="o">&lt;-</span> col_totals<span class="p">[</span><span class="s">"Yes"</span><span class="p">]</span>
+p_C <span class="o">&lt;-</span> tbl<span class="p">[</span><span class="s">"Do not know"</span><span class="p">,</span> <span class="s">"Yes"</span><span class="p">]</span> <span class="o">/</span> n_C
+p_C
+</pre>
+
+
+<pre class="code literal-block"><span></span>##       Yes 
+## 0.2374429
+</pre>
+
+
+<p>Non-college grad sample size and proportions</p>
+<pre class="code literal-block"><span></span>n_N <span class="o">&lt;-</span> col_totals<span class="p">[</span><span class="s">"No"</span><span class="p">]</span>
+p_N <span class="o">&lt;-</span> tbl<span class="p">[</span><span class="s">"Do not know"</span><span class="p">,</span> <span class="s">"No"</span><span class="p">]</span> <span class="o">/</span> n_N
+p_N
+</pre>
+
+
+<pre class="code literal-block"><span></span>##        No 
+## 0.3367609
+</pre>
+
+
+<p>The pooled proportion is</p>
+<pre class="code literal-block"><span></span>p_pool <span class="o">&lt;-</span> row_totals<span class="p">[</span><span class="s">"Do not know"</span><span class="p">]</span> <span class="o">/</span> n
+p_pool
+</pre>
+
+
+<pre class="code literal-block"><span></span>## Do not know 
+##   0.2841596
+</pre>
+
+
+<p>The standard error using the pooled proportion is</p>
+<pre class="code literal-block"><span></span>se <span class="o">&lt;-</span> <span class="kp">sqrt</span><span class="p">(</span>p_pool <span class="o">*</span> <span class="p">(</span><span class="m">1</span> <span class="o">-</span> p_pool<span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="m">1</span> <span class="o">/</span> n_C <span class="o">+</span> <span class="m">1</span> <span class="o">/</span> n_N<span class="p">))</span>
+se
+</pre>
+
+
+<pre class="code literal-block"><span></span>## Do not know 
+##  0.03142174
+</pre>
+
+
+<p>since 
+$$
+se = \sqrt{\frac{p_pool * (1 - p_pool)}{n_1} + \frac{p_pool * (1 - p_pool)}{n_2}} =
+\sqrt{p_pool * (1 - p_pool) \left(\frac{1}{n_1} + \frac{1}{n_2} \right)} .
+$$
+The test statistic is,</p>
+<pre class="code literal-block"><span></span>z <span class="o">&lt;-</span> <span class="p">(</span>p_C <span class="o">-</span> p_N<span class="p">)</span> <span class="o">/</span> se
+z
+</pre>
+
+
+<pre class="code literal-block"><span></span>##       Yes 
+## -3.160806
+</pre>
+
+
+<p>The p-value for a two-sided test is,</p>
+<pre class="code literal-block"><span></span><span class="m">2</span> <span class="o">*</span> pnorm<span class="p">(</span><span class="o">-</span><span class="kp">abs</span><span class="p">(</span>z<span class="p">))</span>
+</pre>
+
+
+<pre class="code literal-block"><span></span>##         Yes 
+## 0.001573334
+</pre>
+
+
+<p>Hypothesis tests for differences in proportions can also be conducted with <code>prop.test()</code>,</p>
+<pre class="code literal-block"><span></span>prop.test<span class="p">(</span>tbl<span class="p">[</span><span class="s">"Do not know"</span><span class="p">,</span> <span class="p">],</span> col_totals<span class="p">)</span> 
+</pre>
+
+
+<pre class="code literal-block"><span></span>## 
+##  2-sample test for equality of proportions with continuity
+##  correction
+## 
+## data:  tbl["Do not know", ] out of col_totals
+## X-squared = 9.5084, df = 1, p-value = 0.002045
+## alternative hypothesis: two.sided
+## 95 percent confidence interval:
+##  -0.16333768 -0.03529832
+## sample estimates:
+##    prop 1    prop 2 
+## 0.2374429 0.3367609
+</pre>
+
+
+<p>or,</p>
+<pre class="code literal-block"><span></span>prop.test<span class="p">(</span><span class="kt">c</span><span class="p">(</span>p_C <span class="o">*</span> n_C<span class="p">,</span> p_N <span class="o">*</span> n_N<span class="p">),</span> <span class="kt">c</span><span class="p">(</span>n_C<span class="p">,</span> n_N<span class="p">))</span>
+</pre>
+
+
+<pre class="code literal-block"><span></span>## 
+##  2-sample test for equality of proportions with continuity
+##  correction
+## 
+## data:  c(p_C * n_C, p_N * n_N) out of c(n_C, n_N)
+## X-squared = 9.5084, df = 1, p-value = 0.002045
+## alternative hypothesis: two.sided
+## 95 percent confidence interval:
+##  -0.16333768 -0.03529832
+## sample estimates:
+##    prop 1    prop 2 
+## 0.2374429 0.3367609
+</pre>
+
+
+<p>The first argument is the number of success in each sample, and the second argument is size of each sample.
+By default, <code>prop.test</code> tests that proportions are equal.
+Note that the test-statistic for the <code>prop.test</code> is different than what we used with the normal approximation since <code>prop.test</code> uses a Chi-squared test. 
+But, the p-values will be close.</p>
+<h2 id="ex-643">Ex 6.43</h2>
+<p>The table of the data</p>
+<pre class="code literal-block"><span></span>observed <span class="o">&lt;-</span> <span class="kt">c</span><span class="p">(</span><span class="s">"Rock"</span> <span class="o">=</span> <span class="m">43</span><span class="p">,</span> <span class="s">"Paper"</span> <span class="o">=</span> <span class="m">21</span><span class="p">,</span> <span class="s">"Scissors"</span> <span class="o">=</span> <span class="m">35</span><span class="p">)</span>
+observed
+</pre>
+
+
+<pre class="code literal-block"><span></span>##     Rock    Paper Scissors 
+##       43       21       35
+</pre>
+
+
+<p>The total sample size is,</p>
+<pre class="code literal-block"><span></span>n <span class="o">&lt;-</span> <span class="kp">sum</span><span class="p">(</span>observed<span class="p">)</span>
+n
+</pre>
+
+
+<pre class="code literal-block"><span></span>## [1] 99
+</pre>
+
+
+<p>If players chose equally, the expected counts are,</p>
+<pre class="code literal-block"><span></span>expected <span class="o">&lt;-</span> <span class="m">1</span> <span class="o">/</span> <span class="m">3</span> <span class="o">*</span> <span class="kp">rep</span><span class="p">(</span>n<span class="p">,</span> <span class="m">3</span><span class="p">)</span>
+expected
+</pre>
+
+
+<pre class="code literal-block"><span></span>## [1] 33 33 33
+</pre>
+
+
+<p>The test-statistic is,</p>
+<pre class="code literal-block"><span></span>chisq <span class="o">&lt;-</span> <span class="kp">sum</span><span class="p">((</span>observed <span class="o">-</span> expected<span class="p">)</span> <span class="o">^</span> <span class="m">2</span> <span class="o">/</span> expected<span class="p">)</span>
+chisq
+</pre>
+
+
+<pre class="code literal-block"><span></span>## [1] 7.515152
+</pre>
+
+
+<p>The degrees of freedom are,</p>
+<pre class="code literal-block"><span></span>df <span class="o">&lt;-</span> <span class="kp">length</span><span class="p">(</span>observed<span class="p">)</span> <span class="o">-</span> <span class="m">1</span>
+df
+</pre>
+
+
+<pre class="code literal-block"><span></span>## [1] 2
+</pre>
+
+
+<p>The p-value is,</p>
+<pre class="code literal-block"><span></span><span class="m">1</span> <span class="o">-</span> pchisq<span class="p">(</span>chisq<span class="p">,</span> df <span class="o">=</span> df<span class="p">)</span>
+</pre>
+
+
+<pre class="code literal-block"><span></span>## [1] 0.02334025
+</pre>
+
+
+<p>This could also be done using <code>chisq.test()</code>,</p>
+<pre class="code literal-block"><span></span>chisq.test<span class="p">(</span>tbl<span class="p">,</span> p <span class="o">=</span> <span class="kp">rep</span><span class="p">(</span><span class="m">1</span> <span class="o">/</span> <span class="m">3</span><span class="p">,</span> <span class="m">3</span><span class="p">))</span>
+</pre>
+
+
+<pre class="code literal-block"><span></span>## 
+##  Pearson's Chi-squared test
+## 
+## data:  tbl
+## X-squared = 11.461, df = 2, p-value = 0.003246
+</pre>
+
+
+<h2 id="ex-647">Ex 6.47</h2>
+<p>The observed data are,</p>
+<pre class="code literal-block"><span></span>observed <span class="o">&lt;-</span> <span class="kt">matrix</span><span class="p">(</span><span class="kt">c</span><span class="p">(</span><span class="m">154</span><span class="p">,</span> <span class="m">180</span><span class="p">,</span> <span class="m">104</span><span class="p">,</span> <span class="m">132</span><span class="p">,</span> <span class="m">126</span><span class="p">,</span> <span class="m">131</span><span class="p">),</span>
+         nrow <span class="o">=</span> <span class="m">3</span><span class="p">,</span> ncol <span class="o">=</span> <span class="m">2</span><span class="p">,</span>
+         dimnames <span class="o">=</span>
+           <span class="kt">list</span><span class="p">(</span><span class="kt">c</span><span class="p">(</span><span class="s">"Support"</span><span class="p">,</span> <span class="s">"Oppose"</span><span class="p">,</span> <span class="s">"Do not know"</span><span class="p">),</span>
+                <span class="s">"College grad"</span> <span class="o">=</span> <span class="kt">c</span><span class="p">(</span><span class="s">"Yes"</span><span class="p">,</span> <span class="s">"No"</span><span class="p">)))</span>
+observed
+</pre>
+
+
+<pre class="code literal-block"><span></span>##              College grad
+##               Yes  No
+##   Support     154 132
+##   Oppose      180 126
+##   Do not know 104 131
+</pre>
+
+
+<p>The total sample size is</p>
+<pre class="code literal-block"><span></span>n <span class="o">&lt;-</span> <span class="kp">sum</span><span class="p">(</span>observed<span class="p">)</span>
+</pre>
+
+
+<p>The row and column totals are</p>
+<pre class="code literal-block"><span></span>row_totals <span class="o">&lt;-</span> <span class="kp">margin.table</span><span class="p">(</span>observed<span class="p">,</span> <span class="m">1</span><span class="p">)</span>
+row_totals
+</pre>
+
+
+<pre class="code literal-block"><span></span>## 
+##     Support      Oppose Do not know 
+##         286         306         235
+</pre>
+
+
+<pre class="code literal-block"><span></span>col_totals <span class="o">&lt;-</span> <span class="kp">margin.table</span><span class="p">(</span>observed<span class="p">,</span> <span class="m">2</span><span class="p">)</span>
+col_totals
+</pre>
+
+
+<pre class="code literal-block"><span></span>## College grad
+## Yes  No 
+## 438 389
+</pre>
+
+
+<p>To calculate the expected values under independence, first calculate the marginal proportions,</p>
+<pre class="code literal-block"><span></span>observed_prop <span class="o">&lt;-</span> <span class="kp">prop.table</span><span class="p">(</span>observed<span class="p">)</span>
+observed_prop
+</pre>
+
+
+<pre class="code literal-block"><span></span>##              College grad
+##                     Yes        No
+##   Support     0.1862152 0.1596131
+##   Oppose      0.2176542 0.1523579
+##   Do not know 0.1257557 0.1584039
+</pre>
+
+
+<pre class="code literal-block"><span></span>row_prop <span class="o">&lt;-</span> <span class="kp">margin.table</span><span class="p">(</span>observed_prop<span class="p">,</span> <span class="m">1</span><span class="p">)</span>
+row_prop
+</pre>
+
+
+<pre class="code literal-block"><span></span>## 
+##     Support      Oppose Do not know 
+##   0.3458283   0.3700121   0.2841596
+</pre>
+
+
+<pre class="code literal-block"><span></span>col_prop <span class="o">&lt;-</span> <span class="kp">margin.table</span><span class="p">(</span>observed_prop<span class="p">,</span> <span class="m">2</span><span class="p">)</span>
+col_prop
+</pre>
+
+
+<pre class="code literal-block"><span></span>## College grad
+##       Yes        No 
+## 0.5296252 0.4703748
+</pre>
+
+
+<p>The expected counts under independence are</p>
+<pre class="code literal-block"><span></span>expected <span class="o">&lt;-</span> row_prop <span class="o">%o%</span> col_prop <span class="o">*</span> n
+</pre>
+
+
+<p>The operator <code>%o%</code> is the outer produce which calculates the product of each of the vectors for each entry in the matrix.
+We multiply this by <code>n</code> in order to turn the proportions to counts.</p>
+<p>The test-statistic is</p>
+<pre class="code literal-block"><span></span>chisq <span class="o">&lt;-</span> <span class="kp">sum</span><span class="p">((</span>observed <span class="o">-</span> expected<span class="p">)</span> <span class="o">^</span> <span class="m">2</span> <span class="o">/</span> expected<span class="p">)</span>
+chisq
+</pre>
+
+
+<pre class="code literal-block"><span></span>## [1] 11.46082
+</pre>
+
+
+<p>The degrees of freedom is the number of rows minus one times the number of columns minus one,</p>
+<pre class="code literal-block"><span></span>df <span class="o">&lt;-</span> <span class="p">(</span><span class="kp">nrow</span><span class="p">(</span>observed<span class="p">)</span> <span class="o">-</span> <span class="m">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="kp">ncol</span><span class="p">(</span>observed<span class="p">)</span> <span class="o">-</span> <span class="m">1</span><span class="p">)</span>
+df
+</pre>
+
+
+<pre class="code literal-block"><span></span>## [1] 2
+</pre>
+
+
+<p>The p-value is,</p>
+<pre class="code literal-block"><span></span><span class="m">1</span> <span class="o">-</span> pchisq<span class="p">(</span>chisq<span class="p">,</span> df <span class="o">=</span> df<span class="p">)</span>
+</pre>
+
+
+<pre class="code literal-block"><span></span>## [1] 0.003245752
+</pre>
+
+
+<p>This could also be calculated using <code>chisq.prop()</code>,</p>
+<pre class="code literal-block"><span></span>prop.test<span class="p">(</span>observed<span class="p">)</span>
+</pre>
+
+
+<pre class="code literal-block"><span></span>## 
+##  3-sample test for equality of proportions without continuity
+##  correction
+## 
+## data:  observed
+## X-squared = 11.461, df = 2, p-value = 0.003246
+## alternative hypothesis: two.sided
+## sample estimates:
+##    prop 1    prop 2    prop 3 
+## 0.5384615 0.5882353 0.4425532
+</pre>
+</div>
+    </div>
+    
+
+</article>
+</div>
+        <!--End of body content-->
+
+        <footer id="footer">
+            
+Contents © 2016  <a href="mailto:jrnold@uw.edu">Jeffrey B. Arnold</a>  
+<a rel="license" href="https://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://licensebuttons.net/l/by/4.0/80x15.png"></a><br><br>
+Powered by <a href="https://getnikola.com" rel="nofollow">Nikola</a>;
+Source on <a href="https://github.com/UW-POLS501/pols_501_wi16/">github</a>
+
+            
+        </footer>
+</div>
+</div>
+
+
+            <script src="../../assets/js/all-nocdn.js"></script><script>$('a.image-reference:not(.islink) img:not(.islink)').parent().colorbox({rel:"gal",maxWidth:"100%",maxHeight:"100%",scalePhotos:true});</script><!-- fancy dates --><script>
+    moment.locale("en");
+    fancydates(0, "YYYY-MM-DD HH:mm");
+    </script><!-- end fancy dates --><script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTM"></script>
+</body>
+</html>

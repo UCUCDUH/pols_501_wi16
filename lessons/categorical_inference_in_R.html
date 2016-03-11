@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="author" content="Jeffrey Arnold" />
+
+<meta name="date" content="2016-02-15" />
+
+<title>Categorical Inference in R</title>
+
+<script src="libs/jquery-1.11.0/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap-3.3.1/css/cerulean.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.1/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.1/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.1/shim/respond.min.js"></script>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<link rel="stylesheet"
+      href="libs/highlight/textmate.css"
+      type="text/css" />
+<script src="libs/highlight/highlight.js"></script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img { 
+  max-width:100%; 
+  height: auto; 
+}
+</style>
+<div class="container-fluid main-container">
+
+<p>
+<strong>POL S/CS&amp;SS 501, University of Washington, Winter 2016</strong>
+</p>
+
+$$
+\DeclareMathOperator{\mean}{mean}
+\DeclareMathOperator{\var}{var}
+\DeclareMathOperator{\E}{E}
+\DeclareMathOperator{\MSE}{MSE}
+\DeclareMathOperator{\Bias}{Bias}
+\DeclareMathOperator{\SE}{se}
+\DeclareMathOperator{\SD}{sd}
+\DeclareMathOperator{\argmin}{argmin}
+\DeclareMathOperator{\argmax}{argmax}
+$$
+
+<div id="header">
+<h1 class="title">Categorical Inference in R</h1>
+<h4 class="author"><em>Jeffrey Arnold</em></h4>
+<h4 class="date"><em>February 15, 2016</em></h4>
+</div>
+
+<div id="TOC">
+<ul>
+<li><a href="#one-sample-inference-of-proportions">One-sample inference of proportions</a></li>
+<li><a href="#two-sample-difference-in-proportions-tests">Two-Sample (Difference in) Proportions Tests</a></li>
+<li><a href="#chi-squared-test-for-goodness-of-fit">Chi-Squared test for goodness of fit</a></li>
+<li><a href="#chi-squared-test-for-independence">Chi-squared test for independence</a></li>
+<li><a href="#proportions-tests-and-chi-squared-tests-with-data">Proportions tests and Chi-squared tests with data</a></li>
+</ul>
+</div>
+
+<p>This lesson introduces the R commands for inference on categorical variables.</p>
+<ul>
+<li><code>prop.test</code>: One-sample proportions, two-sample difference in proportions using a normal distribution approximation.</li>
+<li><code>binom.test</code>: Exact inference for a one-sample proportion.</li>
+<li><code>chisq.test</code>: Chi-squared tests of goodness of fit and independence.</li>
+</ul>
+<p>This lesson uses the following packages, although all the functions for inference (<code>prop.test</code>, <code>binom.test</code>, and <code>chisq.test</code>) are included with R.</p>
+<pre class="r"><code>library(&quot;car&quot;)
+library(&quot;broom&quot;)
+library(&quot;dplyr&quot;)
+library(&quot;tidyr&quot;)</code></pre>
+<p>Also install (or update) <strong>uwpols501</strong>,</p>
+<pre class="r"><code>install_github(&quot;UW-POLS501/r-uwpols501&quot;)</code></pre>
+<pre class="r"><code>library(&quot;uwpols501&quot;)</code></pre>
+<p>This lesson will the <code>turnout</code> dataset included in the <strong>uwpols501</strong> package which includes voting turnout data from the 1992 American National Election Survey.</p>
+<pre class="r"><code>data(&quot;turnout&quot;, package = &quot;uwpols501&quot;)</code></pre>
+<div id="one-sample-inference-of-proportions" class="section level1">
+<h1>One-sample inference of proportions</h1>
+<p>The R function <code>prop.test()</code> calculates both hypothesis tests and confidence intervals for one- and two-sample proportion tests.</p>
+<p>For this, use an example from <em>OpenIntro</em> (p. 275),</p>
+<p>In New York City on October 23rd, 2014, a doctor who had recently been treating Ebola patients in Guinea went to the hospital with a slight fever and was subsequently diagnosed with Ebola. Soon thereafter, an NBC 4 New York/The Wall Street Journal/Marist Poll found that 82% of New Yorkers favored a “mandatory 21-day quarantine for anyone who has come in contact with an Ebola patient”. This poll included responses of 1,042 New York adults between October 26th and 28th, 2014.</p>
+<p>By default, the function <code>prop.test</code> calculates confidence intervals and a hypothesis. The first argument of <code>prop.test</code> is the number of “successes”, the second argument is the total counts.</p>
+<p>The number of counts and the proportion from the example.</p>
+<pre class="r"><code>n &lt;- 1024
+p &lt;- 0.82</code></pre>
+<p>Since <code>prop.test</code> requires a the number of successes, create that variable,</p>
+<pre class="r"><code>x &lt;- n * p</code></pre>
+<p>Now calculate a confidence interval and hypothesis test using <code>prop.test</code>,</p>
+<pre class="r"><code>prop.test(x, n)</code></pre>
+<pre><code>## 
+##  1-sample proportions test with continuity correction
+## 
+## data:  x out of n, null probability 0.5
+## X-squared = 418.15, df = 1, p-value &lt; 2.2e-16
+## alternative hypothesis: true p is not equal to 0.5
+## 95 percent confidence interval:
+##  0.7947754 0.8427832
+## sample estimates:
+##    p 
+## 0.82</code></pre>
+<p>By default <code>prop.test</code> calculates a 95% confidence interval and the hypothesis test, <span class="math inline">\(H_0: p = 0.5\)</span> and <span class="math inline">\(H_a: p \neq 0.5\)</span>.</p>
+<p>To change the confidence level of the confidence interval use the <code>conf.level</code> argument. To calculate a 90% confidence interval,</p>
+<pre class="r"><code>prop.test(x, n, conf.level = 0.90)</code></pre>
+<pre><code>## 
+##  1-sample proportions test with continuity correction
+## 
+## data:  x out of n, null probability 0.5
+## X-squared = 418.15, df = 1, p-value &lt; 2.2e-16
+## alternative hypothesis: true p is not equal to 0.5
+## 90 percent confidence interval:
+##  0.7989091 0.8393628
+## sample estimates:
+##    p 
+## 0.82</code></pre>
+<p>or a 99% confidence interval,</p>
+<pre class="r"><code>prop.test(x, n, conf.level = 0.99)</code></pre>
+<pre><code>## 
+##  1-sample proportions test with continuity correction
+## 
+## data:  x out of n, null probability 0.5
+## X-squared = 418.15, df = 1, p-value &lt; 2.2e-16
+## alternative hypothesis: true p is not equal to 0.5
+## 99 percent confidence interval:
+##  0.7865284 0.8492868
+## sample estimates:
+##    p 
+## 0.82</code></pre>
+<p>To change the population proportion used in the hypothesis test, use the <span class="math inline">\(p\)</span> argument. To calculate a hypothesis test, <span class="math inline">\(H_0: p = 0.75\)</span> and <span class="math inline">\(H_a: p \neq 0.75\)</span>,</p>
+<pre class="r"><code>prop.test(x, n, p = 0.75)</code></pre>
+<pre><code>## 
+##  1-sample proportions test with continuity correction
+## 
+## data:  x out of n, null probability 0.75
+## X-squared = 26.389, df = 1, p-value = 2.792e-07
+## alternative hypothesis: true p is not equal to 0.75
+## 95 percent confidence interval:
+##  0.7947754 0.8427832
+## sample estimates:
+##    p 
+## 0.82</code></pre>
+<p>To run one-sided tests using the <code>alternative</code> argument. To calculate the hypothesis test, <span class="math inline">\(H_0: p = 0.75\)</span> and <span class="math inline">\(H_a: p &gt; 0.75\)</span>,</p>
+<pre class="r"><code>prop.test(x, n, p = 0.75, alternative = &quot;greater&quot;)</code></pre>
+<pre><code>## 
+##  1-sample proportions test with continuity correction
+## 
+## data:  x out of n, null probability 0.75
+## X-squared = 26.389, df = 1, p-value = 1.396e-07
+## alternative hypothesis: true p is greater than 0.75
+## 95 percent confidence interval:
+##  0.7989091 1.0000000
+## sample estimates:
+##    p 
+## 0.82</code></pre>
+<p>To calculate the hypothesis test, <span class="math inline">\(H_0: p = 0.85\)</span> and <span class="math inline">\(H_a: p &lt; 0.85\)</span>,</p>
+<pre class="r"><code>prop.test(x, n, p = 0.75, alternative = &quot;less&quot;)</code></pre>
+<pre><code>## 
+##  1-sample proportions test with continuity correction
+## 
+## data:  x out of n, null probability 0.75
+## X-squared = 26.389, df = 1, p-value = 1
+## alternative hypothesis: true p is less than 0.75
+## 95 percent confidence interval:
+##  0.0000000 0.8393628
+## sample estimates:
+##    p 
+## 0.82</code></pre>
+<p>The results of <code>prop.test</code> can be saved to an object to use in computations later,</p>
+<pre class="r"><code>ebola_poll &lt;- prop.test(x, n, p = 0.8)</code></pre>
+<p>You can extract data from the</p>
+<pre class="r"><code>ebola_poll$conf.int</code></pre>
+<pre><code>## [1] 0.7947754 0.8427832
+## attr(,&quot;conf.level&quot;)
+## [1] 0.95</code></pre>
+<pre class="r"><code>ebola_poll$estimate</code></pre>
+<pre><code>##    p 
+## 0.82</code></pre>
+<pre class="r"><code>ebola_poll$p.value</code></pre>
+<pre><code>## [1] 0.1185385</code></pre>
+<p>The elements in a <code>prop.test</code> object can be viewed with <code>names</code>,</p>
+<pre class="r"><code>names(ebola_poll)</code></pre>
+<pre><code>## [1] &quot;statistic&quot;   &quot;parameter&quot;   &quot;p.value&quot;     &quot;estimate&quot;    &quot;null.value&quot; 
+## [6] &quot;conf.int&quot;    &quot;alternative&quot; &quot;method&quot;      &quot;data.name&quot;</code></pre>
+<p>The <strong>broom</strong> package has functions that converts the results of <code>prop.test</code> to a data frame,</p>
+<pre class="r"><code>tidy(ebola_poll)</code></pre>
+<pre><code>##   estimate statistic   p.value parameter  conf.low conf.high
+## 1     0.82  2.436526 0.1185385         1 0.7947754 0.8427832</code></pre>
+<p>The function <code>prop.test</code> uses the normal approximation and requires a minimal sample size (<span class="math inline">\(np &gt; 10\)</span> and <span class="math inline">\(n (1 - p) &gt; 10\)</span>).</p>
+<p>Since the exact sampling distribution for <span class="math inline">\(n\)</span> independent Bernoulli random variables with probability <span class="math inline">\(p\)</span> is the binomial distribution, one approach to small samples is to use an exact binomial test.</p>
+<p>Consider the example in <em>OpenIntro Statistics</em> (p. 302),</p>
+<p>People providing an organ for donation sometimes seek the help of a special “medical consultant”. These consultants assist the patient in all aspects of the surgery, with the goal of reducing the possibility of complications during the medical procedure and recovery. Patients might choose a consultant based in part on the historical complication rate of the consultant’s clients. One consultant tried to attract patients by noting the average complication rate for liver donor surgeries in the US is about 10%, but her clients have only had 3 complications in the 62 liver donor surgeries she has facilitated.</p>
+<p>The sample size and proportion are,</p>
+<pre class="r"><code>n &lt;- 62
+x &lt;- 3
+p &lt;- x / n</code></pre>
+<p>This fails to meet the <span class="math inline">\(np, n (1 - p) \geq 10\)</span> criteria, so <code>prop.test</code> should not be used.</p>
+<pre class="r"><code>n * c(p, 1 - p)</code></pre>
+<pre><code>## [1]  3 59</code></pre>
+<p>Use <code>binom.test</code> to test the hypothesis that the proportion of complications for that medical consultant is less than the national average of 10%,</p>
+<pre class="r"><code>p0 &lt;- 0.1
+binom.test(x, n, p = p0, alternative = &quot;less&quot;)</code></pre>
+<pre><code>## 
+##  Exact binomial test
+## 
+## data:  x and n
+## number of successes = 3, number of trials = 62, p-value = 0.121
+## alternative hypothesis: true probability of success is less than 0.1
+## 95 percent confidence interval:
+##  0.0000000 0.1203362
+## sample estimates:
+## probability of success 
+##              0.0483871</code></pre>
+<p>In a two-sided tests, the hypothesis test fails to reject the null hypothesis that <span class="math inline">\(H_0: p = 0.1\)</span>.</p>
+</div>
+<div id="two-sample-difference-in-proportions-tests" class="section level1">
+<h1>Two-Sample (Difference in) Proportions Tests</h1>
+<p>The function <code>prop.test</code> can also be used for two-sample proportion tests, where <span class="math inline">\(H_0: p_1 = p_2\)</span>.</p>
+<p>Example from <em>OpenIntro</em> (p. 282):</p>
+<p>A 30-year study was conducted with nearly 90,000 female participants. During a 5- year screening period, each woman was randomized to one of two groups: in the first group, women received regular mammograms to screen for breast cancer, and in the second group, women received regular non-mammogram breast cancer exams. No intervention was made during the following 25 years of the study, and we’ll consider death resulting from breast cancer over the full 30-year period.</p>
+<pre class="r"><code>breast_cancer_study &lt;-
+  matrix(c(500, 505, 44425, 44405),
+         nrow = 2, ncol = 2,
+         dimnames = list(c(&quot;Mammogram&quot;, &quot;Control&quot;),
+                         &quot;Death from breast cancer?&quot; = c(&quot;Yes&quot;, &quot;No&quot;)))
+breast_cancer_study</code></pre>
+<pre><code>##            Death from breast cancer?
+##             Yes    No
+##   Mammogram 500 44425
+##   Control   505 44405</code></pre>
+<p>The total successes are</p>
+<pre class="r"><code>breast_cancer_study[ , &quot;Yes&quot;]</code></pre>
+<pre><code>## Mammogram   Control 
+##       500       505</code></pre>
+<p>The total observations per group are,</p>
+<pre class="r"><code>group_totals &lt;- margin.table(breast_cancer_study, 1)
+group_totals</code></pre>
+<pre><code>## 
+## Mammogram   Control 
+##     44925     44910</code></pre>
+<p>A two-sample difference in proportions test is,</p>
+<pre class="r"><code>prop.test(breast_cancer_study[ , &quot;Yes&quot;], group_totals)</code></pre>
+<pre><code>## 
+##  2-sample test for equality of proportions with continuity
+##  correction
+## 
+## data:  breast_cancer_study[, &quot;Yes&quot;] out of group_totals
+## X-squared = 0.01748, df = 1, p-value = 0.8948
+## alternative hypothesis: two.sided
+## 95 percent confidence interval:
+##  -0.001512853  0.001282751
+## sample estimates:
+##     prop 1     prop 2 
+## 0.01112966 0.01124471</code></pre>
+<p>The hypothesis test is <span class="math inline">\(H_0: p_1 = p_2\)</span> and <span class="math inline">\(H_a: p_1 \neq p_2\)</span>. The p-value is 0.89, so it does not reject the null hypothesis that the proportions are equal. The 95% confidence interval is <span class="math inline">\((-0.0015, 0.0013)\)</span>.</p>
+<p>Alternatively, <code>prop.test</code> can be given a table with two columns (success, failures) and rows for each group,</p>
+<pre class="r"><code>prop.test(breast_cancer_study)</code></pre>
+<pre><code>## 
+##  2-sample test for equality of proportions with continuity
+##  correction
+## 
+## data:  breast_cancer_study
+## X-squared = 0.01748, df = 1, p-value = 0.8948
+## alternative hypothesis: two.sided
+## 95 percent confidence interval:
+##  -0.001512853  0.001282751
+## sample estimates:
+##     prop 1     prop 2 
+## 0.01112966 0.01124471</code></pre>
+</div>
+<div id="chi-squared-test-for-goodness-of-fit" class="section level1">
+<h1>Chi-Squared test for goodness of fit</h1>
+<p><strong>Example</strong> In a city, 275 people served jury duty. If the individuals selected to serve on a jury were randomly selected from the population, how many of each race (White, Black, Hispanic Other) would you expect? If they were randomly selected, the proportions serving on juries should match the proportion of each race in the population: White 72%, black 7%, Hispanic 12%, and other 9%. To test whether the observed counts match the expected counts under the null hypothesis use a one-sample Chi-squared test.</p>
+<pre class="r"><code>population_races &lt;- c(White = .72, Black = .07, Hispanic = 0.12,
+                      Other = 0.09)
+jury_counts &lt;- c(White = 205, Black = 26, Hispanic = 25, Other = 19)
+chisq.test(jury_counts, p = population_races)</code></pre>
+<pre><code>## 
+##  Chi-squared test for given probabilities
+## 
+## data:  jury_counts
+## X-squared = 5.8896, df = 3, p-value = 0.1171</code></pre>
+<p>Note that unlike <code>prop.test</code> and <code>t.test</code>, <code>chisq.test</code> does not calculate confidence intervals.</p>
+</div>
+<div id="chi-squared-test-for-independence" class="section level1">
+<h1>Chi-squared test for independence</h1>
+<p>A Pew Research poll in March 2012 asked the approval ratings of Barack Obama, Democrats in Congress, and Republicans in Congress. We want to know whether there is any difference in approval ratings between Obama, Democrats, and Reps in Congress.</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="right">Obama</th>
+<th align="right">Democrats</th>
+<th align="right">Republicans</th>
+<th align="right">Total</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Approve</td>
+<td align="right">842</td>
+<td align="right">736</td>
+<td align="right">541</td>
+<td align="right">2119</td>
+</tr>
+<tr class="even">
+<td align="left">Disapprove</td>
+<td align="right">646</td>
+<td align="right">646</td>
+<td align="right">842</td>
+<td align="right">2104</td>
+</tr>
+<tr class="odd">
+<td align="left">Total</td>
+<td align="right">1458</td>
+<td align="right">1382</td>
+<td align="right">1383</td>
+<td align="right">4223</td>
+</tr>
+</tbody>
+</table>
+<p>The function <code>chisq.test</code> also can calculate Chi-squared tests of independence,</p>
+<pre class="r"><code>poll_results &lt;-
+  matrix(c(842, 646, 736, 646, 541, 842),
+         nrow = 2, ncol = 3,
+         dimnames = list(c(&quot;Approve&quot;, &quot;Disapprove&quot;),
+                         c(&quot;Obama&quot;, &quot;Democrats&quot;, &quot;Republicans&quot;)))
+poll_results</code></pre>
+<pre><code>##            Obama Democrats Republicans
+## Approve      842       736         541
+## Disapprove   646       646         842</code></pre>
+<pre class="r"><code>chisq.test(poll_results)</code></pre>
+<pre><code>## 
+##  Pearson&#39;s Chi-squared test
+## 
+## data:  poll_results
+## X-squared = 97.137, df = 2, p-value &lt; 2.2e-16</code></pre>
+<p>The Chi-squared test has a p-value of less than 0.001, so the test rejects the null hypothesis that approval ratings of the groups are the same.</p>
+</div>
+<div id="proportions-tests-and-chi-squared-tests-with-data" class="section level1">
+<h1>Proportions tests and Chi-squared tests with data</h1>
+<p>Both <code>prop.test</code> and <code>chisq.test</code> use summary statistics of the total number of observations and number of observations in each category. However, often the data will not be in that form, and some pre-processing will be needed before using those functions. Consider the <code>turnout</code> dataset with data on voting turnout in the 1992 election.</p>
+<pre class="r"><code>glimpse(turnout)</code></pre>
+<pre><code>## Observations: 2,000
+## Variables: 5
+## $ race    (fctr) white, white, white, white, white, white, white, whit...
+## $ age     (int) 60, 51, 24, 38, 25, 67, 40, 56, 32, 75, 46, 52, 22, 60...
+## $ educate (dbl) 14, 10, 12, 8, 12, 12, 12, 10, 12, 16, 15, 12, 12, 12,...
+## $ income  (dbl) 3.3458, 1.8561, 0.6304, 3.4183, 2.7852, 2.3866, 4.2857...
+## $ vote    (int) 1, 0, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, ...</code></pre>
+<p>What is the proportion of survey respondents who responded that they voted? This can be calculated with</p>
+<pre class="r"><code>turnout %&gt;% 
+  summarize(prop_vote = mean(vote))</code></pre>
+<pre><code>##   prop_vote
+## 1     0.746</code></pre>
+<p>To use <code>prop.test</code> to calculate a confidence interval for this we need the number of successes and the total number of observations,</p>
+<pre class="r"><code>turnout_vote_totals &lt;- 
+  turnout %&gt;%
+    summarize(num_vote = sum(vote),
+              total_obs = n())
+turnout_vote_totals</code></pre>
+<pre><code>##   num_vote total_obs
+## 1     1492      2000</code></pre>
+<pre class="r"><code>prop.test(turnout_vote_totals$num_vote, turnout_vote_totals$total_obs)</code></pre>
+<pre><code>## 
+##  1-sample proportions test with continuity correction
+## 
+## data:  turnout_vote_totals$num_vote out of turnout_vote_totals$total_obs, null probability 0.5
+## X-squared = 483.14, df = 1, p-value &lt; 2.2e-16
+## alternative hypothesis: true p is not equal to 0.5
+## 95 percent confidence interval:
+##  0.7262078 0.7648367
+## sample estimates:
+##     p 
+## 0.746</code></pre>
+<p>Now let’s analyze whether income and voting are related using a Chi-squared test of independence. First, add a categorical variable of income, splitting it at its quantiles,</p>
+<pre class="r"><code>turnout &lt;-
+  mutate(turnout, income_quantiles = cut(income, quantile(income)))</code></pre>
+<p>The function <code>xtabs</code> creates a two-way table. In this case, levels of <code>vote</code> are the rows, and <code>income_quantiles</code> are the columns,</p>
+<pre class="r"><code>tab_vote_inc &lt;- xtabs(~vote + income_quantiles, data = turnout)
+tab_vote_inc</code></pre>
+<pre><code>##     income_quantiles
+## vote (0,1.74] (1.74,3.35] (3.35,5.23] (5.23,14.9]
+##    0      202         138         112          55
+##    1      299         359         406         427</code></pre>
+<p>This table can be passed to <code>chisq.test</code>,</p>
+<pre class="r"><code>chisq.test(tab_vote_inc)</code></pre>
+<pre><code>## 
+##  Pearson&#39;s Chi-squared test
+## 
+## data:  tab_vote_inc
+## X-squared = 114.08, df = 3, p-value &lt; 2.2e-16</code></pre>
+<p>The p-value of the Chi-squared test is &lt; 0.001, so it rejects the null hypothesis that income and voting are unrelated, which should not be surprising.</p>
+</div>
+
+<hr>
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://licensebuttons.net/l/by-nc-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
+R code is licensed under a <a href="https://www.r-project.org/Licenses/BSD_2_clause">BSD 2-clause</a> license.
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

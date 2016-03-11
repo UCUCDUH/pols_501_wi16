@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="author" content="Jeffrey B. Arnold" />
+
+
+<title>Hypothesis Tests of the Mean</title>
+
+<script src="libs/jquery-1.11.0/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap-3.3.1/css/cerulean.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.1/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.1/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.1/shim/respond.min.js"></script>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<link rel="stylesheet"
+      href="libs/highlight/textmate.css"
+      type="text/css" />
+<script src="libs/highlight/highlight.js"></script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img { 
+  max-width:100%; 
+  height: auto; 
+}
+</style>
+<div class="container-fluid main-container">
+
+<p>
+<strong>POL S/CS&amp;SS 501, University of Washington, Winter 2016</strong>
+</p>
+
+$$
+\DeclareMathOperator{\mean}{mean}
+\DeclareMathOperator{\var}{var}
+\DeclareMathOperator{\E}{E}
+\DeclareMathOperator{\MSE}{MSE}
+\DeclareMathOperator{\Bias}{Bias}
+\DeclareMathOperator{\SE}{se}
+\DeclareMathOperator{\SD}{sd}
+\DeclareMathOperator{\argmin}{argmin}
+\DeclareMathOperator{\argmax}{argmax}
+$$
+
+<div id="header">
+<h1 class="title">Hypothesis Tests of the Mean</h1>
+<h4 class="author"><em>Jeffrey B. Arnold</em></h4>
+</div>
+
+<div id="TOC">
+<ul>
+<li><a href="#type-i-and-ii-errors">Type I and II Errors</a></li>
+<li><a href="#power">Power</a></li>
+<li><a href="#ways-that-the-estimate-can-break">Ways that the estimate can break</a></li>
+</ul>
+</div>
+
+<p>These are some simulations to illustrate the properties of hypothesis tests of the mean, although the insights translate into hypothesis tests more generally.</p>
+<p>(This is still a work in progress)</p>
+<pre class="r"><code>library(&quot;dplyr&quot;)
+library(&quot;ggplot2&quot;)
+library(&quot;tidyr&quot;)</code></pre>
+<div id="type-i-and-ii-errors" class="section level1">
+<h1>Type I and II Errors</h1>
+<pre class="r"><code>null_hypothesis &lt;- 0
+mu_values &lt;- c(0, 0.125, 0.25, 1)
+sigma &lt;- 1
+sample_sizes &lt;- c(8, 32, 256, 1024)
+iter &lt;- 4096
+
+results &lt;- vector(mode = &quot;list&quot;,
+                  length = length(sample_sizes) *
+                  length(mu_values) * iter)
+result_num &lt;- 1
+for (i in seq_along(mu_values)) {
+  mu &lt;- mu_values[i]
+  for (j in seq_along(sample_sizes)) {
+    n &lt;- sample_sizes[j]
+    message(&quot;mu:&quot;, mu, &quot;, n:&quot;, n)
+    for (k in 1:iter) {
+      x &lt;- rnorm(n, mean = mu, sd = sigma)
+      x_mean &lt;- mean(x)
+      s &lt;- sd(x)
+      se &lt;- s / sqrt(n)
+      z &lt;- (x_mean - null_hypothesis) / se
+      p_value &lt;- 2 * pt(-abs(z), df = n - 1)
+      results[[result_num]] &lt;-
+        data_frame(n = n,
+                   mu = mu,
+                   x_mean = x_mean,
+                   s = s,
+                   se = se,
+                   z = z,
+                   p_value = p_value,
+                   same_sign = sign(x_mean) == sign(mu),
+                   effect = x_mean - mu
+                   )
+       result_num &lt;- result_num + 1
+    }
+  }
+}
+results &lt;- bind_rows(results)</code></pre>
+<p>Plot of p-values by <span class="math inline">\(\mu\)</span> and sample size <span class="math inline">\(n\)</span>,</p>
+<pre class="r"><code>res &lt;- mutate(results,
+              n = factor(as.character(n),
+                         levels = as.character(sort(unique(n)))),
+              mu = as.character(mu))
+ggplot(res,
+       aes(x = p_value)) +
+  geom_histogram(binwidth = 0.05, mapping = aes()) +
+  facet_grid(n ~ mu, scales = &quot;free_y&quot;)</code></pre>
+<p><img src="Hypothesis_Tests_files/figure-html/unnamed-chunk-4-1.png" title="" alt="" width="672" /></p>
+<p>Plot of <span class="math inline">\(\bar{x}\)</span> colored by statistical significance (<span class="math inline">\(\alpha = 0.05\)</span>), by population mean <span class="math inline">\(\mu\)</span> and sample size <span class="math inline">\(n\)</span>,</p>
+<pre class="r"><code>alpha &lt;- 0.05
+ggplot(mutate(res, sig = p_value &lt; alpha),
+       aes(x = x_mean, fill = sig, color = sig)) +
+  geom_histogram(binwidth = 0.05) +
+  geom_rug() +
+  facet_grid(n ~ mu, scales = &quot;free_y&quot;) +
+  scale_color_manual(values = c(&quot;TRUE&quot; = &quot;red&quot;, &quot;FALSE&quot; = &quot;black&quot;)) +
+  scale_fill_manual(values = c(&quot;TRUE&quot; = &quot;red&quot;, &quot;FALSE&quot; = &quot;black&quot;)) +
+  theme_minimal()</code></pre>
+<p><img src="Hypothesis_Tests_files/figure-html/unnamed-chunk-5-1.png" title="" alt="" width="672" /></p>
+<p>Another way to summarize this is to plot a summary of errors as for different values of population mean <span class="math inline">\(\mu\)</span> and sample size <span class="math inline">\(n\)</span>.</p>
+<ul>
+<li>Type I error, Reject <span class="math inline">\(H_0\)</span>, when <span class="math inline">\(H_0\)</span> is true, or <span class="math inline">\(p &lt; \alpha\)</span>, when <span class="math inline">\(\mu = \mu_0\)</span>.</li>
+<li>Type II error, Fail to reject <span class="math inline">\(H_0\)</span>, when <span class="math inline">\(H_a\)</span> is true, or <span class="math inline">\(p &gt; \alpha\)</span>, when <span class="math inline">\(\mu \neq \mu_0\)</span>.</li>
+<li>Wrong sign: (<span class="math inline">\(sign(\bar{x}) \neq sign(\mu)\)</span>)</li>
+<li>Magnitude error (if statistically significant): <span class="math inline">\(mean(abs(x_mean - \mu))\)</span> when <span class="math inline">\(p &lt; \alpha\)</span>.</li>
+</ul>
+<pre class="r"><code>alpha &lt;- 0.05
+errors &lt;-
+  results %&gt;%
+    group_by(mu, n) %&gt;%
+    mutate(decision_error = ifelse(mu == null_hypothesis,
+                                   p_value &lt; alpha, p_value &gt; alpha)) %&gt;%
+    summarize(decision_error = sum(decision_error) / length(decision_error)) %&gt;%
+  ungroup()</code></pre>
+<p>Probability of Type I or Type II errors for different values of <span class="math inline">\(\mu\)</span> as <span class="math inline">\(n\)</span> increases,</p>
+<pre class="r"><code>ggplot(errors %&gt;% mutate(mu = factor(mu)),
+       aes(x = sqrt(n), y = decision_error)) +
+  geom_point() +
+  geom_line() +
+  scale_y_continuous(limits = c(0, 1)) +
+  facet_wrap(~mu, ncol = 1) +
+  ggtitle(&quot;Probability of Type I or Type II error&quot;)</code></pre>
+<p><img src="Hypothesis_Tests_files/figure-html/unnamed-chunk-7-1.png" title="" alt="" width="672" /></p>
+<p>Alternative method of illustrating p-values and effect sizes</p>
+<pre class="r"><code>sizes &lt;- 4:2048
+mu_values &lt;- c(0, 0.01, 0.25, 1)
+number_studies &lt;- 256
+study_sizes &lt;- sample(sizes, number_studies, replace = TRUE,
+                      prob = 1 / sqrt(sizes))
+alpha &lt;- 0.05
+mu_0 &lt;- 0
+sigma &lt;- 1
+
+results &lt;- list()
+for (i in seq_along(mu_values)) {
+  effect_sizes &lt;- rep(NA, number_studies)
+  p_values &lt;- rep(NA, number_studies)
+  mu &lt;- mu_values[i]
+  
+  for (j in 1:number_studies) {
+    n &lt;- study_sizes[j]
+    x &lt;- rnorm(n, mean = mu, sd = sigma)
+    x_mean &lt;- mean(x)
+    s &lt;- sd(x)
+    se &lt;- s / sqrt(n)
+    p &lt;- 2 * pt(-abs((x_mean - mu_0) / se), df = n - 1)
+    
+    p_values[j] &lt;- p
+    effect_sizes[j] &lt;- (x_mean - mu_0) / s
+  }
+  results[[i]] &lt;- data_frame(p_values = p_values,
+                             effect_sizes = effect_sizes,
+                             n = study_sizes,
+                             mu = mu)
+}
+
+results &lt;-
+  bind_rows(results) %&gt;%
+  mutate(significant = p_values &lt; alpha)
+
+ggplot(results,
+       aes(x = effect_sizes, y = sqrt(n), color = significant)) +
+  geom_point() +
+  scale_color_manual(values = c(&quot;TRUE&quot; = &quot;red&quot;, 
+                                &quot;FALSE&quot; = &quot;black&quot;)) +
+  facet_grid(mu ~ .)</code></pre>
+<p><img src="Hypothesis_Tests_files/figure-html/unnamed-chunk-8-1.png" title="" alt="" width="672" /></p>
+</div>
+<div id="power" class="section level1">
+<h1>Power</h1>
+<pre class="r"><code>sigma &lt;- 1
+n &lt;- 1000
+mu_0 &lt;- 0
+mu_a &lt;- -0.5
+alpha &lt;- 0.05
+se &lt;- sigma / sqrt(n)
+
+critical_value &lt;- -qnorm(alpha / 2, mean = mu_0, sd = se)
+
+x_min &lt;- min(mu_a, mu_0) - abs(qnorm(0.0001)) * se
+x_max &lt;- max(mu_a, mu_0) + abs(qnorm(0.0001)) * se
+x &lt;- seq(x_min, x_max, length.out = 100)
+curves &lt;- data_frame(x = x,
+                     H_0 = dnorm(x, mean = mu_0, sd = se),
+                     H_a = dnorm(x, mean = mu_a, sd = se))
+
+ggp &lt;-
+  ggplot() +
+  geom_line(data = curves, aes(x = x, y = H_0), color = &quot;blue&quot;) +
+  geom_line(data = curves, aes(x = x, y = H_a), color = &quot;orange&quot;)
+
+if (-critical_value &gt; x_min) {
+  ggp &lt;- ggp +
+    geom_ribbon(data = filter(curves, x &gt; critical_value),
+                mapping = aes(x = x, ymax = H_0, ymin = 0), fill = &quot;blue&quot;, alpha = 0.5)
+}
+if (critical_value &lt; x_max) {
+  ggp &lt;- ggp +
+    geom_ribbon(data = filter(curves, x &lt; -critical_value),
+                mapping = aes(x = x, ymax = H_0, ymin = 0), fill = &quot;blue&quot;, alpha = 0.5)
+}
+if (mu_0 &lt; mu_a) {
+  ggp &lt;- ggp + 
+    geom_ribbon(data = filter(curves, x &gt; critical_value),
+                     mapping = aes(x = x, ymax = H_a, ymin = 0),
+                     fill = &quot;orange&quot;, alpha = 0.5)
+} else {
+  ggp &lt;- ggp + 
+    geom_ribbon(data = filter(curves, x &lt; -critical_value),
+                     mapping = aes(x = x, ymax = H_a, ymin = 0),
+                     fill = &quot;orange&quot;, alpha = 0.5)
+}
+ggp</code></pre>
+<p><img src="Hypothesis_Tests_files/figure-html/unnamed-chunk-9-1.png" title="" alt="" width="672" /></p>
+<p>Calculate power through simulation.</p>
+<pre class="r"><code>mu_0 &lt;- 0
+mu &lt;- 0.5
+sigma &lt;- 1
+n &lt;- 5
+alpha &lt;- 0.05
+
+iter &lt;- 1000
+results &lt;- rep(NA, iter)
+for (i in seq_len(iter)) {
+  x &lt;- rnorm(n, mean = mu, sd = sigma)
+  p &lt;- 2 * pt(-abs((mean(x) - mu_0) / (sd(x) / sqrt(n))), df = n - 1)
+  results[i] &lt;- p
+}
+
+reject_pct &lt;- sum(results &lt; 0.05) / iter * 100 
+if (mu == mu_0) {
+  message(&quot;Type I Errors: &quot;, round(reject_pct, 2), &quot;%&quot;)
+} else {
+  message(&quot;Power: &quot;, round(reject_pct, 2), &quot;%&quot;)
+}</code></pre>
+<pre><code>## Power: 13.4%</code></pre>
+<p>Some notes on Type I and Type II errors:</p>
+<ul>
+<li>For a given test, there is is trade-off of Type I and Type II error. The fewer false positives, the more false negatives. E.g. in trial a judge could minimize any innocent defendants being declared guilty by ruling not guilty on all trials. However, then all guilty defendants would be declared not guilty.</li>
+<li>Tests generally focus on Type I error, and then for a given Type I error, more powerful tests are preferred. One reason to focus on Type I error, is that Type II error requires specifying a value of the alternative hypothesis, but there is often not just one value.</li>
+<li>Type I error is independent of sample size</li>
+<li>Type II decreases with sample size</li>
+<li>Questions?</li>
+<li>For a fixed sample mean and standard deviation: How would the significance change with the sample size?</li>
+<li>For a fixed sample mean and sample size: How would the significance change with the sample standard deviation?</li>
+</ul>
+</div>
+<div id="ways-that-the-estimate-can-break" class="section level1">
+<h1>Ways that the estimate can break</h1>
+<ul>
+<li>finite population</li>
+<li><p>correlated errors</p>
+<ul>
+<li>serial correlation</li>
+<li>cluster correlation</li>
+</ul></li>
+<li><p>skewed distribution</p></li>
+</ul>
+</div>
+
+<hr>
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://licensebuttons.net/l/by-nc-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
+R code is licensed under a <a href="https://www.r-project.org/Licenses/BSD_2_clause">BSD 2-clause</a> license.
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="author" content="Andreu Casas" />
+
+<meta name="date" content="2016-01-22" />
+
+<title>Merging Data in R: Application</title>
+
+<script src="libs/jquery-1.11.0/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap-3.3.1/css/cerulean.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.1/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.1/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.1/shim/respond.min.js"></script>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<link rel="stylesheet"
+      href="libs/highlight/textmate.css"
+      type="text/css" />
+<script src="libs/highlight/highlight.js"></script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img { 
+  max-width:100%; 
+  height: auto; 
+}
+</style>
+<div class="container-fluid main-container">
+
+<p>
+<strong>POL S/CS&amp;SS 501, University of Washington, Winter 2016</strong>
+</p>
+
+$$
+\DeclareMathOperator{\mean}{mean}
+\DeclareMathOperator{\var}{var}
+\DeclareMathOperator{\E}{E}
+\DeclareMathOperator{\MSE}{MSE}
+\DeclareMathOperator{\Bias}{Bias}
+\DeclareMathOperator{\SE}{se}
+\DeclareMathOperator{\SD}{sd}
+\DeclareMathOperator{\argmin}{argmin}
+\DeclareMathOperator{\argmax}{argmax}
+$$
+
+<div id="header">
+<h1 class="title">Merging Data in R: Application</h1>
+<h4 class="author"><em>Andreu Casas</em></h4>
+<h4 class="date"><em>January 22, 2016</em></h4>
+</div>
+
+<div id="TOC">
+<ul>
+<li><a href="#learning-objectives">Learning Objectives</a></li>
+<li><a href="#initial-set-up">Initial Set up</a></li>
+<li><a href="#merging-datasets">Merging Datasets</a></li>
+</ul>
+</div>
+
+<div id="learning-objectives" class="section level2">
+<h2>Learning Objectives</h2>
+<p>Merging datasets</p>
+</div>
+<div id="initial-set-up" class="section level2">
+<h2>Initial Set up</h2>
+<ul>
+<li>Create new R project for this lesson</li>
+<li>Create a <code>data</code> subdirectory</li>
+</ul>
+<p>Today we will use 2 different datasets:</p>
+<ol style="list-style-type: decimal">
+<li><code>country.csv</code>: A simplified dataset of the replication data for Baum and Zhukov’s (2015) <em>JPR</em> article.</li>
+<li><code>vdem.csv</code>: The <em>Varieties of Democracy project</em> evaluates to what extent countries fit certain normative types of democracy (electoral, liberal, majoritarian, consensual, participatory, deliberative, and/or egalitarian) and provide numerous country-level data. Check their <a href="https://v-dem.net/en/">website</a> for more information or to download the whole dataset.</li>
+</ol>
+<p>Download these datasets straight from the Internet using the R function <code>download.file()</code>. Save them in the <code>data</code> subdirectory.</p>
+<pre class="r"><code>download.file(url = &quot;https://www.dropbox.com/s/qkdcgi3yvj1ugkz/vdem.csv?dl=0&amp;preview=vdem.csv#&quot;, destfile = &quot;data/vdem.csv&quot;)
+download.file(url = &quot;https://raw.githubusercontent.com/UW-POLS501/pols_501_wi16/master/lessons/data/country.csv&quot;, destfile = &quot;data/country.csv&quot;)</code></pre>
+<pre class="r"><code>vdem &lt;- read.csv(&quot;data/vdem.csv&quot;)
+country &lt;- read.csv(&quot;data/country.csv&quot;)</code></pre>
+</div>
+<div id="merging-datasets" class="section level2">
+<h2>Merging Datasets</h2>
+<p>Often the data we need is in different datasets and, to facilitate the analysis, we want to have it all in only one dataset. For example, in this case we have two datasets with country-level data: <code>country</code> and <code>vdem</code>.</p>
+<p>However, before we merge these 2 datasets, we should consider renaming some of the variables of <code>vdem</code>:</p>
+<ul>
+<li><code>v2x_polyarchy</code> -&gt; <code>electoral</code></li>
+<li><code>v2x_libdem</code> -&gt; <code>liberal</code></li>
+<li><code>v2x_partipdem</code> -&gt; <code>participatory</code></li>
+<li><code>v2x_delibdem</code> -&gt; <code>deliberative</code></li>
+<li><code>v2x_egaldem</code> -&gt; <code>egalitarian</code></li>
+</ul>
+<div id="challenge-1" class="panel panel-primary">
+<div class="panel-heading">
+<h3 class="panel-title">
+Challenge
+</h3>
+</div>
+<div class="panel-body">
+<p>How do we rename these variable names of the <code>vdem</code> dataset?</p>
+</div>
+</div>
+<pre class="r"><code># OPTION 1:
+# names(vdem)[10:length(names(vdem))] &lt;- c(&quot;electoral&quot;,&quot;liberal&quot;,&quot;participatory&quot;,
+#                                          &quot;deliberative&quot;,&quot;egalitarian&quot;)</code></pre>
+<pre class="r"><code># OPTION B: Using &quot;dplyr&quot; and the &quot;magrittr&#39;s&quot; pipe operator (%&gt;%)
+library(dplyr)
+vdem &lt;- vdem %&gt;%
+  rename(electoral = v2x_polyarchy, liberal = v2x_libdem, participatory = v2x_partipdem,
+         deliberative = v2x_delibdem, egalitarian = v2x_egaldem)</code></pre>
+<p>To merge datasets we need at least <strong>1 common variable</strong> in both datasets.</p>
+<div id="challenge-2" class="panel panel-primary">
+<div class="panel-heading">
+<h3 class="panel-title">
+Challenge
+</h3>
+</div>
+<div class="panel-body">
+<p>Which variable both datasets (<code>country</code> and <code>vdem</code>) have in common?</p>
+</div>
+</div>
+<p>The dataset <code>country</code> has a variable named <strong>cow</strong> and the dataset <code>vdem</code> has one named <strong>COWcode</strong>. What about the variables <strong>cow</strong> in <code>country</code> and <strong>country_text_id</strong> in <code>vdem</code>? In these case these last 2 variables seem to be the same.</p>
+<p>For country-level data, a package exists to convert the format of country-identifier variables: <code>countrycode</code>. It converts to and from 12 standardized country identifiers:“cowc”, “cown”, “iso3c”, “iso3n”, “iso2c”, “imf”, “fips104”, “fao”, “ioc”, “un”, “wb”, “country.name”. Let’s explore the function <code>countrycode()</code>.</p>
+<pre class="r"><code>library(countrycode)
+countrycode(sourcevar = country$cow, origin =  &quot;cowc&quot;,
+            destination = &quot;cown&quot;, warn = FALSE)
+country$COWcode &lt;- countrycode(sourcevar = country$cow, origin =  &quot;cowc&quot;,
+            destination = &quot;cown&quot;, warn = FALSE)</code></pre>
+<div id="challenge-3" class="panel panel-primary">
+<div class="panel-heading">
+<h3 class="panel-title">
+Challenge
+</h3>
+</div>
+<div class="panel-body">
+There are 5 observations for which <code>countrycode()</code> does not know the “cown” value. How could we solve this issue?
+<div id="challenge-4" class="panel panel-primary">
+<div class="panel-heading">
+<h3 class="panel-title">
+Challenge
+</h3>
+</div>
+<div class="panel-body">
+
+<p>To merge datasets, we can use the following functions of the <code>dplyr</code> package:</p>
+<ul>
+<li><code>left_join()</code></li>
+<li><code>right_join()</code></li>
+<li><code>inner_join()</code></li>
+<li>outer join: <code>union(left_join(x, y), right_join(x, y))</code></li>
+</ul>
+<p>Let’s explore them.</p>
+<pre class="r"><code>db_left &lt;- left_join(country, vdem, by = c(&quot;COWcode&quot;))
+db_right &lt;- right_join(country, vdem, by = c(&quot;COWcode&quot;))
+db_inner &lt;- inner_join(country, vdem, by = c(&quot;COWcode&quot;))</code></pre>
+<div id="challenge-5" class="panel panel-primary">
+<div class="panel-heading">
+<h3 class="panel-title">
+Challenge
+</h3>
+</div>
+<div class="panel-body">
+<ol style="list-style-type: decimal">
+<li>How many unique countries are in <code>country</code>? And in <code>vdem</code>?</li>
+<li>Are all countries in <code>country</code> in <code>vdem</code>, and vice-versa?</li>
+<li>What are the outputs of the different merging commands? For each of the resulting datasets: what are the number of rows and the unique country codes (<code>COWcode</code>)? Is there something “wrong” with any of the new datasets?</li>
+</ol>
+</div>
+</div>
+<pre class="r"><code># 1.
+length(unique(country$COWcode))
+summary(country$COWcode)
+length(unique(vdem$COWcode))
+summary(vdem$COWcode)
+
+# 2.
+length(which(unique(country$COWcode) %in% unique(vdem$COWcode)))
+not_in_vdem &lt;- which(!(unique(country$COWcode) %in% unique(vdem$COWcode)))
+countries_not_vdem_id &lt;- unique(country$COWcode)[not_in_vdem]
+countries_not_vdem_name &lt;- country$cow[country$COWcode %in% countries_not_vdem_id]
+
+# 3. E.g. Exploring the resulting &quot;db_inner&quot; dataset:
+nrow(vdem)
+nrow(db_inner)
+length(unique(db_inner$COWcode))</code></pre>
+</div>
+
+<hr>
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://licensebuttons.net/l/by-nc-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
+R code is licensed under a <a href="https://www.r-project.org/Licenses/BSD_2_clause">BSD 2-clause</a> license.
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

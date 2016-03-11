@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# " lang="en">
+<head>
+<meta charset="utf-8">
+<base href="https://UW-POLS501.github.io/pols_501_wi16/assignments/reading-05/">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title> Reading Assignment 5 | POL S/CS&amp;SS 501 WI16</title>
+<link href="../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<meta content="#5670d4" name="theme-color">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="../../rss.xml">
+<link rel="canonical" href="https://UW-POLS501.github.io/pols_501_wi16/assignments/reading-05/">
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+        processEscapes: true
+    },
+    displayAlign: 'left', // Change this to 'center' to center equations.
+    "HTML-CSS": {
+        styles: {'.MathJax_Display': {"margin": 0}}
+    }
+});
+</script><!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+<meta name="author" content="Jeffrey B. Arnold">
+<meta property="og:site_name" content="POL S/CS&amp;SS 501 WI16">
+<meta property="og:title" content=" Reading Assignment 5">
+<meta property="og:url" content="https://UW-POLS501.github.io/pols_501_wi16/assignments/reading-05/">
+<meta property="og:description" content="Complete all the even numbered exercises in OpenIntro Statistics Chapter 5.
+Submit as a Word Document or PDF via Canvas. Answers must be typed.
+This requires calculating cumulative probabilities and q">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2016-03-10T19:03:42-08:00">
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Menubar -->
+
+<nav class="navbar navbar-inverse navbar-static-top"><div class="container">
+<!-- This keeps the margins nice -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="https://UW-POLS501.github.io/pols_501_wi16/">
+
+                <span id="blog-title">POL S/CS&amp;SS 501 WI16</span>
+            </a>
+        </div>
+<!-- /.navbar-header -->
+        <div class="collapse navbar-collapse" id="bs-navbar" aria-expanded="false">
+            <ul class="nav navbar-nav">
+<li>
+<a href="../../">Syllabus</a>
+                </li>
+<li>
+<a href="../../schedule/">Schedule</a>
+                </li>
+<li>
+<a href="../">Assignments</a>
+                </li>
+<li>
+<a href="../../resources/">Resources</a>
+                </li>
+<li>
+<a href="../../posts/">Posts</a>
+
+                
+            </li>
+</ul>
+<!-- Custom search with Google--><form id="search" action="//www.google.com/search" method="get" class="navbar-form pull-right">
+<input type="hidden" name="q" value="site:https://UW-POLS501.github.io/pols_501_wi16/"><input type="text" name="q" maxlength="255" results="0" placeholder="Search">
+</form>
+<!-- End of custom search -->
+
+
+            <ul class="nav navbar-nav navbar-right"></ul>
+</div>
+<!-- /.navbar-collapse -->
+    </div>
+<!-- /.container -->
+</nav><!-- End of Menubar --><div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        <div class="row">
+            
+            
+<article class="storypage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url"> Reading Assignment 5</a></h1>
+
+        
+
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <div>
+<p>Complete all the even numbered exercises in <em>OpenIntro Statistics</em> Chapter 5.</p>
+<p>Submit as a Word Document or PDF via Canvas. Answers must be typed.</p>
+<p>This requires calculating cumulative probabilities and quantiles of the normal distributions. To calculate these in R, you can use the functions <code>pt</code> and <code>qt</code>.
+For solving questions, even though you are calculating these tests manually,
+save yourself some work by doing the calculations in R rather than by hand and calculator.</p>
+<p><strong>Ex 5.1</strong> The critical t values are:
+$n = 6$, $CL = 90%$,</p>
+<pre class="code literal-block"><span></span><span class="o">-</span>qt<span class="p">((</span><span class="m">1</span> <span class="o">-</span> <span class="m">.9</span><span class="p">)</span> <span class="o">/</span> <span class="m">2</span><span class="p">,</span> df <span class="o">=</span> <span class="m">6</span> <span class="o">-</span> <span class="m">1</span><span class="p">)</span>
+</pre>
+
+
+<pre class="code literal-block"><span></span>## [1] 2.015048
+</pre>
+
+
+<p>$n= 21$, $CL = 98%$,</p>
+<pre class="code literal-block"><span></span><span class="o">-</span>qt<span class="p">((</span><span class="m">1</span> <span class="o">-</span> <span class="m">.98</span><span class="p">)</span> <span class="o">/</span> <span class="m">2</span><span class="p">,</span> df <span class="o">=</span> <span class="m">21</span> <span class="o">-</span> <span class="m">1</span><span class="p">)</span>
+</pre>
+
+
+<pre class="code literal-block"><span></span>## [1] 2.527977
+</pre>
+
+
+<p>$n= 29$, $CL = 95%$,</p>
+<pre class="code literal-block"><span></span><span class="o">-</span>qt<span class="p">((</span><span class="m">1</span> <span class="o">-</span> <span class="m">.95</span><span class="p">)</span> <span class="o">/</span> <span class="m">2</span><span class="p">,</span> df <span class="o">=</span> <span class="m">29</span> <span class="o">-</span> <span class="m">1</span><span class="p">)</span>
+</pre>
+
+
+<pre class="code literal-block"><span></span>## [1] 2.048407
+</pre>
+
+
+<p>$n= 12$, $CL = 99%$,</p>
+<pre class="code literal-block"><span></span><span class="o">-</span>qt<span class="p">((</span><span class="m">1</span> <span class="o">-</span> <span class="m">.99</span><span class="p">)</span> <span class="o">/</span> <span class="m">2</span><span class="p">,</span> df <span class="o">=</span> <span class="m">12</span> <span class="o">-</span> <span class="m">1</span><span class="p">)</span>
+</pre>
+
+
+<pre class="code literal-block"><span></span>## [1] 3.105807
+</pre>
+
+
+<p><strong>Ex 5.3</strong> The p-values are
+$H_a: \mu &gt; \mu_0$, $n = 11$, $T = 1.91$,</p>
+<pre class="code literal-block"><span></span>pt<span class="p">(</span><span class="m">1.91</span><span class="p">,</span> df <span class="o">=</span> <span class="m">11</span> <span class="o">-</span> <span class="m">1</span><span class="p">,</span> lower.tail <span class="o">=</span> <span class="kc">FALSE</span><span class="p">)</span>
+</pre>
+
+
+<pre class="code literal-block"><span></span>## [1] 0.04260244
+</pre>
+
+
+<p>$H_a: \mu &lt; \mu_0$, $n = 17$, $T = -3.45$</p>
+<pre class="code literal-block"><span></span>pt<span class="p">(</span><span class="m">-3.45</span><span class="p">,</span> df <span class="o">=</span> <span class="m">17</span> <span class="o">-</span> <span class="m">1</span><span class="p">)</span>
+</pre>
+
+
+<pre class="code literal-block"><span></span>## [1] 0.001646786
+</pre>
+
+
+<p>$H_a: \mu \neq \mu_0$, $n = 7$, $T = 0.83$</p>
+<pre class="code literal-block"><span></span><span class="m">2</span> <span class="o">*</span> pt<span class="p">(</span><span class="m">0.83</span><span class="p">,</span> df <span class="o">=</span> <span class="m">7</span> <span class="o">-</span> <span class="m">1</span><span class="p">)</span>
+</pre>
+
+
+<pre class="code literal-block"><span></span>## [1] 1.561692
+</pre>
+
+
+<p>$H_a: \mu &gt; \mu_0$, $n = 28$, $T = 2.13$</p>
+<pre class="code literal-block"><span></span>pt<span class="p">(</span><span class="m">2.13</span><span class="p">,</span> df <span class="o">=</span> <span class="m">28</span> <span class="o">-</span> <span class="m">1</span><span class="p">,</span> lower.tail <span class="o">=</span> <span class="kc">FALSE</span><span class="p">)</span>
+</pre>
+
+
+<pre class="code literal-block"><span></span>## [1] 0.02121769
+</pre>
+
+
+<p><strong>Ex 5.7</strong>
+We can reject the null hypothesis that on average New Yorkers sleep 8 hours a night, and accept the alternative hypothesis that on average they sleep less than 8 hours a night.
+The P-value of a two-sided hypothesis test of the sample mean was $.046 &lt; 0.05$.</p>
+<p>The null (alternative) hypothesis for this test is that on average New Yorkers sleep (less than) 8 hours a night.
+Formally, the hypotheses are
+$$
+\begin{aligned}[t]
+H_0: &amp; \mu = 8 \
+H_a: &amp; \mu &lt; 8
+\end{aligned}
+$$
+The test statistic for a hypothesis test of the mean is,
+$$
+Z = \frac{\bar{x} - \mu_0}{s / \sqrt{n}}
+$$
+where $Z$ is distributed standard normal.</p>
+<p>The values of the sample size $n$, sample mean $\bar{x}$, sample standard deviation $s$, and null hypothesis value of the population mean $\mu_0$ given in the problem:</p>
+<pre class="code literal-block"><span></span>n <span class="o">&lt;-</span> <span class="m">25</span>
+x_bar <span class="o">&lt;-</span> <span class="m">7.73</span>
+s <span class="o">&lt;-</span> <span class="m">0.77</span>
+mu_0 <span class="o">&lt;-</span> <span class="m">8</span>
+</pre>
+
+
+<p>The standard error of the sample mean, $SE = s / sqrt{n}$,</p>
+<pre class="code literal-block"><span></span>se <span class="o">&lt;-</span> s <span class="o">/</span> <span class="kp">sqrt</span><span class="p">(</span>n<span class="p">)</span>
+se
+</pre>
+
+
+<pre class="code literal-block"><span></span>## [1] 0.154
+</pre>
+
+
+<p>The test-statistic, $T = (\bar{x} - \mu_0) / SE$,</p>
+<pre class="code literal-block"><span></span>t_stat <span class="o">&lt;-</span> <span class="p">(</span>x_bar <span class="o">-</span> mu_0<span class="p">)</span> <span class="o">/</span> se
+t_stat
+</pre>
+
+
+<pre class="code literal-block"><span></span>## [1] -1.753247
+</pre>
+
+
+<p>Find the one-sided tail area of the Student’s t distribution with $n - 1$ degrees of freedom,</p>
+<pre class="code literal-block"><span></span>pt<span class="p">(</span>t_stat<span class="p">,</span> df <span class="o">=</span> n <span class="o">-</span> <span class="m">1</span><span class="p">)</span>
+</pre>
+
+
+<pre class="code literal-block"><span></span>## [1] 0.04616261
+</pre>
+
+
+<p>Although part (d) can be solved without explicitly calculating a 90% confidence interval, the 90% confidence interval is $7.73 \pm 0.26 = (7.47, 7.99)$,</p>
+<pre class="code literal-block"><span></span>t_star <span class="o">&lt;-</span> <span class="o">-</span>qt<span class="p">((</span><span class="m">1</span> <span class="o">-</span> <span class="m">.9</span><span class="p">)</span> <span class="o">/</span> <span class="m">2</span><span class="p">,</span> df <span class="o">=</span> n <span class="o">-</span> <span class="m">1</span><span class="p">)</span>
+me <span class="o">&lt;-</span> se <span class="o">*</span> t_star
+me
+</pre>
+
+
+<pre class="code literal-block"><span></span>## [1] 0.2634758
+</pre>
+
+
+<pre class="code literal-block"><span></span>x_bar <span class="o">+</span> <span class="kt">c</span><span class="p">(</span><span class="m">-1</span><span class="p">,</span> <span class="m">1</span><span class="p">)</span> <span class="o">*</span> me
+</pre>
+
+
+<pre class="code literal-block"><span></span>## [1] 7.466524 7.993476
+</pre>
+
+
+<p><strong>Ex 5.29</strong>
+The test rejects the null hypothesis that the average number of traffic related emergency room admissions are different between Friday the 6th and Friday the 13th.</p>
+<p>The test rejects the null (alternative) hypothesis that the average number of traffic related emergency room admissions are the same on (different on) Friday the 6th and Friday the 13th.
+Formally, the hypotheses are
+$$
+\begin{aligned}[t]
+H_0: &amp; \mu_{diff} = 0 \
+H_a: &amp; \mu_{diff} \neq 0
+\end{aligned}
+$$
+The test statistic for a hypothesis test for paired difference in means is,
+$$
+Z = \frac{\bar{x}_{diff} - \mu_0}{s / \sqrt{n}}
+$$
+where $Z$ is distributed standard normal.</p>
+<p>The values of the sample size $n$, sample mean $\bar{x}$, sample standard deviation $s$, and null hypothesis value of the population mean $\mu_0$ given in the problem:</p>
+<pre class="code literal-block"><span></span>n <span class="o">&lt;-</span> <span class="m">6</span>
+x_bar <span class="o">&lt;-</span> <span class="m">-3.13</span>
+s_ <span class="o">&lt;-</span> <span class="m">3.01</span>
+mu__0 <span class="o">&lt;-</span> <span class="m">0</span>
+</pre>
+
+
+<p>The standard error of the sample mean, $SE = s / sqrt{n}$,</p>
+<pre class="code literal-block"><span></span>se <span class="o">&lt;-</span> s <span class="o">/</span> <span class="kp">sqrt</span><span class="p">(</span>n<span class="p">)</span>
+se
+</pre>
+
+
+<pre class="code literal-block"><span></span>## [1] 0.3143512
+</pre>
+
+
+<p>The test-statistic, $T = (\bar{x} - \mu_0) / SE$,</p>
+<pre class="code literal-block"><span></span>t_stat <span class="o">&lt;-</span> <span class="p">(</span>x_bar <span class="o">-</span> mu_0<span class="p">)</span> <span class="o">/</span> se
+t_stat
+</pre>
+
+
+<pre class="code literal-block"><span></span>## [1] -35.40626
+</pre>
+
+
+<p>Find the one-sided tail area of the Student’s t distribution with $n - 1$ degrees of freedom,</p>
+<pre class="code literal-block"><span></span>pt<span class="p">(</span>t_stat<span class="p">,</span> df <span class="o">=</span> n <span class="o">-</span> <span class="m">1</span><span class="p">)</span>
+</pre>
+
+
+<pre class="code literal-block"><span></span>## [1] 1.691098e-07
+</pre>
+
+
+<p><strong>Ex 3.31</strong></p>
+<p>The null (alternative) hypothesis is that the average weight of chickens that were fed linseed and horsebean are the same (different).
+Let $\mu_2$ be the average weight of chickens fed linseed, and $\mu_1$ be the average weight of chickens fed horsebean. Formally, the hypotheses are
+$$
+\begin{aligned}[t]
+H_0: &amp; \mu_{2} - \mu_{1} = 0 \
+H_a: &amp; \mu_{2} - \mu_1 \neq 0
+\end{aligned}
+$$
+The test statistic for a hypothesis test for paired difference in means is,
+$$
+T = \frac{\bar{x}_2 - \bar{x}_1 - \mu_0}{\sqrt{\frac{s_1^2}{n_1}} + \frac{s_2^2}{n_2}}
+$$
+where $T$ is distributed Student’s t with approximately $\min(n_1, n_2) - 1$ degrees of freedom.</p>
+<p>The values of the sample sizes $n$, sample means $\bar{x}$, sample standard deviations $s$, and null hypothesis value of the difference in means $\mu_0$ given in the problem:</p>
+<pre class="code literal-block"><span></span>mu_0 <span class="o">&lt;-</span> <span class="m">0</span>
+</pre>
+
+
+<p>The values for linseed fed chickens,</p>
+<pre class="code literal-block"><span></span>n_2 <span class="o">&lt;-</span> <span class="m">12</span>
+x_bar_2 <span class="o">&lt;-</span> <span class="m">218.75</span>
+s_2 <span class="o">&lt;-</span> <span class="m">52.24</span>
+</pre>
+
+
+<p>The values for horsebean fed chickens,</p>
+<pre class="code literal-block"><span></span>n_1 <span class="o">&lt;-</span> <span class="m">10</span>
+x_bar_1 <span class="o">&lt;-</span> <span class="m">160.20</span>
+s_1 <span class="o">&lt;-</span> <span class="m">38.63</span>
+</pre>
+
+
+<p>The difference in sample means, $\bar{x}_diff = x_2 - x_1$,</p>
+<pre class="code literal-block"><span></span>x_bar_diff <span class="o">&lt;-</span> x_bar_2 <span class="o">-</span> x_bar_1
+x_bar_diff
+</pre>
+
+
+<pre class="code literal-block"><span></span>## [1] 58.55
+</pre>
+
+
+<p>The standard error of the difference in sample means sample mean, $SE_{diff} = \sqrt{s_2^2 / n_2 + s_1^2 / n_1}$,</p>
+<pre class="code literal-block"><span></span>se <span class="o">&lt;-</span> <span class="kp">sqrt</span><span class="p">(</span>s_1 <span class="o">^</span> <span class="m">2</span> <span class="o">/</span> n_1 <span class="o">+</span> s_2 <span class="o">^</span> <span class="m">2</span> <span class="o">/</span> n_2<span class="p">)</span>
+se
+</pre>
+
+
+<pre class="code literal-block"><span></span>## [1] 19.40737
+</pre>
+
+
+<p>The test-statistic, $T = (\bar{x}<em diff="diff">{diff} - \mu_0) / SE</em>$,</p>
+<pre class="code literal-block"><span></span>t_stat <span class="o">&lt;-</span> <span class="p">(</span>x_bar_diff <span class="o">-</span> mu_0<span class="p">)</span> <span class="o">/</span> se
+t_stat
+</pre>
+
+
+<pre class="code literal-block"><span></span>## [1] 3.016896
+</pre>
+
+
+<p>Find the one-sided tail area of the Student’s t distribution with $n - 1$ degrees of freedom,</p>
+<pre class="code literal-block"><span></span><span class="m">2</span> <span class="o">*</span> pt<span class="p">(</span><span class="o">-</span><span class="kp">abs</span><span class="p">(</span>t_stat<span class="p">),</span> df <span class="o">=</span> <span class="kp">min</span><span class="p">(</span>n_2<span class="p">,</span> n_1<span class="p">)</span> <span class="o">-</span> <span class="m">1</span><span class="p">)</span>
+</pre>
+
+
+<pre class="code literal-block"><span></span>## [1] 0.01455232
+</pre>
+
+
+<p>The test rejects the null hypothesis that the average weights are the same and accepts the alternative hypothesis that they are different (p-value = $0.015 &lt; 0.05$).</p>
+<p>The question does not ask to calculate the confidence interval, but the 95% confidence interval for the difference in weights is calculated as follows.
+The critical t-value for $df = \min(n_1, n_2) - 1$ is</p>
+<pre class="code literal-block"><span></span>t_star <span class="o">&lt;-</span> <span class="o">-</span>qt<span class="p">((</span><span class="m">1</span> <span class="o">-</span> <span class="m">0.95</span><span class="p">)</span> <span class="o">/</span> <span class="m">2</span><span class="p">,</span> df <span class="o">=</span> <span class="kp">min</span><span class="p">(</span>n_1<span class="p">,</span> n_2<span class="p">)</span> <span class="o">-</span> <span class="m">1</span><span class="p">)</span>
+t_star
+</pre>
+
+
+<pre class="code literal-block"><span></span>## [1] 2.262157
+</pre>
+
+
+<p>The margin of error is $ME_{diff} = t^* \times SE_{diff}$,</p>
+<pre class="code literal-block"><span></span>me <span class="o">&lt;-</span> t_star <span class="o">*</span> se
+me
+</pre>
+
+
+<pre class="code literal-block"><span></span>## [1] 43.90251
+</pre>
+
+
+<p>The confidence interval is $\bar{x}<em diff="diff">{diff} \pm ME</em>$,</p>
+<pre class="code literal-block"><span></span>x_bar_diff <span class="o">+</span> <span class="kt">c</span><span class="p">(</span><span class="m">-1</span><span class="p">,</span> <span class="m">1</span><span class="p">)</span> <span class="o">*</span> me
+</pre>
+
+
+<pre class="code literal-block"><span></span>## [1]  14.64749 102.45251
+</pre>
+</div>
+    </div>
+    
+
+</article>
+</div>
+        <!--End of body content-->
+
+        <footer id="footer">
+            
+Contents © 2016  <a href="mailto:jrnold@uw.edu">Jeffrey B. Arnold</a>  
+<a rel="license" href="https://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://licensebuttons.net/l/by/4.0/80x15.png"></a><br><br>
+Powered by <a href="https://getnikola.com" rel="nofollow">Nikola</a>;
+Source on <a href="https://github.com/UW-POLS501/pols_501_wi16/">github</a>
+
+            
+        </footer>
+</div>
+</div>
+
+
+            <script src="../../assets/js/all-nocdn.js"></script><script>$('a.image-reference:not(.islink) img:not(.islink)').parent().colorbox({rel:"gal",maxWidth:"100%",maxHeight:"100%",scalePhotos:true});</script><!-- fancy dates --><script>
+    moment.locale("en");
+    fancydates(0, "YYYY-MM-DD HH:mm");
+    </script><!-- end fancy dates --><script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTM"></script>
+</body>
+</html>

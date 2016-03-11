@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="author" content="Andreu Casas" />
+
+
+<title>Difference in Means: T-Test and Hypothesis Testing</title>
+
+<script src="libs/jquery-1.11.0/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap-3.3.1/css/cerulean.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.1/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.1/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.1/shim/respond.min.js"></script>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<link rel="stylesheet"
+      href="libs/highlight/textmate.css"
+      type="text/css" />
+<script src="libs/highlight/highlight.js"></script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img { 
+  max-width:100%; 
+  height: auto; 
+}
+</style>
+<div class="container-fluid main-container">
+
+<p>
+<strong>POL S/CS&amp;SS 501, University of Washington, Winter 2016</strong>
+</p>
+
+$$
+\DeclareMathOperator{\mean}{mean}
+\DeclareMathOperator{\var}{var}
+\DeclareMathOperator{\E}{E}
+\DeclareMathOperator{\MSE}{MSE}
+\DeclareMathOperator{\Bias}{Bias}
+\DeclareMathOperator{\SE}{se}
+\DeclareMathOperator{\SD}{sd}
+\DeclareMathOperator{\argmin}{argmin}
+\DeclareMathOperator{\argmax}{argmax}
+$$
+
+<div id="header">
+<h1 class="title">Difference in Means: T-Test and Hypothesis Testing</h1>
+<h4 class="author"><em>Andreu Casas</em></h4>
+<h4 class="date"><em>January , 2016</em></h4>
+</div>
+
+
+<p>In this lab we will use data from Acemoglu et al.’s (2001) <a href="http://economics.mit.edu/files/4123">paper</a> “The Colonial Origins of Comparative Development: An Empirical Investigation” in <em>AER</em>.</p>
+<p>Go to Acemoglu’s <a href="http://economics.mit.edu/faculty/acemoglu/data/ajr2001">website</a>, and download the data to replicate <code>Table 1</code>.</p>
+<hr />
+<div id="challenge" class="section level3">
+<h3>Challenge:</h3>
+<p>Skim the paper and briefly describe:</p>
+<ul>
+<li>What’s the puzzle/question?</li>
+<li>What’s their argument?</li>
+<li>What are their key variables?</li>
+</ul>
+<hr />
+<p>Read the data in:</p>
+<pre class="r"><code>library(rio)
+data &lt;- import(&quot;data/ajr_2001.dta&quot;)</code></pre>
+<hr />
+</div>
+<div id="challenge-1" class="section level3">
+<h3>Challenge:</h3>
+<p>Explore the data:</p>
+<ul>
+<li>How many obersvations (rows) and variables (columns) does the dataset have?</li>
+<li>What does each observation represent?</li>
+<li>How many unique countries (<code>shortnam</code>) are in the dataset?</li>
+<li>Is there a country that shows up more than once?</li>
+<li>Are there any missing values for any variable?</li>
+</ul>
+<hr />
+<p>When importing STATA (<code>.dta</code>) dataset using the rio package, we have access to the variables description. We wrote a function in the <code>uwpols501</code> package to check the variables description of STATA datasets loaded into R using <code>rio</code>.</p>
+<pre class="r"><code>library(devtools)
+install_github(username = &quot;jrnold&quot;, repo = &quot;UW-POLS501/r-uwpols501&quot;)</code></pre>
+<pre class="r"><code>library(uwpols501)
+extract_var_info(data)</code></pre>
+<pre><code>##  [1] &quot;3 letter country name&quot;                        
+##  [2] &quot;European settlers 1900, AJR&quot;                  
+##  [3] &quot;=1 if was colony FLOPS definiti&quot;              
+##  [4] &quot;average protection against expropriation risk&quot;
+##  [5] &quot;log PPP GDP pc in 1995, World Bank&quot;           
+##  [6] &quot;cons on exec in 1st year indep&quot;               
+##  [7] &quot;democracy in 1900&quot;                            
+##  [8] &quot;constraint on executive in 1900&quot;              
+##  [9] &quot;corrected mortality&quot;                          
+## [10] &quot;log settler mortality&quot;                        
+## [11] &quot; log GDP per work, Hall&amp;Jones&quot;                
+## [12] &quot;base sample Colonial Origins paper&quot;</code></pre>
+<p>The variable <code>extmort4</code> contains information about <em>potential settlers mortality</em> (See Note in Figure 1 of the paper for a description of the variable: <em>measured in terms of deaths per annum per 1,000…</em>)</p>
+<hr />
+</div>
+<div id="challenge-2" class="section level3">
+<h3>Challenge:</h3>
+<p>Explore the <code>logpgp95</code> and <code>logem4</code> variable:</p>
+<ul>
+<li>Do they have missing values? If they do, are they the same?</li>
+<li>Summarize and explore the variables</li>
+<li>Why do they take the log of <code>mortality rate</code> and <code>gdp in 1995</code>?</li>
+<li>What would be the best way to plot this variable in order to analyze its distribution?</li>
+</ul>
+<hr />
+<pre class="r"><code>summary(data$extmort4)
+summary(data$logem4)</code></pre>
+<p><code>logem4</code> is the log of <code>extmort4</code>. They calculate the log of mortality-rate because they theorize that it has a log-linear relationship with the type of institutions (<code>avexpr</code>) and economic growth (<code>logpgp95</code>).</p>
+<pre class="r"><code>library(ggplot2)
+p &lt;- ggplot(data, aes(x= extmort4))
+p + geom_histogram(bins = 30)</code></pre>
+<pre><code>## Warning: Removed 76 rows containing non-finite values (stat_bin).</code></pre>
+<p><img src="difference-in-means-pdfversion_files/figure-html/unnamed-chunk-6-1.png" title="" alt="" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>p + geom_density() </code></pre>
+<pre><code>## Warning: Removed 76 rows containing non-finite values (stat_density).</code></pre>
+<p><img src="difference-in-means-pdfversion_files/figure-html/unnamed-chunk-6-2.png" title="" alt="" width="672" style="display: block; margin: auto;" /></p>
+<p></p>
+<p>Use a plot to explore the relationship between the variables <code>logem4</code> and <code>logpgp95</code>.</p>
+<pre class="r"><code>ggplot(data, aes(x = logem4, y = logpgp95)) + 
+  geom_point() +
+  geom_smooth(method = &quot;lm&quot;)</code></pre>
+<pre><code>## Warning: Removed 82 rows containing non-finite values (stat_smooth).</code></pre>
+<pre><code>## Warning: Removed 82 rows containing missing values (geom_point).</code></pre>
+<p><img src="difference-in-means-pdfversion_files/figure-html/unnamed-chunk-7-1.png" title="" alt="" width="672" style="display: block; margin: auto;" /></p>
+<p>Another way to evaluate AJR’s theory that the mortality rate in new settlements conditioned the type of institutions that metropolies implemented in different territories and, as a result, the future economic growth in those regions, would be to compare the <strong>mean</strong> economic development (<code>logpgp95</code>) between countries with low and high mortality rates (<code>logem4</code>)</p>
+<p>Create a new dummy variable indicating those countries that have a value of <code>logem4</code> in the top 3 quantiles (==1). Also remove from the dataset those observation that do not have a value for <code>logem4</code>.</p>
+<pre class="r"><code>library(dplyr)
+data &lt;- data %&gt;%
+  mutate(high_mort = 
+                 factor(as.numeric(logem4 &gt; quantile(data$logem4, probs = .25, na.rm = TRUE))))
+data &lt;- mutate(data, high_mort = ifelse(high_mort == 0, &quot;low&quot;, &quot;high&quot;))
+data &lt;- data %&gt;%
+  filter(! is.na(high_mort))</code></pre>
+<hr />
+</div>
+<div id="challenge-3" class="section level3">
+<h3>Challenge:</h3>
+<p>How would we calculate the mean <code>logpgp95</code> for each group (<code>high_mort</code> == “low” and “high”) and a 95% confidence interval around those means?</p>
+<hr />
+<pre class="r"><code>differences &lt;- data %&gt;%
+  group_by(high_mort) %&gt;%
+  summarize(n = length(logpgp95),
+            x = round(mean(logpgp95, na.rm = TRUE), 2),
+            s = round(sd(logpgp95, na.rm = TRUE), 2),
+            t_val = round(abs(qt(0.05/2, n)), 2),
+            se = round((s / sqrt(n)), 2),
+            lwr = round(x - (t_val * se), 2),
+            upr = round(x + (t_val * se), 2)) %&gt;%
+  as.data.frame()
+differences &lt;- differences[1:2,]</code></pre>
+<table border="1">
+<caption align="top">
+Differences 1
+</caption>
+<tr>
+<th>
+high_mort
+</th>
+<th>
+n
+</th>
+<th>
+x
+</th>
+<th>
+s
+</th>
+<th>
+t_val
+</th>
+<th>
+se
+</th>
+<th>
+lwr
+</th>
+<th>
+upr
+</th>
+</tr>
+<tr>
+<td>
+high
+</td>
+<td align="right">
+65
+</td>
+<td align="right">
+7.80
+</td>
+<td align="right">
+0.88
+</td>
+<td align="right">
+2.00
+</td>
+<td align="right">
+0.11
+</td>
+<td align="right">
+7.58
+</td>
+<td align="right">
+8.02
+</td>
+</tr>
+<tr>
+<td>
+low
+</td>
+<td align="right">
+22
+</td>
+<td align="right">
+8.88
+</td>
+<td align="right">
+1.16
+</td>
+<td align="right">
+2.07
+</td>
+<td align="right">
+0.25
+</td>
+<td align="right">
+8.36
+</td>
+<td align="right">
+9.40
+</td>
+</tr>
+</table>
+<p>A simpler way to calculate the mean <code>avexpr</code> (+ 95% CIs) for these two groups is to use the <code>t.test()</code> function in R.</p>
+<pre class="r"><code>low_test &lt;- t.test(select(filter(data, high_mort == &quot;low&quot;), logpgp95))
+high_test &lt;- t.test(select(filter(data, high_mort == &quot;high&quot;), logpgp95))
+low_estimates &lt;- data.frame(x = low_test$estimate, lwr = low_test$conf.int[1],
+                            upr = low_test$conf.int[2])
+high_estimates &lt;- data.frame(x = high_test$estimate, lwr = high_test$conf.int[1],
+                            upr = high_test$conf.int[2])
+differences2 &lt;- as.data.frame(rbind_list(high_estimates, low_estimates))
+print(xtable(differences2, caption = &quot;Differences2&quot;),caption.placement = &quot;top&quot;, type = &#39;html&#39;,
+      comment = FALSE, include.rownames = FALSE)</code></pre>
+<table border="1">
+<caption align="top">
+Differences2
+</caption>
+<tr>
+<th>
+x
+</th>
+<th>
+lwr
+</th>
+<th>
+upr
+</th>
+</tr>
+<tr>
+<td align="right">
+7.80
+</td>
+<td align="right">
+7.58
+</td>
+<td align="right">
+8.03
+</td>
+</tr>
+<tr>
+<td align="right">
+8.88
+</td>
+<td align="right">
+8.33
+</td>
+<td align="right">
+9.42
+</td>
+</tr>
+</table>
+<p>There is a simpler way to do it with the <code>broom</code> package</p>
+<pre class="r"><code>library(&quot;broom&quot;)
+data %&gt;%
+  group_by(high_mort) %&gt;%
+  do(tidy(t.test(.$logpgp95))) %&gt;%
+  xtable(caption = &quot;Differences 3&quot;) %&gt;%
+  print(caption.placement = &quot;top&quot;, type = &#39;html&#39;,
+      comment = FALSE, include.rownames = FALSE)</code></pre>
+<table border="1">
+<caption align="top">
+Differences 3
+</caption>
+<tr>
+<th>
+high_mort
+</th>
+<th>
+estimate
+</th>
+<th>
+statistic
+</th>
+<th>
+p.value
+</th>
+<th>
+parameter
+</th>
+<th>
+conf.low
+</th>
+<th>
+conf.high
+</th>
+</tr>
+<tr>
+<td>
+high
+</td>
+<td align="right">
+7.80
+</td>
+<td align="right">
+69.19
+</td>
+<td align="right">
+0.00
+</td>
+<td align="right">
+60.00
+</td>
+<td align="right">
+7.58
+</td>
+<td align="right">
+8.03
+</td>
+</tr>
+<tr>
+<td>
+low
+</td>
+<td align="right">
+8.88
+</td>
+<td align="right">
+34.10
+</td>
+<td align="right">
+0.00
+</td>
+<td align="right">
+19.00
+</td>
+<td align="right">
+8.33
+</td>
+<td align="right">
+9.42
+</td>
+</tr>
+</table>
+<p></p>
+<p>We can plot these two means and CIs to see more clearly if they overlap.</p>
+<pre class="r"><code>ggplot(differences, aes(x = high_mort, y = x)) +
+  ylim(min(select(differences, lwr)), max(select(differences, upr))) +
+  geom_point(size = 1) +
+  geom_errorbar(aes(ymin = lwr, ymax = upr), width = .1) +
+  ggtitle(&quot;Mean average protection against expropriation 
+          by Mortality Rate&quot;) +
+  ylab(&quot;Av. Prot. against Expr.&quot;) +
+  xlab(&quot;AJR&#39;s Mortality Rate Index &quot;)</code></pre>
+<p><img src="difference-in-means-pdfversion_files/figure-html/unnamed-chunk-12-1.png" title="" alt="" width="672" style="display: block; margin: auto;" /></p>
+<p>We can also use the <code>t.test</code> function to test if these two means are statistically distinct.</p>
+<pre class="r"><code>tt_mort &lt;- t.test(data$logpgp95 ~ data$high_mort)
+tt_mort</code></pre>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  data$logpgp95 by data$high_mort
+## t = -3.7938, df = 26.499, p-value = 0.0007798
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -1.6594863 -0.4938429
+## sample estimates:
+## mean in group high  mean in group low 
+##           7.803004           8.879669</code></pre>
+</div>
+
+<hr>
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://licensebuttons.net/l/by-nc-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
+R code is licensed under a <a href="https://www.r-project.org/Licenses/BSD_2_clause">BSD 2-clause</a> license.
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

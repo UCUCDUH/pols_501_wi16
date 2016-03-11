@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# " lang="en">
+<head>
+<meta charset="utf-8">
+<base href="https://UW-POLS501.github.io/pols_501_wi16/posts/">
+<meta name="description" content="Course website for University of Washington, POL S/CS&amp;SS 501: Advanced Research Design &amp; Analysis, Winter 2016">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>POL S/CS&amp;SS 501 WI16</title>
+<link href="../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<meta content="#5670d4" name="theme-color">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="../rss.xml">
+<link rel="canonical" href="https://UW-POLS501.github.io/pols_501_wi16/posts/">
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+        processEscapes: true
+    },
+    displayAlign: 'left', // Change this to 'center' to center equations.
+    "HTML-CSS": {
+        styles: {'.MathJax_Display': {"margin": 0}}
+    }
+});
+</script><!--[if lt IE 9]><script src="../assets/js/html5.js"></script><![endif]--><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Menubar -->
+
+<nav class="navbar navbar-inverse navbar-static-top"><div class="container">
+<!-- This keeps the margins nice -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="https://UW-POLS501.github.io/pols_501_wi16/">
+
+                <span id="blog-title">POL S/CS&amp;SS 501 WI16</span>
+            </a>
+        </div>
+<!-- /.navbar-header -->
+        <div class="collapse navbar-collapse" id="bs-navbar" aria-expanded="false">
+            <ul class="nav navbar-nav">
+<li>
+<a href="../">Syllabus</a>
+                </li>
+<li>
+<a href="../schedule/">Schedule</a>
+                </li>
+<li>
+<a href="../assignments/">Assignments</a>
+                </li>
+<li>
+<a href="../resources/">Resources</a>
+                </li>
+<li class="active">
+<a href=".">Posts <span class="sr-only">(active)</span></a>
+
+                
+            </li>
+</ul>
+<!-- Custom search with Google--><form id="search" action="//www.google.com/search" method="get" class="navbar-form pull-right">
+<input type="hidden" name="q" value="site:https://UW-POLS501.github.io/pols_501_wi16/"><input type="text" name="q" maxlength="255" results="0" placeholder="Search">
+</form>
+<!-- End of custom search -->
+
+
+            <ul class="nav navbar-nav navbar-right"></ul>
+</div>
+<!-- /.navbar-collapse -->
+    </div>
+<!-- /.container -->
+</nav><!-- End of Menubar --><div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        <div class="row">
+            
+            
+
+    
+<div class="postindex">
+    <article class="h-entry post-text"><header><h1 class="p-name entry-title"><a href="quick-introduction-to-pipes/" class="u-url">Quick introduction to Pipes</a></h1>
+        <div class="metadata">
+            <p class="byline author vcard"><span class="byline-name fn">
+                Jeffrey B. Arnold
+            </span></p>
+            <p class="dateline"><a href="quick-introduction-to-pipes/" rel="bookmark"><time class="published dt-published" datetime="2016-01-09T21:16:57-08:00" title="2016-01-09 21:16">2016-01-09 21:16</time></a></p>
+        </div>
+    </header><div class="e-content entry-content">
+    <div>
+<p>The DataCamp <a href="https://campus.datacamp.com/courses/data-visualization-with-ggplot2-1">ggplot2</a> uses the <code>%&gt;%</code> operator in one <a href="https://campus.datacamp.com/courses/data-visualization-with-ggplot2-1/chapter-2-data?ex=10">tutorial</a>. The <code>%&gt;%</code> is referred to as the pipe operator. 
+The pipe operator comes from the R package <strong>magrittr</strong> (and <strong>dplyr</strong>), and is new feature in R, but one that has been quickly and widely adopted.
+It most commonly used with the <a href="https://cran.rstudio.com/web/packages/dplyr/vignettes/introduction.html">dplyr</a> package for data manipulation and cleaning.
+The data camp and lab next week will cover this in more detail.
+But since we haven’t covered this, here is a quick idea of what it does.
+Suppose you have an R code that like this,</p>
+<pre class="code literal-block"><span></span>f(x, y)
+</pre>
+
+
+<p>The pipe operator allows you to write it as </p>
+<pre class="code literal-block"><span></span>x %&gt;% f(y)
+</pre>
+
+
+<p>where <code>x</code> will be the first argument of <code>f</code>.
+This becomes useful when you are nesting many different functions, because you can write something like </p>
+<pre class="code literal-block"><span></span>h(g(f(x, y), z))
+</pre>
+
+
+<p>in a more readable left-to-right form</p>
+<pre class="code literal-block"><span></span>x %&gt;% f(y) %&gt;% g(z) %&gt;% h()
+</pre>
+
+
+<p>Here is another fake example from <a href="https://twitter.com/_inundata/status/557980236130689024">Hadley Wickham</a> and based on the children’s song, <a href="https://en.wikipedia.org/wiki/Little_Bunny_Foo_Foo">Little Bunny Foo Foo</a>,</p>
+<pre class="code literal-block"><span></span>foo_foo <span class="o">&lt;-</span> little_bunny<span class="p">()</span>
+
+bop_on<span class="p">(</span>scoop_up<span class="p">(</span>hop_through<span class="p">(</span>foo_foo<span class="p">,</span> forest<span class="p">),</span> field_mouse<span class="p">),</span> <span class="kp">head</span><span class="p">)</span>
+
+<span class="c1"># VS</span>
+
+foo_foo <span class="o">%&gt;%</span>
+  hop_through<span class="p">(</span>forest<span class="p">)</span> <span class="o">%&gt;%</span>
+  scoop_up<span class="p">(</span>field_mouse<span class="p">)</span> <span class="o">%&gt;%</span>
+  bop_on<span class="p">(</span><span class="kp">head</span><span class="p">)</span>
+</pre>
+
+
+<p>A real example is the following. 
+This code sorts a vector smallest to largest, and takes the mean of the squared difference between the values</p>
+<pre class="code literal-block"><span></span><span class="kn">library</span><span class="p">(</span><span class="s">"dplyr"</span><span class="p">)</span>
+x <span class="o">&lt;-</span> <span class="kt">c</span><span class="p">(</span><span class="m">96</span><span class="p">,</span> <span class="m">12</span><span class="p">,</span> <span class="m">75</span><span class="p">,</span> <span class="m">19</span><span class="p">,</span> <span class="m">88</span><span class="p">)</span>
+<span class="kp">mean</span><span class="p">(</span><span class="kp">diff</span><span class="p">(</span><span class="kp">sort</span><span class="p">(</span>x<span class="p">)))</span>
+</pre>
+
+
+<p>With nested functions the order of operations happens from the middle-out.
+With pipes we can rewrite it as </p>
+<pre class="code literal-block"><span></span>x <span class="o">%&gt;%</span> <span class="kp">sort</span><span class="p">()</span> <span class="o">%&gt;%</span> <span class="kp">diff</span><span class="p">()</span> <span class="o">%&gt;%</span> <span class="kp">mean</span><span class="p">()</span>
+</pre>
+
+
+<p>With this the functions in the code are written the same order as the operations, which makes the steps easier to follow: First sort the vector, then take the difference, then take the mean.</p>
+</div>
+    </div>
+    </article>
+</div>
+
+
+
+
+
+
+
+        </div>
+        <!--End of body content-->
+
+        <footer id="footer">
+            
+Contents © 2016  <a href="mailto:jrnold@uw.edu">Jeffrey B. Arnold</a>  
+<a rel="license" href="https://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://licensebuttons.net/l/by/4.0/80x15.png"></a><br><br>
+Powered by <a href="https://getnikola.com" rel="nofollow">Nikola</a>;
+Source on <a href="https://github.com/UW-POLS501/pols_501_wi16/">github</a>
+
+            
+        </footer>
+</div>
+</div>
+
+
+            <script src="../assets/js/all-nocdn.js"></script><script>$('a.image-reference:not(.islink) img:not(.islink)').parent().colorbox({rel:"gal",maxWidth:"100%",maxHeight:"100%",scalePhotos:true});</script><!-- fancy dates --><script>
+    moment.locale("en");
+    fancydates(0, "YYYY-MM-DD HH:mm");
+    </script><!-- end fancy dates --><script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTM"></script>
+</body>
+</html>

@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="author" content="Jeffrey Arnold" />
+
+<meta name="date" content="2016-02-14" />
+
+<title>Proportion Tests</title>
+
+<script src="libs/jquery-1.11.0/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap-3.3.1/css/cerulean.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.1/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.1/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.1/shim/respond.min.js"></script>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<link rel="stylesheet"
+      href="libs/highlight/textmate.css"
+      type="text/css" />
+<script src="libs/highlight/highlight.js"></script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img { 
+  max-width:100%; 
+  height: auto; 
+}
+</style>
+<div class="container-fluid main-container">
+
+<p>
+<strong>POL S/CS&amp;SS 501, University of Washington, Winter 2016</strong>
+</p>
+
+$$
+\DeclareMathOperator{\mean}{mean}
+\DeclareMathOperator{\var}{var}
+\DeclareMathOperator{\E}{E}
+\DeclareMathOperator{\MSE}{MSE}
+\DeclareMathOperator{\Bias}{Bias}
+\DeclareMathOperator{\SE}{se}
+\DeclareMathOperator{\SD}{sd}
+\DeclareMathOperator{\argmin}{argmin}
+\DeclareMathOperator{\argmax}{argmax}
+$$
+
+<div id="header">
+<h1 class="title">Proportion Tests</h1>
+<h4 class="author"><em>Jeffrey Arnold</em></h4>
+<h4 class="date"><em>February 14, 2016</em></h4>
+</div>
+
+<div id="TOC">
+<ul>
+<li><a href="#proportion-test">Proportion Test</a></li>
+<li><a href="#difference-in-proportion-tests">Difference in Proportion Tests</a></li>
+<li><a href="#notes-on-the-binomial-distribution-and-the-normal-approximation">Notes on the Binomial Distribution and the Normal Approximation</a></li>
+</ul>
+</div>
+
+<pre class="r"><code>library(&quot;dplyr&quot;)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;dplyr&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:stats&#39;:
+## 
+##     filter, lag</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     intersect, setdiff, setequal, union</code></pre>
+<pre class="r"><code>library(&quot;ggplot2&quot;)
+library(&quot;tidyr&quot;)</code></pre>
+<div id="proportion-test" class="section level1">
+<h1>Proportion Test</h1>
+<p>TODO</p>
+</div>
+<div id="difference-in-proportion-tests" class="section level1">
+<h1>Difference in Proportion Tests</h1>
+<p>TODO</p>
+</div>
+<div id="notes-on-the-binomial-distribution-and-the-normal-approximation" class="section level1">
+<h1>Notes on the Binomial Distribution and the Normal Approximation</h1>
+<p>As <span class="math inline">\(n\)</span> increases the Binomial distribution <span class="math inline">\(B(n, p)\)</span> approaches the normal distribution <span class="math inline">\(N(np, \sqrt{np(1 - p)})\)</span>.<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a></p>
+<pre class="r"><code>gen_binomial &lt;- function(size, prob, x) {
+  data_frame(x = x,
+             binomial = dbinom(x, size = size, prob = prob),
+             size = size,
+             prob = prob)
+}
+
+gen_normal_approx &lt;- function(size, prob) {
+  mu &lt;- size * prob
+  sigma &lt;- sqrt(size * prob * (1 - prob))
+  x &lt;- seq(mu - 4 * sigma, mu + 4 * sigma, length.out = 200)
+  data_frame(x = x,
+             normal = dnorm(x, mean = mu, sd = sigma),
+             normal_correct = dnorm(x + 0.5, mean = mu, sd = sigma),
+             size = size,
+             prob = prob)
+}
+
+params &lt;- data_frame(prob = c(0.01, 0.02, 0.05, 0.10, 0.25, 0.5),
+                     size = 100)
+
+normal_approx &lt;- params %&gt;%
+  rowwise() %&gt;%
+  do(gen_normal_approx(.$size, .$prob))
+
+binomial_values &lt;- params %&gt;%
+  rowwise() %&gt;%
+  do(gen_binomial(.$size, .$prob, 0:70))
+
+
+ggplot() +
+    geom_bar(data = binomial_values,
+             mapping = aes(x = x, y = binomial), stat = &quot;identity&quot;,
+             fill = &quot;gray&quot;, color = &quot;gray&quot;) +
+    geom_line(data = normal_approx,
+              mapping = aes(x = x, y = normal), color = &quot;black&quot;) +
+    geom_vline(xintercept = 0) +
+    facet_grid(prob ~ ., scales = &quot;free&quot;) +
+    scale_y_continuous(&quot;density&quot;) +
+    scale_x_continuous(&quot;x&quot;) + 
+    theme_minimal()</code></pre>
+<p><img src="Proportion_Tests_files/figure-html/unnamed-chunk-3-1.png" title="" alt="" width="672" /></p>
+<p>There are several rules of thumb for when the normal distribution is an adequate approximation for the binomial distribution:</p>
+<ul>
+<li><span class="math inline">\(n p\)</span> and <span class="math inline">\(n (1 - p)\)</span> greater than 5 or 10. The R function <code>prop.test</code> uses 5. <em>OpenIntro</em> suggests 10.</li>
+<li>Three standard deviations of the normal distribution are within the range of values of the binomial, <span class="math inline">\(\mu \pm 3 \sigma = np \pm \sqrt(n p (1 - p)) \in [0, n]\)</span>.</li>
+</ul>
+<p>There are two alternatives to use</p>
+<ul>
+<li>The Exact Binomial Test (Clopper-Person Confidence Interval). The sampling distribution of the sum of <span class="math inline">\(n\)</span> independent Bernoulli random variables is known: it is the Binomial distribution. Thus, instead of using the Normal approximation for the proportion, we can equivalently use the exact binomial test. However, there are a few downsides to it. First, its confidence interval is <em>too large</em>, since it guarantees that the confidence level is <em>at least</em> the confidence level given, but is not the shortest length confidence interval. Second, does not easily generalize to a difference in proportions.</li>
+<li>The defaults for <code>prop.test</code> do not use the version of the proportion test described in <em>OpenIntro</em>. They use a continuity correction, which adds 0.5 (with a few other adjustments), and helps make the continuous Normal distribution a better approximation of the discrete Binomial distribution.</li>
+</ul>
+<p>Note: there are many ways to construct confidence intervals for proportions, e.g. see the Wikipedia page on <a href="https://en.wikipedia.org/wiki/Binomial_proportion_confidence_interval">Binomial proportion confidence interval</a>. The <a href="https://cran.r-project.org/web/packages/binom/index.html">binom</a> in R includes many of them. However, in most practical applications this will not be a concern. The meta point of this is that statistical tests tend to work well with large samples, and not as well with small samples, so be careful making inferences from small samples.</p>
+<pre class="r"><code>sample_ci &lt;- function(n, prob, conf.level = 0.95) {
+  # Draw number of successes from a &quot;binomial&quot; distribution
+  x &lt;- rbinom(1, size = n, prob = prob)
+  # Confidence level with prop
+  prop_test &lt;- prop.test(x, n, conf.level = conf.level, correct = FALSE)
+  # With continuity correction
+  prop_test_correct &lt;- prop.test(x, n, conf.level = conf.level)
+  # Binomial test
+  binom_test &lt;- binom.test(x, n, conf.level = conf.level)
+  #
+  ret &lt;- data_frame(prop_test = between(prob, prop_test$conf.int[1],
+                                        prop_test$conf.int[2]),
+                    prop_test_correct =
+                      between(prob, prop_test_correct$conf.int[1],
+                              prop_test_correct$conf.int[2]),
+                    binom_test = between(prob,
+                                         binom_test$conf.int[1],
+                                         binom_test$conf.int[2]))
+  return(ret)
+}</code></pre>
+<p>This function will calculate the coverage for a given sample size (<code>n</code>), proportion (<code>prob</code>), confidence level (<code>conf.level</code>). It does so by drawing <code>iter</code> samples and calculating the proportion of samples with confidence intervals containing the population proportion by summarizing the results of <code>sample_ci</code>,</p>
+<pre class="r"><code>ci_coverage &lt;- function(n, prob, conf.level = 0.95, iter = 2048) {
+  results &lt;- list()
+  for (i in seq_len(iter)) {
+    results[[i]] &lt;- sample_ci(n, prob, conf.level = conf.level)
+  }
+  bind_rows(results) %&gt;%
+    summarize(prop_test = mean(prop_test),
+              prop_test_correct = mean(prop_test_correct),
+              binom_test = mean(binom_test))
+}</code></pre>
+<p>Now to compare coverage for multiple sample sizes and proportions, we need to call it for different combinations of probabilities, samples sizes, and confidence levels. The following code uses <code>expand.grid</code> to create all combinations of probabilities, sample sizes, and confidence levels. Then <code>group_by</code> and <code>do</code> are used to run <code>ci_coverage</code> for all combinations. This may take a few minutes to run. Also, you will receive many warning messages from <code>prop.test</code> because the proportions tests are not appropriate for small sample sizes.</p>
+<pre class="r"><code>coverage &lt;- 
+  expand.grid(prob = c(0.01, 0.1, 0.25, 0.5),
+              size = c(2, 4, 8, 16, 32, 64, 128, 256, 512),
+              conf.level = c(0.9, 0.95, 0.99)) %&gt;%
+  group_by(prob, size, conf.level) %&gt;%
+  do(ci_coverage(.$size, .$prob, .$conf.level)) %&gt;%
+  gather(ci_type, coverage, matches(&quot;_test&quot;))</code></pre>
+<pre class="r"><code>ggplot(mutate(coverage, CI = as.character(100 * conf.level)),
+       aes(x = log2(size), y = coverage, color = ci_type)) +
+  geom_line() + 
+  geom_point() +
+  geom_hline(data = data_frame(conf.level = unique(coverage$conf.level),
+                               CI = as.character(100 * conf.level)),
+             mapping = aes(yintercept = conf.level)) +
+  facet_grid(CI ~ prob, scales = &quot;free_y&quot;)</code></pre>
+<p><img src="Proportion_Tests_files/figure-html/unnamed-chunk-7-1.png" title="" alt="" width="672" /></p>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>In fact, the Normal distribution was first derived as a continuous approximation to the Binomial distribution.<a href="#fnref1">↩</a></p></li>
+</ol>
+</div>
+
+<hr>
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://licensebuttons.net/l/by-nc-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
+R code is licensed under a <a href="https://www.r-project.org/Licenses/BSD_2_clause">BSD 2-clause</a> license.
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

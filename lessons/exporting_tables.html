@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="author" content="Andreu Casas" />
+
+
+<title>Exporting tables from R</title>
+
+<script src="libs/jquery-1.11.0/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap-3.3.1/css/cerulean.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.1/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.1/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.1/shim/respond.min.js"></script>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<link rel="stylesheet"
+      href="libs/highlight/textmate.css"
+      type="text/css" />
+<script src="libs/highlight/highlight.js"></script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img { 
+  max-width:100%; 
+  height: auto; 
+}
+</style>
+<div class="container-fluid main-container">
+
+<p>
+<strong>POL S/CS&amp;SS 501, University of Washington, Winter 2016</strong>
+</p>
+
+$$
+\DeclareMathOperator{\mean}{mean}
+\DeclareMathOperator{\var}{var}
+\DeclareMathOperator{\E}{E}
+\DeclareMathOperator{\MSE}{MSE}
+\DeclareMathOperator{\Bias}{Bias}
+\DeclareMathOperator{\SE}{se}
+\DeclareMathOperator{\SD}{sd}
+\DeclareMathOperator{\argmin}{argmin}
+\DeclareMathOperator{\argmax}{argmax}
+$$
+
+<div id="header">
+<h1 class="title">Exporting tables from R</h1>
+<h4 class="author"><em>Andreu Casas</em></h4>
+<h4 class="date"><em>March 4, 2016</em></h4>
+</div>
+
+
+<p>We often want to add in our papers tables that we have produced using R. That is an easy task if we are using R-Markdown, because we can simply add a chunk of code with that table to the Markdown report. However, how can we export an R table so we can add it to a Word document? In this lesson we’ll see how to do so using three different packages:</p>
+<ul>
+<li><code>htmlTables()</code></li>
+<li><code>xtable()</code></li>
+<li><code>stargazer()</code></li>
+</ul>
+<div id="htmltable" class="section level3">
+<h3><code>htmlTable()</code></h3>
+<p>We need an exmaple table we can use to practice. Let’s fit a linear model using the dataset <code>iris</code> and then create a table with the output of the regression. We’ll use the <code>tidy()</code> function of the <code>broom()</code> package to extract the coefficients table from the regression output.</p>
+<pre class="r"><code>library(broom)
+reg &lt;- lm(Sepal.Length ~ Sepal.Width, data = iris )
+reg_table &lt;- tidy(reg)
+reg_table</code></pre>
+<pre><code>##          term   estimate std.error statistic      p.value
+## 1 (Intercept)  6.5262226 0.4788963 13.627631 6.469702e-28
+## 2 Sepal.Width -0.2233611 0.1550809 -1.440287 1.518983e-01</code></pre>
+<p>The values in the table have numerous decimals. Let’s round them so we can fit them in a table. Notice that we can’t round the first column because it’s a character variable with the variable names.</p>
+<pre class="r"><code>reg_table[-1] &lt;- round(reg_table[-1],2)
+reg_table</code></pre>
+<pre><code>##          term estimate std.error statistic p.value
+## 1 (Intercept)     6.53      0.48     13.63    0.00
+## 2 Sepal.Width    -0.22      0.16     -1.44    0.15</code></pre>
+<p>We can now use the <code>htmlTable()</code> function from the <code>htmlTable</code> package to print the table in the R-Studio viewer. Then we will be able to copy it and paste it in a Word document. In this case I’m selecting not to include the row names in the table (<code>rnames = FALSE</code>).</p>
+<pre class="r"><code>htmlTable(reg_table, rnames = FALSE)</code></pre>
+<hr />
+</div>
+<div id="xtable" class="section level3">
+<h3><code>xtable()</code></h3>
+</div>
+
+<hr>
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://licensebuttons.net/l/by-nc-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
+R code is licensed under a <a href="https://www.r-project.org/Licenses/BSD_2_clause">BSD 2-clause</a> license.
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

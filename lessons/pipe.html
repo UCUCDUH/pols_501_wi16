@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="author" content="Jeffrey Arnold" />
+
+<meta name="date" content="2016-01-21" />
+
+<title>The Pipe Operator</title>
+
+<script src="libs/jquery-1.11.0/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap-3.3.1/css/cerulean.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.1/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.1/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.1/shim/respond.min.js"></script>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<link rel="stylesheet"
+      href="libs/highlight/textmate.css"
+      type="text/css" />
+<script src="libs/highlight/highlight.js"></script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img { 
+  max-width:100%; 
+  height: auto; 
+}
+</style>
+<div class="container-fluid main-container">
+
+<p>
+<strong>POL S/CS&amp;SS 501, University of Washington, Winter 2016</strong>
+</p>
+
+$$
+\DeclareMathOperator{\mean}{mean}
+\DeclareMathOperator{\var}{var}
+\DeclareMathOperator{\E}{E}
+\DeclareMathOperator{\MSE}{MSE}
+\DeclareMathOperator{\Bias}{Bias}
+\DeclareMathOperator{\SE}{se}
+\DeclareMathOperator{\SD}{sd}
+\DeclareMathOperator{\argmin}{argmin}
+\DeclareMathOperator{\argmax}{argmax}
+$$
+
+<div id="header">
+<h1 class="title">The Pipe Operator</h1>
+<h4 class="author"><em>Jeffrey Arnold</em></h4>
+<h4 class="date"><em>January 21, 2016</em></h4>
+</div>
+
+
+<pre class="r"><code>library(&quot;dplyr&quot;)
+library(&quot;magrittr&quot;)</code></pre>
+<p>The symbol <code>%&gt;%</code> is known as the pipe operator. It is from the <strong>magrittr</strong> package, but most widely used in the <strong>dplyr</strong> package.</p>
+<p>The verbal description of what the pipe operator does is it takes the result of the previous expression and uses it as the first argument in the next function.</p>
+<p>For example, suppose we wanted to take a sample of 100 from the normal distribution and find the maximum value in the sample.</p>
+<pre class="r"><code>n &lt;- 100
+max(rnorm(n))</code></pre>
+<p>Using the <code>%&gt;%</code> we can write this as,</p>
+<pre class="r"><code>rnorm(n) %&gt;% max()</code></pre>
+<p>or, even,</p>
+<pre class="r"><code>n %&gt;% rnorm() %&gt;% max()</code></pre>
+<p>The pipe operator is particularly useful with <strong>dplyr</strong>.</p>
+<p>Let’s use the <code>gampinder</code> data, and find the average life expectancy of the median country in each continent in 2007 using <strong>dplyr</strong>,</p>
+<pre class="r"><code>library(&quot;gapminder&quot;)
+data(&quot;gapminder&quot;)
+summarise(group_by(filter(gapminder, year == 2007),
+                   continent),
+          lifeExp = median(lifeExp))</code></pre>
+<p>We could also write it while storing the results,</p>
+<pre class="r"><code>tmpdata &lt;- filter(gapminder, year == 2007)
+tmpdata &lt;- group_by(tmpdata, continent)
+tmpdata &lt;- summarise(tmpdata, lifeExp = median(lifeExp))
+tmpdata</code></pre>
+<p>Now compare those to how we would write it using <code>%&gt;%</code>,</p>
+<pre class="r"><code>gapminder %&gt;%
+  filter(year == 2007) %&gt;%
+  group_by(continent) %&gt;%
+  summarise(lifeExp = median(lifeExp))</code></pre>
+<div id="challenge-1" class="panel panel-primary">
+<div class="panel-heading">
+<h3 class="panel-title">
+Challenge
+</h3>
+</div>
+<div class="panel-body">
+<p>Rewrite this code to use <code>%&gt;%</code>:</p>
+<pre class="r"><code>summarize(group_by(gapminder, continent),
+          n_obs = n(), n_countries = n_distinct(country))
+
+
+tmp &lt;- group_by(gapminder, continent, country)
+tmp &lt;- select(tmp, country, year, continent, lifeExp)
+tmp &lt;- mutate(tmp, le_delta = lifeExp - lag(lifeExp))
+tmp &lt;- summarize(tmp, worst_le_delta = min(le_delta, na.rm = TRUE))
+tmp &lt;- filter(tmp, min_rank(worst_le_delta) &lt; 2)
+tmp &lt;- arrange(tmp, worst_le_delta)
+tmp</code></pre>
+</div>
+</div>
+<div class="panel panel-info">
+<div class="panel-heading">
+<h3 class="panel-title">
+<a data-toggle="collapse" href="#solution-1">Solution</a>
+</h3>
+</div>
+<div id="solution-1" class="panel-collapse collapse">
+<pre class="r"><code>gapminder %&gt;%
+  group_by(continent) %&gt;%
+  summarize(n_obs = n(), n_countries = n_distinct(country))
+
+gapminder %&gt;%
+  group_by(continent, country) %&gt;%
+  select(country, year, continent, lifeExp) %&gt;%
+  mutate(le_delta = lifeExp - lag(lifeExp)) %&gt;%
+  summarize(worst_le_delta = min(le_delta, na.rm = TRUE)) %&gt;%
+  filter(min_rank(worst_le_delta) &lt; 2) %&gt;%
+  arrange(worst_le_delta)</code></pre>
+</div>
+</div>
+
+<hr>
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://licensebuttons.net/l/by-nc-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
+R code is licensed under a <a href="https://www.r-project.org/Licenses/BSD_2_clause">BSD 2-clause</a> license.
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

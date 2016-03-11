@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="author" content="Jeffrey Arnold" />
+
+<meta name="date" content="2016-02-10" />
+
+<title>Numerical Inference in R</title>
+
+<script src="libs/jquery-1.11.0/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap-3.3.1/css/cerulean.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.1/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.1/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.1/shim/respond.min.js"></script>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<link rel="stylesheet"
+      href="libs/highlight/textmate.css"
+      type="text/css" />
+<script src="libs/highlight/highlight.js"></script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img { 
+  max-width:100%; 
+  height: auto; 
+}
+</style>
+<div class="container-fluid main-container">
+
+<p>
+<strong>POL S/CS&amp;SS 501, University of Washington, Winter 2016</strong>
+</p>
+
+$$
+\DeclareMathOperator{\mean}{mean}
+\DeclareMathOperator{\var}{var}
+\DeclareMathOperator{\E}{E}
+\DeclareMathOperator{\MSE}{MSE}
+\DeclareMathOperator{\Bias}{Bias}
+\DeclareMathOperator{\SE}{se}
+\DeclareMathOperator{\SD}{sd}
+\DeclareMathOperator{\argmin}{argmin}
+\DeclareMathOperator{\argmax}{argmax}
+$$
+
+<div id="header">
+<h1 class="title">Numerical Inference in R</h1>
+<h4 class="author"><em>Jeffrey Arnold</em></h4>
+<h4 class="date"><em>February 10, 2016</em></h4>
+</div>
+
+<div id="TOC">
+<ul>
+<li><a href="#t-test">t-test</a></li>
+<li><a href="#anova">ANOVA</a></li>
+<li><a href="#pairwise-t-tests">Pairwise t-tests</a></li>
+</ul>
+</div>
+
+<p>This lesson introduces the R commands for basic numerical inference.</p>
+<ul>
+<li><code>t.test()</code>: One-sample mean, two-sample difference in means, and paired difference in means confidence intervals and hypothesis tests</li>
+<li><code>anova()</code>: ANOVA</li>
+<li><code>pairwise.t.test()</code>: Pairwise t-tests adjusting p-value for multiple comparisons</li>
+</ul>
+<p>This lesson uses the following packages, although all the functions for inference (<code>t.test()</code>, <code>anova()</code>, and <code>pairwise.t.test()</code>) are included with R.</p>
+<pre class="r"><code>library(&quot;car&quot;)
+library(&quot;broom&quot;)
+library(&quot;dplyr&quot;)
+library(&quot;ggplot2&quot;)
+library(&quot;tidyr&quot;)</code></pre>
+<p>This example will use Duncan’s occupational prestige data from the <strong>car</strong> package, which has the prestige and other characteristics of 45 U.S. occupations in 1950.</p>
+<pre class="r"><code>data(&quot;Duncan&quot;)
+glimpse(Duncan)</code></pre>
+<pre><code>## Observations: 45
+## Variables: 4
+## $ type      (fctr) prof, prof, prof, prof, prof, prof, prof, prof, wc,...
+## $ income    (int) 62, 72, 75, 55, 64, 21, 64, 80, 67, 72, 42, 76, 76, ...
+## $ education (int) 86, 76, 92, 90, 86, 84, 93, 100, 87, 86, 74, 98, 97,...
+## $ prestige  (int) 82, 83, 90, 76, 90, 87, 93, 90, 52, 88, 57, 89, 97, ...</code></pre>
+<p>This lesson will also use Student’s sleep data. This is a dataset on the effect of two different sleep medications on 10 patients that was used in Student’s 1908 paper.</p>
+<pre class="r"><code>data(&quot;sleep&quot;)
+glimpse(sleep)</code></pre>
+<pre><code>## Observations: 20
+## Variables: 3
+## $ extra (dbl) 0.7, -1.6, -0.2, -1.2, -0.1, 3.4, 3.7, 0.8, 0.0, 2.0, 1....
+## $ group (fctr) 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2
+## $ ID    (fctr) 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 2, 3, 4, 5, 6, 7, 8, ...</code></pre>
+<p>The variable <code>group</code> refers to the medication, and not a treatment/control group. In the experiment, 10 patients each took both drugs, and the increase in hours of sleep (relative to their baseline) was measured in <code>extra</code>.</p>
+<div id="t-test" class="section level1">
+<h1>t-test</h1>
+<p>The R function <code>t.test()</code> calculates both hypothesis tests and confidence intervals for one- and two-sample t-tests, and paired t-tests.</p>
+<p>In the Duncan data, the <code>prestige</code> variable is the percent of raters which rate the occupation as “excellent” or “good”. The average prestige score is</p>
+<pre class="r"><code>summary(Duncan$prestige)</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##    3.00   16.00   41.00   47.69   81.00   97.00</code></pre>
+<p>Now analyze the mean of <code>prestige</code> using <code>t.test()</code>,</p>
+<pre class="r"><code>t.test(Duncan$prestige)</code></pre>
+<pre><code>## 
+##  One Sample t-test
+## 
+## data:  Duncan$prestige
+## t = 10.152, df = 44, p-value = 4.181e-13
+## alternative hypothesis: true mean is not equal to 0
+## 95 percent confidence interval:
+##  38.22214 57.15564
+## sample estimates:
+## mean of x 
+##  47.68889</code></pre>
+<p>By default <code>t.test()</code> runs a two-sided hypothesis test where <span class="math inline">\(H_0: \mu = 0\)</span> and <span class="math inline">\(H_a: \mu \neq 0\)</span>, and calculates a 95% confidence interval.</p>
+<p>To calculate a different hypothesis test, use the options <code>mu</code> (to change the null hypothesis parameter value), and <code>alternative</code> to choose a one-sided (“less”, “greater”) instead of a two-sided test. This runs a two-sided test where <span class="math inline">\(H_0: \mu = 50\)</span>,</p>
+<pre class="r"><code>t.test(Duncan$prestige, mu = 50)</code></pre>
+<pre><code>## 
+##  One Sample t-test
+## 
+## data:  Duncan$prestige
+## t = -0.49201, df = 44, p-value = 0.6252
+## alternative hypothesis: true mean is not equal to 50
+## 95 percent confidence interval:
+##  38.22214 57.15564
+## sample estimates:
+## mean of x 
+##  47.68889</code></pre>
+<p>This runs a one-sided test where <span class="math inline">\(H_0: \mu = 50\)</span> and <span class="math inline">\(H_a: \mu &lt; 50\)</span>,</p>
+<pre class="r"><code>t.test(Duncan$prestige, mu = 50, alternative = &quot;less&quot;)</code></pre>
+<pre><code>## 
+##  One Sample t-test
+## 
+## data:  Duncan$prestige
+## t = -0.49201, df = 44, p-value = 0.3126
+## alternative hypothesis: true mean is less than 50
+## 95 percent confidence interval:
+##     -Inf 55.5814
+## sample estimates:
+## mean of x 
+##  47.68889</code></pre>
+<p>This runs a one-sided test where <span class="math inline">\(H_0: \mu = 45\)</span> and <span class="math inline">\(H_a: \mu &gt; 45\)</span>,</p>
+<pre class="r"><code>t.test(Duncan$prestige, mu = 45, alternative = &quot;greater&quot;)</code></pre>
+<pre><code>## 
+##  One Sample t-test
+## 
+## data:  Duncan$prestige
+## t = 0.57243, df = 44, p-value = 0.285
+## alternative hypothesis: true mean is greater than 45
+## 95 percent confidence interval:
+##  39.79637      Inf
+## sample estimates:
+## mean of x 
+##  47.68889</code></pre>
+<p>By default <code>t.test()</code> calculates a 95% confidence interval. To change the confidence level, use the <code>conf.level</code> argument. This calculates a 99% confidence interval,</p>
+<pre class="r"><code>t.test(Duncan$prestige, conf.level = 0.99)</code></pre>
+<pre><code>## 
+##  One Sample t-test
+## 
+## data:  Duncan$prestige
+## t = 10.152, df = 44, p-value = 4.181e-13
+## alternative hypothesis: true mean is not equal to 0
+## 99 percent confidence interval:
+##  35.04250 60.33528
+## sample estimates:
+## mean of x 
+##  47.68889</code></pre>
+<p>and this calculates a 90% confidence interval,</p>
+<pre class="r"><code>t.test(Duncan$prestige, conf.level = 0.90)</code></pre>
+<pre><code>## 
+##  One Sample t-test
+## 
+## data:  Duncan$prestige
+## t = 10.152, df = 44, p-value = 4.181e-13
+## alternative hypothesis: true mean is not equal to 0
+## 90 percent confidence interval:
+##  39.79637 55.58140
+## sample estimates:
+## mean of x 
+##  47.68889</code></pre>
+<p>Instead of printing the results of <code>t.test()</code> to a console, they can be saved to a variable and used for later computations.</p>
+<pre class="r"><code>prestige_ttest &lt;- t.test(Duncan$prestige, mu = 50)</code></pre>
+<p>This object can be printed to the console,</p>
+<pre class="r"><code>prestige_ttest</code></pre>
+<pre><code>## 
+##  One Sample t-test
+## 
+## data:  Duncan$prestige
+## t = -0.49201, df = 44, p-value = 0.6252
+## alternative hypothesis: true mean is not equal to 50
+## 95 percent confidence interval:
+##  38.22214 57.15564
+## sample estimates:
+## mean of x 
+##  47.68889</code></pre>
+<p>However, it can also be used in computations. The p-value can be extracted using <code>$</code>,</p>
+<pre class="r"><code>prestige_ttest$p.value</code></pre>
+<pre><code>## [1] 0.625158</code></pre>
+<p>To extract the confidence interval,</p>
+<pre class="r"><code>prestige_ttest$conf.int</code></pre>
+<pre><code>## [1] 38.22214 57.15564
+## attr(,&quot;conf.level&quot;)
+## [1] 0.95</code></pre>
+<p>and the test statistic,</p>
+<pre class="r"><code>prestige_ttest$statistic</code></pre>
+<pre><code>##          t 
+## -0.4920102</code></pre>
+<p>The full set of elements that can be extracted from the results of <code>t.test()</code> can be listed with <code>names()</code>,</p>
+<pre class="r"><code>names(prestige_ttest)</code></pre>
+<pre><code>## [1] &quot;statistic&quot;   &quot;parameter&quot;   &quot;p.value&quot;     &quot;conf.int&quot;    &quot;estimate&quot;   
+## [6] &quot;null.value&quot;  &quot;alternative&quot; &quot;method&quot;      &quot;data.name&quot;</code></pre>
+<p>See the documentation of <code>t.test()</code> for what they do.</p>
+<p>The <strong>broom</strong> package provides another interface to the results of <code>t.test()</code> (and many other statistics models). The function <code>tidy()</code> from this package will return a data frame from the results of <code>t.test()</code>,</p>
+<pre class="r"><code>tidy(prestige_ttest)</code></pre>
+<pre><code>##   estimate  statistic  p.value parameter conf.low conf.high
+## 1 47.68889 -0.4920102 0.625158        44 38.22214  57.15564</code></pre>
+<p>While the data frame returned by <code>tidy()</code> will not be as detailed as the original object generated by a statistical model, as a data frame, it can be much more convenient to work with in some contexts (see the example below).</p>
+<p>In addition to one-sample t-tests, <code>t.test()</code> also can estimate two-sample (difference in means) tests and confidence intervals. To compare the mean prestige of blue-collar (“bc”) and professional (“prof”) occupations,</p>
+<pre class="r"><code>t.test(filter(Duncan, type == &quot;bc&quot;)$prestige,
+       filter(Duncan, type == &quot;prof&quot;)$prestige)</code></pre>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  filter(Duncan, type == &quot;bc&quot;)$prestige and filter(Duncan, type == &quot;prof&quot;)$prestige
+## t = -11.189, df = 36.72, p-value = 2.18e-13
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -68.13086 -47.23422
+## sample estimates:
+## mean of x mean of y 
+##  22.76190  80.44444</code></pre>
+<p>Now <code>t.test()</code> has two arguments; the first two vectors are the values in the two samples. You can also use a formula notation with <code>t.test</code>. This does the same thing as the previous code,</p>
+<pre class="r"><code>t.test(prestige ~ type, data = filter(Duncan, type %in% c(&quot;prof&quot;, &quot;bc&quot;)))</code></pre>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  prestige by type
+## t = -11.189, df = 36.72, p-value = 2.18e-13
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -68.13086 -47.23422
+## sample estimates:
+##   mean in group bc mean in group prof 
+##           22.76190           80.44444</code></pre>
+<p>In the expression <code>prestige ~ type</code>, the left-hand side indicates the numeric vector (<code>prestige</code>) and the right-hand side variable indicates the variable containing the categories (<code>type</code>). The argument <code>data</code> indicates where to look for the <code>prestige</code> and <code>type</code> variables. In this test, the Duncan data is filtered to only include the observations with categories “prof” and “bc” since those are the only observations used in calculating the difference in means. If you try to run <code>t.test()</code> with a grouping factor with more than two levels, it will throw an error,</p>
+<pre class="r"><code>t.test(prestige ~ type, data = Duncan)</code></pre>
+<pre><code>## Error in t.test.formula(prestige ~ type, data = Duncan): grouping factor must have exactly 2 levels</code></pre>
+<p>Now, suppose we wanted to use <code>t.test()</code> to find a 95% confidence interval of the mean of occupational prestige for each category of occupational type (blue-collar, white-collar, and professional). One way to do this would be to run each test separately,</p>
+<pre class="r"><code>t.test(filter(Duncan, type == &quot;bc&quot;)$prestige)</code></pre>
+<pre><code>## 
+##  One Sample t-test
+## 
+## data:  filter(Duncan, type == &quot;bc&quot;)$prestige
+## t = 5.7772, df = 20, p-value = 1.185e-05
+## alternative hypothesis: true mean is not equal to 0
+## 95 percent confidence interval:
+##  14.54327 30.98054
+## sample estimates:
+## mean of x 
+##   22.7619</code></pre>
+<pre class="r"><code>t.test(filter(Duncan, type == &quot;wc&quot;)$prestige)</code></pre>
+<pre><code>## 
+##  One Sample t-test
+## 
+## data:  filter(Duncan, type == &quot;wc&quot;)$prestige
+## t = 7.6162, df = 5, p-value = 0.0006203
+## alternative hypothesis: true mean is not equal to 0
+## 95 percent confidence interval:
+##  24.29104 49.04230
+## sample estimates:
+## mean of x 
+##  36.66667</code></pre>
+<pre class="r"><code>t.test(filter(Duncan, type == &quot;prof&quot;)$prestige)</code></pre>
+<pre><code>## 
+##  One Sample t-test
+## 
+## data:  filter(Duncan, type == &quot;prof&quot;)$prestige
+## t = 24.196, df = 17, p-value = 1.304e-14
+## alternative hypothesis: true mean is not equal to 0
+## 95 percent confidence interval:
+##  73.42991 87.45898
+## sample estimates:
+## mean of x 
+##  80.44444</code></pre>
+<p>This code could be simplified by using a <code>for</code> loop,</p>
+<pre class="r"><code>types &lt;- c(&quot;bc&quot;, &quot;wc&quot;, &quot;prof&quot;)
+for (typ in types) {
+  print(t.test(filter(Duncan, type == typ)$prestige))
+}</code></pre>
+<pre><code>## 
+##  One Sample t-test
+## 
+## data:  filter(Duncan, type == typ)$prestige
+## t = 5.7772, df = 20, p-value = 1.185e-05
+## alternative hypothesis: true mean is not equal to 0
+## 95 percent confidence interval:
+##  14.54327 30.98054
+## sample estimates:
+## mean of x 
+##   22.7619 
+## 
+## 
+##  One Sample t-test
+## 
+## data:  filter(Duncan, type == typ)$prestige
+## t = 7.6162, df = 5, p-value = 0.0006203
+## alternative hypothesis: true mean is not equal to 0
+## 95 percent confidence interval:
+##  24.29104 49.04230
+## sample estimates:
+## mean of x 
+##  36.66667 
+## 
+## 
+##  One Sample t-test
+## 
+## data:  filter(Duncan, type == typ)$prestige
+## t = 24.196, df = 17, p-value = 1.304e-14
+## alternative hypothesis: true mean is not equal to 0
+## 95 percent confidence interval:
+##  73.42991 87.45898
+## sample estimates:
+## mean of x 
+##  80.44444</code></pre>
+<p>Note that in a <code>for</code> loop you need to explicitly specify <code>print()</code>. However, if we wanted to put the results of these tests in a table or plots, or otherwise use them in future computations, we still would have to do extra processing to extract values from each test and save them to other variables.</p>
+<p>Using <strong>dplyr</strong> and <strong>broom</strong> can simplify that task. The following code runs <code>t.test()</code> on each category of <code>type</code>, converts the results of the t-test to a data frame using <code>tidy</code>. This returns a data frame with a row for each category of <code>type</code>, and columns with results from the t-tests,</p>
+<pre class="r"><code>duncan_t_tests &lt;-
+  Duncan %&gt;%
+    group_by(type) %&gt;%
+    do(tidy(t.test(.$prestige)))
+duncan_t_tests</code></pre>
+<pre><code>## Source: local data frame [3 x 7]
+## Groups: type [3]
+## 
+##     type estimate statistic      p.value parameter conf.low conf.high
+##   (fctr)    (dbl)     (dbl)        (dbl)     (dbl)    (dbl)     (dbl)
+## 1     bc 22.76190  5.777179 1.184777e-05        20 14.54327  30.98054
+## 2   prof 80.44444 24.195881 1.304462e-14        17 73.42991  87.45898
+## 3     wc 36.66667  7.616151 6.202639e-04         5 24.29104  49.04230</code></pre>
+<p>This can be used to plot the confidence intervals,</p>
+<pre class="r"><code>ggplot(duncan_t_tests, aes(x = type,
+                           y = estimate,
+                           ymin = conf.low,
+                           ymax = conf.high)) +
+  geom_pointrange() +
+  coord_flip() +
+  xlab(&quot;Occupation Type&quot;) +
+  ylab(&quot;Occupation Prestige&quot;)</code></pre>
+<p><img src="numerical_inference_in_R_files/figure-html/unnamed-chunk-24-1.png" title="" alt="" width="672" /> or p-values</p>
+<pre class="r"><code>ggplot(duncan_t_tests, aes(x = type,
+                           y = p.value)) +
+  geom_point() +
+  coord_flip() +
+  ylab(&quot;p-value&quot;) +
+  xlab(&quot;Occupation Type&quot;)</code></pre>
+<p><img src="numerical_inference_in_R_files/figure-html/unnamed-chunk-25-1.png" title="" alt="" width="672" /></p>
+<p>Now, consider the sleep data. Since it has the extra hours of sleep for the same set of 10 patients for two drugs, this is paired data, and should be analyzed using a paired t-test. Although the data is paired, <code>t.test()</code> does not know this and will run a two-sample difference in means test by default,</p>
+<pre class="r"><code>t.test(extra ~ group, data = sleep)</code></pre>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  extra by group
+## t = -1.8608, df = 17.776, p-value = 0.07939
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -3.3654832  0.2054832
+## sample estimates:
+## mean in group 1 mean in group 2 
+##            0.75            2.33</code></pre>
+<p>The appropriate, paired t-test is,</p>
+<pre class="r"><code>t.test(extra ~ group, data = sleep, paired = TRUE)</code></pre>
+<pre><code>## 
+##  Paired t-test
+## 
+## data:  extra by group
+## t = -4.0621, df = 9, p-value = 0.002833
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -2.4598858 -0.7001142
+## sample estimates:
+## mean of the differences 
+##                   -1.58</code></pre>
+<p>This could also be done manually. Create a wide data frame in which <code>med1</code> and <code>med2</code> are columns with the extra hours of sleep for each drug, for each patient. Then create a column <code>diff</code> which is the difference in the extra hours of sleep for each drug.</p>
+<pre class="r"><code>sleep_wide &lt;-
+  sleep %&gt;%
+  mutate(group = paste(&quot;med&quot;, group, sep = &quot;&quot;)) %&gt;%
+  spread(group, extra) %&gt;%
+  mutate(diff = med1 - med2)
+glimpse(sleep_wide)</code></pre>
+<pre><code>## Observations: 10
+## Variables: 4
+## $ ID   (fctr) 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+## $ med1 (dbl) 0.7, -1.6, -0.2, -1.2, -0.1, 3.4, 3.7, 0.8, 0.0, 2.0
+## $ med2 (dbl) 1.9, 0.8, 1.1, 0.1, -0.1, 4.4, 5.5, 1.6, 4.6, 3.4
+## $ diff (dbl) -1.2, -2.4, -1.3, -1.3, 0.0, -1.0, -1.8, -0.8, -4.6, -1.4</code></pre>
+<p>Running a one-sample t-test on the difference in the extra hours of sleep for each patience gives the same results as using <code>paired = TRUE</code> on the original data,</p>
+<pre class="r"><code>t.test(sleep_wide$diff)</code></pre>
+<pre><code>## 
+##  One Sample t-test
+## 
+## data:  sleep_wide$diff
+## t = -4.0621, df = 9, p-value = 0.002833
+## alternative hypothesis: true mean is not equal to 0
+## 95 percent confidence interval:
+##  -2.4598858 -0.7001142
+## sample estimates:
+## mean of x 
+##     -1.58</code></pre>
+<p>TODO: Examples using data from OpenIntro Numeric Inference Lab.</p>
+</div>
+<div id="anova" class="section level1">
+<h1>ANOVA</h1>
+<p>One way to run a one-way ANOVA is to run a linear regression in R using <code>lm()</code> with a single categorical explanatory variable, and then apply <code>anova()</code> to the result.</p>
+<pre class="r"><code>duncan_type_anova &lt;- anova(lm(prestige ~ type, data = Duncan))
+duncan_type_anova</code></pre>
+<pre><code>## Analysis of Variance Table
+## 
+## Response: prestige
+##           Df Sum Sq Mean Sq F value    Pr(&gt;F)    
+## type       2  33090 16545.0  65.571 1.207e-13 ***
+## Residuals 42  10598   252.3                      
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>In <code>R</code>, the use of <code>~</code> is known as the formula notation. It can have slightly different meanings in different functions, but in <code>lm()</code>, the left-hand variable is the outcome variable, and the right-hand side variable(s) is (are) the explanatory variable(s).</p>
+</div>
+<div id="pairwise-t-tests" class="section level1">
+<h1>Pairwise t-tests</h1>
+<p>The function <code>pairwise.t.test</code> does what it says; it runs pairwise t-tests. The first argument is a numeric vector; the second argument is the vector with categories. The argument <code>p.adjust.method</code> allows the user to choose a method to adjust the p-values for multiple comparison.</p>
+<p>The Bonferroni correction adjusts the p-values so that the adjusted p-value is <span class="math inline">\(\bar{alpha} = \alpha / m\)</span>, where <span class="math inline">\(m\)</span> is the number of tests. It controls the Family-wise Error Rate (FWER). This is the probability that there is <em>at least one</em> Type I error,</p>
+<pre class="r"><code>pairwise.t.test(Duncan$prestige, Duncan$type, p.adjust.method = &quot;bonferroni&quot;)</code></pre>
+<pre><code>## 
+##  Pairwise comparisons using t tests with pooled SD 
+## 
+## data:  Duncan$prestige and Duncan$type 
+## 
+##      bc      prof   
+## prof 7.6e-14 -      
+## wc   0.2     2.0e-06
+## 
+## P value adjustment method: bonferroni</code></pre>
+<p>The “Holm” correction, like the Bonferroni correction, controls the FWER, but is more powerful than the Bonferroni correction.</p>
+<pre class="r"><code>pairwise.t.test(Duncan$prestige, Duncan$type, p.adjust.method = &quot;holm&quot;)</code></pre>
+<pre><code>## 
+##  Pairwise comparisons using t tests with pooled SD 
+## 
+## data:  Duncan$prestige and Duncan$type 
+## 
+##      bc      prof   
+## prof 7.6e-14 -      
+## wc   0.066   1.3e-06
+## 
+## P value adjustment method: holm</code></pre>
+<p>An alternative approach to correcting multiple comparisons is the False Discovery Rate (FDR). The False Discovery Rate is the expected rate of false positives among all positives.</p>
+<pre class="r"><code>pairwise.t.test(Duncan$prestige, Duncan$type, p.adjust.method = &quot;BH&quot;)</code></pre>
+<pre><code>## 
+##  Pairwise comparisons using t tests with pooled SD 
+## 
+## data:  Duncan$prestige and Duncan$type 
+## 
+##      bc      prof   
+## prof 7.6e-14 -      
+## wc   0.066   9.9e-07
+## 
+## P value adjustment method: BH</code></pre>
+<p>See <a href="http://egap.org/methods-guides/10-things-you-need-know-about-multiple-comparisons">EGAP</a> for more discussion of multiple testing adjustment.</p>
+<p>The <strong>broom</strong> package has some support for <code>pairwise.t.test</code>, and will put</p>
+<pre class="r"><code>pw_ttest_Duncan_type &lt;- pairwise.t.test(Duncan$prestige, Duncan$type)
+tidy(pw_ttest_Duncan_type)</code></pre>
+<pre><code>##   group1 group2      p.value
+## 1   prof     bc 7.629128e-14
+## 2     wc     bc 6.553738e-02
+## 4     wc   prof 1.321457e-06</code></pre>
+<p><strong>Note:</strong> Pairwise t-tests are different than paired t-tests. In a paired t-test there are two populations which are not independent, in which each observation in one sample can be matched to another observation in the other sample. An example of this would be a before-after study. Pairwise t-tests are used to compare each pair of <span class="math inline">\(K \geq 2\)</span> samples, for a total of <span class="math inline">\(K (K + 1) / 2\)</span> difference in means t-tests. Since there are multiple t-tests, the p-values of pairwise t-tests need to be corrected for multiple testing.</p>
+</div>
+
+<hr>
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://licensebuttons.net/l/by-nc-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
+R code is licensed under a <a href="https://www.r-project.org/Licenses/BSD_2_clause">BSD 2-clause</a> license.
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

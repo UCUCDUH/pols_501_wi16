@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="author" content="Andreu Casas" />
+
+
+<title>Interpreting linear regression outputs</title>
+
+<script src="libs/jquery-1.11.0/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap-3.3.1/css/cerulean.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.1/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.1/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.1/shim/respond.min.js"></script>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<link rel="stylesheet"
+      href="libs/highlight/textmate.css"
+      type="text/css" />
+<script src="libs/highlight/highlight.js"></script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img { 
+  max-width:100%; 
+  height: auto; 
+}
+</style>
+<div class="container-fluid main-container">
+
+<p>
+<strong>POL S/CS&amp;SS 501, University of Washington, Winter 2016</strong>
+</p>
+
+$$
+\DeclareMathOperator{\mean}{mean}
+\DeclareMathOperator{\var}{var}
+\DeclareMathOperator{\E}{E}
+\DeclareMathOperator{\MSE}{MSE}
+\DeclareMathOperator{\Bias}{Bias}
+\DeclareMathOperator{\SE}{se}
+\DeclareMathOperator{\SD}{sd}
+\DeclareMathOperator{\argmin}{argmin}
+\DeclareMathOperator{\argmax}{argmax}
+$$
+
+<div id="header">
+<h1 class="title">Interpreting linear regression outputs</h1>
+<h4 class="author"><em>Andreu Casas</em></h4>
+<h4 class="date"><em>March 4, 2016</em></h4>
+</div>
+
+
+<div id="objective" class="section level3">
+<h3>Objective</h3>
+<p>What do the coefficients of linear regressions mean? Or the standard errors and p-values? How can we use them to make predictions? How can we compare the coefficients for different covariates? How can we present linear regression results in papers?</p>
+</div>
+<div id="introduction" class="section level3">
+<h3>Introduction</h3>
+<p>In this lab we’ll use the <code>Prestige</code> dataset we already used in the previous lab. Since some of you were having some issues downloading the <code>car</code> package, we decided to include the dataset in the package for this course (<code>uwpols501</code>). Use the <code>install_github()</code> function from the <code>devtools</code> package to update the package. Load also the rest of the packages that we’ll use in this lab.</p>
+<pre class="r"><code>library(devtools)
+install_github(username = &quot;jrnold&quot;, repo = &quot;UW-POLS501/r-uwpols501&quot;)</code></pre>
+<pre class="r"><code>library(uwpols501)
+data(&quot;Prestige&quot;)
+library(broom)
+library(dplyr)
+library(coefplot)
+library(ggplot2)
+library(coefplot)</code></pre>
+</div>
+<div id="fitting-a-linear-regression" class="section level3">
+<h3>Fitting a linear regression</h3>
+<p>Let’s begin by fitting a linear model with <code>prestige</code> as dependent variable and <code>education</code>, <code>income</code>, and <code>women</code> as covariates; and pull the coefficients table from the regression output using the <code>tidy()</code> function of the <code>broom</code> package.</p>
+<pre class="r"><code>reg &lt;- lm(prestige ~ education + income + women, data = Prestige)
+reg_table &lt;- tidy(reg)
+reg_table</code></pre>
+<pre><code>##          term     estimate    std.error  statistic      p.value
+## 1 (Intercept) -6.794334203 3.2390886463 -2.0976067 3.851306e-02
+## 2   education  4.186637275 0.3887012613 10.7708353 2.590069e-18
+## 3      income  0.001313560 0.0002777812  4.7287593 7.579372e-06
+## 4       women -0.008905157 0.0304070576 -0.2928648 7.702447e-01</code></pre>
+<div id="challenge-1" class="panel panel-primary">
+<div class="panel-heading">
+<h3 class="panel-title">
+Challenge
+</h3>
+</div>
+<div class="panel-body">
+<p>What’s the meaning of all the variables in the regression table?</p>
+</div>
+</div>
+<div class="panel panel-info">
+<div class="panel-heading">
+<h3 class="panel-title">
+<a data-toggle="collapse" href="#solution-1">Solution</a>
+</h3>
+</div>
+<div id="solution-1" class="panel-collapse collapse">
+<ul>
+<li><code>term</code>: the name of the covariates (also known as independent-control variables, explanatory variables, predictors, etc.).</li>
+<li><code>estimate</code>: the coefficient for each covariate. The average effect (rate of change) that a unit change of that covariate has on the dependent variable. The effect (coefficients) is in the units of the dependent variable.</li>
+<li><code>std.error</code>: the standard error is the standard deviation of the coefficient. In other words, it describes the uncertainty associated with the estimate. We use the standard errors to compute Confidence Intervals for the coefficients: <span class="math inline">\(coef \pm t_{df} SE_{coef}\)</span>. The critical value <span class="math inline">\(t_{df}\)</span> depends on the desired confidence level and the degrees of freedom of the model: usually 1.96 (or 2).</li>
+<li><code>statistic</code>: t-test statistic. How far away (how many standard deviations away) from the null value the coefficient is. <span class="math inline">\(T = \dfrac{coefficient - null value}{SE}\)</span>. Since in this case the null value is 0 and the standard deviation of the coefficient is the standard error, we obtain the t-statistic by calculating: <span class="math inline">\(T = \dfrac{coefficient}{SE}\)</span>.</li>
+<li><code>p.value</code>: the probabilty of observing a coefficient if the null hypothesis were true.</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="interpreting-regression-tables" class="section level3">
+<h3>Interpreting regression tables</h3>
+<p>Let’s focus on the regression output for the covariate <code>education</code>.</p>
+<pre class="r"><code>edu_reg &lt;- filter(reg_table, term == &#39;education&#39;)
+edu_reg</code></pre>
+<pre><code>##        term estimate std.error statistic      p.value
+## 1 education 4.186637 0.3887013  10.77084 2.590069e-18</code></pre>
+<div id="challenge-2" class="panel panel-primary">
+<div class="panel-heading">
+<h3 class="panel-title">
+Challenge
+</h3>
+</div>
+<div class="panel-body">
+<p>In which units are the independent variable <code>prestige</code> and the covariate <code>education</code> represented? What’s their range?</p>
+</div>
+</div>
+<p>The outcome variable <code>prestige</code> is measured using the Pineo-Porter prestige score for occupation, with range {14.80 , 87.20}. The independent variable <code>education</code> is measured in years (average years of education), with range {6.3 , 15.9}. The regression coefficient for <code>education</code> is <strong>4.18</strong> and the coefficient SE is <strong>0.39</strong>.</p>
+<p>This means that, when <code>education</code> increases by 1 unit (so when the average education of people with certain occupation increase 1 year), <code>prestige</code> increases 4.18 units (so the Pineo-Porter prestige scores increases +4.18). For example, let’s create a dataset with 2 different observations where we keep all the variables but <code>education</code> to their mean and where one observation has one more unit of <code>education</code>.</p>
+<pre class="r"><code>obs1 &lt;- data.frame(education = 13.11,
+                   income = mean(Prestige$income, na.rm = TRUE),
+                   women = mean(Prestige$women, na.rm = TRUE))
+obs2 &lt;- mutate(obs1, education = education + 1)
+newdata &lt;- bind_rows(obs1, obs2)</code></pre>
+<p>Now let’s use the model coefficients to predict <code>prestige</code> values for both observations and see what’s the difference between them. Since the only thing that changes is a unit change on <code>education</code>, we should expect an increase of <strong>4.18</strong> on prestige. To make the predictions we will use the <code>predict()</code> command.</p>
+<pre class="r"><code>pred1 &lt;- predict(reg, newdata)
+pred1</code></pre>
+<pre><code>##        1        2 
+## 56.76387 60.95051</code></pre>
+<pre class="r"><code>pred1[2] - pred1[1]</code></pre>
+<pre><code>##        2 
+## 4.186637</code></pre>
+<p>We can calculate confidence intervals around those estimates using the arguments <code>interval</code> and <code>level</code> in the <code>predict()</code> command.</p>
+<pre class="r"><code>pred_CI &lt;- predict(reg, newdata, interval = &quot;confidence&quot;, level = .95)
+pred_CI</code></pre>
+<pre><code>##        fit      lwr      upr
+## 1 56.76387 54.37125 59.15650
+## 2 60.95051 57.92689 63.97413</code></pre>
+<div id="challenge-3" class="panel panel-primary">
+<div class="panel-heading">
+<h3 class="panel-title">
+Challenge
+</h3>
+</div>
+<div class="panel-body">
+<p>Predict the Pineo-Porter prestige score (+ 95% CIs) for a “simulated” occupation where 100% of the people are men (<code>women</code> == 0) and the average years of <code>education</code> is 10.74 (the mean value for that variable) and the average <code>income</code> is $6798 (also the mean).</p>
+<p>Do the same for another simulated occupation where 100% of the people are women (<code>women</code> == 100) but have the same average education and income.</p>
+</div>
+</div>
+<div class="panel panel-info">
+<div class="panel-heading">
+<h3 class="panel-title">
+<a data-toggle="collapse" href="#solution-2">Solution</a>
+</h3>
+</div>
+<div id="solution-2" class="panel-collapse collapse">
+<pre class="r"><code>sc_men &lt;- data.frame(women = 0,
+                     education = 10.74,
+                     income = 6798)
+sc_women &lt;- data.frame(women = 100,
+                       education = 10.74,
+                       income = 6798)
+newdata2 &lt;- bind_rows(sc_men, sc_women)
+mw_pred &lt;- predict(reg, newdata, level = 0.95, interval = &quot;confidence&quot;)
+mw_pred</code></pre>
+<pre><code>##        fit      lwr      upr
+## 1 56.76387 54.37125 59.15650
+## 2 60.95051 57.92689 63.97413</code></pre>
+</div>
+</div>
+<p>To compare predictions (+95% CIs) easily we can use the <code>errorbar</code> geom from <code>ggplot2</code>. If we want to use data into the output of the <code>predict()</code> command to create the plot, we first need to transform it to <code>data.frame</code> format using <code>tidy()</code> from <code>broom</code>.</p>
+<pre class="r"><code>mw_pred_tidy &lt;- tidy(mw_pred)
+mw_pred_tidy &lt;- mutate(mw_pred_tidy, scenario = c(&quot;men&quot;, &quot;women&quot;))
+ggplot(mw_pred_tidy, aes(x = scenario, y = fit, ymin = lwr, ymax = upr)) +
+  geom_pointrange() +
+  coord_flip()</code></pre>
+<p><img src="interpreting_linear_regressions_files/figure-html/unnamed-chunk-9-1.png" title="" alt="" width="672" /></p>
+<p>This is how we usually want to present our results in papers. It is easier to understand graphs that show effects (predicted values or probabilities) rather than regression tables.</p>
+</div>
+<div id="comparing-the-effect-of-all-the-covariates" class="section level3">
+<h3>Comparing the effect of all the covariates</h3>
+<p>There are some packages that allow you to plot the regression coefficients and present them visually. For example, one of these functions is <code>coefplot()</code> of the <code>coefplot</code> package.</p>
+<pre class="r"><code>coefplot(reg)</code></pre>
+<p><img src="interpreting_linear_regressions_files/figure-html/unnamed-chunk-10-1.png" title="" alt="" width="672" /></p>
+<div id="challenge-4" class="panel panel-primary">
+<div class="panel-heading">
+<h3 class="panel-title">
+Challenge
+</h3>
+</div>
+<div class="panel-body">
+<p>What’s the problem with the previous graph? Is it useful to compare the effect of the different covariates?</p>
+</div>
+</div>
+<p>With the previous graph we cannot compare the effect of each covaraite because they are in different units. To make such comparisons, we should estimate the effect of a similar change of each variable keeping the others constant. For example, let’s compare the effect that each variable has on the outcome variable when going from its 1st to 3rd quantile.</p>
+<pre class="r"><code>effects_table &lt;- data.frame(v1 = NULL,
+                            v2 = NULL)
+newdata3 &lt;- data.frame(education = rep(mean(Prestige$education), 2),
+                       income = rep(mean(Prestige$income), 2),
+                       women = rep(mean(Prestige$women), 2))
+for (i in 2:nrow(reg_table)) {
+  vname &lt;- reg_table$term[i]
+  vcontent &lt;- Prestige[,vname]
+  q1 &lt;- quantile(vcontent, .25, na.rm = TRUE)
+  q3 &lt;- quantile(vcontent, .75, na.rm = TRUE)
+  newdata_var &lt;- newdata3
+  newdata_var[, vname] &lt;- c(q1, q3)
+  pred_sc &lt;- predict(reg, newdata_var)
+  pest &lt;- as.numeric(pred_sc[2] - pred_sc[1])
+  new_obs &lt;- data.frame(pest, vname)
+  effects_table &lt;- bind_rows(effects_table, new_obs)
+}</code></pre>
+<pre><code>## Warning in rbind_all(x, .id): Unequal factor levels: coercing to character</code></pre>
+<pre class="r"><code>effects_table</code></pre>
+<pre><code>## Source: local data frame [3 x 2]
+## 
+##         pest     vname
+##        (dbl)     (chr)
+## 1 17.5943431 education
+## 2  5.3609685    income
+## 3 -0.4328797     women</code></pre>
+<p>Then we can plot the effect of each variable when moving from their first to the third quantile.</p>
+<pre class="r"><code>ggplot(effects_table, aes(x = vname, y = pest)) +
+  geom_point() +
+  geom_hline(yintercept = 0)</code></pre>
+<p><img src="interpreting_linear_regressions_files/figure-html/unnamed-chunk-12-1.png" title="" alt="" width="672" /></p>
+</div>
+
+<hr>
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://licensebuttons.net/l/by-nc-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
+R code is licensed under a <a href="https://www.r-project.org/Licenses/BSD_2_clause">BSD 2-clause</a> license.
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

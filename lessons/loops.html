@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="author" content="Jeffrey Arnold" />
+
+
+<title>For loops</title>
+
+<script src="libs/jquery-1.11.0/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap-3.3.1/css/cerulean.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.1/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.1/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.1/shim/respond.min.js"></script>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<link rel="stylesheet"
+      href="libs/highlight/textmate.css"
+      type="text/css" />
+<script src="libs/highlight/highlight.js"></script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img { 
+  max-width:100%; 
+  height: auto; 
+}
+</style>
+<div class="container-fluid main-container">
+
+<p>
+<strong>POL S/CS&amp;SS 501, University of Washington, Winter 2016</strong>
+</p>
+
+$$
+\DeclareMathOperator{\mean}{mean}
+\DeclareMathOperator{\var}{var}
+\DeclareMathOperator{\E}{E}
+\DeclareMathOperator{\MSE}{MSE}
+\DeclareMathOperator{\Bias}{Bias}
+\DeclareMathOperator{\SE}{se}
+\DeclareMathOperator{\SD}{sd}
+\DeclareMathOperator{\argmin}{argmin}
+\DeclareMathOperator{\argmax}{argmax}
+$$
+
+<div id="header">
+<h1 class="title">For loops</h1>
+<h4 class="author"><em>Jeffrey Arnold</em></h4>
+<h4 class="date"><em>February 4, 2016</em></h4>
+</div>
+
+<div id="TOC">
+<ul>
+<li><a href="#for-loops">For Loops</a></li>
+</ul>
+</div>
+
+<div id="for-loops" class="section level2">
+<h2>For Loops</h2>
+<p>Suppose we want to print each word in a sentence. One way is to use six <code>print</code> statements:</p>
+<pre class="r"><code>best_practice &lt;- c(&quot;Let&quot;, &quot;the&quot;, &quot;computer&quot;, &quot;do&quot;, &quot;the&quot;, &quot;work&quot;)
+print(best_practice[1])</code></pre>
+<pre><code>## [1] &quot;Let&quot;</code></pre>
+<pre class="r"><code>print(best_practice[2])</code></pre>
+<pre><code>## [1] &quot;the&quot;</code></pre>
+<pre class="r"><code>print(best_practice[3])</code></pre>
+<pre><code>## [1] &quot;computer&quot;</code></pre>
+<pre class="r"><code>print(best_practice[4])</code></pre>
+<pre><code>## [1] &quot;do&quot;</code></pre>
+<pre class="r"><code>print(best_practice[5])</code></pre>
+<pre><code>## [1] &quot;the&quot;</code></pre>
+<pre class="r"><code>print(best_practice[6])</code></pre>
+<pre><code>## [1] &quot;work&quot;</code></pre>
+<p>but that’s a bad approach for two reasons:</p>
+<ol style="list-style-type: decimal">
+<li><p>It doesn’t scale: if we want to print the elements in a vector that’s hundreds long, we’d be better off just typing them in.</p></li>
+<li><p>It’s fragile: if we give it a longer vector, it only prints part of the data, and if we give it a shorter input, it returns <code>NA</code> values because we’re asking for elements that don’t exist!</p></li>
+</ol>
+<pre class="r"><code>sentence[-6]</code></pre>
+<pre><code>## Error in eval(expr, envir, enclos): object &#39;sentence&#39; not found</code></pre>
+<p>Here’s a better approach:</p>
+<pre class="r"><code>for (something in best_practice) {
+  print(paste(&quot;this word is &quot;, something))
+}</code></pre>
+<pre><code>## [1] &quot;this word is  Let&quot;
+## [1] &quot;this word is  the&quot;
+## [1] &quot;this word is  computer&quot;
+## [1] &quot;this word is  do&quot;
+## [1] &quot;this word is  the&quot;
+## [1] &quot;this word is  work&quot;</code></pre>
+<p>This is shorter—certainly shorter than something that prints every character in a hundred-letter string—and more robust as well. If you change what is in sentence, it will still work.</p>
+<pre class="r"><code>best_practice &lt;- c(&quot;a&quot;, &quot;b&quot;)
+for (word in best_practice) {
+  print(word)
+}</code></pre>
+<pre><code>## [1] &quot;a&quot;
+## [1] &quot;b&quot;</code></pre>
+<p>The improved version of the code uses a <em>for loop</em> to repeat an operation—in this case, printing—once for each thing in a collection. The general form of a loop is:</p>
+<pre class="r"><code>for (variable in collection) {
+  do things with variable
+}</code></pre>
+<p>We can name the loop variable anything we like (with a few restrictions, e.g. the name of the variable cannot start with a digit). <code>in</code> is part of the <code>for</code> syntax. Note that the body of the loop is enclosed in curly braces <code>{ }</code>. For a single-line loop body, as here, the braces aren’t needed, but it is good practice to include them as we did.</p>
+<p>Here’s another loop that repeatedly updates a variable:</p>
+<pre class="r"><code>len &lt;- 0
+vowels &lt;- c(&quot;a&quot;, &quot;e&quot;, &quot;i&quot;, &quot;o&quot;, &quot;u&quot;)
+for (v in vowels) {
+  len &lt;- len + 1
+}
+# Number of vowels
+len</code></pre>
+<pre><code>## [1] 5</code></pre>
+<p>It’s worth tracing the execution of this little program step by step. Since there are five elements in the vector <code>vowels</code>, the statement inside the loop will be executed five times. The first time around, <code>len</code> is zero (the value assigned to it on line 1) and <code>v</code> is <code>&quot;a&quot;</code>. The statement adds 1 to the old value of <code>len</code>, producing 1, and updates <code>len</code> to refer to that new value. The next time around, <code>v</code> is <code>&quot;e&quot;</code> and <code>len</code> is 1, so <code>len</code> is updated to be 2. After three more updates, <code>len</code> is 5; since there is nothing left in the vector <code>vowels</code> for R to process, the loop finishes.</p>
+<p>Note that a loop variable is just a variable that’s being used to record progress in a loop. It still exists after the loop is over, and we can re-use variables previously defined as loop variables as well:</p>
+<pre class="r"><code>letter &lt;- &quot;z&quot;
+for (letter in c(&quot;a&quot;, &quot;b&quot;, &quot;c&quot;)) {
+  print(letter)
+}</code></pre>
+<pre><code>## [1] &quot;a&quot;
+## [1] &quot;b&quot;
+## [1] &quot;c&quot;</code></pre>
+<pre class="r"><code># after the loop, letter is
+letter</code></pre>
+<pre><code>## [1] &quot;c&quot;</code></pre>
+<p>Note also that finding the length of a vector is such a common operation that R actually has a built-in function to do it called <code>length</code>:</p>
+<pre class="r"><code>length(vowels)</code></pre>
+<pre><code>## [1] 5</code></pre>
+<p><code>length</code> is much faster than any R function we could write ourselves, and much easier to read than a two-line loop; it will also give us the length of many other things that we haven’t met yet, so we should always use it when we can</p>
+<p>We can name the loop variable anything we like (with a few restrictions, e.g. the name of the variable cannot start with a digit). <code>in</code> is part of the <code>for</code> syntax. Note that the body of the loop is enclosed in curly braces <code>{ }</code>. For a single-line loop body, as here, the braces aren’t needed, but it is good practice to include them as we did.</p>
+<div id="challenge-1" class="panel panel-primary">
+<div class="panel-heading">
+<h3 class="panel-title">
+Challenge
+</h3>
+</div>
+<div class="panel-body">
+<p>R has a built-in function called <code>seq</code> that creates a list of numbers:</p>
+<pre class="r"><code>seq(3)</code></pre>
+<pre><code>## [1] 1 2 3</code></pre>
+<p>Using <code>seq</code> use a for loop to print the first <strong>N</strong> natural numbers, one per line:</p>
+</div>
+</div>
+<div class="panel panel-info">
+<div class="panel-heading">
+<h3 class="panel-title">
+<a data-toggle="collapse" href="#solution-1">Solution</a>
+</h3>
+</div>
+<div id="solution-1" class="panel-collapse collapse">
+<pre class="r"><code>nseq &lt;- seq(N)
+for (num in nseq) {
+  print(num)
+}</code></pre>
+<pre><code>## [1] 1
+## [1] 2
+## [1] 3</code></pre>
+</div>
+</div>
+<p>Building a data frame from a list of data frames.</p>
+<pre class="r"><code>means &lt;- c(-5, 0, 4)
+n &lt;- 5
+results &lt;- list()
+for (i in 1:length(means)) {
+  results[[i]] &lt;-
+    data.frame(x = rnorm(n, mean = means[i]),
+               mu = means[i])
+}</code></pre>
+<p>The object <code>results</code> is a list of data frames,</p>
+<pre class="r"><code>results</code></pre>
+<pre><code>## [[1]]
+##           x mu
+## 1 -4.665213 -5
+## 2 -5.856571 -5
+## 3 -4.491212 -5
+## 4 -5.535252 -5
+## 5 -6.471639 -5
+## 
+## [[2]]
+##            x mu
+## 1  0.8667312  0
+## 2 -0.5047840  0
+## 3 -0.7141557  0
+## 4 -0.4889523  0
+## 5 -0.2283431  0
+## 
+## [[3]]
+##          x mu
+## 1 3.781701  4
+## 2 5.241824  4
+## 3 4.645585  4
+## 4 4.121302  4
+## 5 3.458472  4</code></pre>
+<p>We can stack these data frames into a single data frame using the <strong>dplyr</strong> function <code>bind_rows</code>,</p>
+<pre class="r"><code>library(&quot;dplyr&quot;)
+bind_rows(results)</code></pre>
+<pre><code>## Source: local data frame [15 x 2]
+## 
+##             x    mu
+##         (dbl) (dbl)
+## 1  -4.6652134    -5
+## 2  -5.8565714    -5
+## 3  -4.4912124    -5
+## 4  -5.5352525    -5
+## 5  -6.4716391    -5
+## 6   0.8667312     0
+## 7  -0.5047840     0
+## 8  -0.7141557     0
+## 9  -0.4889523     0
+## 10 -0.2283431     0
+## 11  3.7817015     4
+## 12  5.2418242     4
+## 13  4.6455853     4
+## 14  4.1213017     4
+## 15  3.4584715     4</code></pre>
+<hr />
+<p>This is derived from the Software Carpentry lesson, <a href="http://swcarpentry.github.io/r-novice-inflammation/">Programming in R</a>, <a href="http://software-carpentry.org/license/">CC-BY</a>.</p>
+</div>
+
+<hr>
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://licensebuttons.net/l/by-nc-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
+R code is licensed under a <a href="https://www.r-project.org/Licenses/BSD_2_clause">BSD 2-clause</a> license.
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

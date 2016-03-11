@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="author" content="Jeffrey B. Arnold" />
+
+
+<title>Introduction to R and RStudio with Gapminder</title>
+
+<script src="libs/jquery-1.11.0/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap-3.3.1/css/cerulean.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.1/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.1/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.1/shim/respond.min.js"></script>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<link rel="stylesheet"
+      href="libs/highlight/textmate.css"
+      type="text/css" />
+<script src="libs/highlight/highlight.js"></script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img { 
+  max-width:100%; 
+  height: auto; 
+}
+</style>
+<div class="container-fluid main-container">
+
+<p>
+<strong>POL S/CS&amp;SS 501, University of Washington, Winter 2016</strong>
+</p>
+
+$$
+\DeclareMathOperator{\mean}{mean}
+\DeclareMathOperator{\var}{var}
+\DeclareMathOperator{\E}{E}
+\DeclareMathOperator{\MSE}{MSE}
+\DeclareMathOperator{\Bias}{Bias}
+\DeclareMathOperator{\SE}{se}
+\DeclareMathOperator{\SD}{sd}
+\DeclareMathOperator{\argmin}{argmin}
+\DeclareMathOperator{\argmax}{argmax}
+$$
+
+<div id="header">
+<h1 class="title">Introduction to R and RStudio with Gapminder</h1>
+<h4 class="author"><em>Jeffrey B. Arnold</em></h4>
+<h4 class="date"><em>January 7, 2015</em></h4>
+</div>
+
+<div id="TOC">
+<ul>
+<li><a href="#orientation-with-rstudio">Orientation with RStudio</a></li>
+<li><a href="#variables-and-the-environment">Variables and the Environment</a></li>
+<li><a href="#working-directory-and-r-projects">Working Directory and R Projects</a><ul>
+<li><a href="#r-projects">R Projects</a></li>
+</ul></li>
+<li><a href="#creating-your-first-r-script">Creating your first R script</a></li>
+<li><a href="#gapminder-data">Gapminder Data</a></li>
+<li><a href="#working-with-variables-in-data-frames">Working with variables in Data Frames</a></li>
+<li><a href="#creating-plots-with-ggplot2">Creating Plots with <code>ggplot2</code></a></li>
+</ul>
+</div>
+
+<ol style="list-style-type: decimal">
+<li>Use the RStudio IDE to run R scripts</li>
+<li>Setup an RStudio Project</li>
+<li>Install and load an R package</li>
+<li>Use R functions and help pages to explore the <code>gapminder</code> dataset and find the number of rows, columns, names, and descriptions of the data frame.</li>
+<li>Use <code>ggplot2</code> to create histograms and scatter plots of the <code>gapminder</code> data</li>
+</ol>
+<div id="orientation-with-rstudio" class="section level1">
+<h1>Orientation with RStudio</h1>
+<p>R is the name of the programming language, and RStudio is a convenient and widely used interface to that language.</p>
+<p>Since you will be using it for the remainder of the course, you should familiarize yourself with the RStudio GUI.</p>
+<p>It consists of four windows,</p>
+<ol style="list-style-type: decimal">
+<li>Bottom left: The <strong>console</strong> window. You type commands at the <code>&gt;</code> prompt and R executes them.</li>
+<li>Top left: The <strong>editor</strong> window. Here you can edit and save R scripts which contain multiple R commands.</li>
+</ol>
+<ul>
+<li>You can open a new R script using <em>File -&gt; New -&gt; R script</em>.</li>
+<li>If you highlight an area, you can run those commands in the console with the “Run” button.</li>
+<li>You can run all the commands in the <strong>editor</strong> window using the “Source” button.</li>
+</ul>
+<ol start="3" style="list-style-type: decimal">
+<li>Top right</li>
+</ol>
+<ul>
+<li><strong>workspace</strong> lists all R objects (variables) that are defined</li>
+<li><strong>history</strong> lists all the commands that have been typed into the console.</li>
+</ul>
+<ol start="4" style="list-style-type: decimal">
+<li>Bottom right</li>
+</ol>
+<ul>
+<li><strong>files</strong> allows you to browse directories and open files.</li>
+<li><strong>plots</strong> displays any plots created. In this window you can toggle back through previously created plots.</li>
+<li><strong>packages</strong> shows which packages are installed and loaded.</li>
+<li><strong>help</strong> displays R help.</li>
+</ul>
+<p>RStudio documentation can be found at <a href="https://support.rstudio.com/hc/en-us/categories/200035113-Documentation" class="uri">https://support.rstudio.com/hc/en-us/categories/200035113-Documentation</a>. Of those, the most likely to be useful to you are:</p>
+<ul>
+<li><a href="https://support.rstudio.com/hc/en-us/articles/200404846-Working-in-the-Console">Working in the Console</a></li>
+<li><a href="https://support.rstudio.com/hc/en-us/articles/200484448-Editing-and-Executing-Code">Editing and Executing Code</a></li>
+<li><a href="https://support.rstudio.com/hc/en-us/articles/200526217-Command-History">Viewing Command History</a></li>
+</ul>
+<p><strong>Challenge:</strong></p>
+<ol style="list-style-type: decimal">
+<li>Go to <em>Tools &gt; Global Options</em>. Change the font and color of the editor and console. Which one do you like the best?</li>
+<li>What happens when you type <code>Alt+Shift+K</code>?</li>
+</ol>
+</div>
+<div id="variables-and-the-environment" class="section level1">
+<h1>Variables and the Environment</h1>
+<p>In R, you can save the results of calculations into objects that you can use later. This is done using the special symbol, <code>&lt;-</code>. For example, this saves the results of 2 + 2 to an object named <code>foo</code> <a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a></p>
+<pre class="r"><code>foo &lt;- 2 + 2</code></pre>
+<p>You can see that <code>foo</code> is equal to <code>4</code></p>
+<pre class="r"><code>foo</code></pre>
+<pre><code>## [1] 4</code></pre>
+<p>And you can reuse foo in other calculations,</p>
+<pre class="r"><code>foo + 3</code></pre>
+<pre><code>## [1] 7</code></pre>
+<pre class="r"><code>foo / 2 * 8 + foo</code></pre>
+<pre><code>## [1] 20</code></pre>
+<p>You can use <code>=</code> instead of <code>&lt;-</code> for assignment. You may see this in some other code. There are some technical reasons to use <code>&lt;-</code> instead of <code>=</code>, but the primary reason we will use <code>&lt;-</code> instead of <code>=</code> is that this is the convention used in modern <code>R</code> programs.</p>
+</div>
+<div id="working-directory-and-r-projects" class="section level1">
+<h1>Working Directory and R Projects</h1>
+<div id="r-projects" class="section level2">
+<h2>R Projects</h2>
+<p>Keeping all the files associated with a project organized together – input data, R scripts, analytic results, figures – is such a wise and common practice that RStudio has built-in support for this via its projects. Read <a href="https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects">this</a> for more information about RStudio projects.</p>
+<p>You will use RStudio projects for your labs and homework, and <strong>final paper</strong>. Create a RStudio project that you will use for all this lab.</p>
+<ol style="list-style-type: decimal">
+<li><em>File -&gt; New Project</em></li>
+<li>Select “New Directory”</li>
+<li>Select “Empty Project”</li>
+<li>Select a name for your project as Directory Name. “pols_501_lab01” is as good as any, and better than most. Choose where to put this directory with “Create project as sub-directory of”. Do not worry about the other options.</li>
+</ol>
+</div>
+</div>
+<div id="creating-your-first-r-script" class="section level1">
+<h1>Creating your first R script</h1>
+<ol style="list-style-type: decimal">
+<li><em>File -&gt; New File -&gt; R Script</em></li>
+<li>Choose a title and author for your file. HTML output is fine.</li>
+<li>Hit OK. This will open a template for your Markdown file.</li>
+<li>Save this file with <code>Ctrl-S</code>.</li>
+</ol>
+</div>
+<div id="gapminder-data" class="section level1">
+<h1>Gapminder Data</h1>
+<p>We will use a dataset from the <strong>gapminder</strong>.</p>
+<p>The gapminder package is not installed with R by default, so you need to install it using <code>install.package</code>.</p>
+<pre class="r"><code>install.packages(&quot;gapminder&quot;)</code></pre>
+<p>After installing the package, you need to load it using the <code>library</code> function in order to be able to access the functions and data in it.</p>
+<pre class="r"><code>library(&quot;gapminder&quot;)</code></pre>
+<p>We find out what is in the gapminder dataset using the help function</p>
+<pre class="r"><code>help(package = &quot;gapminder&quot;)</code></pre>
+<p>The <strong>gapminder</strong> package includes a couple of datasets. This package contains country-level data from <a href="http://www.gapminder.org">Gapminder.org</a> on income and life expectancy. This <a href="https://www.ted.com/talks/hans_rosling_shows_the_best_stats_you_ve_ever_seen">Ted Talk</a> by Hans Rosling is one of the better data visualization talks out there.</p>
+<p>The dataset that we are interested in is <code>gapminder</code>. You can read the help for this dataset by clicking on the link for it or using the <code>help</code> function</p>
+<pre class="r"><code>help(&quot;gapminder&quot;)</code></pre>
+<p>Load the dataset into your environment using the <code>data</code> function. Note that currently <code>data</code> is not in the environment</p>
+<pre class="r"><code>ls()</code></pre>
+<pre><code>## [1] &quot;challenge_end&quot;   &quot;challenge_start&quot; &quot;foo&quot;</code></pre>
+<p>Now load <code>gapminder</code> using <code>data()</code>,</p>
+<pre class="r"><code>data(&quot;gapminder&quot;)</code></pre>
+<p>You will not see a message if this is successful. However, there will be an object called <code>gapminder</code> into the environment,</p>
+<pre class="r"><code>ls()</code></pre>
+<pre><code>## [1] &quot;challenge_end&quot;   &quot;challenge_start&quot; &quot;foo&quot;             &quot;gapminder&quot;</code></pre>
+<p>The <code>gapminder</code> object is a <em>data frame</em>. A data frame is a type of R object that corresponds to what you usually think of as a dataset or a spreadsheet — rows are observations and columns are variables.</p>
+<div class="bs-callout bs-callout-default">
+<p>What happens when you do the following?</p>
+<pre class="r"><code>gapminder</code></pre>
+<p>This is a lot of information. How can we get a more useful picture of the dataset as a whole?</p>
+<pre class="r"><code>dim(gapminder)
+names(gapminder)
+head(gapminder)
+tail(gapminder)
+summary(gapminder)</code></pre>
+<ul>
+<li><code>dim</code> shows the dimensions of the data frame as the number of rows, columns</li>
+<li><code>names</code> shows the column names of the data frame.</li>
+<li><code>head</code> shows the first few observations</li>
+<li><code>tail</code> shows the last few observations</li>
+<li><code>summary</code> calculates summary statistics for all variables in the data frame.</li>
+</ul>
+</div>
+<div class="bs-callout bs-callout-default">
+<p>Given the information previously:</p>
+<ol style="list-style-type: decimal">
+<li>What are the variables in the dataset?</li>
+<li>How many observations are there?</li>
+<li>What is the unit of observation?</li>
+<li>What types of data are the different variables?</li>
+<li>What is the range of years in the data?</li>
+<li>What are the mean and median life expectancy?</li>
+</ol>
+</div>
+</div>
+<div id="working-with-variables-in-data-frames" class="section level1">
+<h1>Working with variables in Data Frames</h1>
+<p>You can extract single variables (columns) and perform different operations on them.</p>
+<p>To extract a variable, we use the dollar sign (<code>$</code>) extraction operator.</p>
+<pre class="r"><code>gapminder$lifeExp</code></pre>
+<p>Alternatively use double-brackets.</p>
+<pre class="r"><code>gapminder[[&quot;lifeExpr&quot;]]</code></pre>
+<p>Again, perhaps a summary may be more interesting. We can do more specific operations on this variable alone:</p>
+<pre class="r"><code>mean(gapminder$lifeExp)
+median(gapminder$lifeExp)
+min(gapminder$lifeExp)
+max(gapminder$lifeExp)</code></pre>
+<p>We can add variables to the data frame using <code>&lt;-</code></p>
+<pre class="r"><code>gapminder$log_life_exp &lt;- log(gapminder$lifeExp)
+gapminder$log_gdp_per_cap &lt;- log(gapminder$gdpPercap)</code></pre>
+<p>You can extract specific columns and rows using the bracket operators.</p>
+<div class="bs-callout bs-callout-default">
+<p>Run each of the following lines. What does each do?</p>
+<pre class="r"><code>gapminder[[&quot;year&quot;]]
+gapminder[ , &quot;year&quot;]
+gapminder[1, ]
+gapminder[1:5, ]
+gapminder[c(1, 10, 20), ]
+gapminder[, 1:2]
+gapminder[ , &quot;year&quot;]
+gapminder[ , c(&quot;year&quot;, &quot;country&quot;)]
+gapminder[1:5, c(&quot;year&quot;, &quot;country&quot;)]
+gapminder[[&quot;year&quot;]][1:5]
+gapminder[gapminder$year == 2007, ]
+gapminder[gapminder$year == 2007, c(&quot;country&quot;, &quot;year&quot;, &quot;lifeExp&quot;)]
+gapminder[gapminder$year == 2007, ][ , c(&quot;country&quot;, &quot;year&quot;, &quot;lifeExp&quot;)]
+gapminder[gapminder$year == 2007, ]$lifeExp
+gapminder[gapminder$country == &quot;United States&quot;, ]
+gapminder[gapminder$country == &quot;United States&quot;,
+          c(&quot;year&quot;, &quot;gdpPercap&quot;, &quot;lifeExp&quot;)]
+gapminder[gapminder$country == &quot;United States&quot;,
+          c(&quot;year&quot;, &quot;gdpPercap&quot;, &quot;lifeExp&quot;)]
+gapminder[gapminder$country == &quot;United States&quot; &amp; gapminder$year == 2007, ]
+gapminder[gapminder$country == &quot;United States&quot; | gapminder$year == 2007, ]
+gapminder[gapminder$country %in% c(&quot;United States&quot;, &quot;France&quot;, &quot;Germany&quot;), ]
+gapminder[gapminder$country %in% c(&quot;United States&quot;, &quot;France&quot;, &quot;Germany&quot;) &amp;
+            gapminder$year == 2007, ]
+gapminder[gapminder$country %in% c(&quot;United States&quot;, &quot;France&quot;, &quot;Germany&quot;) &amp;
+            gapminder$year &gt; 2000, ]
+gapminder[gapminder$country %in% c(&quot;United States&quot;, &quot;France&quot;, &quot;Germany&quot;) &amp;
+            gapminder$year %in% c(2000, 2007), ]</code></pre>
+</div>
+<div class="bs-callout bs-callout-default">
+<ol style="list-style-type: decimal">
+<li>What are the mean and median of GDP per capita?</li>
+<li>Find the 30th percentile of GDP per capita?</li>
+<li>The function <code>length()</code> calculates the length of a vector. The function <code>unique()</code> returns the number of unique values in a vector. How many countries in the data are there? How many years?</li>
+</ol>
+</div>
+</div>
+<div id="creating-plots-with-ggplot2" class="section level1">
+<h1>Creating Plots with <code>ggplot2</code></h1>
+<p>Summary statistics reduce the information of a distribution to single values. A distribution provides a richer understanding of the data. Look at the distribution of the variable <code>lifeExp</code>.</p>
+<p>You will use the <strong>ggplot2</strong> package for graphics for most of this course. In order to use it, you will need to load it using <code>library()</code></p>
+<pre class="r"><code>library(&quot;ggplot2&quot;)</code></pre>
+<p>Create a histogram:</p>
+<pre class="r"><code>ggplot(gapminder, aes(x = lifeExp)) +
+  geom_histogram()</code></pre>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="intro-to-r-with-gapminder_files/figure-html/unnamed-chunk-19-1.png" title="" alt="" width="672" /> Note that this gives a message asking the user to choose a binwidth. We can solve that by adding a binwidth argument to <code>geom_histogram</code>. Although there are methods to automatically choose the number and bins of histograms (see the help for <a href="http://www.inside-r.org/r-doc/grDevices/nclass">nclass</a>), in this case 5 years seems a reasonable value.</p>
+<pre class="r"><code>ggplot(gapminder, aes(x = lifeExp)) +
+  geom_histogram(binwidth = 5)</code></pre>
+<p><img src="intro-to-r-with-gapminder_files/figure-html/unnamed-chunk-20-1.png" title="" alt="" width="672" /></p>
+<p>You could also save the plot to a variable</p>
+<pre class="r"><code>lifexp_plot &lt;- ggplot(gapminder, aes(x = lifeExp)) +
+  geom_histogram()</code></pre>
+<p>If you just enter the variable name in the console it will “print”&quot; the object, which in this case, simply creates the plot:</p>
+<pre class="r"><code>lifexp_plot</code></pre>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="intro-to-r-with-gapminder_files/figure-html/unnamed-chunk-22-1.png" title="" alt="" width="672" /></p>
+<p>To create a scatter plot of life expectancy vs. GDP per capita, we need both an <code>x</code> and <code>y</code> aesthetic, and we use the <code>geom_point</code> geom.</p>
+<pre class="r"><code>ggplot(gapminder, aes(x = gdpPercap, y = lifeExp)) +
+  geom_point()</code></pre>
+<p><img src="intro-to-r-with-gapminder_files/figure-html/unnamed-chunk-23-1.png" title="" alt="" width="672" /> However, the relationship between life expectancy and GDP per capita is clearer if plotted on a log-log scale. Lets use the variables, <code>log_gdp_per_cap</code> and <code>log_life_exp</code>, that we added to the <code>gapminder</code> dataset earlier in the lesson.</p>
+<pre class="r"><code>ggplot(gapminder, aes(x = log_gdp_per_cap, y = log_life_exp)) +
+  geom_point()</code></pre>
+<p><img src="intro-to-r-with-gapminder_files/figure-html/unnamed-chunk-24-1.png" title="" alt="" width="672" /></p>
+<p>Now add titles to the plot and axis title,</p>
+<pre class="r"><code>ggplot(gapminder, aes(x = log_gdp_per_cap, y = log_life_exp)) +
+  geom_point() +
+  ggtitle(&quot;Life Expectancy vs. GDP per capita&quot;) +
+  ylab(&quot;log(Life Expectancy)&quot;) +
+  xlab(&quot;log(GDP per capita)&quot;)</code></pre>
+<p><img src="intro-to-r-with-gapminder_files/figure-html/unnamed-chunk-25-1.png" title="" alt="" width="672" /></p>
+<p>To color points by continent, add the aesthetic <code>colour = continent</code>.</p>
+<pre class="r"><code>ggplot(gapminder, aes(x = log_gdp_per_cap, y = log_life_exp,
+                      colour = continent)) +
+  geom_point() +
+  ggtitle(&quot;Life Expectancy vs. GDP per capita&quot;) +
+  ylab(&quot;log(Life Expectancy)&quot;) +
+  xlab(&quot;log(GDP per capita)&quot;)</code></pre>
+<p><img src="intro-to-r-with-gapminder_files/figure-html/unnamed-chunk-26-1.png" title="" alt="" width="672" /></p>
+<p>Instead, we could color the points by year,</p>
+<pre class="r"><code>ggplot(gapminder, aes(x = log_gdp_per_cap, y = log_life_exp,
+                      colour = year)) +
+  geom_point() +
+  ggtitle(&quot;Life Expectancy vs. GDP per capita&quot;) +
+  ylab(&quot;log(Life Expectancy)&quot;) +
+  xlab(&quot;log(GDP per capita)&quot;)</code></pre>
+<p><img src="intro-to-r-with-gapminder_files/figure-html/unnamed-chunk-27-1.png" title="" alt="" width="672" /></p>
+<p>Now size the points proportional to their population,</p>
+<pre class="r"><code>ggplot(gapminder, aes(x = log_gdp_per_cap, y = log_life_exp,
+                      colour = continent,
+                      size = pop)) +
+  geom_point() +
+  ggtitle(&quot;Life Expectancy vs. GDP per capita&quot;) +
+  ylab(&quot;log(Life Expectancy)&quot;) +
+  xlab(&quot;log(GDP per capita)&quot;)</code></pre>
+<p><img src="intro-to-r-with-gapminder_files/figure-html/unnamed-chunk-28-1.png" title="" alt="" width="672" /></p>
+<p>There are way too many points in this plot, so lets only use a single year.</p>
+<pre class="r"><code>gapminder2007 &lt;- gapminder[gapminder$year == 2007, ]
+ggplot(gapminder, aes(x = log_gdp_per_cap, y = log_life_exp,
+                      colour = continent,
+                      size = pop)) +
+  geom_point() +
+  ggtitle(&quot;Life Expectancy vs. GDP per capita (2007)&quot;) +
+  ylab(&quot;log(Life Expectancy)&quot;) +
+  xlab(&quot;log(GDP per capita)&quot;)</code></pre>
+<p><img src="intro-to-r-with-gapminder_files/figure-html/unnamed-chunk-29-1.png" title="" alt="" width="672" /></p>
+<p>Even better, lets split up the plot into “facets” by year,</p>
+<pre class="r"><code>ggplot(gapminder, aes(x = log_gdp_per_cap, y = log_life_exp,
+                      colour = continent,
+                      size = pop)) +
+  geom_point() +
+  facet_wrap(~year, nrow = 3) +
+  ggtitle(&quot;Life Expectancy vs. GDP per capita (2007)&quot;) +
+  ylab(&quot;log(Life Expectancy)&quot;) +
+  xlab(&quot;log(GDP per capita)&quot;)</code></pre>
+<p><img src="intro-to-r-with-gapminder_files/figure-html/unnamed-chunk-30-1.png" title="" alt="" width="672" /></p>
+<p>We will generally not use base R graphics in this course, instead relying on <strong>ggplot2</strong>. Here is how a couple of those plots would be made using the base R graphics. For a histogram use the <code>hist</code> function:</p>
+<pre class="r"><code>hist(gapminder$lifeExp, main = &quot;Histogram of Life Expectancy&quot;,
+     xlab = &quot;Life Expectancy&quot;)</code></pre>
+<p><img src="intro-to-r-with-gapminder_files/figure-html/unnamed-chunk-31-1.png" title="" alt="" width="672" /> For a scatter plot use the <code>plot</code> function:</p>
+<pre class="r"><code>plot(gapminder$log_gdp_per_cap, gapminder$log_life_exp,
+     main = &quot;GDP per capita vs. Life Expectancy&quot;,
+     ylab = &quot;Log Life Expectancy (years)&quot;,
+     xlab = &quot;Log GDP per capita&quot;)</code></pre>
+<p><img src="intro-to-r-with-gapminder_files/figure-html/unnamed-chunk-32-1.png" title="" alt="" width="672" /></p>
+<p>For more on base graphics see the following sources, among others:</p>
+<ul>
+<li><a href="http://www.statmethods.net/graphs/">Quick R: Basic Graphics</a></li>
+<li><a href="https://susanejohnston.wordpress.com/2013/08/30/base-graphics-in-r-a-detailed-idiots-guide/">Base Graphics in R: A Detailed Idiot’s Guide</a></li>
+<li>Roger Peng <a href="https://leanpub.com/exdata">Exploratory Data Analysis with R</a>. Chapters “Plotting Systems”, “Graphics Devices”, “The Base Plotting System”, “Plotting and Color in R”.</li>
+</ul>
+<hr />
+<p>This is derived from <a href="https://stat545-ubc.github.io/block002_hello-r-workspace-wd-project.html">R basics, workspace and working directory, RStudio projects</a> (<a href="http://creativecommons.org/licenses/by-nc/3.0/">CC BY-NC 3.0</a>).</p>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>If you are curious as to why the variable was named <code>foo</code>, read <a href="https://en.wikipedia.org/wiki/Foobar">this</a>.<a href="#fnref1">↩</a></p></li>
+</ol>
+</div>
+
+<hr>
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://licensebuttons.net/l/by-nc-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
+R code is licensed under a <a href="https://www.r-project.org/Licenses/BSD_2_clause">BSD 2-clause</a> license.
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

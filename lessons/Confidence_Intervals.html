@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="author" content="Jeffrey Arnold" />
+
+<meta name="date" content="2016-02-04" />
+
+<title>Confidence Intervals of the Mean</title>
+
+<script src="libs/jquery-1.11.0/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap-3.3.1/css/cerulean.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.1/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.1/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.1/shim/respond.min.js"></script>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<link rel="stylesheet"
+      href="libs/highlight/textmate.css"
+      type="text/css" />
+<script src="libs/highlight/highlight.js"></script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img { 
+  max-width:100%; 
+  height: auto; 
+}
+</style>
+<div class="container-fluid main-container">
+
+<p>
+<strong>POL S/CS&amp;SS 501, University of Washington, Winter 2016</strong>
+</p>
+
+$$
+\DeclareMathOperator{\mean}{mean}
+\DeclareMathOperator{\var}{var}
+\DeclareMathOperator{\E}{E}
+\DeclareMathOperator{\MSE}{MSE}
+\DeclareMathOperator{\Bias}{Bias}
+\DeclareMathOperator{\SE}{se}
+\DeclareMathOperator{\SD}{sd}
+\DeclareMathOperator{\argmin}{argmin}
+\DeclareMathOperator{\argmax}{argmax}
+$$
+
+<div id="header">
+<h1 class="title">Confidence Intervals of the Mean</h1>
+<h4 class="author"><em>Jeffrey Arnold</em></h4>
+<h4 class="date"><em>2016-02-04</em></h4>
+</div>
+
+<div id="TOC">
+<ul>
+<li><a href="#confidence-intervals">Confidence Intervals</a><ul>
+<li><a href="#unknown-standard-deviation">Unknown standard deviation</a></li>
+<li><a href="#skewed-distribution">Skewed distribution</a></li>
+<li><a href="#miscellaneous">Miscellaneous</a></li>
+</ul></li>
+</ul>
+</div>
+
+<p>This lesson explores the intuition behind confidence intervals using sampling. It also explores what happens to confidence intervals of the mean when its assumptions are not met.</p>
+<p>This lesson uses these <strong>R</strong> packages.</p>
+<pre class="r"><code>library(&quot;dplyr&quot;)
+library(&quot;ggplot2&quot;)
+library(&quot;tidyr&quot;)</code></pre>
+<div id="confidence-intervals" class="section level1">
+<h1>Confidence Intervals</h1>
+<p>Choose a confidence level of the confidence interval</p>
+<pre class="r"><code>confidence &lt;- 95
+mu &lt;- 0
+sigma &lt;- 1</code></pre>
+<pre class="r"><code>iter = 500
+# calculate z critical value
+alpha &lt;- 1 - (confidence / 100)
+z &lt;- -qnorm(alpha / 2)
+results &lt;- list()
+for (i in 1:iter) {
+  x &lt;- rnorm(n, mean = mu, sd = sigma)
+  x_mean &lt;- mean(x)
+  se &lt;- sigma / sqrt(n)
+  lb &lt;- x_mean - z * se
+  ub &lt;- x_mean + z * se
+  contains_mu &lt;- (mu &gt; lb) &amp; (mu &lt; ub)
+  results[[i]] &lt;- data_frame(x_mean = x_mean,
+                             se = se,
+                             lb = lb,
+                             ub = ub,
+                             contains_mu = contains_mu,
+                             i = i)
+}</code></pre>
+<pre><code>## Error in rnorm(n, mean = mu, sd = sigma): invalid arguments</code></pre>
+<pre class="r"><code>results &lt;- bind_rows(results)</code></pre>
+<p>How many of these intervals contain the population mean, <span class="math inline">\(\mu\)</span>?</p>
+<pre class="r"><code>summarize(results, prop_contain_mu = sum(contains_mu) / n())</code></pre>
+<pre><code>## Source: local data frame [0 x 0]</code></pre>
+<pre class="r"><code>ggplot(results, aes(y = x_mean, ymin = lb, ymax = ub, x = i, color = contains_mu)) +
+  geom_hline(yintercept = 0) +
+  geom_pointrange(size = rel(0.25)) +
+  coord_flip() +
+  scale_color_manual(values = c(&quot;TRUE&quot; = alpha(&quot;black&quot;, 0.67), &quot;FALSE&quot; = &quot;red&quot;)) +
+  theme_bw() +
+  theme(axis.text.y = element_blank(),
+        axis.ticks.y = element_blank(),
+        axis.title.y = element_blank())</code></pre>
+<pre><code>## Error in eval(expr, envir, enclos): object &#39;x_mean&#39; not found</code></pre>
+<p><img src="Confidence_Intervals_files/figure-html/unnamed-chunk-6-1.png" title="" alt="" width="672" /></p>
+<p>Note that the confidence intervals (<span class="math inline">\(\bar{x}\)</span>) are different in each sample.</p>
+<p>The “confidence” in the confidence interval is not the probability that future samples have confidence intervals contain sample mean of the current probability interval. If we calculate this for all the confidence intervals we can check this. For a 95% confidence interval the proportion of confidence intervals containing the sample mean of the current sample will vary by sample, but on average will be somewhere around 88%.</p>
+<pre class="r"><code>contains_x_mean &lt;- rep(NA, nrow(results))
+for (i in 1:nrow(results)) {
+  x_mean_i &lt;- results[i, ][[&quot;x_mean&quot;]]
+  contains_x_mean[i] &lt;-
+    (sum(results$lb &lt; x_mean_i &amp; results$ub &gt; x_mean_i) - 1) / (nrow(results) - 1)
+}
+summary(contains_x_mean)</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##       1       1       1       1       1       1</code></pre>
+<div id="unknown-standard-deviation" class="section level2">
+<h2>Unknown standard deviation</h2>
+<p>Choose a confidence level of the confidence interval</p>
+<pre class="r"><code>confidence &lt;- 95
+n &lt;- 30
+mu &lt;- 0
+sigma &lt;- 1
+iter = 500</code></pre>
+<pre class="r"><code># calculate z critical value
+alpha &lt;- 1 - (confidence / 100)
+# crit_val &lt;- -qnorm(alpha / 2)
+crit_val &lt;- -qt(alpha / 2, df = n - 1)
+results &lt;- list()
+for (i in 1:iter) {
+  x &lt;- rnorm(n, mean = mu, sd = sigma)
+  x_mean &lt;- mean(x)
+  s &lt;- sd(x)
+  se &lt;- s / sqrt(n)
+  lb &lt;- x_mean - z * se
+  ub &lt;- x_mean + z * se
+  contains_mu &lt;- (mu &gt; lb) &amp; (mu &lt; ub)
+  results[[i]] &lt;- data_frame(x_mean = x_mean,
+                             s = s,
+                             se = se,
+                             lb = lb,
+                             ub = ub,
+                             contains_mu = contains_mu,
+                             i = i)
+}
+results &lt;- bind_rows(results)</code></pre>
+<p>How many of these intervals contain the population mean, <span class="math inline">\(\mu\)</span>?</p>
+<pre class="r"><code>summarize(results, prop_contain_mu = sum(contains_mu) / n())</code></pre>
+<pre><code>## Source: local data frame [1 x 1]
+## 
+##   prop_contain_mu
+##             (dbl)
+## 1           0.936</code></pre>
+<pre class="r"><code>ggplot(results, aes(y = x_mean, ymin = lb, ymax = ub, x = i, color = contains_mu)) +
+  geom_hline(yintercept = 0) +
+  geom_pointrange(size = rel(0.25)) +
+  coord_flip() +
+  scale_color_manual(values = c(&quot;TRUE&quot; = alpha(&quot;black&quot;, 0.67), &quot;FALSE&quot; = &quot;red&quot;)) +
+  theme_bw() +
+  theme(axis.text.y = element_blank(),
+        axis.ticks.y = element_blank(),
+        axis.title.y = element_blank())</code></pre>
+<p><img src="Confidence_Intervals_files/figure-html/unnamed-chunk-11-1.png" title="" alt="" width="672" /></p>
+<p>The sample standard deviations themselves have a sampling distribution.</p>
+<pre class="r"><code>ggplot(results, aes(x = s)) +
+  geom_density() +
+  geom_rug()</code></pre>
+<p><img src="Confidence_Intervals_files/figure-html/unnamed-chunk-12-1.png" title="" alt="" width="672" /></p>
+<p>The Student’s t distribution is used for hypothesis testing and confidence intervals instead of the normal distribution in order to account for the uncertainty due to estimating the population standard deviation from the sample standard deviation.</p>
+<p>One recommendation is to only use normal distribution quantiles for the critical values for sample sizes over 30 and if the distribution is not too skewed.</p>
+<pre class="r"><code>confidence &lt;- 95
+mu &lt;- 0
+sigma &lt;- 1
+iter = 2048
+sample_sizes &lt;- 3:100
+# calculate z critical value
+alpha &lt;- 1 - (confidence / 100)
+
+results &lt;- list()
+for (i in seq_along(sample_sizes)) {
+  n &lt;- sample_sizes[i]
+  norm_critical_value &lt;- -qnorm(alpha / 2)
+  t_critical_value &lt;- -qt(alpha / 2, df = n - 1)
+  norm_contains_mu &lt;- rep(NA, iter)
+  t_contains_mu &lt;- rep(NA, iter)
+  for (j in 1:iter) {
+
+    # Sample from the normal distribution
+    x &lt;- rnorm(n, mean = mu, sd = sigma)
+    x_mean &lt;- mean(x)
+    s &lt;- sd(x)
+    se &lt;- s / sqrt(n)
+    z &lt;- (x_mean - mu) / se
+    norm_contains_mu[j] &lt;- abs(z) &lt; norm_critical_value
+    t_contains_mu[j] &lt;- abs(z) &lt; t_critical_value
+  }
+  results[[i]] &lt;-
+    data_frame(n = n,
+               `Normal` = sum(norm_contains_mu) / iter,
+               `Student&#39;s t` = sum(t_contains_mu) / iter)
+}
+results &lt;- bind_rows(results) %&gt;%
+  gather(se_type, contains_mu, -n)</code></pre>
+<pre class="r"><code>ggplot(results, aes(x = n, y = contains_mu, color = se_type)) +
+  geom_point() +
+  geom_line() +
+  geom_hline(yintercept = 1 - alpha) +
+  xlab(&quot;Sample size&quot;) +
+  ylab(expression(paste(&quot;Prop intervals containing &quot;, mu))) +
+  scale_color_discrete(&quot;&quot;)</code></pre>
+<p><img src="Confidence_Intervals_files/figure-html/unnamed-chunk-14-1.png" title="" alt="" width="672" /></p>
+</div>
+<div id="skewed-distribution" class="section level2">
+<h2>Skewed distribution</h2>
+<p>What if the sample is from a skewed population distribution such as the geometric distribution? A geometric distribution with <span class="math inline">\(p = 0.25\)</span> is right skewed,</p>
+<pre class="r"><code>confidence &lt;- 95
+prob &lt;- 0.1
+iter = 2048
+sample_sizes &lt;- 3:100
+
+# mean of geom is (1 - p) / p
+mu &lt;- (1 - prob) / prob
+alpha &lt;- 1 - (confidence / 100)
+results &lt;- list()
+for (i in seq_along(sample_sizes)) {
+  n &lt;- sample_sizes[i]
+  norm_critical_value &lt;- -qnorm(alpha / 2)
+  t_critical_value &lt;- -qt(alpha / 2, df = n - 1)
+  norm_contains_mu &lt;- rep(NA, iter)
+  t_contains_mu &lt;- rep(NA, iter)
+  for (j in 1:iter) {
+    x &lt;- rgeom(n, prob = prob)
+    x_mean &lt;- mean(x)
+    s &lt;- sd(x)
+    se &lt;- s / sqrt(n)
+    z &lt;- (x_mean - mu) / se
+    norm_contains_mu[j] &lt;- abs(z) &lt; norm_critical_value
+    t_contains_mu[j] &lt;- abs(z) &lt; t_critical_value
+  }
+  results[[i]] &lt;-
+    data_frame(n = n,
+               `Normal` = sum(norm_contains_mu) / iter,
+               `Student&#39;s t` = sum(t_contains_mu) / iter)
+}
+results &lt;- bind_rows(results) %&gt;%
+  gather(se_type, contains_mu, -n)</code></pre>
+<pre class="r"><code>ggplot(results, aes(x = n, y = contains_mu, color = se_type)) +
+  geom_point() +
+  geom_line() +
+  geom_hline(yintercept = 1 - alpha) +
+  xlab(&quot;Sample size&quot;) +
+  ylab(expression(paste(&quot;Prop intervals containing &quot;, mu))) +
+  scale_color_discrete(&quot;&quot;)</code></pre>
+<pre><code>## Warning: Removed 2 rows containing missing values (geom_point).</code></pre>
+<pre><code>## Warning: Removed 2 rows containing missing values (geom_path).</code></pre>
+<p><img src="Confidence_Intervals_files/figure-html/unnamed-chunk-17-1.png" title="" alt="" width="672" /></p>
+<p>If a less than C% of a C% confidence interval contain the true value of the parameter, are the confidence intervals too narrow or too wide?</p>
+</div>
+<div id="miscellaneous" class="section level2">
+<h2>Miscellaneous</h2>
+<ul>
+<li>What if the population is finite? How does that affect confidence intervals and standard errors?</li>
+<li>What if observations are not independent? Consider examples with clustering or autoregression.</li>
+</ul>
+</div>
+</div>
+
+<hr>
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://licensebuttons.net/l/by-nc-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
+R code is licensed under a <a href="https://www.r-project.org/Licenses/BSD_2_clause">BSD 2-clause</a> license.
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

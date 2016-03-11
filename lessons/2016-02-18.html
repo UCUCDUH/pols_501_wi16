@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="author" content="Jeffrey Arnold" />
+
+<meta name="date" content="2016-02-18" />
+
+<title>Examples from Class</title>
+
+<script src="libs/jquery-1.11.0/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap-3.3.1/css/cerulean.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.1/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.1/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.1/shim/respond.min.js"></script>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<link rel="stylesheet"
+      href="libs/highlight/textmate.css"
+      type="text/css" />
+<script src="libs/highlight/highlight.js"></script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img { 
+  max-width:100%; 
+  height: auto; 
+}
+</style>
+<div class="container-fluid main-container">
+
+<p>
+<strong>POL S/CS&amp;SS 501, University of Washington, Winter 2016</strong>
+</p>
+
+$$
+\DeclareMathOperator{\mean}{mean}
+\DeclareMathOperator{\var}{var}
+\DeclareMathOperator{\E}{E}
+\DeclareMathOperator{\MSE}{MSE}
+\DeclareMathOperator{\Bias}{Bias}
+\DeclareMathOperator{\SE}{se}
+\DeclareMathOperator{\SD}{sd}
+\DeclareMathOperator{\argmin}{argmin}
+\DeclareMathOperator{\argmax}{argmax}
+$$
+
+<div id="header">
+<h1 class="title">Examples from Class</h1>
+<h4 class="author"><em>Jeffrey Arnold</em></h4>
+<h4 class="date"><em>February 18, 2016</em></h4>
+</div>
+
+<div id="TOC">
+<ul>
+<li><a href="#nevada-primaries">2016 Nevada Primaries</a></li>
+<li><a href="#interpreting-difference-in-means">Interpreting Difference in Means</a><ul>
+<li><a href="#statistically-significant-and-not-statistically-significant">Statistically Significant and Not Statistically Significant</a></li>
+<li><a href="#non-overlapping-confidence-intervals">Non Overlapping Confidence Intervals</a></li>
+<li><a href="#overlapping-intervals">Overlapping Intervals</a></li>
+</ul></li>
+</ul>
+</div>
+
+<div id="nevada-primaries" class="section level1">
+<h1>2016 Nevada Primaries</h1>
+<p>Consider this CNN poll of the Nevada Democratic and Republican Presidential Caucuses taken on Feb 10-12, 2016: <a href="http://elections.huffingtonpost.com/pollster/polls/cnn-23764" class="uri">http://elections.huffingtonpost.com/pollster/polls/cnn-23764</a>. The full poll results are here: <a href="http://i2.cdn.turner.com/cnn/2016/images/02/17/topnv1.pdf" class="uri">http://i2.cdn.turner.com/cnn/2016/images/02/17/topnv1.pdf</a></p>
+<p><em>Calculate the standard error and 95% confidence interval of Donald Trump’s proportion of support?</em></p>
+<p>The CNN poll has a sample of 245 likely voters (Republican), and the proportion who will vote for Trump as 45%.</p>
+<p>The 95% confidence interval is about 38.8 to 51.2%</p>
+<pre class="r"><code>p &lt;- 0.45
+n &lt;- 245
+p + c(-1, 1) * 1.96 * sqrt(p * (1 - p) / n)</code></pre>
+<pre><code>## [1] 0.3877039 0.5122961</code></pre>
+<p><em>Calculate the standard error and 95% confidence interval of Bernie Sanders proportion of support?</em></p>
+<p>The CNN poll has a sample of 282 likely voters (Democratic), and the proportion who answered that they will vote for Sanders is 47%.</p>
+<p>The 95% confidence interval is 41.2–52.8%</p>
+<pre class="r"><code>p &lt;- 0.47
+n &lt;- 282
+p + c(-1, 1) * 1.96 * sqrt(p * (1 - p) / n)</code></pre>
+<pre><code>## [1] 0.411747 0.528253</code></pre>
+<p><em>Can you calculate the confidence interval of the difference between Ted Cruz and Marco Rubio’s support? What assumption is violated?</em></p>
+<p>No. These are not independent populations.</p>
+<p><em>Look at the most recent values of Huffpost Pollster Trend for the 2016 National Republican Primary support by Republicans for the Republican candidates. Use a Chi-squared test to compare the poll-results in Nevada to the national trend. Are they different than the national trend?</em></p>
+<p>Pollster uses a model that approximately averages the polls. On <a href="http://elections.huffingtonpost.com/pollster/2016-national-gop-primary">Feb 17</a>, it HuffPost Pollster’s model estimated the support for the candidates at</p>
+<pre class="r"><code>national = c(&quot;Donald Trump&quot; = 0.378,
+                   &quot;Ted Cruz&quot; = .181,
+                   &quot;Marco Rubio&quot; = .149,
+                   &quot;John Kasich&quot; = .078,
+                   &quot;Ben Carson&quot; = .083,
+                   &quot;Jeb Bush&quot; = .063,
+                   &quot;Other&quot; = .068)</code></pre>
+<p>The values observed in the CNN poll for Nevada are,</p>
+<pre class="r"><code>n &lt;- 245
+poll_results = c(&quot;Donald Trump&quot; = 0.45,
+                   &quot;Ted Cruz&quot; = .17,
+                   &quot;Marco Rubio&quot; = .19,
+                   &quot;John Kasich&quot; = .05,
+                   &quot;Ben Carson&quot; = .07,
+                   &quot;Jeb Bush&quot; = .01,
+                   &quot;Other&quot; = .06)
+
+chisq.test(poll_results, p = national)</code></pre>
+<pre><code>## Warning in chisq.test(poll_results, p = national): Chi-squared
+## approximation may be incorrect</code></pre>
+<pre><code>## 
+##  Chi-squared test for given probabilities
+## 
+## data:  poll_results
+## X-squared = 0.083281, df = 6, p-value = 1</code></pre>
+<p>The test does not reject that the Nevada primary opinion is different than national opinion, but the small sample size makes the Chi-squared test inappropriate.</p>
+<p><em>Is support for Hillary Clinton and Bernie Sanders independent of age? See p. 33 of the full poll results. Use a Chi-squared test of independence.</em></p>
+<p><em>Is support for Hillary Clinton different between men and women? Use a confidence interval and a hypothesis test for a difference of proportions.</em></p>
+</div>
+<div id="interpreting-difference-in-means" class="section level1">
+<h1>Interpreting Difference in Means</h1>
+<div id="statistically-significant-and-not-statistically-significant" class="section level2">
+<h2>Statistically Significant and Not Statistically Significant</h2>
+<p>Consider two samples of size 100 from independent populations. Sample 1 has a mean of <span class="math inline">\(\bar{x}_1 = 0\)</span>, standard deviation of <span class="math inline">\(s_1 = 10\)</span>. Sample 2 has a mean of <span class="math inline">\(\bar{x}_2 = 2.3\)</span>, and standard deviation of <span class="math inline">\(s_2 = 10\)</span>.</p>
+<ul>
+<li>For sample 1, calculate its 95% confidence interval. Can you reject <span class="math inline">\(H_0: \mu_1 = 0\)</span> at the 5% significance level (assume a two-sided test)?</li>
+<li>Do the same for sample 2?</li>
+<li>Calculate the confidence interval for the difference <span class="math inline">\(\mu_1 - \mu_2\)</span>? Can you reject <span class="math inline">\(H_0: \mu_1 = \mu_2\)</span>?</li>
+</ul>
+<pre class="r"><code>x_bar_1 &lt;- 0
+s_1 &lt;- 10
+n_1 &lt;- 100
+se_1 &lt;- s_1 / sqrt(n_1)
+
+x_bar_2 &lt;- 2.3
+s_2 &lt;- s_1
+n_2 &lt;- n_1
+se_2 &lt;- s_2 / sqrt(n_2)</code></pre>
+<p>The 95% confidence interval of <span class="math inline">\(\mu_1\)</span> includes 0, obviously, since <span class="math inline">\(\bar{x}_1 = 0\)</span>. The hypothesis test implied by the confidence interval does not reject that <span class="math inline">\(\mu_1 = 0\)</span>.</p>
+<pre class="r"><code>x_bar_1 + c(-1, 1) * 1.96 * se_1</code></pre>
+<pre><code>## [1] -1.96  1.96</code></pre>
+<p>The 95% confidence interval of <span class="math inline">\(\mu_2\)</span>. The hypothesis test implied by the confidence interval does reject that <span class="math inline">\(\mu_2 = 0\)</span>, and accepts the alternative hypothesis that <span class="math inline">\(\mu_2 \neq 0\)</span>.</p>
+<pre class="r"><code>x_bar_2 + c(-1, 1) * 1.96 * se_2</code></pre>
+<pre><code>## [1] 0.34 4.26</code></pre>
+<p>Although our tests show that <span class="math inline">\(\mu_2 \neq 0\)</span> and cannot reject <span class="math inline">\(\mu_1 = 0\)</span>, however the data cannot reject that <span class="math inline">\(\mu_1 = \mu_2\)</span>. The 95% confidence interval of <span class="math inline">\(\mu_1 - \mu_2\)</span> is</p>
+<pre class="r"><code>se_diff &lt;- sqrt(se_1 ^ 2 + se_2 ^ 2)
+(x_bar_1 - x_bar_2) + c(-1, 1) * 1.96 * se_diff</code></pre>
+<pre><code>## [1] -5.0718586  0.4718586</code></pre>
+<p>The confidence interval includes 0, so the data cannot reject the null hypothesis that <span class="math inline">\(\mu_1 = \mu_2\)</span>.</p>
+<p>Thus although <span class="math inline">\(\mu_2\)</span> is statistically significant, and <span class="math inline">\(\mu_1\)</span> is not statistically significant, this does not imply that the difference between them is statistically significant. This is unfortunately a common interpretative mistake in applied work. For more, see</p>
+<blockquote>
+<p>Gelman, Andrew, and Hal Stern. 2006. `<code>The Difference Between</code>Significant’ and `Not Significant’ is not Itself Statistically Significant.’’ <em>The American Statistician.</em> <a href="https://dx.doi.org/10.1198/000313006X152649" class="uri">https://dx.doi.org/10.1198/000313006X152649</a>.</p>
+</blockquote>
+</div>
+<div id="non-overlapping-confidence-intervals" class="section level2">
+<h2>Non Overlapping Confidence Intervals</h2>
+<p>Consider two samples of size 100 from independent populations. Sample 1 has a mean of <span class="math inline">\(\bar{x}_1 = 0\)</span>, standard deviation of <span class="math inline">\(s_1 = 10\)</span>. Sample 2 has a mean of <span class="math inline">\(\bar{x}_2 = 4\)</span>, and standard deviation of <span class="math inline">\(s_2 = 10\)</span>.</p>
+<ul>
+<li>Calculate the 95% confidence intervals of <span class="math inline">\(\mu_1\)</span>, and <span class="math inline">\(\mu_2\)</span>?</li>
+<li>Do the confidence intervals of the mean for sample 1 and sample 2 overlap? From this can you conclude that you can reject <span class="math inline">\(H_0: \mu_1 = \mu_2\)</span> at the the 5% significance level?</li>
+<li>Calculate the confidence interval of <span class="math inline">\(\mu_1 - \mu_2\)</span>. From this can you conclude that you can reject <span class="math inline">\(H_0: \mu_1 = \mu_2\)</span>?</li>
+</ul>
+<pre class="r"><code>x_bar_1 &lt;- 0
+s_1 &lt;- 10
+n_1 &lt;- 100
+se_1 &lt;- s_1 / sqrt(n_1)
+
+x_bar_2 &lt;- 4
+s_2 &lt;- s_1
+n_2 &lt;- n_1
+se_2 &lt;- s_2 / sqrt(n_2)</code></pre>
+<p>The 95% confidence interval of <span class="math inline">\(\mu_1\)</span> is</p>
+<pre class="r"><code>x_bar_1 + c(-1, 1) * 1.96 * se_1</code></pre>
+<pre><code>## [1] -1.96  1.96</code></pre>
+<p>The 95% confidence interval of <span class="math inline">\(\mu_2\)</span> is</p>
+<pre class="r"><code>x_bar_2 + c(-1, 1) * 1.96 * se_2</code></pre>
+<pre><code>## [1] 2.04 5.96</code></pre>
+<p>They do not overlap.</p>
+<p>The 95% confidence interval of <span class="math inline">\(\mu_1 - \mu_2\)</span> does not include 0, so the data rejects that <span class="math inline">\(\mu_1 = \mu_2\)</span> and accepts the alternative hypothesis that <span class="math inline">\(\mu_1 \neq \mu_2\)</span>,</p>
+<pre class="r"><code>se_diff &lt;- sqrt(se_1 ^ 2 + se_2 ^ 2)
+(x_bar_1 - x_bar_2) + c(-1, 1) * 1.96 * se_diff</code></pre>
+<pre><code>## [1] -6.771859 -1.228141</code></pre>
+</div>
+<div id="overlapping-intervals" class="section level2">
+<h2>Overlapping Intervals</h2>
+<p>Consider two samples of size 100 from independent populations. Sample 1 has a mean of <span class="math inline">\(\bar{x}_1 = 0\)</span>, standard deviation of <span class="math inline">\(s_1 = 10\)</span>. Sample 2 has a mean of <span class="math inline">\(\bar{x}_2 = 3\)</span>, and standard deviation of <span class="math inline">\(s_2 = 10\)</span>.</p>
+<ul>
+<li>Calculate the 95% confidence intervals of <span class="math inline">\(\mu_1\)</span>, and <span class="math inline">\(\mu_2\)</span>?</li>
+<li>Do the confidence intervals of the mean for sample 1 and sample 2 overlap? From this can you conclude that you can reject <span class="math inline">\(H_0: \mu_1 = \mu_2\)</span> at the the 5% significance level?</li>
+<li>Calculate the confidence interval of <span class="math inline">\(\mu_1 - \mu_2\)</span>. From this can you conclude that you can reject <span class="math inline">\(H_0: \mu_1 = \mu_2\)</span>?</li>
+</ul>
+<pre class="r"><code>x_bar_1 &lt;- 0
+s_1 &lt;- 10
+n_1 &lt;- 100
+se_1 &lt;- s_1 / sqrt(n_1)
+
+x_bar_2 &lt;- 3
+s_2 &lt;- s_1
+n_2 &lt;- n_1
+se_2 &lt;- s_2 / sqrt(n_2)</code></pre>
+<p>The 95% confidence interval of <span class="math inline">\(\mu_1\)</span>:</p>
+<pre class="r"><code>x_bar_1 + c(-1, 1) * 1.96 * se_1</code></pre>
+<pre><code>## [1] -1.96  1.96</code></pre>
+<p>The 95% confidence interval of <span class="math inline">\(\mu_2\)</span>:</p>
+<pre class="r"><code>x_bar_2 + c(-1, 1) * 1.96 * se_2</code></pre>
+<pre><code>## [1] 1.04 4.96</code></pre>
+<p>However, the 95% confidence interval of <span class="math inline">\(\mu_1 - \mu_2\)</span> does not contain 0, so the data rejects the hypothesis that <span class="math inline">\(\mu_1 = \mu_2\)</span> and accepts the alternative hypothesis that <span class="math inline">\(\mu_1 \neq \mu_2\)</span>,</p>
+<pre class="r"><code>se_diff &lt;- sqrt(se_1 ^ 2 + se_2 ^ 2)
+(x_bar_1 - x_bar_2) + c(-1, 1) * 1.96 * se_diff</code></pre>
+<pre><code>## [1] -5.7718586 -0.2281414</code></pre>
+<p>So although the confidence intervals of two groups overlaps, the difference between these groups may be statistically significant. In order to check whether the difference between the groups is statistically significant is to test the difference.</p>
+<p>Why do the confidence intervals of the means of each group and the confidence interval of the difference of means produce different results. Confidence intervals of the means of two groups will not overlap when <span class="math display">\[
+\bar{x}_1 - \bar{x_2} &gt; z^* (se_1 + se_2) .
+\]</span> The confidence interval of the difference in means of two groups will not include zero when <span class="math display">\[
+\bar{x}_1 - \bar{x_2} &gt; z^* \sqrt{se_1^2 + se_2^2} .
+\]</span> Since the sum of the standard errors of the means of two samples is always greater than the standard error of difference in means, <span class="math display">\[
+(se_1 + se_2) &gt; \sqrt{se_1^2 + se_2^2}
+\]</span> Thus there are cases in which the confidence intervals of two means can overlap but the confidence interval of the difference in means does not include zero.</p>
+<p>We observed this in the example,</p>
+<pre class="r"><code>se_1 + se_2</code></pre>
+<pre><code>## [1] 2</code></pre>
+<pre class="r"><code>se_diff</code></pre>
+<pre><code>## [1] 1.414214</code></pre>
+<p>Thus, if two confidence intervals are <strong>not</strong> overlapping, then the difference will also be significant. But, if the two means are overlapping, the difference may or may not be significant.</p>
+<p>For more see this <a href="https://www.cscu.cornell.edu/news/statnews/Stnews73insert.pdf">handout</a></p>
+</div>
+</div>
+
+<hr>
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://licensebuttons.net/l/by-nc-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
+R code is licensed under a <a href="https://www.r-project.org/Licenses/BSD_2_clause">BSD 2-clause</a> license.
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

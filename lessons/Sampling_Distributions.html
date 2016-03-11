@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="author" content="Jeffrey Arnold" />
+
+<meta name="date" content="2016-02-04" />
+
+<title>Sampling Distributions and the CLT</title>
+
+<script src="libs/jquery-1.11.0/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap-3.3.1/css/cerulean.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.1/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.1/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.1/shim/respond.min.js"></script>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<link rel="stylesheet"
+      href="libs/highlight/textmate.css"
+      type="text/css" />
+<script src="libs/highlight/highlight.js"></script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img { 
+  max-width:100%; 
+  height: auto; 
+}
+</style>
+<div class="container-fluid main-container">
+
+<p>
+<strong>POL S/CS&amp;SS 501, University of Washington, Winter 2016</strong>
+</p>
+
+$$
+\DeclareMathOperator{\mean}{mean}
+\DeclareMathOperator{\var}{var}
+\DeclareMathOperator{\E}{E}
+\DeclareMathOperator{\MSE}{MSE}
+\DeclareMathOperator{\Bias}{Bias}
+\DeclareMathOperator{\SE}{se}
+\DeclareMathOperator{\SD}{sd}
+\DeclareMathOperator{\argmin}{argmin}
+\DeclareMathOperator{\argmax}{argmax}
+$$
+
+<div id="header">
+<h1 class="title">Sampling Distributions and the CLT</h1>
+<h4 class="author"><em>Jeffrey Arnold</em></h4>
+<h4 class="date"><em>2016-02-04</em></h4>
+</div>
+
+<div id="TOC">
+<ul>
+<li><a href="#inference">Inference</a></li>
+<li><a href="#sampling-distribution">Sampling distribution</a></li>
+<li><a href="#sampling-distribution-of-the-sample-mean">Sampling Distribution of the Sample Mean</a></li>
+<li><a href="#binomial-distribution-and-the-bernoulli-distribution">Binomial Distribution and the Bernoulli Distribution</a></li>
+<li><a href="#evaluating-estimators">Evaluating Estimators</a><ul>
+<li><a href="#bias">Bias</a></li>
+<li><a href="#variance">Variance</a></li>
+<li><a href="#mse">MSE</a></li>
+<li><a href="#other-criteria">Other criteria</a></li>
+</ul></li>
+<li><a href="#confidence-intervals">Confidence Intervals</a><ul>
+<li><a href="#unknown-standard-deviation">Unknown standard deviation</a></li>
+<li><a href="#skewed-distribution">Skewed distribution</a></li>
+<li><a href="#miscellaneous">Miscellaneous</a></li>
+<li><a href="#common-misinterpretations-of-confidence-intervals">Common misinterpretations of confidence intervals</a></li>
+</ul></li>
+</ul>
+</div>
+
+<p>This lesson uses simulation to understand properties of sampling distributions and confidence intervals.</p>
+<p>This lesson uses these <strong>R</strong> packages.</p>
+<pre class="r"><code>library(&quot;dplyr&quot;)
+library(&quot;ggplot2&quot;)
+library(&quot;tidyr&quot;)</code></pre>
+<div id="inference" class="section level1">
+<h1>Inference</h1>
+<p>If we knew the population distribution, we can calculate the probability of observing a sample statistic using the sampling distribution.</p>
+<ul>
+<li>Known population: distribution and parameters. e.g. <span class="math inline">\(N(\mu, \sigma)\)</span></li>
+<li>Draw samples. <span class="math inline">\(X \sim N(\mu, \sigma)\)</span></li>
+<li>Calculate sample statistics which have a sampling distribution, <span class="math inline">\(\bar{X} \sim N(\mu, \sigma / \sqrt{n})\)</span></li>
+</ul>
+<p>However, in inference we only know the sample or sample statistic, and want to know some parameter(s) of the population distribution.</p>
+<ul>
+<li>Known sample or at least a known statistic of a sample. E.g. <span class="math inline">\(\bar{x}\)</span>.</li>
+<li>?</li>
+<li>Population parameter: E.g. <span class="math inline">\(\mu\)</span>.</li>
+</ul>
+<p>The obvious way to do this would be to use Bayes’ Theorem, <span class="math display">\[
+p(\mu | \bar{x}) = \frac{\Pr(\bar{x}| \mu) \Pr(\mu)}{\Pr(\bar{x})}
+\]</span> There are at least two problems with this approach</p>
+<ol style="list-style-type: decimal">
+<li>Practically, this can be computationally difficult</li>
+<li>Theoretically, we need to assign a probability to the population parameter, prior to observing the data, <span class="math inline">\(\Pr(\mu)\)</span>. This may be objectionable to people.</li>
+<li>In the Frequentist definition of probability, there is no probability of <span class="math inline">\(\mu\)</span>. Parameters are not random variables, they are fixed, though unknown, values. Only samples are random variables, and can have probabilities. Therefore, we can calculate the probability of observing a sample mean, <span class="math inline">\(\bar{x}\)</span>, in repeated samples given a population mean, <span class="math inline">\(\mu\)</span>. However, there is no non-degenerate probability for the population parameter <span class="math inline">\(\mu\)</span>.</li>
+</ol>
+<p>There are two main Frequentist approaches to the inferential problem:</p>
+<ol style="list-style-type: decimal">
+<li>Confidence intervals</li>
+<li><p>Hypothesis Testing: Calculate the sampling distribution of the sample statistic given a null hypothesis, <span class="math inline">\(H_a\)</span>, and calculate how unusual the data we observe is.</p>
+<ol style="list-style-type: decimal">
+<li>P-value</li>
+<li>Significance test</li>
+</ol></li>
+</ol>
+<p>These methods represent distinct and separate methods of inference, although in practice they are used in a hybrid, and somewhat incoherent, manner.</p>
+</div>
+<div id="sampling-distribution" class="section level1">
+<h1>Sampling distribution</h1>
+<p>The sampling distribution of a sample statistic depends is the distribution of a sampling statistic in repeated samples.</p>
+<p>We’ll illustrate the sampling distribution of the mean from a population distributed standard normal. To draw a single sample of size 8 and calculate the mean,</p>
+<pre class="r"><code>n &lt;- 8
+mean(rnorm(n))</code></pre>
+<pre><code>## [1] -0.2965122</code></pre>
+<p>However, to get a sample from the sampling distribution, we need to draw many samples and for each sample calculate the mean.</p>
+<pre class="r"><code>n &lt;- 32
+iter &lt;- 2048
+# Investigate
+results &lt;- list()
+for (i in 1:iter) {
+  x &lt;- rnorm(n)
+  stat &lt;- mean(x)
+  results[[i]] &lt;- data_frame(i = i, stat = stat)
+}
+results &lt;- bind_rows(results)</code></pre>
+<p>Now we can plot the results,</p>
+<pre class="r"><code>ggplot(results, aes(x = stat)) +
+  geom_density() +
+  geom_rug()</code></pre>
+<p><img src="Sampling_Distributions_files/figure-html/unnamed-chunk-5-1.png" title="" alt="" width="672" /> Try the code above by with different sample sizes: 2, 8, 16, 32, 512, 1024.</p>
+<p>We can generalize the above code to run multiple sample sizes and plot them all. Sample sizes to draw,</p>
+<pre class="r"><code>sample_sizes &lt;- 2 ^ (0:10)</code></pre>
+<p>Number of samples to draw from the sampling distribution for each sample size,</p>
+<pre class="r"><code>iter &lt;- 4096</code></pre>
+<p>For each sample size, draw samples from the sampling distribution,</p>
+<pre class="r"><code>results &lt;- list()
+for (k in seq_along(sample_sizes))  {
+  message(&quot;sample size:&quot;, sample_sizes[k], &quot;\n&quot;)
+  sampling_dist &lt;- list()
+  n &lt;- sample_sizes[k]
+  for (i in 1:iter) {
+    # Normal distribution. mean = 0, sd = 1. mean = 0
+    x &lt;- rnorm(n)
+    # Uniform distribution: min = 0, max = 1. mean = 0.5
+    # x &lt;- runif(n)
+    # Geometric distribution: prob = 0.25. mean = 3
+    # x &lt;- rgeom(n, prob = 0.25)
+    # Beta distribution. Bimodal. mean = 0.5.
+    # x &lt;- rbeta(n, shape1 = 0.25, shape2 = 0.25)
+
+    # Statistics
+    # # Mean
+    stat &lt;- mean(x)
+    # # Median
+    # stat &lt;- median(x)
+    # # Maximum
+    # stat &lt;- max(x)
+    # # Standard deviation
+    # stat &lt;-sd(x)
+    # # Geometric mean of
+    # stat &lt;- exp(mean(log(abs(x))))
+    sampling_dist[[i]] &lt;- data_frame(size = n, stat = stat)
+  }
+  results[[k]] &lt;- bind_rows(sampling_dist)
+}
+results &lt;- bind_rows(results) %&gt;%
+  mutate(size = factor(size))</code></pre>
+<p>Plot the results for different sample size,</p>
+<pre class="r"><code>ggplot(results, aes(x = stat, colour = size)) +
+  geom_density()</code></pre>
+<p><img src="Sampling_Distributions_files/figure-html/unnamed-chunk-9-1.png" title="" alt="" width="672" /></p>
+<p>In general the sampling distribution depends on three things:</p>
+<ol style="list-style-type: decimal">
+<li>the population distribution</li>
+<li>the sample size</li>
+<li>the sample statistic</li>
+</ol>
+<p>In the code there are alternative statistics and distributions, uncomment the code to try different combinations and see how the affect the shape of the sampling distribution.</p>
+</div>
+<div id="sampling-distribution-of-the-sample-mean" class="section level1">
+<h1>Sampling Distribution of the Sample Mean</h1>
+<p>The sampling distribution of the sample mean has the following properties</p>
+<ul>
+<li>Mean: <span class="math inline">\(\mu\)</span></li>
+<li>Standard deviation: <span class="math inline">\(\sigma / \sqrt{n}\)</span></li>
+<li>As <span class="math inline">\(n \to \infty\)</span>, the distribution approaches a normal distribution (regardless of the population distribution<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>).</li>
+</ul>
+<p>The first two properties are known as the Law of Large Number (LLN), and the final property is called the Central Limit Theorem (CLT).</p>
+<p>Let’s convince ourselves that these hold by simulating means from a variety of population distributions, and plotting the distribution of the sampling distribution, its mean, and its standard deviation.</p>
+<pre class="r"><code>## Comparing mean and sample distributions of multiple samples
+iter &lt;- 8192
+sample_sizes &lt;- 2 ^ (0:12)
+results &lt;- list()
+for (k in seq_along(sample_sizes))  {
+  n &lt;- sample_sizes[k]
+  message(&quot;sample size: &quot;, n)
+  stat &lt;- rep(NA, iter)
+  for (i in 1:iter) {
+    # # Normal distribution.
+    # # mean = 0, sd = 1
+    x &lt;- rnorm(n)
+
+    # # Uniform distribution:
+    # # min = 0, max = 1, mean = 0.5, sd = 0.2887
+    # x &lt;- runif(n)
+
+    # # Geometric distribution: prob = 0.25.
+    # # mean = (1 - p) / p = 3
+    # # var = (1 - p) / p ^ 2 = 12
+    # # sd = sqrt(12)
+    # x &lt;- rgeom(n, prob = 0.25)
+
+    # # Beta distribution. Bimodal.
+    # # mean = 0.5. sd = 0.4082
+    # x &lt;- rbeta(n, shape1 = 0.5, shape2 = 0.5)
+
+    # # Bernoulli distribution.
+    # # mean = 0.2. sd = sqrt(0.2 * 0.8)
+    # x &lt;- rbinom(n, size = 1, prob = 0.2)
+
+    stat[i] &lt;- mean(x)
+  }
+  results[[k]] &lt;- data_frame(stat = stat, size = n)
+
+}
+results &lt;- bind_rows(results)
+
+results_summary &lt;- results %&gt;%
+  group_by(size) %&gt;%
+  summarize(x_mean = mean(stat),
+            s = sd(stat),
+            x_mean_se = s / sqrt(iter),
+            s_se = s / sqrt(2 * (iter - 1)))</code></pre>
+<p>Set the population mean and standard deviation of the population distribution that you chose,</p>
+<pre class="r"><code>mu &lt;- 0
+sigma &lt;- 1</code></pre>
+<p>Plot the mean for different sample sizes. The mean of the sampling distribution is equal to the population mean, <span class="math inline">\(\mu\)</span>.</p>
+<pre class="r"><code>ggplot(results_summary, aes(x = size, y = x_mean,
+                    ymin = x_mean - 2 * x_mean_se,
+                    ymax = x_mean + 2 * x_mean_se)) +
+  geom_pointrange() +
+  geom_hline(yintercept = mu) +
+  scale_x_log10()</code></pre>
+<p><img src="Sampling_Distributions_files/figure-html/unnamed-chunk-12-1.png" title="" alt="" width="672" /></p>
+<p>Plot of the standard error for different sample sizes. The standard error of the sample mean is <span class="math inline">\(\sigma / \sqrt{n}\)</span>.</p>
+<pre class="r"><code>ggplot(results_summary, aes(x = size,
+                    y = s,
+                    ymin = s - 2 * s_se,
+                    ymax = s + 2 * s_se)) +
+  geom_pointrange() +
+  stat_function(fun = function(n) sigma / sqrt(n)) +
+  scale_x_log10()</code></pre>
+<p><img src="Sampling_Distributions_files/figure-html/unnamed-chunk-13-1.png" title="" alt="" width="672" /></p>
+<p>Plot of the distribution of the sampling distribution of the mean as the sample size increases.</p>
+<pre class="r"><code>ggplot(mutate(results,
+              normal = dnorm(stat, mean = mu, sd = sigma / sqrt(size))),
+       aes(x = stat)) +
+  geom_density() +
+  geom_rug() +
+  geom_line(mapping = aes(y = normal), col = &quot;red&quot;) +
+  facet_wrap(~size, ncol = 2, scales = &quot;free&quot;)</code></pre>
+<p><img src="Sampling_Distributions_files/figure-html/unnamed-chunk-14-1.png" title="" alt="" width="672" /></p>
+</div>
+<div id="binomial-distribution-and-the-bernoulli-distribution" class="section level1">
+<h1>Binomial Distribution and the Bernoulli Distribution</h1>
+<p>The sampling distribution of the sum of Bernoulli distributed random variables is the binomial distribution. As the sample size increases, the Binomial distribution approaches a normal distribution with mean <span class="math inline">\(n p\)</span> and standard deviation <span class="math inline">\(\sqrt{n p (1 - p)}\)</span>.</p>
+<pre class="r"><code>prob &lt;- 0.2
+sizes &lt;- c(1, 2, 8, 32, 64, 256, 512, 1024)
+
+binomial &lt;- list()
+for (i in seq_along(sizes)) {
+  n &lt;- sizes[i]
+  binomial[[i]] &lt;- data_frame(x = 0:n,
+                              size = n,
+                              p = dbinom(x, size = n, prob = prob))
+}
+binomial &lt;- bind_rows(binomial)
+
+normal &lt;- list()
+for (i in seq_along(sizes)) {
+  n &lt;- sizes[i]
+  normal_mean &lt;- n * prob
+  normal_sd &lt;- sqrt(n * prob * (1 - prob))
+  normal[[i]] &lt;- data_frame(x = seq(normal_mean - 3 * normal_sd,
+                                    normal_mean + 3 * normal_sd,
+                                    length.out = 101),
+                            y = dnorm(x, mean = normal_mean, sd = normal_sd),
+                            size = n)
+}
+normal &lt;- bind_rows(normal)
+
+ggplot() +
+  geom_bar(data = binomial, aes(x = x, y = p), stat = &quot;identity&quot;,
+           alpha = 0.5) +
+  geom_line(data = normal, aes(x = x, y = y), color = &quot;black&quot;, size = 1) +
+  facet_wrap(~size, ncol = 2, scales = &quot;free&quot;)</code></pre>
+<p><img src="Sampling_Distributions_files/figure-html/unnamed-chunk-15-1.png" title="" alt="" width="672" /></p>
+</div>
+<div id="evaluating-estimators" class="section level1">
+<h1>Evaluating Estimators</h1>
+<dl>
+<dt>Estimand</dt>
+<dd><p>Parameter to be estimated. E.g. population mean, population variance.</p>
+</dd>
+<dt>Estimator</dt>
+<dd><p>A rule for calculating an estimate given data. E.g. sample mean, sample variance.</p>
+</dd>
+<dt>Estimate</dt>
+<dd><p>A particular value of the estimator applied to data. E.g. 4.</p>
+</dd>
+</dl>
+<p>We evaluate estimators, not particular estimates. We want to judge methods based on how well they work in repeated samples. In other words, we evaluate estimators based on properties of their sampling distribution.</p>
+<p>Let <span class="math inline">\(\theta\)</span> be the true value of the parameter, and <span class="math inline">\(\hat\theta\)</span> be an estimator for that parameter. Note that while <span class="math inline">\(\theta\)</span> is fixed, <span class="math inline">\(\hat\theta\)</span> is a random variable.</p>
+<div id="bias" class="section level2">
+<h2>Bias</h2>
+<p>The bias of an estimator is the difference between the expected value of its sampling distribution and the true value of the parameter, <span class="math display">\[
+\Bias(\theta) = \E(\hat\theta) - \theta .
+\]</span></p>
+</div>
+<div id="variance" class="section level2">
+<h2>Variance</h2>
+<p>The variance of an estimator is the variance of its sampling distribution, <span class="math display">\[
+\var(\hat\theta)  = \E\left( (\hat\theta - \E(\hat\theta))^2 \right) .
+\]</span></p>
+</div>
+<div id="mse" class="section level2">
+<h2>MSE</h2>
+<p>The mean squared error evaluates the distribution on its squared error relative to the true value of the parameter, <span class="math display">\[
+\MSE(\hat\theta) = \E\left[\left(\hat\theta - \theta\right)^2 \right] .
+\]</span> The MSE incorporates both the bias of the estimator and the variance, and can be rewritten as the sum of the variance and bias squared of the estimator, <span class="math display">\[
+\MSE(\hat\theta) = \var(\hat\theta) + \left(\Bias(\hat\theta)\right)^2
+\]</span> One implication of this is that biased estimators may have a better MSE than a unbiased estimator, if their variance is sufficiently lower, <span class="math display">\[
+\var(\hat\theta_{\text{unbiased}}) - var(\hat\theta_{\text{biased}}) &gt; {\Bias(\hat\theta)}^2 .
+\]</span></p>
+<p><em>What are the bias, variance, and MSE of the sample mean as an estimator of the population mean?</em></p>
+<p>Its bias is 0, since <span class="math inline">\(E(\bar{X}) = \mu\)</span>. Its variance is <span class="math inline">\(\sigma^2 / n\)</span>. Since the sample mean is unbiased, its MSE is the same as its variance <span class="math display">\[
+\MSE(\bar{X}) = \var(\bar{X}) + \left(\Bias(\bar{X})\right)^2 = \var(\bar{X}) + 0 = \var(\bar{X})
+\]</span></p>
+</div>
+<div id="other-criteria" class="section level2">
+<h2>Other criteria</h2>
+<p>Estimators can be evaluated according to other criteria. A few common ones are:</p>
+<dl>
+<dt>Consistency</dt>
+<dd><p>As the sample size increases (<span class="math inline">\(n \to infty\)</span>) the estimator <span class="math inline">\(\hat\theta\)</span> gets arbitrarily close to the true value of the estimand <span class="math inline">\(\theta\)</span>.</p>
+</dd>
+<dt>Efficiency</dt>
+<dd><p>For unbiased estimators of an estimand, the estimator with the lowest variance.</p>
+</dd>
+<dt>Robustness:</dt>
+<dd><p>The estimate is not affected much by departures from the assumptions, or the estimator requires few assumptions.</p>
+</dd>
+</dl>
+</div>
+</div>
+<div id="confidence-intervals" class="section level1">
+<h1>Confidence Intervals</h1>
+<p>Choose a confidence level of the confidence interval</p>
+<pre class="r"><code>confidence &lt;- 95
+mu &lt;- 0
+sigma &lt;- 1</code></pre>
+<pre class="r"><code>iter = 500
+# calculate z critical value
+alpha &lt;- 1 - (confidence / 100)
+z &lt;- -qnorm(alpha / 2)
+results &lt;- list()
+for (i in 1:iter) {
+  x &lt;- rnorm(n, mean = mu, sd = sigma)
+  x_mean &lt;- mean(x)
+  se &lt;- sigma / sqrt(n)
+  lb &lt;- x_mean - z * se
+  ub &lt;- x_mean + z * se
+  contains_mu &lt;- (mu &gt; lb) &amp; (mu &lt; ub)
+  results[[i]] &lt;- data_frame(x_mean = x_mean,
+                             se = se,
+                             lb = lb,
+                             ub = ub,
+                             contains_mu = contains_mu,
+                             i = i)
+}
+results &lt;- bind_rows(results)</code></pre>
+<p>How many of these intervals contain the population mean, <span class="math inline">\(\mu\)</span>?</p>
+<pre class="r"><code>summarize(results, prop_contain_mu = sum(contains_mu) / n())</code></pre>
+<pre><code>## Source: local data frame [1 x 1]
+## 
+##   prop_contain_mu
+##             (dbl)
+## 1           0.956</code></pre>
+<pre class="r"><code>ggplot(results, aes(y = x_mean, ymin = lb, ymax = ub, x = i, color = contains_mu)) +
+  geom_hline(yintercept = 0) +
+  geom_pointrange(size = rel(0.25)) +
+  coord_flip() +
+  scale_color_manual(values = c(&quot;TRUE&quot; = alpha(&quot;black&quot;, 0.67), &quot;FALSE&quot; = &quot;red&quot;)) +
+  theme_bw() +
+  theme(axis.text.y = element_blank(),
+        axis.ticks.y = element_blank(),
+        axis.title.y = element_blank())</code></pre>
+<p><img src="Sampling_Distributions_files/figure-html/unnamed-chunk-19-1.png" title="" alt="" width="672" /></p>
+<p>Note that the confidence intervals (<span class="math inline">\(\bar{x}\)</span>) are different in each sample.</p>
+<p>The “confidence” in the confidence interval is not the probability that future samples have confidence intervals contain sample mean of the current probability interval. If we calculate this for all the confidence intervals we can check this. For a 95% confidence interval the proportion of confidence intervals containing the sample mean of the current sample will vary by sample, but on average will be somewhere around 88%.</p>
+<pre class="r"><code>contains_x_mean &lt;- rep(NA, nrow(results))
+for (i in 1:nrow(results)) {
+  x_mean_i &lt;- results[i, ][[&quot;x_mean&quot;]]
+  contains_x_mean[i] &lt;-
+    (sum(results$lb &lt; x_mean_i &amp; results$ub &gt; x_mean_i) - 1) / (nrow(results) - 1)
+}
+summary(contains_x_mean)</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+## 0.06012 0.78960 0.89180 0.83290 0.93990 0.95790</code></pre>
+<div id="unknown-standard-deviation" class="section level2">
+<h2>Unknown standard deviation</h2>
+<p>Choose a confidence level of the confidence interval</p>
+<pre class="r"><code>confidence &lt;- 95
+n &lt;- 30
+mu &lt;- 0
+sigma &lt;- 1
+iter = 500</code></pre>
+<pre class="r"><code># calculate z critical value
+alpha &lt;- 1 - (confidence / 100)
+# crit_val &lt;- -qnorm(alpha / 2)
+crit_val &lt;- -qt(alpha / 2, df = n - 1)
+results &lt;- list()
+for (i in 1:iter) {
+  x &lt;- rnorm(n, mean = mu, sd = sigma)
+  x_mean &lt;- mean(x)
+  s &lt;- sd(x)
+  se &lt;- s / sqrt(n)
+  lb &lt;- x_mean - z * se
+  ub &lt;- x_mean + z * se
+  contains_mu &lt;- (mu &gt; lb) &amp; (mu &lt; ub)
+  results[[i]] &lt;- data_frame(x_mean = x_mean,
+                             s = s,
+                             se = se,
+                             lb = lb,
+                             ub = ub,
+                             contains_mu = contains_mu,
+                             i = i)
+}
+results &lt;- bind_rows(results)</code></pre>
+<p>How many of these intervals contain the population mean, <span class="math inline">\(\mu\)</span>?</p>
+<pre class="r"><code>summarize(results, prop_contain_mu = sum(contains_mu) / n())</code></pre>
+<pre><code>## Source: local data frame [1 x 1]
+## 
+##   prop_contain_mu
+##             (dbl)
+## 1           0.944</code></pre>
+<pre class="r"><code>ggplot(results, aes(y = x_mean, ymin = lb, ymax = ub, x = i, color = contains_mu)) +
+  geom_hline(yintercept = 0) +
+  geom_pointrange(size = rel(0.25)) +
+  coord_flip() +
+  scale_color_manual(values = c(&quot;TRUE&quot; = alpha(&quot;black&quot;, 0.67), &quot;FALSE&quot; = &quot;red&quot;)) +
+  theme_bw() +
+  theme(axis.text.y = element_blank(),
+        axis.ticks.y = element_blank(),
+        axis.title.y = element_blank())</code></pre>
+<p><img src="Sampling_Distributions_files/figure-html/unnamed-chunk-24-1.png" title="" alt="" width="672" /></p>
+<p>The sample standard deviations themselves have a sampling distribution.[^chisq]</p>
+<pre class="r"><code>ggplot(results, aes(x = s)) +
+  geom_density() +
+  geom_rug()</code></pre>
+<p><img src="Sampling_Distributions_files/figure-html/unnamed-chunk-25-1.png" title="" alt="" width="672" /></p>
+<p>The Student’s t distribution is used for hypothesis testing and confidence intervals instead of the normal distribution in order to account for the uncertainty due to estimating the population standard deviation from the sample standard deviation.</p>
+<p>One recommendation is to only use normal distribution quantiles for the critical values for sample sizes over 30 and if the distribution is not too skewed.</p>
+<pre class="r"><code>confidence &lt;- 95
+mu &lt;- 0
+sigma &lt;- 1
+iter = 2048
+sample_sizes &lt;- 3:100
+# calculate z critical value
+alpha &lt;- 1 - (confidence / 100)
+
+results &lt;- list()
+for (i in seq_along(sample_sizes)) {
+  n &lt;- sample_sizes[i]
+  norm_critical_value &lt;- -qnorm(alpha / 2)
+  t_critical_value &lt;- -qt(alpha / 2, df = n - 1)
+  norm_contains_mu &lt;- rep(NA, iter)
+  t_contains_mu &lt;- rep(NA, iter)
+  for (j in 1:iter) {
+
+    # Sample from the normal distribution
+    x &lt;- rnorm(n, mean = mu, sd = sigma)
+    x_mean &lt;- mean(x)
+    s &lt;- sd(x)
+    se &lt;- s / sqrt(n)
+    z &lt;- (x_mean - mu) / se
+    norm_contains_mu[j] &lt;- abs(z) &lt; norm_critical_value
+    t_contains_mu[j] &lt;- abs(z) &lt; t_critical_value
+  }
+  results[[i]] &lt;-
+    data_frame(n = n,
+               `Normal` = sum(norm_contains_mu) / iter,
+               `Student&#39;s t` = sum(t_contains_mu) / iter)
+}
+results &lt;- bind_rows(results) %&gt;%
+  gather(se_type, contains_mu, -n)</code></pre>
+<pre class="r"><code>ggplot(results, aes(x = n, y = contains_mu, color = se_type)) +
+  geom_point() +
+  geom_line() +
+  geom_hline(yintercept = 1 - alpha) +
+  xlab(&quot;Sample size&quot;) +
+  ylab(expression(paste(&quot;Prop intervals containing &quot;, mu))) +
+  scale_color_discrete(&quot;&quot;)</code></pre>
+<p><img src="Sampling_Distributions_files/figure-html/unnamed-chunk-27-1.png" title="" alt="" width="672" /></p>
+</div>
+<div id="skewed-distribution" class="section level2">
+<h2>Skewed distribution</h2>
+<p>What if the sample is from a skewed population distribution such as the geometric distribution? A geometric distribution with <span class="math inline">\(p = 0.25\)</span> is right skewed,</p>
+<pre class="r"><code>confidence &lt;- 95
+prob &lt;- 0.1
+iter = 2048
+sample_sizes &lt;- 3:100
+
+# mean of geom is (1 - p) / p
+mu &lt;- (1 - prob) / prob
+alpha &lt;- 1 - (confidence / 100)
+results &lt;- list()
+for (i in seq_along(sample_sizes)) {
+  n &lt;- sample_sizes[i]
+  norm_critical_value &lt;- -qnorm(alpha / 2)
+  t_critical_value &lt;- -qt(alpha / 2, df = n - 1)
+  norm_contains_mu &lt;- rep(NA, iter)
+  t_contains_mu &lt;- rep(NA, iter)
+  for (j in 1:iter) {
+    x &lt;- rgeom(n, prob = prob)
+    x_mean &lt;- mean(x)
+    s &lt;- sd(x)
+    se &lt;- s / sqrt(n)
+    z &lt;- (x_mean - mu) / se
+    norm_contains_mu[j] &lt;- abs(z) &lt; norm_critical_value
+    t_contains_mu[j] &lt;- abs(z) &lt; t_critical_value
+  }
+  results[[i]] &lt;-
+    data_frame(n = n,
+               `Normal` = sum(norm_contains_mu) / iter,
+               `Student&#39;s t` = sum(t_contains_mu) / iter)
+}
+results &lt;- bind_rows(results) %&gt;%
+  gather(se_type, contains_mu, -n)</code></pre>
+<pre class="r"><code>ggplot(results, aes(x = n, y = contains_mu, color = se_type)) +
+  geom_point() +
+  geom_line() +
+  geom_hline(yintercept = 1 - alpha) +
+  xlab(&quot;Sample size&quot;) +
+  ylab(expression(paste(&quot;Prop intervals containing &quot;, mu))) +
+  scale_color_discrete(&quot;&quot;)</code></pre>
+<p><img src="Sampling_Distributions_files/figure-html/unnamed-chunk-30-1.png" title="" alt="" width="672" /></p>
+<p>If a less than C% of a C% confidence interval contain the true value of the parameter, are the confidence intervals too narrow or too wide?</p>
+</div>
+<div id="miscellaneous" class="section level2">
+<h2>Miscellaneous</h2>
+<ul>
+<li>What if the population is finite? How does that affect confidence intervals and standard errors?</li>
+<li>What if observations are not independent? Consider examples with clustering or autoregression.</li>
+</ul>
+</div>
+<div id="common-misinterpretations-of-confidence-intervals" class="section level2">
+<h2>Common misinterpretations of confidence intervals</h2>
+<p>Suppose you have a treatment that you suspect may alter performance on a certain task. You compare the means of your control and experimental groups (say 20 subjects in each sample). Further, suppose you use a simple independent means t-test and your result is significant (t = 2.7, d.f. = 18, p = 0.01). Please mark each of the statements below as “true” or “false.” “False” means that the statement does not follow logically from the above premises. Also note that several or none of the statements may be correct (between the population means) (From Hoekstra et al. 2014. “Robust Misinterpretation of Confidence Intervals.” <em>Psychological Bulletin Review</em>)</p>
+<ol style="list-style-type: decimal">
+<li>The probability that the true mean is greater than 0 is at least 95%</li>
+<li>The probability that the true mean equals 0 is smaller than 5%.</li>
+<li>The “null hypothesis” that the true mean equals 0 is likely to be incorrect</li>
+<li>There is a 95% probability that the true mean lies between 0.1 and 0.4</li>
+<li>If we were to repeat the experiment over and over, then 95% of the time the true mean falls between 0.1 and 0.4.</li>
+<li>If we were to repeat the experiment over and over then 95% of the confidence intervals would contain the sample mean of 0.25.</li>
+</ol>
+<p>All of these are false. The correct interpretation is:</p>
+<p>The confidence interval was generated using a method so that in repeated samples, 95% of the samples the confidence interval will contain the true mean.</p>
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>There are a few technical conditions for the CLT, but that’s not our concern here.<a href="#fnref1">↩</a></p></li>
+</ol>
+</div>
+
+<hr>
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://licensebuttons.net/l/by-nc-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
+R code is licensed under a <a href="https://www.r-project.org/Licenses/BSD_2_clause">BSD 2-clause</a> license.
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

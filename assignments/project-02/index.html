@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# " lang="en">
+<head>
+<meta charset="utf-8">
+<base href="https://UW-POLS501.github.io/pols_501_wi16/assignments/project-02/">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Research Project Assignment 2 | POL S/CS&amp;SS 501 WI16</title>
+<link href="../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<meta content="#5670d4" name="theme-color">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="../../rss.xml">
+<link rel="canonical" href="https://UW-POLS501.github.io/pols_501_wi16/assignments/project-02/">
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+        processEscapes: true
+    },
+    displayAlign: 'left', // Change this to 'center' to center equations.
+    "HTML-CSS": {
+        styles: {'.MathJax_Display': {"margin": 0}}
+    }
+});
+</script><!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+<meta name="author" content="Jeffrey B. Arnold">
+<meta property="og:site_name" content="POL S/CS&amp;SS 501 WI16">
+<meta property="og:title" content="Research Project Assignment 2">
+<meta property="og:url" content="https://UW-POLS501.github.io/pols_501_wi16/assignments/project-02/">
+<meta property="og:description" content="For any data you have available, but at least one dataset, answer the following.
+What is the source of the dataset? Be as specific as possible. It is not necessary, but for the paper you will be expec">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2016-03-10T19:03:42-08:00">
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Menubar -->
+
+<nav class="navbar navbar-inverse navbar-static-top"><div class="container">
+<!-- This keeps the margins nice -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="https://UW-POLS501.github.io/pols_501_wi16/">
+
+                <span id="blog-title">POL S/CS&amp;SS 501 WI16</span>
+            </a>
+        </div>
+<!-- /.navbar-header -->
+        <div class="collapse navbar-collapse" id="bs-navbar" aria-expanded="false">
+            <ul class="nav navbar-nav">
+<li>
+<a href="../../">Syllabus</a>
+                </li>
+<li>
+<a href="../../schedule/">Schedule</a>
+                </li>
+<li>
+<a href="../">Assignments</a>
+                </li>
+<li>
+<a href="../../resources/">Resources</a>
+                </li>
+<li>
+<a href="../../posts/">Posts</a>
+
+                
+            </li>
+</ul>
+<!-- Custom search with Google--><form id="search" action="//www.google.com/search" method="get" class="navbar-form pull-right">
+<input type="hidden" name="q" value="site:https://UW-POLS501.github.io/pols_501_wi16/"><input type="text" name="q" maxlength="255" results="0" placeholder="Search">
+</form>
+<!-- End of custom search -->
+
+
+            <ul class="nav navbar-nav navbar-right"></ul>
+</div>
+<!-- /.navbar-collapse -->
+    </div>
+<!-- /.container -->
+</nav><!-- End of Menubar --><div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        <div class="row">
+            
+            
+<article class="storypage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Research Project Assignment 2</a></h1>
+
+        
+
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <div>
+<p>For any data you have available, but at least one dataset, answer the following.</p>
+<ol>
+<li>What is the source of the dataset? Be as specific as possible. It is not necessary, but for the paper you will be expected to use cite all data following the conventions that are becoming standard in the field; see the <em>Political Analysis</em> guidelines for <a href="http://www.oxfordjournals.org/our_journals/polana/for_authors/general.html">“Data Citation”</a>.</li>
+<li>Use <code>str</code> and the associated documentation of the dataset to describe the types and meanings of the variables in the dataset. You do not need to discuss all variables; only focus on those of most interest to your analysis.</li>
+<li>What type of data is it: cross-section, time-series, or time-series cross-section?</li>
+<li>What is the unit of observation of the dataset? What variable(s) uniquely identify observations in the data?</li>
+<li>How many observations are there in the dataset?</li>
+<li>Use <code>summary()</code> to summarize relevant variables.</li>
+<li>Which variables have missing values? How  prevalent are missing values?</li>
+<li>Plot the distribution of at least one variable using <strong>ggplot2</strong> with either <code>geom_histogram</code> or <code>geom_density</code> with <code>geom_rug</code>. What is the shape of the distribution?</li>
+<li>Choose two variables to compare. If they are both continuous, create a scatterplot using <code>geom_scatter</code>. If they are both discrete, create a faceted bar plot using <code>geom_scatter</code> and <code>facet_grid</code>. If one is discrete and one is continuous, create a boxplot using <code>geom_boxplot</code>.</li>
+</ol>
+<p>Your assignment should be submitted via Canvas as a <code>zip</code> file of an R project with the following directory structure and file naming conventions (replace “jrnold” with your netid:):</p>
+<pre class="code literal-block"><span></span>jrnold-project-02
+├── data
+├── figure
+├── jrnold-project-02-code.R
+├── jrnold-project-02.Rproj
+└── jrnold-project-02.pdf
+</pre>
+
+
+<ul>
+<li>
+<code>jrnold-project-02.pdf</code> is the writeup of your analysis. Word documents (<code>docx</code>, <code>doc</code>) are also acceptable. The document should be written in prose and not include code.  However, it should include relevant plots and output that illustrate your points.
+Any R output included in the writeup should be formatted with a monospace font (e.g. Courier, Consolas, Menlo, Monaco).</li>
+<li>
+<code>jrnold-project-02-code.R</code> contains the R code used to generate the results of your analysis.</li>
+<li>Datasets should go in the <code>data</code> directory.</li>
+<li>Plots (.png, .pdf) go in the <code>figure</code> directory.</li>
+</ul>
+<p>Zip the directory and submit the zip file to canvas.
+When you zip the directory file ensure that the top-level directory is included.
+In other words, when you unzip the file, it should produce the directory <code>jrnold-project-02</code> and not multiple files.</p>
+</div>
+    </div>
+    
+
+</article>
+</div>
+        <!--End of body content-->
+
+        <footer id="footer">
+            
+Contents © 2016  <a href="mailto:jrnold@uw.edu">Jeffrey B. Arnold</a>  
+<a rel="license" href="https://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://licensebuttons.net/l/by/4.0/80x15.png"></a><br><br>
+Powered by <a href="https://getnikola.com" rel="nofollow">Nikola</a>;
+Source on <a href="https://github.com/UW-POLS501/pols_501_wi16/">github</a>
+
+            
+        </footer>
+</div>
+</div>
+
+
+            <script src="../../assets/js/all-nocdn.js"></script><script>$('a.image-reference:not(.islink) img:not(.islink)').parent().colorbox({rel:"gal",maxWidth:"100%",maxHeight:"100%",scalePhotos:true});</script><!-- fancy dates --><script>
+    moment.locale("en");
+    fancydates(0, "YYYY-MM-DD HH:mm");
+    </script><!-- end fancy dates --><script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTM"></script>
+</body>
+</html>
