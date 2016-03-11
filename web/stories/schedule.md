@@ -270,7 +270,10 @@ Lab
 
 ## Week 10
 
-TBD
+<ul class="fa-ul">
+<li><i class="fa-li fa fa-bar-chart"></i><a href="/docs/regression_tables.R">Interpreting linear regression outputs</a>
+</ul>
+
 
 
 ## Finals Period
